@@ -24,6 +24,7 @@ sourceSets {
         resources {
             srcDirs = ['../src/main/resources']
             exclude 'fabric.mod.json'
+            exclude 'avalinexus.fabric.mixins.json'
             exclude 'META-INF/mods.toml'
         }
     }

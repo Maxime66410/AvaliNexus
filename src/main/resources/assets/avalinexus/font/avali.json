@@ -1,0 +1,19 @@
+{
+  "providers": [
+    {
+      "type": "ttf",
+      "file": "avalinexus:avali_latin.ttf",
+      "size": 9.0,
+      "oversample": 4.0,
+      "shift": [
+        0.0,
+        0.0
+      ],
+      "skip": "#\u00d7"
+    },
+    {
+      "type": "reference",
+      "id": "minecraft:default"
+    }
+  ]
+}

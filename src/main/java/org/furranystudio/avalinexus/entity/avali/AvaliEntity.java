@@ -18,10 +18,13 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
@@ -34,6 +37,7 @@ import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.furranystudio.avalinexus.dialogue.DialogueManager;
 import org.furranystudio.avalinexus.entity.ModEntities;
 import org.furranystudio.avalinexus.entity.avali.expression.AvaliFace;
 import org.furranystudio.avalinexus.entity.avali.expression.AvaliGesture;
@@ -44,6 +48,7 @@ import org.furranystudio.avalinexus.entity.avali.goal.AvaliRestGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliSleepGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliStrollGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliSwimGoal;
+import org.furranystudio.avalinexus.entity.avali.goal.AvaliTalkGoal;
 import org.furranystudio.avalinexus.entity.avali.pose.AvaliPose;
 import org.furranystudio.avalinexus.sound.ModSounds;
 
@@ -83,6 +88,7 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     private static final EntityDataAccessor<Integer> DATA_GESTURE = SynchedEntityData.defineId(AvaliEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> DATA_POSE = SynchedEntityData.defineId(AvaliEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> DATA_NAP = SynchedEntityData.defineId(AvaliEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> DATA_DIALOGUE_FACE = SynchedEntityData.defineId(AvaliEntity.class, EntityDataSerializers.INT);
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private int swimGraceTicks;
@@ -93,6 +99,7 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     private boolean playerNearby;
     private int gestureTicks;
     private boolean panicking;
+    private ServerPlayer talkingTo;
 
     public AvaliEntity(EntityType<? extends AvaliEntity> type, Level level) {
         super(type, level);
@@ -108,6 +115,7 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     protected void registerGoals() {
         goalSelector.addGoal(0, new FloatGoal(this));
         goalSelector.addGoal(1, new AvaliSwimGoal(this, 1.0));
+        goalSelector.addGoal(1, new AvaliTalkGoal(this));
         goalSelector.addGoal(2, new AvaliPanicGoal(this, 1.1));
         goalSelector.addGoal(3, new AvaliSleepGoal(this, 0.8));
         goalSelector.addGoal(4, new AvaliCushionGoal(this, 0.8));
@@ -124,6 +132,7 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         builder.define(DATA_GESTURE, -1);
         builder.define(DATA_POSE, -1);
         builder.define(DATA_NAP, false);
+        builder.define(DATA_DIALOGUE_FACE, -1);
     }
 
     @Override
@@ -132,8 +141,22 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         if (hurt) {
             angryTicks = ANGRY_TICKS;
             stopGesture();
+            if (talkingTo != null) {
+                DialogueManager.close(talkingTo, true);
+            }
         }
         return hurt;
+    }
+
+    @Override
+    protected InteractionResult mobInteract(Player player, InteractionHand hand) {
+        if (hand != InteractionHand.MAIN_HAND || player.isSecondaryUseActive() || isSleeping() || getMood().earsDown()) {
+            return super.mobInteract(player, hand);
+        }
+        if (player instanceof ServerPlayer serverPlayer) {
+            DialogueManager.open(serverPlayer, this);
+        }
+        return InteractionResult.SUCCESS;
     }
 
     @Override
@@ -194,6 +217,10 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         if (!level().isClientSide()) {
             updateMood();
             updateGesture();
+            if (talkingTo != null && (!talkingTo.isAlive() || talkingTo.level() != level()
+                    || distanceTo(talkingTo) > DialogueManager.MAX_DISTANCE)) {
+                DialogueManager.close(talkingTo, true);
+            }
         }
     }
 
@@ -270,6 +297,24 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         return gesture < 0 ? null : AvaliGesture.values()[gesture];
     }
 
+    public void startTalking(ServerPlayer player) {
+        talkingTo = player;
+        getNavigation().stop();
+    }
+
+    public void stopTalking() {
+        talkingTo = null;
+        setDialogueFace(null);
+    }
+
+    public ServerPlayer getTalkingTo() {
+        return talkingTo;
+    }
+
+    public void setDialogueFace(AvaliFace face) {
+        entityData.set(DATA_DIALOGUE_FACE, face == null ? -1 : face.ordinal());
+    }
+
     public void setNapping(boolean napping) {
         entityData.set(DATA_NAP, napping);
     }
@@ -292,7 +337,11 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
             return AvaliFace.SLEEPING;
         }
         AvaliGesture gesture = getGesture();
-        return gesture != null && gesture.face() != null ? gesture.face() : getMood().face();
+        if (gesture != null && gesture.face() != null) {
+            return gesture.face();
+        }
+        int dialogueFace = entityData.get(DATA_DIALOGUE_FACE);
+        return dialogueFace >= 0 ? AvaliFace.values()[dialogueFace] : getMood().face();
     }
 
     // Mobs can't swim like players, so we fake it

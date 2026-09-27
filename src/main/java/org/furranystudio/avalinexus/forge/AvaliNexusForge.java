@@ -8,9 +8,13 @@ package org.furranystudio.avalinexus.forge;
 
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.AddGuiOverlayLayersEvent;
 import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.client.event.InputEvent;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -24,11 +28,16 @@ import org.furranystudio.avalinexus.Config;
 import org.furranystudio.avalinexus.Platform;
 import org.furranystudio.avalinexus.client.AvaliNexusClient;
 import org.furranystudio.avalinexus.client.avali.AvaliRenderer;
+import org.furranystudio.avalinexus.client.dialogue.ClientDialogue;
+import org.furranystudio.avalinexus.client.dialogue.DialogueHud;
+import org.furranystudio.avalinexus.client.dialogue.DialogueKeys;
 import org.furranystudio.avalinexus.command.AvaliNexusCommand;
 import org.furranystudio.avalinexus.entity.ModEntities;
 import org.furranystudio.avalinexus.entity.MonsterTargeting;
 import org.furranystudio.avalinexus.item.ModCreativeTabs;
 import org.furranystudio.avalinexus.registry.ModRegistry;
+
+import java.util.function.Predicate;
 
 @Mod(AvaliNexus.MODID)
 public class AvaliNexusForge {
@@ -53,6 +62,11 @@ public class AvaliNexusForge {
 
         if (FMLEnvironment.dist == Dist.CLIENT) {
             AvaliNexusClient.init();
+            AddGuiOverlayLayersEvent.BUS.addListener(event -> event.getLayeredDraw().add(AvaliNexus.id("dialogue"), DialogueHud::render));
+            RegisterKeyMappingsEvent.BUS.addListener(event -> event.register(DialogueKeys.CURSOR));
+            TickEvent.ClientTickEvent.Pre.BUS.addListener(event -> ClientDialogue.tick());
+            InputEvent.MouseScrollingEvent.BUS.addListener((Predicate<InputEvent.MouseScrollingEvent>) event ->
+                ClientDialogue.onScroll(event.getDeltaY()));
             EntityRenderersEvent.RegisterRenderers.BUS.addListener(event ->
                 event.registerEntityRenderer(ModEntities.AVALI.get(), AvaliRenderer::new));
         }

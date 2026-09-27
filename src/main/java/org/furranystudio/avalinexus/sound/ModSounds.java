@@ -16,6 +16,8 @@ public final class ModSounds {
     public static final RegistryEntry<SoundEvent> AVALI_HURT = register("entity.avali.hurt");
     public static final RegistryEntry<SoundEvent> AVALI_DEATH = register("entity.avali.death");
     public static final RegistryEntry<SoundEvent> AVALI_NOISE = register("entity.avali.noise");
+    public static final RegistryEntry<SoundEvent> UI_CLICK = register("ui.click");
+    public static final RegistryEntry<SoundEvent> UI_HOVER = register("ui.hover");
 
     private ModSounds() {
     }

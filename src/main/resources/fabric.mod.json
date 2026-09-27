@@ -15,6 +15,9 @@
     "main": ["org.furranystudio.avalinexus.fabric.AvaliNexusFabric"],
     "client": ["org.furranystudio.avalinexus.fabric.AvaliNexusFabricClient"]
   },
+  "mixins": [
+    "avalinexus.fabric.mixins.json"
+  ],
   "depends": {
     "fabricloader": ">=0.19.0",
     "minecraft": "~26.3",

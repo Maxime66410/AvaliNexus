@@ -14,7 +14,11 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.fml.loading.FMLPaths;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.event.InputEvent;
+import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
+import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
@@ -27,6 +31,9 @@ import org.furranystudio.avalinexus.Config;
 import org.furranystudio.avalinexus.Platform;
 import org.furranystudio.avalinexus.client.AvaliNexusClient;
 import org.furranystudio.avalinexus.client.avali.AvaliRenderer;
+import org.furranystudio.avalinexus.client.dialogue.ClientDialogue;
+import org.furranystudio.avalinexus.client.dialogue.DialogueHud;
+import org.furranystudio.avalinexus.client.dialogue.DialogueKeys;
 import org.furranystudio.avalinexus.command.AvaliNexusCommand;
 import org.furranystudio.avalinexus.entity.ModEntities;
 import org.furranystudio.avalinexus.entity.MonsterTargeting;
@@ -58,6 +65,14 @@ public class AvaliNexusNeoForge {
 
         if (FMLEnvironment.getDist() == Dist.CLIENT) {
             AvaliNexusClient.init();
+            modEventBus.addListener((RegisterGuiLayersEvent event) -> event.registerAboveAll(AvaliNexus.id("dialogue"), DialogueHud::render));
+            modEventBus.addListener((RegisterKeyMappingsEvent event) -> event.register(DialogueKeys.CURSOR));
+            NeoForge.EVENT_BUS.addListener((ClientTickEvent.Pre event) -> ClientDialogue.tick());
+            NeoForge.EVENT_BUS.addListener((InputEvent.MouseScrollingEvent event) -> {
+                if (ClientDialogue.onScroll(event.getScrollDeltaY())) {
+                    event.setCanceled(true);
+                }
+            });
             modEventBus.addListener((EntityRenderersEvent.RegisterRenderers event) ->
                 event.registerEntityRenderer(ModEntities.AVALI.get(), AvaliRenderer::new));
         }
