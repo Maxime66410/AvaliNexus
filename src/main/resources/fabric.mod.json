@@ -9,6 +9,7 @@
     "homepage": "https://furranystudio.fr"
   },
   "license": "${mod_license}",
+  "icon": "assets/avalinexus/img/AN-Icon.png",
   "environment": "*",
   "entrypoints": {
     "main": ["org.furranystudio.avalinexus.fabric.AvaliNexusFabric"],

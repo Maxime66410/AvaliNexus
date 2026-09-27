@@ -7,6 +7,7 @@ modId="${mod_id}" #mandatory
 version="${mod_version}" #mandatory
 displayName="${mod_name}" #mandatory
 displayURL="https://furranystudio.fr" #optional
+logoFile="assets/avalinexus/img/AN-Icon.png" #optional
 #bannerFile="assets/avalinexus/img/AN-Banner.png" #optional
 authors="${mod_authors}" #optional
 description='''${mod_description}'''
