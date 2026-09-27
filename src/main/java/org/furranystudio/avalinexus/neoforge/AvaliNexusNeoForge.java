@@ -14,7 +14,9 @@ import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.fml.loading.FMLPaths;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.minecraft.world.item.CreativeModeTab;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.registries.RegisterEvent;
@@ -24,18 +26,20 @@ import org.furranystudio.avalinexus.Platform;
 import org.furranystudio.avalinexus.client.AvaliRenderer;
 import org.furranystudio.avalinexus.command.AvaliNexusCommand;
 import org.furranystudio.avalinexus.entity.ModEntities;
+import org.furranystudio.avalinexus.item.ModCreativeTabs;
 import org.furranystudio.avalinexus.registry.ModRegistry;
 
 @Mod(AvaliNexus.MODID)
 public class AvaliNexusNeoForge {
 
     public AvaliNexusNeoForge(IEventBus modEventBus, ModContainer modContainer) {
-        Platform.init(FMLPaths.GAMEDIR.get());
+        Platform.init(FMLPaths.GAMEDIR.get(), CreativeModeTab::builder);
         Config.registerSettings();
 
         AvaliNexus.registerContent();
         modEventBus.addListener((RegisterEvent event) -> ModRegistry.registerAll(event::register));
         modEventBus.addListener((EntityAttributeCreationEvent event) -> ModEntities.registerAttributes(event::put));
+        modEventBus.addListener((BuildCreativeModeTabContentsEvent event) -> ModCreativeTabs.addToVanillaTab(event.getTabKey(), event));
 
         NeoForge.EVENT_BUS.addListener((RegisterCommandsEvent event) ->
             AvaliNexusCommand.register(event.getDispatcher()));

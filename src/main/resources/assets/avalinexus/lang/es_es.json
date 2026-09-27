@@ -1,4 +1,7 @@
 {
+  "itemGroup.avalinexus": "Avali Nexus",
+  "item.avalinexus.icon": "Avali Nexus",
+  "item.avalinexus.avali_spawn_egg": "Huevo generador de avali",
   "entity.avalinexus.avali": "Avali",
   "avalinexus.settings.header": "[AvaliNexus] Ajustes:",
   "avalinexus.settings.entry": "\n - %s = %s",

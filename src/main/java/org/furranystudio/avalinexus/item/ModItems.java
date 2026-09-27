@@ -1,0 +1,35 @@
+/**
+ * File: ModItems.java
+ * Author: Maxime66410
+ * Created: 2026-09-27
+ * Last Modified: 2026-09-27
+ */
+package org.furranystudio.avalinexus.item;
+
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.SpawnEggItem;
+import net.minecraft.world.item.component.TypedEntityData;
+import org.furranystudio.avalinexus.entity.ModEntities;
+import org.furranystudio.avalinexus.registry.ModRegistry;
+import org.furranystudio.avalinexus.registry.RegistryEntry;
+
+public final class ModItems {
+
+    // Only used as the creative tab icon, never shown in any tab
+    public static final RegistryEntry<Item> ICON = ModRegistry.register(Registries.ITEM, "icon",
+        key -> new Item(new Item.Properties().setId(key)));
+
+    // The entity type may not be registered yet when items are, so it gets resolved later
+    public static final RegistryEntry<SpawnEggItem> AVALI_SPAWN_EGG = ModRegistry.register(Registries.ITEM, "avali_spawn_egg",
+        key -> new SpawnEggItem(new Item.Properties().setId(key).delayedComponent(DataComponents.ENTITY_DATA,
+            registries -> TypedEntityData.of(ModEntities.AVALI.get(), new CompoundTag()))));
+
+    private ModItems() {
+    }
+
+    public static void init() {
+    }
+}

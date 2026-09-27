@@ -7,7 +7,9 @@
 package org.furranystudio.avalinexus.forge;
 
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -22,18 +24,20 @@ import org.furranystudio.avalinexus.Platform;
 import org.furranystudio.avalinexus.client.AvaliRenderer;
 import org.furranystudio.avalinexus.command.AvaliNexusCommand;
 import org.furranystudio.avalinexus.entity.ModEntities;
+import org.furranystudio.avalinexus.item.ModCreativeTabs;
 import org.furranystudio.avalinexus.registry.ModRegistry;
 
 @Mod(AvaliNexus.MODID)
 public class AvaliNexusForge {
 
     public AvaliNexusForge(FMLJavaModLoadingContext context) {
-        Platform.init(FMLPaths.GAMEDIR.get());
+        Platform.init(FMLPaths.GAMEDIR.get(), CreativeModeTab::builder);
         Config.registerSettings();
 
         AvaliNexus.registerContent();
         RegisterEvent.getBus(context.getModBusGroup()).addListener(event -> ModRegistry.registerAll(event::register));
         EntityAttributeCreationEvent.BUS.addListener(event -> ModEntities.registerAttributes(event::put));
+        BuildCreativeModeTabContentsEvent.BUS.addListener(event -> ModCreativeTabs.addToVanillaTab(event.getTabKey(), event));
 
         RegisterCommandsEvent.BUS.addListener(event -> AvaliNexusCommand.register(event.getDispatcher()));
 
