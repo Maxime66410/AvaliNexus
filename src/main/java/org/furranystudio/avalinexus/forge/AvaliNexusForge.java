@@ -11,18 +11,22 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLPaths;
+import net.minecraftforge.registries.RegisterEvent;
 import org.furranystudio.avalinexus.AvaliNexus;
 import org.furranystudio.avalinexus.Config;
 import org.furranystudio.avalinexus.Platform;
 import org.furranystudio.avalinexus.command.AvaliNexusCommand;
+import org.furranystudio.avalinexus.registry.ModRegistry;
 
-// Forge entrypoint - wires the shared/common code to Forge's event bus.
 @Mod(AvaliNexus.MODID)
 public class AvaliNexusForge {
 
     public AvaliNexusForge(FMLJavaModLoadingContext context) {
         Platform.init(FMLPaths.GAMEDIR.get());
         Config.registerSettings();
+
+        AvaliNexus.registerContent();
+        RegisterEvent.getBus(context.getModBusGroup()).addListener(event -> ModRegistry.registerAll(event::register));
 
         RegisterCommandsEvent.BUS.addListener(event -> AvaliNexusCommand.register(event.getDispatcher()));
 

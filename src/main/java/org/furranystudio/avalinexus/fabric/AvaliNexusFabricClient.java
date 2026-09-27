@@ -8,7 +8,6 @@ package org.furranystudio.avalinexus.fabric;
 
 import net.fabricmc.api.ClientModInitializer;
 
-// Client-only Fabric entrypoint (declared as "client" in fabric.mod.json).
 public final class AvaliNexusFabricClient implements ClientModInitializer {
 
     @Override

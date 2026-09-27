@@ -16,8 +16,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import org.furranystudio.avalinexus.settings.SettingsRegistry;
 
-// Command tree is pure Brigadier/vanilla - each loader's bootstrap calls register(dispatcher)
-// from its own command-registration hook (Forge/NeoForge: RegisterCommandsEvent; Fabric: CommandRegistrationCallback).
 public final class AvaliNexusCommand {
 
     private AvaliNexusCommand() {

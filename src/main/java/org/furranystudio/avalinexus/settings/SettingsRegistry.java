@@ -14,7 +14,7 @@ public final class SettingsRegistry {
     public interface Setting {
         String get();
 
-        /** @return {@code null} on success, or an error message describing why the value was rejected */
+        // null if ok, otherwise the error message
         String trySet(String rawValue);
     }
 

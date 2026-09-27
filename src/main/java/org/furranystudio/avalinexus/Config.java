@@ -18,8 +18,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-// Hand-rolled JSON config (no ForgeConfigSpec, so it works identically on Forge, NeoForge and
-// Fabric). Stored at <gamedir>/config/avalinexus.json.
 public final class Config {
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
@@ -37,8 +35,6 @@ public final class Config {
         SettingsRegistry.register("debugLogging", new BoolSetting(DEBUG_LOGGING));
     }
 
-    // Loads the config file if present, falls back to defaults for anything missing/invalid,
-    // then writes it back out so the file always reflects every known key.
     public static void load() {
         Path path = configPath();
         if (Files.exists(path)) {

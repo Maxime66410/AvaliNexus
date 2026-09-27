@@ -6,8 +6,6 @@
  */
 package org.furranystudio.avalinexus;
 
-// One setting: a key, its current value, and its default. Loader-agnostic replacement for
-// ForgeConfigSpec.IntValue/BooleanValue, backed by Config's hand-rolled JSON file instead.
 public final class ConfigValue<T> {
 
     private final String key;
