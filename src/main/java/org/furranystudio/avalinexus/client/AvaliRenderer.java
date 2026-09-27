@@ -7,6 +7,7 @@
 package org.furranystudio.avalinexus.client;
 
 import com.geckolib.cache.model.BakedGeoModel;
+import com.geckolib.constant.dataticket.DataTicket;
 import com.geckolib.renderer.GeoEntityRenderer;
 import com.geckolib.renderer.base.BoneSnapshots;
 import com.geckolib.renderer.base.GeoRenderState;
@@ -25,11 +26,20 @@ public class AvaliRenderer<R extends LivingEntityRenderState & GeoRenderState> e
     // Puts the top of the adult skull (31 px) at player height, ears and crest stick out above like a hat
     private static final float SCALE = 1.8F * 16.0F / 31.0F;
 
+    private static final DataTicket<Boolean> BLINKING = DataTicket.create("avalinexus_blinking", Boolean.class);
+    private static final int BLINK_CYCLE = 300;
+
     private final Map<BakedGeoModel, List<String>> hiddenBones = new IdentityHashMap<>();
 
     public AvaliRenderer(EntityRendererProvider.Context context) {
         super(context, new AvaliModel());
         withScale(SCALE);
+    }
+
+    @Override
+    public void addRenderData(AvaliEntity avali, Void relatedObject, R state, float partialTick) {
+        super.addRenderData(avali, relatedObject, state, partialTick);
+        state.addGeckolibData(BLINKING, isBlinking(avali));
     }
 
     @Override
@@ -42,11 +52,42 @@ public class AvaliRenderer<R extends LivingEntityRenderState & GeoRenderState> e
             head.getRotY() - state.yRot * Mth.DEG_TO_RAD,
             head.getRotZ()));
 
+        float speed = Math.min(state.walkAnimationSpeed, 1.0F);
+        float swing = Mth.cos(state.walkAnimationPos * 0.6662F);
+        float swingOpposite = Mth.cos(state.walkAnimationPos * 0.6662F + Mth.PI);
+        swingBone(snapshots, "right_arm", swingOpposite * speed);
+        swingBone(snapshots, "left_arm", swing * speed);
+        swingBone(snapshots, "right_leg", swing * 1.4F * speed);
+        swingBone(snapshots, "left_leg", swingOpposite * 1.4F * speed);
+
         List<String> bones = hiddenBones.computeIfAbsent(renderPassInfo.model(), model ->
             model.boneLookup().get().keySet().stream().filter(AvaliRenderer::isHiddenByDefault).toList());
         for (String bone : bones) {
             snapshots.ifPresent(bone, snapshot -> snapshot.skipRender(true));
         }
+
+        if (state.getOrDefaultGeckolibData(BLINKING, false)) {
+            for (String side : new String[] {"Left", "Right"}) {
+                setVisible(snapshots, "Eye " + side + " Normal", false);
+                setVisible(snapshots, "Eye Glow " + side + " Normal", false);
+                setVisible(snapshots, "Eye " + side + " Closed", true);
+                setVisible(snapshots, "Eye Glow " + side + " Closed", true);
+            }
+        }
+    }
+
+    // Same timing as the CPM blink: two short blinks every 15 seconds, offset per Avali so they don't sync up
+    private static boolean isBlinking(AvaliEntity avali) {
+        int tick = Math.floorMod(avali.tickCount + avali.getId() * 97, BLINK_CYCLE);
+        return (tick >= 10 && tick < 15) || (tick >= 128 && tick < 133);
+    }
+
+    private static void swingBone(BoneSnapshots snapshots, String bone, float angle) {
+        snapshots.ifPresent(bone, snapshot -> snapshot.setRotX(snapshot.getRotX() - angle));
+    }
+
+    private static void setVisible(BoneSnapshots snapshots, String bone, boolean visible) {
+        snapshots.ifPresent(bone, snapshot -> snapshot.skipRender(!visible));
     }
 
     // Hidden in Blockbench but the geo export doesn't keep that, so alt expressions and armor would all show
