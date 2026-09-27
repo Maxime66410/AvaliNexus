@@ -11,19 +11,24 @@ import org.furranystudio.avalinexus.entity.AvaliEntity;
 
 public class AvaliPanicGoal extends PanicGoal {
 
+    private final AvaliEntity avali;
+
     public AvaliPanicGoal(AvaliEntity avali, double speed) {
         super(avali, speed);
+        this.avali = avali;
     }
 
     @Override
     public void start() {
         super.start();
-        mob.setSprinting(true);
+        avali.setSprinting(true);
+        avali.setPanicking(true);
     }
 
     @Override
     public void stop() {
-        mob.setSprinting(false);
+        avali.setSprinting(false);
+        avali.setPanicking(false);
         super.stop();
     }
 }

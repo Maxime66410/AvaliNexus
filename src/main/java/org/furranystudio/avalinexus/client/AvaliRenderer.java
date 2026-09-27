@@ -18,6 +18,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.util.Mth;
 import org.furranystudio.avalinexus.entity.AvaliEntity;
+import org.furranystudio.avalinexus.entity.AvaliFace;
 
 import java.util.IdentityHashMap;
 import java.util.List;
@@ -31,6 +32,9 @@ public class AvaliRenderer<R extends LivingEntityRenderState & GeoRenderState> e
     private static final DataTicket<Boolean> BLINKING = DataTicket.create("avalinexus_blinking", Boolean.class);
     private static final DataTicket<Float> SWIM_AMOUNT = DataTicket.create("avalinexus_swim_amount", Float.class);
     private static final DataTicket<Float> SWIM_PITCH = DataTicket.create("avalinexus_swim_pitch", Float.class);
+    private static final DataTicket<AvaliFace> FACE = DataTicket.create("avalinexus_face", AvaliFace.class);
+    private static final String[] SIDES = {"Left", "Right"};
+    private static final String[] MOUTHS = {"Mouth Left 0", "Mouth Right 0", "Mouth Left 1", "Mouth Right 1", "Mouth Front"};
     private static final int BLINK_CYCLE = 300;
 
     private final Map<BakedGeoModel, List<String>> hiddenBones = new IdentityHashMap<>();
@@ -46,6 +50,7 @@ public class AvaliRenderer<R extends LivingEntityRenderState & GeoRenderState> e
         state.addGeckolibData(BLINKING, isBlinking(avali));
         state.addGeckolibData(SWIM_AMOUNT, avali.getSwimAmount(partialTick));
         state.addGeckolibData(SWIM_PITCH, avali.getSwimPitch(partialTick));
+        state.addGeckolibData(FACE, avali.getFace());
     }
 
     @Override
@@ -97,13 +102,32 @@ public class AvaliRenderer<R extends LivingEntityRenderState & GeoRenderState> e
             snapshots.ifPresent(bone, snapshot -> snapshot.skipRender(true));
         }
 
-        if (state.getOrDefaultGeckolibData(BLINKING, false)) {
-            for (String side : new String[] {"Left", "Right"}) {
+        applyFace(snapshots, state.getOrDefaultGeckolibData(FACE, AvaliFace.NEUTRAL), state.getOrDefaultGeckolibData(BLINKING, false));
+    }
+
+    private static void applyFace(BoneSnapshots snapshots, AvaliFace face, boolean blinking) {
+        String eyes = blinking ? "Closed" : face.eyes();
+        if (!eyes.equals("Normal")) {
+            for (String side : SIDES) {
                 setVisible(snapshots, "Eye " + side + " Normal", false);
                 setVisible(snapshots, "Eye Glow " + side + " Normal", false);
-                setVisible(snapshots, "Eye " + side + " Closed", true);
-                setVisible(snapshots, "Eye Glow " + side + " Closed", true);
+                setVisible(snapshots, "Eye " + side + " " + eyes, true);
+                setVisible(snapshots, "Eye Glow " + side + " " + eyes, true);
             }
+        }
+        if (!face.mouth().equals("Normal")) {
+            for (String mouth : MOUTHS) {
+                setVisible(snapshots, mouth + " Normal", false);
+                setVisible(snapshots, mouth + " " + face.mouth(), true);
+            }
+        }
+        if (face.blush()) {
+            for (String side : SIDES) {
+                setVisible(snapshots, "Cheek " + side + " Blush", true);
+            }
+        }
+        if (face.tongue()) {
+            setVisible(snapshots, "Tongue", true);
         }
     }
 
