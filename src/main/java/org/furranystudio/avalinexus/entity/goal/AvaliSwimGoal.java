@@ -50,7 +50,7 @@ public class AvaliSwimGoal extends Goal {
 
     @Override
     public void tick() {
-        avali.setSprinting(avali.isInDeepWater());
+        avali.setSprinting(!avali.onGround() || avali.isInDeepWater());
         if (--repathCooldown <= 0 && avali.getNavigation().isDone()) {
             headToShore();
         }

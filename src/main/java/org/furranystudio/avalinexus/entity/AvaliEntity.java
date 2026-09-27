@@ -16,6 +16,7 @@ import com.geckolib.animation.state.AnimationTest;
 import com.geckolib.util.GeckoLibUtil;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
@@ -27,6 +28,7 @@ import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import org.furranystudio.avalinexus.entity.goal.AvaliPanicGoal;
 import org.furranystudio.avalinexus.entity.goal.AvaliStrollGoal;
 import org.furranystudio.avalinexus.entity.goal.AvaliSwimGoal;
@@ -42,8 +44,13 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     private static final RawAnimation TAIL_RUN = RawAnimation.begin().thenLoop("running_RunTail");
     private static final RawAnimation TAIL_SWIM = RawAnimation.begin().thenLoop("swimming");
     private static final float DEEP_WATER = 0.5F;
+    private static final int SWIM_GRACE_TICKS = 10;
+    private static final float MAX_SWIM_PITCH = 75.0F;
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+    private int swimGraceTicks;
+    private float swimPitch;
+    private float swimPitchO;
 
     public AvaliEntity(EntityType<? extends AvaliEntity> type, Level level) {
         super(type, level);
@@ -80,10 +87,39 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
             new AnimationController<AvaliEntity>("tail", 5, this::tailAnimation));
     }
 
+    @Override
+    public void tick() {
+        super.tick();
+        if (isSprinting() && isInDeepWater()) {
+            swimGraceTicks = SWIM_GRACE_TICKS;
+        } else if (swimGraceTicks > 0) {
+            swimGraceTicks--;
+        }
+        swimPitchO = swimPitch;
+        swimPitch += (targetSwimPitch() - swimPitch) * 0.15F;
+    }
+
     // Mobs can't swim like players, so we fake it
     @Override
     public boolean isVisuallySwimming() {
-        return isSprinting() && isInDeepWater();
+        return swimGraceTicks > 0;
+    }
+
+    public float getSwimPitch(float partialTick) {
+        return Mth.lerp(partialTick, swimPitchO, swimPitch);
+    }
+
+    private float targetSwimPitch() {
+        if (!isUnderWater()) {
+            return 0.0F;
+        }
+        Vec3 motion = position().subtract(xo, yo, zo);
+        double horizontal = motion.horizontalDistance();
+        if (horizontal + Math.abs(motion.y) < 0.01) {
+            return 0.0F;
+        }
+        float pitch = (float) -Math.toDegrees(Math.atan2(motion.y, horizontal));
+        return Mth.clamp(pitch, -MAX_SWIM_PITCH, MAX_SWIM_PITCH);
     }
 
     public boolean isInDeepWater() {

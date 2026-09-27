@@ -30,6 +30,7 @@ public class AvaliRenderer<R extends LivingEntityRenderState & GeoRenderState> e
 
     private static final DataTicket<Boolean> BLINKING = DataTicket.create("avalinexus_blinking", Boolean.class);
     private static final DataTicket<Float> SWIM_AMOUNT = DataTicket.create("avalinexus_swim_amount", Float.class);
+    private static final DataTicket<Float> SWIM_PITCH = DataTicket.create("avalinexus_swim_pitch", Float.class);
     private static final int BLINK_CYCLE = 300;
 
     private final Map<BakedGeoModel, List<String>> hiddenBones = new IdentityHashMap<>();
@@ -44,6 +45,7 @@ public class AvaliRenderer<R extends LivingEntityRenderState & GeoRenderState> e
         super.addRenderData(avali, relatedObject, state, partialTick);
         state.addGeckolibData(BLINKING, isBlinking(avali));
         state.addGeckolibData(SWIM_AMOUNT, avali.getSwimAmount(partialTick));
+        state.addGeckolibData(SWIM_PITCH, avali.getSwimPitch(partialTick));
     }
 
     @Override
@@ -53,7 +55,8 @@ public class AvaliRenderer<R extends LivingEntityRenderState & GeoRenderState> e
         R state = renderPassInfo.renderState();
         float swim = state.getOrDefaultGeckolibData(SWIM_AMOUNT, 0.0F);
         if (swim > 0.0F) {
-            poseStack.rotateDegrees(Axis.XP, Mth.lerp(swim, 0.0F, -90.0F - state.xRot));
+            float pitch = state.getOrDefaultGeckolibData(SWIM_PITCH, 0.0F);
+            poseStack.rotateDegrees(Axis.XP, Mth.lerp(swim, 0.0F, -90.0F - pitch));
             poseStack.translate(0.0F, -swim, 0.3F * swim);
         }
     }
