@@ -13,6 +13,7 @@ import com.geckolib.renderer.base.GeoRenderState;
 import com.geckolib.renderer.base.RenderPassInfo;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
+import net.minecraft.util.Mth;
 import org.furranystudio.avalinexus.entity.AvaliEntity;
 
 import java.util.IdentityHashMap;
@@ -34,6 +35,12 @@ public class AvaliRenderer<R extends LivingEntityRenderState & GeoRenderState> e
     @Override
     public void adjustModelBonesForRender(RenderPassInfo<R> renderPassInfo, BoneSnapshots snapshots) {
         super.adjustModelBonesForRender(renderPassInfo, snapshots);
+
+        R state = renderPassInfo.renderState();
+        snapshots.ifPresent("head", head -> head.setRotation(
+            head.getRotX() - state.xRot * Mth.DEG_TO_RAD,
+            head.getRotY() - state.yRot * Mth.DEG_TO_RAD,
+            head.getRotZ()));
 
         List<String> bones = hiddenBones.computeIfAbsent(renderPassInfo.model(), model ->
             model.boneLookup().get().keySet().stream().filter(AvaliRenderer::isHiddenByDefault).toList());
