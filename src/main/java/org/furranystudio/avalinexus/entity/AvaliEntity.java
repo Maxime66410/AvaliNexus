@@ -40,6 +40,7 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     private static final RawAnimation TAIL_RUN = RawAnimation.begin().thenLoop("running_RunTail");
     private static final RawAnimation TAIL_SWIM = RawAnimation.begin().thenLoop("swimming");
     private static final float RUN_SPEED = 0.6F;
+    private static final float SWIM_SPEED = 0.1F;
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
@@ -77,8 +78,14 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
             new AnimationController<AvaliEntity>("tail", 5, this::tailAnimation));
     }
 
+    // Mobs can't swim like players, so we fake it
+    @Override
+    public boolean isVisuallySwimming() {
+        return isInWater() && !onGround() && walkAnimation.speed() > SWIM_SPEED;
+    }
+
     private PlayState tailAnimation(AnimationTest<AvaliEntity> test) {
-        if (isInWater()) {
+        if (isVisuallySwimming()) {
             return test.setAndContinue(TAIL_SWIM);
         }
         if (!test.isMoving()) {

@@ -12,6 +12,8 @@ import com.geckolib.renderer.GeoEntityRenderer;
 import com.geckolib.renderer.base.BoneSnapshots;
 import com.geckolib.renderer.base.GeoRenderState;
 import com.geckolib.renderer.base.RenderPassInfo;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.util.Mth;
@@ -27,6 +29,7 @@ public class AvaliRenderer<R extends LivingEntityRenderState & GeoRenderState> e
     private static final float SCALE = 1.8F * 16.0F / 31.0F;
 
     private static final DataTicket<Boolean> BLINKING = DataTicket.create("avalinexus_blinking", Boolean.class);
+    private static final DataTicket<Float> SWIM_AMOUNT = DataTicket.create("avalinexus_swim_amount", Float.class);
     private static final int BLINK_CYCLE = 300;
 
     private final Map<BakedGeoModel, List<String>> hiddenBones = new IdentityHashMap<>();
@@ -40,6 +43,19 @@ public class AvaliRenderer<R extends LivingEntityRenderState & GeoRenderState> e
     public void addRenderData(AvaliEntity avali, Void relatedObject, R state, float partialTick) {
         super.addRenderData(avali, relatedObject, state, partialTick);
         state.addGeckolibData(BLINKING, isBlinking(avali));
+        state.addGeckolibData(SWIM_AMOUNT, avali.getSwimAmount(partialTick));
+    }
+
+    @Override
+    protected void applyRotations(RenderPassInfo<R> renderPassInfo, PoseStack poseStack, float nativeScale) {
+        super.applyRotations(renderPassInfo, poseStack, nativeScale);
+
+        R state = renderPassInfo.renderState();
+        float swim = state.getOrDefaultGeckolibData(SWIM_AMOUNT, 0.0F);
+        if (swim > 0.0F) {
+            poseStack.rotateDegrees(Axis.XP, Mth.lerp(swim, 0.0F, -90.0F - state.xRot));
+            poseStack.translate(0.0F, -swim, 0.3F * swim);
+        }
     }
 
     @Override
@@ -47,18 +63,30 @@ public class AvaliRenderer<R extends LivingEntityRenderState & GeoRenderState> e
         super.adjustModelBonesForRender(renderPassInfo, snapshots);
 
         R state = renderPassInfo.renderState();
-        snapshots.ifPresent("head", head -> head.setRotation(
-            head.getRotX() - state.xRot * Mth.DEG_TO_RAD,
-            head.getRotY() - state.yRot * Mth.DEG_TO_RAD,
-            head.getRotZ()));
-
+        float swim = state.getOrDefaultGeckolibData(SWIM_AMOUNT, 0.0F);
+        float pos = state.walkAnimationPos;
         float speed = Math.min(state.walkAnimationSpeed, 1.0F);
-        float swing = Mth.cos(state.walkAnimationPos * 0.6662F);
-        float swingOpposite = Mth.cos(state.walkAnimationPos * 0.6662F + Mth.PI);
-        swingBone(snapshots, "right_arm", swingOpposite * speed);
-        swingBone(snapshots, "left_arm", swing * speed);
-        swingBone(snapshots, "right_leg", swing * 1.4F * speed);
-        swingBone(snapshots, "left_leg", swingOpposite * 1.4F * speed);
+
+        Rotation head = new Rotation(state.xRot * Mth.DEG_TO_RAD, state.yRot * Mth.DEG_TO_RAD, 0.0F);
+        Rotation rightArm = new Rotation(Mth.cos(pos * 0.6662F + Mth.PI) * speed, 0.0F, 0.0F);
+        Rotation leftArm = new Rotation(Mth.cos(pos * 0.6662F) * speed, 0.0F, 0.0F);
+        Rotation rightLeg = new Rotation(Mth.cos(pos * 0.6662F) * 1.4F * speed, 0.0F, 0.0F);
+        Rotation leftLeg = new Rotation(Mth.cos(pos * 0.6662F + Mth.PI) * 1.4F * speed, 0.0F, 0.0F);
+
+        if (swim > 0.0F) {
+            head = new Rotation(Mth.rotLerpRad(swim, head.x, -Mth.PI / 4.0F), head.y, head.z);
+            Rotation[] stroke = swimStroke(pos);
+            leftArm = leftArm.lerpTo(stroke[0], swim);
+            rightArm = rightArm.lerpTo(stroke[1], swim);
+            leftLeg = new Rotation(Mth.lerp(swim, leftLeg.x, 0.3F * Mth.cos(pos * 0.33333334F + Mth.PI)), 0.0F, 0.0F);
+            rightLeg = new Rotation(Mth.lerp(swim, rightLeg.x, 0.3F * Mth.cos(pos * 0.33333334F)), 0.0F, 0.0F);
+        }
+
+        rotateBone(snapshots, "head", head);
+        rotateBone(snapshots, "left_arm", leftArm);
+        rotateBone(snapshots, "right_arm", rightArm);
+        rotateBone(snapshots, "left_leg", leftLeg);
+        rotateBone(snapshots, "right_leg", rightLeg);
 
         List<String> bones = hiddenBones.computeIfAbsent(renderPassInfo.model(), model ->
             model.boneLookup().get().keySet().stream().filter(AvaliRenderer::isHiddenByDefault).toList());
@@ -76,14 +104,42 @@ public class AvaliRenderer<R extends LivingEntityRenderState & GeoRenderState> e
         }
     }
 
+    // Player crawl stroke over a 26 unit cycle, returns left then right arm
+    private static Rotation[] swimStroke(float pos) {
+        float cycle = pos % 26.0F;
+        if (cycle < 14.0F) {
+            float progress = quadraticArmUpdate(cycle) / quadraticArmUpdate(14.0F);
+            return new Rotation[] {
+                new Rotation(0.0F, Mth.PI, Mth.PI + 1.8707964F * progress),
+                new Rotation(0.0F, Mth.PI, Mth.PI - 1.8707964F * progress)};
+        }
+        if (cycle < 22.0F) {
+            float progress = (cycle - 14.0F) / 8.0F;
+            return new Rotation[] {
+                new Rotation(Mth.HALF_PI * progress, Mth.PI, 5.012389F - 1.8707964F * progress),
+                new Rotation(Mth.HALF_PI * progress, Mth.PI, 1.2707963F + 1.8707964F * progress)};
+        }
+        float progress = (cycle - 22.0F) / 4.0F;
+        float x = Mth.HALF_PI - Mth.HALF_PI * progress;
+        return new Rotation[] {new Rotation(x, Mth.PI, Mth.PI), new Rotation(x, Mth.PI, Mth.PI)};
+    }
+
+    private static float quadraticArmUpdate(float value) {
+        return -65.0F * value + value * value;
+    }
+
+    // Geo bones have X and Y flipped compared to vanilla model parts
+    private static void rotateBone(BoneSnapshots snapshots, String bone, Rotation rotation) {
+        snapshots.ifPresent(bone, snapshot -> snapshot.setRotation(
+            snapshot.getRotX() - rotation.x,
+            snapshot.getRotY() - rotation.y,
+            snapshot.getRotZ() + rotation.z));
+    }
+
     // Same timing as the CPM blink: two short blinks every 15 seconds, offset per Avali so they don't sync up
     private static boolean isBlinking(AvaliEntity avali) {
         int tick = Math.floorMod(avali.tickCount + avali.getId() * 97, BLINK_CYCLE);
         return (tick >= 10 && tick < 15) || (tick >= 128 && tick < 133);
-    }
-
-    private static void swingBone(BoneSnapshots snapshots, String bone, float angle) {
-        snapshots.ifPresent(bone, snapshot -> snapshot.setRotX(snapshot.getRotX() - angle));
     }
 
     private static void setVisible(BoneSnapshots snapshots, String bone, boolean visible) {
@@ -99,5 +155,15 @@ public class AvaliRenderer<R extends LivingEntityRenderState & GeoRenderState> e
             || bone.startsWith("Outfit Thigh") || bone.startsWith("Outfit Calf") || bone.startsWith("Outfit Foot")
             || bone.startsWith("Outfit Toes") || bone.startsWith("Helmet") || bone.startsWith("Earplate")
             || bone.startsWith("Chestplate") || bone.startsWith("Leggings") || bone.startsWith("Boots");
+    }
+
+    private record Rotation(float x, float y, float z) {
+
+        Rotation lerpTo(Rotation target, float delta) {
+            return new Rotation(
+                Mth.rotLerpRad(delta, x, target.x),
+                Mth.rotLerpRad(delta, y, target.y),
+                Mth.rotLerpRad(delta, z, target.z));
+        }
     }
 }
