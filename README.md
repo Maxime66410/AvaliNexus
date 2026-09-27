@@ -42,7 +42,8 @@ Saved in `config/avalinexus.json`.
 - Forge 66.0.5
 - NeoForge 26.3.0.23-beta
 - Fabric Loader 0.19.5 / Fabric API 0.161.0+26.3
-- Will depend on GeckoLib (models and animations) and FTB Quests + FTB Library later
+- GeckoLib 5.5.7 (models and animations), needs to be installed with the mod
+- FTB Quests + FTB Library support is planned for way later
 
 ## Project structure
 
