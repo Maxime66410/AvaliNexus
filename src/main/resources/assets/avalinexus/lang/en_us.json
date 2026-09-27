@@ -1,0 +1,6 @@
+{
+  "avalinexus.settings.header": "[AvaliNexus] Settings:",
+  "avalinexus.settings.entry": "\n - %s = %s",
+  "avalinexus.settings.unknown": "[AvaliNexus] Unknown setting: %s",
+  "avalinexus.settings.set": "[AvaliNexus] %s set to %s"
+}
