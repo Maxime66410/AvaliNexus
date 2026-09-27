@@ -10,6 +10,7 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
 import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTab;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.Registry;
@@ -22,6 +23,7 @@ import org.furranystudio.avalinexus.Config;
 import org.furranystudio.avalinexus.Platform;
 import org.furranystudio.avalinexus.command.AvaliNexusCommand;
 import org.furranystudio.avalinexus.entity.ModEntities;
+import org.furranystudio.avalinexus.entity.MonsterTargeting;
 import org.furranystudio.avalinexus.item.ModCreativeTabs;
 import org.furranystudio.avalinexus.registry.ModRegistry;
 
@@ -39,6 +41,8 @@ public final class AvaliNexusFabric implements ModInitializer {
         ModEntities.registerAttributes(FabricDefaultAttributeRegistry::register);
         CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.SPAWN_EGGS).register(output ->
             ModCreativeTabs.addToVanillaTab(CreativeModeTabs.SPAWN_EGGS, output));
+
+        ServerEntityEvents.ENTITY_LOAD.register((entity, level) -> MonsterTargeting.onEntityJoin(entity));
 
         CommandRegistrationCallback.EVENT.register((dispatcher, buildContext, selection) ->
             AvaliNexusCommand.register(dispatcher));

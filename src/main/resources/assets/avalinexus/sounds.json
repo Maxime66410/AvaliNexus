@@ -1,0 +1,20 @@
+{
+  "entity.avali.hurt": {
+    "subtitle": "subtitles.avalinexus.entity.avali.hurt",
+    "sounds": ["avalinexus:entity/avali/hurt"]
+  },
+  "entity.avali.death": {
+    "subtitle": "subtitles.avalinexus.entity.avali.death",
+    "sounds": ["avalinexus:entity/avali/death"]
+  },
+  "entity.avali.noise": {
+    "subtitle": "subtitles.avalinexus.entity.avali.noise",
+    "sounds": [
+      "avalinexus:entity/avali/noise_01",
+      "avalinexus:entity/avali/noise_02",
+      "avalinexus:entity/avali/noise_03",
+      "avalinexus:entity/avali/noise_04",
+      "avalinexus:entity/avali/noise_05"
+    ]
+  }
+}

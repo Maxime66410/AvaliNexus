@@ -6,5 +6,8 @@
   "avalinexus.settings.header": "[AvaliNexus] Paramètres :",
   "avalinexus.settings.entry": "\n - %s = %s",
   "avalinexus.settings.unknown": "[AvaliNexus] Paramètre inconnu : %s",
-  "avalinexus.settings.set": "[AvaliNexus] %s défini sur %s"
+  "avalinexus.settings.set": "[AvaliNexus] %s défini sur %s",
+  "subtitles.avalinexus.entity.avali.hurt": "Un Avali est blessé",
+  "subtitles.avalinexus.entity.avali.death": "Un Avali meurt",
+  "subtitles.avalinexus.entity.avali.noise": "Un Avali gazouille"
 }

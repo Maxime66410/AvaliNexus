@@ -11,6 +11,7 @@ import net.minecraft.resources.Identifier;
 import org.furranystudio.avalinexus.entity.ModEntities;
 import org.furranystudio.avalinexus.item.ModCreativeTabs;
 import org.furranystudio.avalinexus.item.ModItems;
+import org.furranystudio.avalinexus.sound.ModSounds;
 import org.slf4j.Logger;
 
 public final class AvaliNexus {
@@ -22,6 +23,7 @@ public final class AvaliNexus {
     }
 
     public static void registerContent() {
+        ModSounds.init();
         ModEntities.init();
         ModItems.init();
         ModCreativeTabs.init();

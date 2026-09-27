@@ -15,8 +15,10 @@ import com.geckolib.animation.object.PlayState;
 import com.geckolib.animation.state.AnimationTest;
 import com.geckolib.util.GeckoLibUtil;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
@@ -32,6 +34,7 @@ import net.minecraft.world.phys.Vec3;
 import org.furranystudio.avalinexus.entity.goal.AvaliPanicGoal;
 import org.furranystudio.avalinexus.entity.goal.AvaliStrollGoal;
 import org.furranystudio.avalinexus.entity.goal.AvaliSwimGoal;
+import org.furranystudio.avalinexus.sound.ModSounds;
 
 public class AvaliEntity extends AgeableMob implements GeoEntity {
 
@@ -46,6 +49,7 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     private static final float DEEP_WATER = 0.5F;
     private static final int SWIM_GRACE_TICKS = 10;
     private static final float MAX_SWIM_PITCH = 75.0F;
+    private static final int NOISE_INTERVAL = 240;
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private int swimGraceTicks;
@@ -70,6 +74,30 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         goalSelector.addGoal(5, new AvaliStrollGoal(this, 0.8));
         goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
         goalSelector.addGoal(7, new RandomLookAroundGoal(this));
+    }
+
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return ModSounds.AVALI_NOISE.get();
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return ModSounds.AVALI_HURT.get();
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return ModSounds.AVALI_DEATH.get();
+    }
+
+    @Override
+    public int getAmbientSoundInterval() {
+        return NOISE_INTERVAL;
+    }
+
+    public void playNoise() {
+        playSound(ModSounds.AVALI_NOISE.get(), getSoundVolume(), getVoicePitch());
     }
 
     @Override
