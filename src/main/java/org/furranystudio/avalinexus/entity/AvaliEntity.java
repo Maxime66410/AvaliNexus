@@ -15,6 +15,7 @@ import com.geckolib.animation.object.PlayState;
 import com.geckolib.animation.state.AnimationTest;
 import com.geckolib.util.GeckoLibUtil;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
@@ -23,11 +24,12 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.ai.goal.PanicGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import org.furranystudio.avalinexus.entity.goal.AvaliPanicGoal;
+import org.furranystudio.avalinexus.entity.goal.AvaliStrollGoal;
+import org.furranystudio.avalinexus.entity.goal.AvaliSwimGoal;
 
 public class AvaliEntity extends AgeableMob implements GeoEntity {
 
@@ -39,8 +41,7 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     private static final RawAnimation TAIL_WALK = RawAnimation.begin().thenLoop("walking_WalkTail");
     private static final RawAnimation TAIL_RUN = RawAnimation.begin().thenLoop("running_RunTail");
     private static final RawAnimation TAIL_SWIM = RawAnimation.begin().thenLoop("swimming");
-    private static final float RUN_SPEED = 0.6F;
-    private static final float SWIM_SPEED = 0.1F;
+    private static final float DEEP_WATER = 0.5F;
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
@@ -57,8 +58,9 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     @Override
     protected void registerGoals() {
         goalSelector.addGoal(0, new FloatGoal(this));
-        goalSelector.addGoal(1, new PanicGoal(this, 1.4));
-        goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 0.8));
+        goalSelector.addGoal(1, new AvaliSwimGoal(this, 1.0));
+        goalSelector.addGoal(2, new AvaliPanicGoal(this, 1.1));
+        goalSelector.addGoal(5, new AvaliStrollGoal(this, 0.8));
         goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
         goalSelector.addGoal(7, new RandomLookAroundGoal(this));
     }
@@ -81,7 +83,12 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     // Mobs can't swim like players, so we fake it
     @Override
     public boolean isVisuallySwimming() {
-        return isInWater() && !onGround() && walkAnimation.speed() > SWIM_SPEED;
+        return isSprinting() && isInDeepWater();
+    }
+
+    public boolean isInDeepWater() {
+        return isInWater() && (getFluidHeight(FluidTags.WATER) > getBbHeight() * DEEP_WATER
+            || level().getFluidState(blockPosition().below()).is(FluidTags.WATER));
     }
 
     private PlayState tailAnimation(AnimationTest<AvaliEntity> test) {
@@ -91,7 +98,7 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         if (!test.isMoving()) {
             return test.setAndContinue(TAIL_IDLE);
         }
-        return test.setAndContinue(walkAnimation.speed() > RUN_SPEED ? TAIL_RUN : TAIL_WALK);
+        return test.setAndContinue(isSprinting() ? TAIL_RUN : TAIL_WALK);
     }
 
     @Override
