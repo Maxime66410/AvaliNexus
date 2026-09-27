@@ -8,6 +8,7 @@ package org.furranystudio.avalinexus;
 
 import com.mojang.logging.LogUtils;
 import net.minecraft.resources.Identifier;
+import org.furranystudio.avalinexus.block.ModBlocks;
 import org.furranystudio.avalinexus.entity.ModEntities;
 import org.furranystudio.avalinexus.item.ModCreativeTabs;
 import org.furranystudio.avalinexus.item.ModItems;
@@ -25,6 +26,7 @@ public final class AvaliNexus {
 
     public static void registerContent() {
         ModSounds.init();
+        ModBlocks.init();
         ModEntities.init();
         ModItems.init();
         ModCreativeTabs.init();

@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "avalinexus:block/deepslate_nexite_ore"
+  }
+}

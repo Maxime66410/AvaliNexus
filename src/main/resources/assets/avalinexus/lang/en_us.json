@@ -46,5 +46,7 @@
   "avalinexus.shop.missing_items": "You don't have enough of this item",
   "item.avalinexus.nexite_shard": "Nexite Shard",
   "avalinexus.shop.not_enough_nexite": "Not enough Nexite",
-  "avalinexus.shop.close": "Close"
+  "avalinexus.shop.close": "Close",
+  "block.avalinexus.nexite_ore": "Nexite Ore",
+  "block.avalinexus.deepslate_nexite_ore": "Deepslate Nexite Ore"
 }

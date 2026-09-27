@@ -46,5 +46,7 @@
   "avalinexus.shop.missing_items": "No tienes suficiente de este objeto",
   "item.avalinexus.nexite_shard": "Fragmento de Nexita",
   "avalinexus.shop.not_enough_nexite": "No tienes suficiente Nexita",
-  "avalinexus.shop.close": "Cerrar"
+  "avalinexus.shop.close": "Cerrar",
+  "block.avalinexus.nexite_ore": "Mena de Nexita",
+  "block.avalinexus.deepslate_nexite_ore": "Mena de Nexita de pizarra profunda"
 }

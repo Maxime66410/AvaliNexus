@@ -7,6 +7,8 @@
 package org.furranystudio.avalinexus.fabric;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
+import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
 import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTab;
@@ -15,8 +17,10 @@ import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRe
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.item.CreativeModeTabs;
 import org.furranystudio.avalinexus.AvaliNexus;
 import org.furranystudio.avalinexus.Config;
@@ -38,6 +42,10 @@ public final class AvaliNexusFabric implements ModInitializer {
 
         AvaliNexus.registerContent();
         FabricNetwork.register();
+        for (String ore : new String[] {"ore_nexite", "ore_nexite_medium", "ore_nexite_large", "ore_nexite_buried"}) {
+            BiomeModifications.addFeature(BiomeSelectors.foundInOverworld(), GenerationStep.Decoration.UNDERGROUND_ORES,
+                ResourceKey.create(Registries.PLACED_FEATURE, AvaliNexus.id(ore)));
+        }
         ModRegistry.registerAll(AvaliNexusFabric::registerVanilla);
         ModEntities.registerAttributes(FabricDefaultAttributeRegistry::register);
         CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.SPAWN_EGGS).register(output ->

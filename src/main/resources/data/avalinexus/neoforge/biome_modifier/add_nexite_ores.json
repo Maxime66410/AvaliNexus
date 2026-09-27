@@ -1,0 +1,11 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": "#minecraft:is_overworld",
+  "features": [
+    "avalinexus:ore_nexite",
+    "avalinexus:ore_nexite_medium",
+    "avalinexus:ore_nexite_large",
+    "avalinexus:ore_nexite_buried"
+  ],
+  "step": "underground_ores"
+}

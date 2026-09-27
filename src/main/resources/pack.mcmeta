@@ -1,6 +1,7 @@
 {
-    "pack": {
-        "description": "avalinexus resources",
-        "pack_format": 32
-    }
+  "pack": {
+    "description": "avalinexus resources",
+    "min_format": 97,
+    "max_format": 121
+  }
 }
