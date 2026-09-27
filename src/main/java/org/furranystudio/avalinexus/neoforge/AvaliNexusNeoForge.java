@@ -6,18 +6,24 @@
  */
 package org.furranystudio.avalinexus.neoforge;
 
+import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.fml.loading.FMLPaths;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
+import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.registries.RegisterEvent;
 import org.furranystudio.avalinexus.AvaliNexus;
 import org.furranystudio.avalinexus.Config;
 import org.furranystudio.avalinexus.Platform;
+import org.furranystudio.avalinexus.client.AvaliRenderer;
 import org.furranystudio.avalinexus.command.AvaliNexusCommand;
+import org.furranystudio.avalinexus.entity.ModEntities;
 import org.furranystudio.avalinexus.registry.ModRegistry;
 
 @Mod(AvaliNexus.MODID)
@@ -29,9 +35,15 @@ public class AvaliNexusNeoForge {
 
         AvaliNexus.registerContent();
         modEventBus.addListener((RegisterEvent event) -> ModRegistry.registerAll(event::register));
+        modEventBus.addListener((EntityAttributeCreationEvent event) -> ModEntities.registerAttributes(event::put));
 
         NeoForge.EVENT_BUS.addListener((RegisterCommandsEvent event) ->
             AvaliNexusCommand.register(event.getDispatcher()));
+
+        if (FMLEnvironment.getDist() == Dist.CLIENT) {
+            modEventBus.addListener((EntityRenderersEvent.RegisterRenderers event) ->
+                event.registerEntityRenderer(ModEntities.AVALI.get(), AvaliRenderer::new));
+        }
 
         modEventBus.addListener((FMLCommonSetupEvent event) -> AvaliNexus.commonSetup());
     }

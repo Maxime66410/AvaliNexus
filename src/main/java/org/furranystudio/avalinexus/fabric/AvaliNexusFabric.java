@@ -8,6 +8,7 @@ package org.furranystudio.avalinexus.fabric;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -17,6 +18,7 @@ import org.furranystudio.avalinexus.AvaliNexus;
 import org.furranystudio.avalinexus.Config;
 import org.furranystudio.avalinexus.Platform;
 import org.furranystudio.avalinexus.command.AvaliNexusCommand;
+import org.furranystudio.avalinexus.entity.ModEntities;
 import org.furranystudio.avalinexus.registry.ModRegistry;
 
 import java.util.function.Supplier;
@@ -30,6 +32,7 @@ public final class AvaliNexusFabric implements ModInitializer {
 
         AvaliNexus.registerContent();
         ModRegistry.registerAll(AvaliNexusFabric::registerVanilla);
+        ModEntities.registerAttributes(FabricDefaultAttributeRegistry::register);
 
         CommandRegistrationCallback.EVENT.register((dispatcher, buildContext, selection) ->
             AvaliNexusCommand.register(dispatcher));
