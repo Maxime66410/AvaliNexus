@@ -4,14 +4,14 @@
  * Created: 2026-09-27
  * Last Modified: 2026-09-27
  */
-package org.furranystudio.avalinexus.client;
+package org.furranystudio.avalinexus.client.avali;
 
 import com.geckolib.model.GeoModel;
 import com.geckolib.renderer.base.GeoRenderState;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.resources.Identifier;
 import org.furranystudio.avalinexus.AvaliNexus;
-import org.furranystudio.avalinexus.entity.AvaliEntity;
+import org.furranystudio.avalinexus.entity.avali.AvaliEntity;
 
 public class AvaliModel extends GeoModel<AvaliEntity> {
 

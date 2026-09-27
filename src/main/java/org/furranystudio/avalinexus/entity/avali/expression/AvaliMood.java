@@ -4,7 +4,7 @@
  * Created: 2026-09-27
  * Last Modified: 2026-09-27
  */
-package org.furranystudio.avalinexus.entity;
+package org.furranystudio.avalinexus.entity.avali.expression;
 
 public enum AvaliMood {
     NEUTRAL(AvaliFace.NEUTRAL, false),

@@ -4,12 +4,12 @@
  * Created: 2026-09-27
  * Last Modified: 2026-09-27
  */
-package org.furranystudio.avalinexus.entity.goal;
+package org.furranystudio.avalinexus.entity.avali.goal;
 
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.ai.goal.Goal;
-import org.furranystudio.avalinexus.entity.AvaliEntity;
-import org.furranystudio.avalinexus.entity.AvaliPose;
+import org.furranystudio.avalinexus.entity.avali.AvaliEntity;
+import org.furranystudio.avalinexus.entity.avali.pose.AvaliPose;
 
 import java.util.EnumSet;
 

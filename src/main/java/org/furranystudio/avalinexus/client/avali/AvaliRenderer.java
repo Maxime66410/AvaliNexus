@@ -4,7 +4,7 @@
  * Created: 2026-09-27
  * Last Modified: 2026-09-27
  */
-package org.furranystudio.avalinexus.client;
+package org.furranystudio.avalinexus.client.avali;
 
 import com.geckolib.cache.model.BakedGeoModel;
 import com.geckolib.constant.dataticket.DataTicket;
@@ -18,8 +18,8 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Pose;
-import org.furranystudio.avalinexus.entity.AvaliEntity;
-import org.furranystudio.avalinexus.entity.AvaliFace;
+import org.furranystudio.avalinexus.entity.avali.AvaliEntity;
+import org.furranystudio.avalinexus.entity.avali.expression.AvaliFace;
 
 import java.util.IdentityHashMap;
 import java.util.List;

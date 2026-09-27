@@ -4,10 +4,10 @@
  * Created: 2026-09-27
  * Last Modified: 2026-09-27
  */
-package org.furranystudio.avalinexus.entity.goal;
+package org.furranystudio.avalinexus.entity.avali.goal;
 
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
-import org.furranystudio.avalinexus.entity.AvaliEntity;
+import org.furranystudio.avalinexus.entity.avali.AvaliEntity;
 
 public class AvaliStrollGoal extends WaterAvoidingRandomStrollGoal {
 

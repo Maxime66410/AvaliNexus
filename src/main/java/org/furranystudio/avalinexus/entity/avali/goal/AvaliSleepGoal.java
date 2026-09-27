@@ -4,7 +4,7 @@
  * Created: 2026-09-27
  * Last Modified: 2026-09-27
  */
-package org.furranystudio.avalinexus.entity.goal;
+package org.furranystudio.avalinexus.entity.avali.goal;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
@@ -13,7 +13,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BedPart;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.Vec3;
-import org.furranystudio.avalinexus.entity.AvaliEntity;
+import org.furranystudio.avalinexus.entity.avali.AvaliEntity;
 
 import java.util.EnumSet;
 

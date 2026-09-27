@@ -13,6 +13,7 @@ import net.minecraft.world.entity.ai.goal.GoalSelector;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import org.furranystudio.avalinexus.AvaliNexus;
+import org.furranystudio.avalinexus.entity.avali.AvaliEntity;
 
 import java.lang.reflect.Field;
 

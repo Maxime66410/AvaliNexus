@@ -4,7 +4,7 @@
  * Created: 2026-09-27
  * Last Modified: 2026-09-27
  */
-package org.furranystudio.avalinexus.entity;
+package org.furranystudio.avalinexus.entity.avali;
 
 import com.geckolib.animatable.GeoEntity;
 import com.geckolib.animatable.instance.AnimatableInstanceCache;
@@ -34,12 +34,17 @@ import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import org.furranystudio.avalinexus.entity.goal.AvaliCushionGoal;
-import org.furranystudio.avalinexus.entity.goal.AvaliPanicGoal;
-import org.furranystudio.avalinexus.entity.goal.AvaliRestGoal;
-import org.furranystudio.avalinexus.entity.goal.AvaliSleepGoal;
-import org.furranystudio.avalinexus.entity.goal.AvaliStrollGoal;
-import org.furranystudio.avalinexus.entity.goal.AvaliSwimGoal;
+import org.furranystudio.avalinexus.entity.ModEntities;
+import org.furranystudio.avalinexus.entity.avali.expression.AvaliFace;
+import org.furranystudio.avalinexus.entity.avali.expression.AvaliGesture;
+import org.furranystudio.avalinexus.entity.avali.expression.AvaliMood;
+import org.furranystudio.avalinexus.entity.avali.goal.AvaliCushionGoal;
+import org.furranystudio.avalinexus.entity.avali.goal.AvaliPanicGoal;
+import org.furranystudio.avalinexus.entity.avali.goal.AvaliRestGoal;
+import org.furranystudio.avalinexus.entity.avali.goal.AvaliSleepGoal;
+import org.furranystudio.avalinexus.entity.avali.goal.AvaliStrollGoal;
+import org.furranystudio.avalinexus.entity.avali.goal.AvaliSwimGoal;
+import org.furranystudio.avalinexus.entity.avali.pose.AvaliPose;
 import org.furranystudio.avalinexus.sound.ModSounds;
 
 import java.util.Arrays;

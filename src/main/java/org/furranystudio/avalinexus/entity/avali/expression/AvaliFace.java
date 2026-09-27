@@ -4,7 +4,7 @@
  * Created: 2026-09-27
  * Last Modified: 2026-09-27
  */
-package org.furranystudio.avalinexus.entity;
+package org.furranystudio.avalinexus.entity.avali.expression;
 
 // Eye and mouth names match the bone suffixes in the model, "Eye Left Angry", "Mouth Front Upset"...
 public enum AvaliFace {
