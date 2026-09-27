@@ -34,7 +34,11 @@ def collect_part_names(node, names):
             collect_part_names(value, names)
 
 
-def animation_name(file_name):
+def animation_name(file_name, data):
+    # Gestures and custom poses keep the name shown in CPM, states share names like "Tail" so they use the file name
+    name = data.get("name") or ""
+    if not file_name.startswith("v_") and name and name.isascii() and name.isprintable():
+        return name
     base = re.sub(r"_\d+\.json$", "", file_name)
     return re.sub(r"^[vgc]_", "", base).strip("_")
 
@@ -87,6 +91,9 @@ def convert_animation(data, names, looping):
         rotations = [[0.0, 0.0, 0.0]] * len(frames)
         positions = [[0.0, 0.0, 0.0]] * len(frames)
         for index, component in by_frame.items():
+            # CPM also pushes hidden parts inside the head, visibility is handled in code so we drop that
+            if component.get("show") is False:
+                continue
             rotations[index] = [component["rotation"][axis] for axis in "xyz"]
             positions[index] = [component["pos"][axis] for axis in "xyz"]
 
@@ -123,7 +130,7 @@ def convert(path):
                 continue
             # Poses (v_) loop for as long as the state lasts, the rest follow their own loop flag
             looping = file_name.startswith("v_") or bool(data.get("loop"))
-            animations[animation_name(file_name)] = convert_animation(data, names, looping)
+            animations[animation_name(file_name, data)] = convert_animation(data, names, looping)
 
     return {"format_version": "1.8.0", "animations": animations}
 
