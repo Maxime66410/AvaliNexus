@@ -14,6 +14,9 @@ import zipfile
 
 VANILLA_PARTS = ["head", "body", "left_arm", "right_arm", "left_leg", "right_leg"]
 
+# Played on top of the vanilla bed pose, which already lays the body down, so the vanilla parts are left out
+NO_VANILLA_PARTS = {"NAP"}
+
 
 def read_json(archive, name):
     raw = archive.read(name)
@@ -71,7 +74,7 @@ def keyframes(times, vectors):
     }
 
 
-def convert_animation(data, names, looping):
+def convert_animation(data, names, looping, vanilla_parts=True):
     frames = data["frames"]
     duration = data["duration"] / 1000.0
     step = duration / len(frames)
@@ -84,18 +87,25 @@ def convert_animation(data, names, looping):
 
     bones = {}
     for store_id, by_frame in parts.items():
-        name = VANILLA_PARTS[store_id] if 0 <= store_id < len(VANILLA_PARTS) else names.get(store_id)
+        vanilla = 0 <= store_id < len(VANILLA_PARTS)
+        if vanilla and not vanilla_parts:
+            continue
+        name = VANILLA_PARTS[store_id] if vanilla else names.get(store_id)
         if name is None:
             continue
         # A part missing from a frame stays at its rest pose there
         rotations = [[0.0, 0.0, 0.0]] * len(frames)
         positions = [[0.0, 0.0, 0.0]] * len(frames)
         for index, component in by_frame.items():
-            # CPM also pushes hidden parts inside the head, visibility is handled in code so we drop that
-            if component.get("show") is False:
+            # CPM also pushes hidden face parts inside the head, visibility is handled in code so we drop that.
+            # Vanilla parts are always "hidden" in CPM but still carry the Avali model, so they keep their motion
+            if component.get("show") is False and not 0 <= store_id < len(VANILLA_PARTS):
                 continue
             rotations[index] = [component["rotation"][axis] for axis in "xyz"]
             positions[index] = [component["pos"][axis] for axis in "xyz"]
+            # Vanilla part offsets use Minecraft's Y down, GeckoLib is Y up
+            if vanilla:
+                positions[index][1] = -positions[index][1]
 
         rotations = [list(axis) for axis in zip(*(unwrap(list(axis)) for axis in zip(*rotations)))]
         channel_times = list(times)
@@ -128,10 +138,13 @@ def convert(path):
             data = read_json(archive, file)
             if not data.get("frames"):
                 continue
-            # Poses (v_) loop for as long as the state lasts, the rest follow their own loop flag
-            looping = file_name.startswith("v_") or bool(data.get("loop"))
-            animations[animation_name(file_name, data)] = convert_animation(data, names, looping)
+            # States (v_) and custom poses (c_) loop for as long as they're active, gestures follow their own flag
+            looping = file_name.startswith(("v_", "c_")) or bool(data.get("loop"))
+            name = animation_name(file_name, data)
+            animations[name] = convert_animation(data, names, looping, name not in NO_VANILLA_PARTS)
 
+    # Controllers play this when they have nothing to do, a stopped controller keeps holding its last pose
+    animations["empty"] = {"loop": True, "animation_length": 1, "bones": {}}
     return {"format_version": "1.8.0", "animations": animations}
 
 
