@@ -34,7 +34,10 @@ import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.furranystudio.avalinexus.entity.goal.AvaliCushionGoal;
 import org.furranystudio.avalinexus.entity.goal.AvaliPanicGoal;
+import org.furranystudio.avalinexus.entity.goal.AvaliRestGoal;
+import org.furranystudio.avalinexus.entity.goal.AvaliSleepGoal;
 import org.furranystudio.avalinexus.entity.goal.AvaliStrollGoal;
 import org.furranystudio.avalinexus.entity.goal.AvaliSwimGoal;
 import org.furranystudio.avalinexus.sound.ModSounds;
@@ -56,6 +59,12 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     private static final float MAX_SWIM_PITCH = 75.0F;
     private static final int NOISE_INTERVAL = 240;
     private static final RawAnimation LOWER_EARS = RawAnimation.begin().thenPlayAndHold("Lower Ears");
+    private static final RawAnimation EMPTY = RawAnimation.begin().thenLoop("empty");
+    private static final RawAnimation NAP = RawAnimation.begin().thenLoop("NAP");
+    private static final RawAnimation SLEEP_BODY = RawAnimation.begin().thenLoop("sleeping");
+    private static final RawAnimation SLEEP_EAR = RawAnimation.begin().thenLoop("sleeping_Ear");
+    private static final RawAnimation SLEEP_FOOT = RawAnimation.begin().thenLoop("sleeping_Foot");
+    private static final RawAnimation RIDING = RawAnimation.begin().thenLoop("riding");
     private static final int ANGRY_TICKS = 30;
     private static final double HAPPY_RANGE = 6.0;
     private static final int HAPPY_TICKS = 30;
@@ -67,6 +76,8 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
 
     private static final EntityDataAccessor<Integer> DATA_MOOD = SynchedEntityData.defineId(AvaliEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> DATA_GESTURE = SynchedEntityData.defineId(AvaliEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> DATA_POSE = SynchedEntityData.defineId(AvaliEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> DATA_NAP = SynchedEntityData.defineId(AvaliEntity.class, EntityDataSerializers.BOOLEAN);
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private int swimGraceTicks;
@@ -93,6 +104,9 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         goalSelector.addGoal(0, new FloatGoal(this));
         goalSelector.addGoal(1, new AvaliSwimGoal(this, 1.0));
         goalSelector.addGoal(2, new AvaliPanicGoal(this, 1.1));
+        goalSelector.addGoal(3, new AvaliSleepGoal(this, 0.8));
+        goalSelector.addGoal(4, new AvaliCushionGoal(this, 0.8));
+        goalSelector.addGoal(5, new AvaliRestGoal(this));
         goalSelector.addGoal(5, new AvaliStrollGoal(this, 0.8));
         goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
         goalSelector.addGoal(7, new RandomLookAroundGoal(this));
@@ -103,6 +117,8 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         super.defineSynchedData(builder);
         builder.define(DATA_MOOD, AvaliMood.NEUTRAL.ordinal());
         builder.define(DATA_GESTURE, -1);
+        builder.define(DATA_POSE, -1);
+        builder.define(DATA_NAP, false);
     }
 
     @Override
@@ -153,7 +169,10 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
             new AnimationController<AvaliEntity>("feathers", test -> test.setAndContinue(FEATHERS)),
             new AnimationController<AvaliEntity>("tail", 5, this::tailAnimation),
             new AnimationController<AvaliEntity>("gesture", 5, test ->
-                getGesture() == null ? PlayState.STOP : test.setAndContinue(getGesture().animation())));
+                test.setAndContinue(getGesture() == null ? EMPTY : getGesture().animation())),
+            new AnimationController<AvaliEntity>("body_pose", 10, test -> test.setAndContinue(bodyPoseAnimation())),
+            new AnimationController<AvaliEntity>("sleep_ear", 10, test -> test.setAndContinue(isSleeping() && !isNapping() ? SLEEP_EAR : EMPTY)),
+            new AnimationController<AvaliEntity>("sleep_foot", 10, test -> test.setAndContinue(isSleeping() && !isNapping() ? SLEEP_FOOT : EMPTY)));
     }
 
     @Override
@@ -199,14 +218,25 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         entityData.set(DATA_MOOD, mood.ordinal());
     }
 
+    private RawAnimation bodyPoseAnimation() {
+        if (isSleeping()) {
+            return isNapping() ? NAP : SLEEP_BODY;
+        }
+        if (isPassenger()) {
+            return RIDING;
+        }
+        AvaliPose pose = getRestPose();
+        return pose == null ? EMPTY : pose.animation();
+    }
+
     private void updateGesture() {
         if (getGesture() != null) {
-            if (--gestureTicks <= 0 || getMood().earsDown()) {
+            if (--gestureTicks <= 0 || getMood().earsDown() || isSleeping()) {
                 stopGesture();
             }
             return;
         }
-        if (!getMood().earsDown() && !walkAnimation.isMoving() && random.nextInt(GESTURE_CHANCE) == 0) {
+        if (!getMood().earsDown() && !isSleeping() && !walkAnimation.isMoving() && random.nextInt(GESTURE_CHANCE) == 0) {
             AvaliGesture gesture = IDLE_GESTURES[random.nextInt(IDLE_GESTURES.length)];
             playGesture(gesture, Mth.nextInt(random, GESTURE_MIN_TICKS, GESTURE_MAX_TICKS));
         }
@@ -235,7 +265,27 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         return gesture < 0 ? null : AvaliGesture.values()[gesture];
     }
 
+    public void setNapping(boolean napping) {
+        entityData.set(DATA_NAP, napping);
+    }
+
+    public boolean isNapping() {
+        return entityData.get(DATA_NAP);
+    }
+
+    public void setRestPose(AvaliPose pose) {
+        entityData.set(DATA_POSE, pose == null ? -1 : pose.ordinal());
+    }
+
+    public AvaliPose getRestPose() {
+        int pose = entityData.get(DATA_POSE);
+        return pose < 0 ? null : AvaliPose.values()[pose];
+    }
+
     public AvaliFace getFace() {
+        if (isSleeping()) {
+            return AvaliFace.SLEEPING;
+        }
         AvaliGesture gesture = getGesture();
         return gesture != null && gesture.face() != null ? gesture.face() : getMood().face();
     }

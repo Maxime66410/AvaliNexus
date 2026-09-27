@@ -17,6 +17,7 @@ import com.mojang.math.Axis;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Pose;
 import org.furranystudio.avalinexus.entity.AvaliEntity;
 import org.furranystudio.avalinexus.entity.AvaliFace;
 
@@ -33,6 +34,7 @@ public class AvaliRenderer<R extends LivingEntityRenderState & GeoRenderState> e
     private static final DataTicket<Float> SWIM_AMOUNT = DataTicket.create("avalinexus_swim_amount", Float.class);
     private static final DataTicket<Float> SWIM_PITCH = DataTicket.create("avalinexus_swim_pitch", Float.class);
     private static final DataTicket<AvaliFace> FACE = DataTicket.create("avalinexus_face", AvaliFace.class);
+    private static final DataTicket<Boolean> RIDING = DataTicket.create("avalinexus_riding", Boolean.class);
     private static final String[] SIDES = {"Left", "Right"};
     private static final String[] MOUTHS = {"Mouth Left 0", "Mouth Right 0", "Mouth Left 1", "Mouth Right 1", "Mouth Front"};
     private static final int BLINK_CYCLE = 300;
@@ -51,6 +53,7 @@ public class AvaliRenderer<R extends LivingEntityRenderState & GeoRenderState> e
         state.addGeckolibData(SWIM_AMOUNT, avali.getSwimAmount(partialTick));
         state.addGeckolibData(SWIM_PITCH, avali.getSwimPitch(partialTick));
         state.addGeckolibData(FACE, avali.getFace());
+        state.addGeckolibData(RIDING, avali.isPassenger());
     }
 
     @Override
@@ -73,9 +76,12 @@ public class AvaliRenderer<R extends LivingEntityRenderState & GeoRenderState> e
         R state = renderPassInfo.renderState();
         float swim = state.getOrDefaultGeckolibData(SWIM_AMOUNT, 0.0F);
         float pos = state.walkAnimationPos;
-        float speed = Math.min(state.walkAnimationSpeed, 1.0F);
+        boolean sleeping = state.hasPose(Pose.SLEEPING);
+        boolean riding = state.getOrDefaultGeckolibData(RIDING, false);
+        float speed = sleeping || riding ? 0.0F : Math.min(state.walkAnimationSpeed, 1.0F);
 
-        Rotation head = new Rotation(state.xRot * Mth.DEG_TO_RAD, state.yRot * Mth.DEG_TO_RAD, 0.0F);
+        Rotation head = sleeping ? new Rotation(0.0F, 0.0F, 0.0F)
+            : new Rotation(state.xRot * Mth.DEG_TO_RAD, state.yRot * Mth.DEG_TO_RAD, 0.0F);
         Rotation rightArm = new Rotation(Mth.cos(pos * 0.6662F + Mth.PI) * speed, 0.0F, 0.0F);
         Rotation leftArm = new Rotation(Mth.cos(pos * 0.6662F) * speed, 0.0F, 0.0F);
         Rotation rightLeg = new Rotation(Mth.cos(pos * 0.6662F) * 1.4F * speed, 0.0F, 0.0F);
@@ -88,6 +94,14 @@ public class AvaliRenderer<R extends LivingEntityRenderState & GeoRenderState> e
             rightArm = rightArm.lerpTo(stroke[1], swim);
             leftLeg = new Rotation(Mth.lerp(swim, leftLeg.x, 0.3F * Mth.cos(pos * 0.33333334F + Mth.PI)), 0.0F, 0.0F);
             rightLeg = new Rotation(Mth.lerp(swim, rightLeg.x, 0.3F * Mth.cos(pos * 0.33333334F)), 0.0F, 0.0F);
+        }
+
+        // Vanilla sitting pose, the CPM riding animation goes on top of it
+        if (riding) {
+            rightArm = new Rotation(rightArm.x - Mth.PI / 5.0F, rightArm.y, rightArm.z);
+            leftArm = new Rotation(leftArm.x - Mth.PI / 5.0F, leftArm.y, leftArm.z);
+            rightLeg = new Rotation(-1.4137167F, Mth.PI / 10.0F, 0.07853982F);
+            leftLeg = new Rotation(-1.4137167F, -Mth.PI / 10.0F, -0.07853982F);
         }
 
         rotateBone(snapshots, "head", head);

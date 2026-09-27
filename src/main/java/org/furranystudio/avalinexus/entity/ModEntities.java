@@ -22,6 +22,7 @@ public final class ModEntities {
         key -> EntityType.Builder.of(AvaliEntity::new, MobCategory.CREATURE)
             .sized(0.6F, 1.8F)
             .eyeHeight(1.62F)
+            .ridingOffset(-0.75F)
             .build(key));
 
     private ModEntities() {
