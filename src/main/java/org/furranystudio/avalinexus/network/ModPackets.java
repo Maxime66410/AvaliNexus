@@ -14,7 +14,10 @@ import org.furranystudio.avalinexus.network.packet.DialogueChoicePayload;
 import org.furranystudio.avalinexus.network.packet.DialogueLinePayload;
 import org.furranystudio.avalinexus.network.packet.OpenDialoguePayload;
 import org.furranystudio.avalinexus.network.packet.PingPayload;
+import org.furranystudio.avalinexus.network.packet.OpenShopPayload;
 import org.furranystudio.avalinexus.network.packet.PongPayload;
+import org.furranystudio.avalinexus.network.packet.ShopTradePayload;
+import org.furranystudio.avalinexus.network.packet.ShopUpdatePayload;
 
 public final class ModPackets {
 
@@ -30,6 +33,11 @@ public final class ModPackets {
         ModNetworking.clientbound(CloseDialoguePayload.TYPE, CloseDialoguePayload.STREAM_CODEC);
         ModNetworking.serverbound(DialogueChoicePayload.TYPE, DialogueChoicePayload.STREAM_CODEC,
             (payload, player) -> DialogueManager.onChoice(player, payload.entityId(), payload.choice()));
+
+        ModNetworking.clientbound(OpenShopPayload.TYPE, OpenShopPayload.STREAM_CODEC);
+        ModNetworking.clientbound(ShopUpdatePayload.TYPE, ShopUpdatePayload.STREAM_CODEC);
+        ModNetworking.serverbound(ShopTradePayload.TYPE, ShopTradePayload.STREAM_CODEC,
+            (payload, player) -> DialogueManager.onShopTrade(player, payload.entityId(), payload.offer()));
     }
 
     private static void onPong(PongPayload payload, ServerPlayer player) {

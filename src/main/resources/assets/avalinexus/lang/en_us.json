@@ -30,7 +30,21 @@
   "avalinexus.dialogue.avali.talk.4": "Our tech keeps us alive out here. Batteries, heaters, a few secrets too!",
   "avalinexus.dialogue.avali.talk.5": "Sometimes a pack gets split up by a storm. We always look for the missing ones.",
   "avalinexus.dialogue.avali.talk.night": "Most of the pack is asleep. I keep watch, someone has to.",
-  "avalinexus.dialogue.avali.trade.soon": "Trading? Maybe later, I'm still sorting my stuff.",
+  "avalinexus.dialogue.avali.trade.soon": "Take a look, I might have what you need.",
   "avalinexus.dialogue.avali.farewell.1": "Safe travels! Watch out for the ice.",
-  "avalinexus.dialogue.avali.farewell.2": "See you around, featherless one."
+  "avalinexus.dialogue.avali.farewell.2": "See you around, featherless one.",
+  "avalinexus.shop.title": "Avali Shop",
+  "avalinexus.shop.tab.buy": "Buy",
+  "avalinexus.shop.tab.sell": "Sell",
+  "avalinexus.shop.buy": "Buy",
+  "avalinexus.shop.sell": "Sell",
+  "avalinexus.shop.balance": "%s",
+  "avalinexus.shop.price": "Price: %s Nexite",
+  "avalinexus.shop.stock": "Stock: %s/%s",
+  "avalinexus.shop.empty": "Nothing here today.",
+  "avalinexus.shop.sold_out": "Sold out, come back tomorrow",
+  "avalinexus.shop.missing_items": "You don't have enough of this item",
+  "item.avalinexus.nexite_shard": "Nexite Shard",
+  "avalinexus.shop.not_enough_nexite": "Not enough Nexite",
+  "avalinexus.shop.close": "Close"
 }

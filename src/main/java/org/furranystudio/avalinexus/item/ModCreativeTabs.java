@@ -22,7 +22,10 @@ public final class ModCreativeTabs {
         key -> Platform.creativeTabBuilder()
             .title(Component.translatable("itemGroup.avalinexus"))
             .icon(() -> new ItemStack(ModItems.ICON.get()))
-            .displayItems((parameters, output) -> output.accept(ModItems.AVALI_SPAWN_EGG.get()))
+            .displayItems((parameters, output) -> {
+                output.accept(ModItems.AVALI_SPAWN_EGG.get());
+                output.accept(ModItems.NEXITE_SHARD.get());
+            })
             .build());
 
     private ModCreativeTabs() {

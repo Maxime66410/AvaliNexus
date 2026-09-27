@@ -22,6 +22,9 @@ public final class ModItems {
     public static final RegistryEntry<Item> ICON = ModRegistry.register(Registries.ITEM, "icon",
         key -> new Item(new Item.Properties().setId(key)));
 
+    public static final RegistryEntry<Item> NEXITE_SHARD = ModRegistry.register(Registries.ITEM, "nexite_shard",
+        key -> new Item(new Item.Properties().setId(key)));
+
     // The entity type may not be registered yet when items are, so it gets resolved later
     public static final RegistryEntry<SpawnEggItem> AVALI_SPAWN_EGG = ModRegistry.register(Registries.ITEM, "avali_spawn_egg",
         key -> new SpawnEggItem(new Item.Properties().setId(key).delayedComponent(DataComponents.ENTITY_DATA,

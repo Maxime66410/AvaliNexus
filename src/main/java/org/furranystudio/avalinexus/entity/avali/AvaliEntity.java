@@ -36,6 +36,8 @@ import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 import org.furranystudio.avalinexus.dialogue.DialogueManager;
 import org.furranystudio.avalinexus.entity.ModEntities;
@@ -51,6 +53,7 @@ import org.furranystudio.avalinexus.entity.avali.goal.AvaliSwimGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliTalkGoal;
 import org.furranystudio.avalinexus.entity.avali.pose.AvaliPose;
 import org.furranystudio.avalinexus.sound.ModSounds;
+import org.furranystudio.avalinexus.trade.AvaliShop;
 
 import java.util.Arrays;
 
@@ -100,6 +103,7 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     private int gestureTicks;
     private boolean panicking;
     private ServerPlayer talkingTo;
+    private AvaliShop shop;
 
     public AvaliEntity(EntityType<? extends AvaliEntity> type, Level level) {
         super(type, level);
@@ -146,6 +150,20 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
             }
         }
         return hurt;
+    }
+
+    @Override
+    protected void addAdditionalSaveData(ValueOutput output) {
+        super.addAdditionalSaveData(output);
+        if (shop != null) {
+            output.store("avalinexus_shop", AvaliShop.CODEC, shop);
+        }
+    }
+
+    @Override
+    protected void readAdditionalSaveData(ValueInput input) {
+        super.readAdditionalSaveData(input);
+        shop = input.read("avalinexus_shop", AvaliShop.CODEC).orElse(null);
     }
 
     @Override
@@ -309,6 +327,14 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
 
     public ServerPlayer getTalkingTo() {
         return talkingTo;
+    }
+
+    public AvaliShop getShop() {
+        return shop;
+    }
+
+    public void setShop(AvaliShop shop) {
+        this.shop = shop;
     }
 
     public void setDialogueFace(AvaliFace face) {

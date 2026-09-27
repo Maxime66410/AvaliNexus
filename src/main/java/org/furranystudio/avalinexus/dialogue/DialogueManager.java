@@ -13,6 +13,7 @@ import org.furranystudio.avalinexus.network.ModNetworking;
 import org.furranystudio.avalinexus.network.packet.CloseDialoguePayload;
 import org.furranystudio.avalinexus.network.packet.DialogueLinePayload;
 import org.furranystudio.avalinexus.network.packet.OpenDialoguePayload;
+import org.furranystudio.avalinexus.trade.ShopManager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -79,11 +80,24 @@ public final class DialogueManager {
 
         boolean leaving = choice == DialogueChoice.LEAVE;
         ModNetworking.sendToPlayer(player, new DialogueLinePayload(entityId, line.text(), leaving));
+        if (choice == DialogueChoice.TRADE) {
+            ShopManager.open(player, avali);
+        }
         if (leaving) {
             SESSIONS.remove(player.getUUID());
             CLOSED_AT.put(player.getUUID(), player.level().getGameTime());
             avali.stopTalking();
         }
+    }
+
+    // Trades only go through while the player is still talking to that Avali, in range
+    public static void onShopTrade(ServerPlayer player, int entityId, int offer) {
+        Session session = SESSIONS.get(player.getUUID());
+        if (session == null || session.avali.getId() != entityId || !session.avali.isAlive()
+                || session.avali.distanceTo(player) > MAX_DISTANCE) {
+            return;
+        }
+        ShopManager.trade(player, session.avali, offer);
     }
 
     public static void close(ServerPlayer player, boolean notifyClient) {

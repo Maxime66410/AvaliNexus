@@ -30,7 +30,21 @@
   "avalinexus.dialogue.avali.talk.4": "Nuestra tecnología nos mantiene con vida aquí. Baterías, calefactores ¡y algunos secretos también!",
   "avalinexus.dialogue.avali.talk.5": "A veces una tormenta separa a una manada. Siempre buscamos a los que faltan.",
   "avalinexus.dialogue.avali.talk.night": "Casi toda la manada duerme. Yo vigilo, alguien tiene que hacerlo.",
-  "avalinexus.dialogue.avali.trade.soon": "¿Comerciar? Quizás más tarde, aún estoy ordenando mis cosas.",
+  "avalinexus.dialogue.avali.trade.soon": "Echa un vistazo, quizás tengo lo que necesitas.",
   "avalinexus.dialogue.avali.farewell.1": "¡Buen viaje! Cuidado con el hielo.",
-  "avalinexus.dialogue.avali.farewell.2": "Hasta luego, sin plumas."
+  "avalinexus.dialogue.avali.farewell.2": "Hasta luego, sin plumas.",
+  "avalinexus.shop.title": "Tienda Avali",
+  "avalinexus.shop.tab.buy": "Comprar",
+  "avalinexus.shop.tab.sell": "Vender",
+  "avalinexus.shop.buy": "Comprar",
+  "avalinexus.shop.sell": "Vender",
+  "avalinexus.shop.balance": "%s",
+  "avalinexus.shop.price": "Precio: %s Nexita",
+  "avalinexus.shop.stock": "Existencias: %s/%s",
+  "avalinexus.shop.empty": "Nada por aquí hoy.",
+  "avalinexus.shop.sold_out": "Agotado, vuelve mañana",
+  "avalinexus.shop.missing_items": "No tienes suficiente de este objeto",
+  "item.avalinexus.nexite_shard": "Fragmento de Nexita",
+  "avalinexus.shop.not_enough_nexite": "No tienes suficiente Nexita",
+  "avalinexus.shop.close": "Cerrar"
 }

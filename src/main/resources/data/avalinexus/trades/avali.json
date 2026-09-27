@@ -1,0 +1,21 @@
+{
+  "buy_rolls": 4,
+  "sell_rolls": 3,
+  "max_uses": 8,
+  "buy": [
+    { "item": "minecraft:bread", "count": 3, "price": 4 },
+    { "item": "minecraft:cooked_salmon", "count": 4, "price": 6 },
+    { "item": "minecraft:leather_boots", "count": 1, "price": 8 },
+    { "item": "minecraft:lantern", "count": 1, "price": 6 },
+    { "item": "minecraft:compass", "count": 1, "price": 10 },
+    { "item": "minecraft:spyglass", "count": 1, "price": 15 }
+  ],
+  "sell": [
+    { "item": "minecraft:feather", "count": 8, "price": 2 },
+    { "item": "minecraft:leather", "count": 6, "price": 3 },
+    { "item": "minecraft:cod", "count": 6, "price": 2 },
+    { "item": "minecraft:iron_ingot", "count": 4, "price": 4 },
+    { "item": "minecraft:amethyst_shard", "count": 4, "price": 3 },
+    { "item": "minecraft:packed_ice", "count": 8, "price": 2 }
+  ]
+}

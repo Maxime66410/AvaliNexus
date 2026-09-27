@@ -30,7 +30,21 @@
   "avalinexus.dialogue.avali.talk.4": "Notre technologie nous garde en vie ici. Des batteries, des chauffages, et quelques secrets aussi !",
   "avalinexus.dialogue.avali.talk.5": "Parfois une tempête sépare une meute. On cherche toujours ceux qui manquent.",
   "avalinexus.dialogue.avali.talk.night": "La plupart de la meute dort. Moi je monte la garde, il faut bien que quelqu'un le fasse.",
-  "avalinexus.dialogue.avali.trade.soon": "Marchander ? Peut-être plus tard, je suis encore en train de trier mes affaires.",
+  "avalinexus.dialogue.avali.trade.soon": "Jette un œil, j'ai peut-être ce qu'il te faut.",
   "avalinexus.dialogue.avali.farewell.1": "Bonne route ! Fais attention à la glace.",
-  "avalinexus.dialogue.avali.farewell.2": "À plus tard, le sans-plumes."
+  "avalinexus.dialogue.avali.farewell.2": "À plus tard, le sans-plumes.",
+  "avalinexus.shop.title": "Boutique Avali",
+  "avalinexus.shop.tab.buy": "Acheter",
+  "avalinexus.shop.tab.sell": "Vendre",
+  "avalinexus.shop.buy": "Acheter",
+  "avalinexus.shop.sell": "Vendre",
+  "avalinexus.shop.balance": "%s",
+  "avalinexus.shop.price": "Prix : %s Nexite",
+  "avalinexus.shop.stock": "Stock : %s/%s",
+  "avalinexus.shop.empty": "Rien ici aujourd'hui.",
+  "avalinexus.shop.sold_out": "Épuisé, reviens demain",
+  "avalinexus.shop.missing_items": "Tu n'as pas assez de cet objet",
+  "item.avalinexus.nexite_shard": "Éclat de Nexite",
+  "avalinexus.shop.not_enough_nexite": "Pas assez de Nexite",
+  "avalinexus.shop.close": "Fermer"
 }
