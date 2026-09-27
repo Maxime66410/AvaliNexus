@@ -1,4 +1,5 @@
 {
+  "entity.avalinexus.avali": "Avali",
   "avalinexus.settings.header": "[AvaliNexus] Ajustes:",
   "avalinexus.settings.entry": "\n - %s = %s",
   "avalinexus.settings.unknown": "[AvaliNexus] Ajuste desconocido: %s",
