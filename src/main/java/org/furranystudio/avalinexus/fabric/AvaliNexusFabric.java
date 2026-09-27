@@ -37,6 +37,7 @@ public final class AvaliNexusFabric implements ModInitializer {
         Config.registerSettings();
 
         AvaliNexus.registerContent();
+        FabricNetwork.register();
         ModRegistry.registerAll(AvaliNexusFabric::registerVanilla);
         ModEntities.registerAttributes(FabricDefaultAttributeRegistry::register);
         CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.SPAWN_EGGS).register(output ->

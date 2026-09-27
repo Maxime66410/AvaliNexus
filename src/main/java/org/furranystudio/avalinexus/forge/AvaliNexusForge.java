@@ -22,6 +22,7 @@ import net.minecraftforge.registries.RegisterEvent;
 import org.furranystudio.avalinexus.AvaliNexus;
 import org.furranystudio.avalinexus.Config;
 import org.furranystudio.avalinexus.Platform;
+import org.furranystudio.avalinexus.client.AvaliNexusClient;
 import org.furranystudio.avalinexus.client.avali.AvaliRenderer;
 import org.furranystudio.avalinexus.command.AvaliNexusCommand;
 import org.furranystudio.avalinexus.entity.ModEntities;
@@ -37,6 +38,7 @@ public class AvaliNexusForge {
         Config.registerSettings();
 
         AvaliNexus.registerContent();
+        ForgeNetwork.register();
         RegisterEvent.getBus(context.getModBusGroup()).addListener(event -> ModRegistry.registerAll(event::register));
         EntityAttributeCreationEvent.BUS.addListener(event -> ModEntities.registerAttributes(event::put));
         BuildCreativeModeTabContentsEvent.BUS.addListener(event -> ModCreativeTabs.addToVanillaTab(event.getTabKey(), event));
@@ -50,6 +52,7 @@ public class AvaliNexusForge {
         RegisterCommandsEvent.BUS.addListener(event -> AvaliNexusCommand.register(event.getDispatcher()));
 
         if (FMLEnvironment.dist == Dist.CLIENT) {
+            AvaliNexusClient.init();
             EntityRenderersEvent.RegisterRenderers.BUS.addListener(event ->
                 event.registerEntityRenderer(ModEntities.AVALI.get(), AvaliRenderer::new));
         }

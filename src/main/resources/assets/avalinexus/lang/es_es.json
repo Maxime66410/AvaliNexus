@@ -9,5 +9,7 @@
   "avalinexus.settings.set": "[AvaliNexus] %s establecido en %s",
   "subtitles.avalinexus.entity.avali.hurt": "Avali herido",
   "subtitles.avalinexus.entity.avali.death": "Avali muere",
-  "subtitles.avalinexus.entity.avali.noise": "Avali gorjea"
+  "subtitles.avalinexus.entity.avali.noise": "Avali gorjea",
+  "avalinexus.ping.sent": "[AvaliNexus] Ping enviado a tu cliente...",
+  "avalinexus.ping.result": "[AvaliNexus] Pong recibido, ida y vuelta: %s ms"
 }

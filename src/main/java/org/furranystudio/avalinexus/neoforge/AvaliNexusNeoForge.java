@@ -20,10 +20,12 @@ import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.registries.RegisterEvent;
 import org.furranystudio.avalinexus.AvaliNexus;
 import org.furranystudio.avalinexus.Config;
 import org.furranystudio.avalinexus.Platform;
+import org.furranystudio.avalinexus.client.AvaliNexusClient;
 import org.furranystudio.avalinexus.client.avali.AvaliRenderer;
 import org.furranystudio.avalinexus.command.AvaliNexusCommand;
 import org.furranystudio.avalinexus.entity.ModEntities;
@@ -39,6 +41,8 @@ public class AvaliNexusNeoForge {
         Config.registerSettings();
 
         AvaliNexus.registerContent();
+        NeoForgeNetwork.initSender();
+        modEventBus.addListener((RegisterPayloadHandlersEvent event) -> NeoForgeNetwork.register(event));
         modEventBus.addListener((RegisterEvent event) -> ModRegistry.registerAll(event::register));
         modEventBus.addListener((EntityAttributeCreationEvent event) -> ModEntities.registerAttributes(event::put));
         modEventBus.addListener((BuildCreativeModeTabContentsEvent event) -> ModCreativeTabs.addToVanillaTab(event.getTabKey(), event));
@@ -53,6 +57,7 @@ public class AvaliNexusNeoForge {
             AvaliNexusCommand.register(event.getDispatcher()));
 
         if (FMLEnvironment.getDist() == Dist.CLIENT) {
+            AvaliNexusClient.init();
             modEventBus.addListener((EntityRenderersEvent.RegisterRenderers event) ->
                 event.registerEntityRenderer(ModEntities.AVALI.get(), AvaliRenderer::new));
         }

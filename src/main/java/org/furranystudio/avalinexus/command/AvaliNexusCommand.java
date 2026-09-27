@@ -9,11 +9,14 @@ package org.furranystudio.avalinexus.command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import org.furranystudio.avalinexus.network.ModNetworking;
+import org.furranystudio.avalinexus.network.packet.PingPayload;
 import org.furranystudio.avalinexus.settings.SettingsRegistry;
 
 public final class AvaliNexusCommand {
@@ -25,6 +28,8 @@ public final class AvaliNexusCommand {
         dispatcher.register(
             Commands.literal("avalinexus")
                 .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                .then(Commands.literal("ping")
+                    .executes(AvaliNexusCommand::runPing))
                 .then(Commands.literal("settings")
                     .executes(AvaliNexusCommand::runSettingsList)
                     .then(Commands.argument("parameter", StringArgumentType.word())
@@ -32,6 +37,12 @@ public final class AvaliNexusCommand {
                         .then(Commands.argument("value", StringArgumentType.word())
                             .executes(AvaliNexusCommand::runSettings))))
         );
+    }
+
+    private static int runPing(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        ModNetworking.sendToPlayer(context.getSource().getPlayerOrException(), new PingPayload(System.currentTimeMillis()));
+        context.getSource().sendSuccess(() -> Component.translatable("avalinexus.ping.sent"), false);
+        return 1;
     }
 
     private static int runSettingsList(CommandContext<CommandSourceStack> context) {
