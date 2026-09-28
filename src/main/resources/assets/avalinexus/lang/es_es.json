@@ -53,5 +53,10 @@
   "item.avalinexus.avali_cushion": "Cojín Avali",
   "entity.avalinexus.avali_cushion": "Cojín Avali",
   "block.avalinexus.avali_bed": "Cama Avali",
-  "block.avalinexus.avali_carpet": "Alfombra Avali"
+  "block.avalinexus.avali_carpet": "Alfombra Avali",
+  "block.avalinexus.aerogel": "Aerogel",
+  "block.avalinexus.aerogel_pane": "Panel de aerogel",
+  "block.avalinexus.aerogel_slab": "Losa de aerogel",
+  "block.avalinexus.aerogel_stairs": "Escaleras de aerogel",
+  "block.avalinexus.aerogel_wall": "Muro de aerogel"
 }

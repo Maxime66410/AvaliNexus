@@ -53,5 +53,10 @@
   "item.avalinexus.avali_cushion": "Coussin Avali",
   "entity.avalinexus.avali_cushion": "Coussin Avali",
   "block.avalinexus.avali_bed": "Lit Avali",
-  "block.avalinexus.avali_carpet": "Tapis Avali"
+  "block.avalinexus.avali_carpet": "Tapis Avali",
+  "block.avalinexus.aerogel": "Aérogel",
+  "block.avalinexus.aerogel_pane": "Vitre en aérogel",
+  "block.avalinexus.aerogel_slab": "Dalle en aérogel",
+  "block.avalinexus.aerogel_stairs": "Escalier en aérogel",
+  "block.avalinexus.aerogel_wall": "Muret en aérogel"
 }

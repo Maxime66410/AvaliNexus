@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "G": "minecraft:glass",
+    "N": "avalinexus:nexite_shard"
+  },
+  "pattern": [
+    " G ",
+    "GNG",
+    " G "
+  ],
+  "result": {
+    "count": 4,
+    "id": "avalinexus:aerogel"
+  }
+}

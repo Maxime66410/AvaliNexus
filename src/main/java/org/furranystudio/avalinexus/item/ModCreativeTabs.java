@@ -27,6 +27,11 @@ public final class ModCreativeTabs {
                 output.accept(ModItems.NEXITE_SHARD.get());
                 output.accept(ModItems.NEXITE_ORE.get());
                 output.accept(ModItems.DEEPSLATE_NEXITE_ORE.get());
+                output.accept(ModItems.AEROGEL.get());
+                output.accept(ModItems.AEROGEL_PANE.get());
+                output.accept(ModItems.AEROGEL_SLAB.get());
+                output.accept(ModItems.AEROGEL_STAIRS.get());
+                output.accept(ModItems.AEROGEL_WALL.get());
                 output.accept(ModItems.AVALI_BED.get());
                 output.accept(ModItems.AVALI_CUSHION.get());
                 output.accept(ModItems.AVALI_CARPET.get());

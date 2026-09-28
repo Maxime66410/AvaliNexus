@@ -1,0 +1,17 @@
+{
+  "parent": "minecraft:block/slab_top",
+  "textures": {
+    "bottom": {
+      "force_translucent": true,
+      "sprite": "avalinexus:block/aerogel"
+    },
+    "side": {
+      "force_translucent": true,
+      "sprite": "avalinexus:block/aerogel"
+    },
+    "top": {
+      "force_translucent": true,
+      "sprite": "avalinexus:block/aerogel"
+    }
+  }
+}

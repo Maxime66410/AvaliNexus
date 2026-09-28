@@ -47,6 +47,21 @@ public final class ModItems {
         key -> new SpawnEggItem(new Item.Properties().setId(key).delayedComponent(DataComponents.ENTITY_DATA,
             registries -> TypedEntityData.of(ModEntities.AVALI.get(), new CompoundTag()))));
 
+    public static final RegistryEntry<BlockItem> AEROGEL = ModRegistry.register(Registries.ITEM, "aerogel",
+        key -> new BlockItem(ModBlocks.AEROGEL.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
+
+    public static final RegistryEntry<BlockItem> AEROGEL_PANE = ModRegistry.register(Registries.ITEM, "aerogel_pane",
+        key -> new BlockItem(ModBlocks.AEROGEL_PANE.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
+
+    public static final RegistryEntry<BlockItem> AEROGEL_SLAB = ModRegistry.register(Registries.ITEM, "aerogel_slab",
+        key -> new BlockItem(ModBlocks.AEROGEL_SLAB.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
+
+    public static final RegistryEntry<BlockItem> AEROGEL_STAIRS = ModRegistry.register(Registries.ITEM, "aerogel_stairs",
+        key -> new BlockItem(ModBlocks.AEROGEL_STAIRS.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
+
+    public static final RegistryEntry<BlockItem> AEROGEL_WALL = ModRegistry.register(Registries.ITEM, "aerogel_wall",
+        key -> new BlockItem(ModBlocks.AEROGEL_WALL.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
+
     public static final RegistryEntry<BlockItem> AVALI_BED = ModRegistry.register(Registries.ITEM, "avali_bed",
         key -> new BlockItem(ModBlocks.AVALI_BED.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix().stacksTo(1)));
 

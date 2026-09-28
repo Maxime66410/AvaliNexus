@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/template_wall_side_tall",
+  "textures": {
+    "wall": {
+      "force_translucent": true,
+      "sprite": "avalinexus:block/aerogel"
+    }
+  }
+}

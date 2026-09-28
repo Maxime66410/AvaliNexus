@@ -7,11 +7,17 @@
 package org.furranystudio.avalinexus.block;
 
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.BedBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.CarpetBlock;
+import net.minecraft.world.level.block.IronBarsBlock;
+import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.block.TransparentBlock;
+import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.DropExperienceBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -63,9 +69,42 @@ public final class ModBlocks {
             .sound(SoundType.WOOL)
             .ignitedByLava()));
 
+    // Vanilla keeps the glass and pane constructors protected, hence the empty subclasses
+    public static final RegistryEntry<Block> AEROGEL = ModRegistry.register(Registries.BLOCK, "aerogel",
+        key -> new TransparentBlock(aerogel(key)) {
+        });
+
+    public static final RegistryEntry<Block> AEROGEL_PANE = ModRegistry.register(Registries.BLOCK, "aerogel_pane",
+        key -> new IronBarsBlock(aerogel(key)) {
+        });
+
+    public static final RegistryEntry<Block> AEROGEL_SLAB = ModRegistry.register(Registries.BLOCK, "aerogel_slab",
+        key -> new SlabBlock(aerogel(key)));
+
+    public static final RegistryEntry<Block> AEROGEL_STAIRS = ModRegistry.register(Registries.BLOCK, "aerogel_stairs",
+        key -> new StairBlock(AEROGEL.get().defaultBlockState(), aerogel(key)) {
+        });
+
+    public static final RegistryEntry<Block> AEROGEL_WALL = ModRegistry.register(Registries.BLOCK, "aerogel_wall",
+        key -> new WallBlock(aerogel(key)));
+
     private ModBlocks() {
     }
 
     public static void init() {
+    }
+
+    // Glass settings, every shape stays see through so nothing behind it gets culled
+    private static BlockBehaviour.Properties aerogel(ResourceKey<Block> key) {
+        return BlockBehaviour.Properties.of()
+            .setId(key)
+            .mapColor(MapColor.ICE)
+            .instrument(NoteBlockInstrument.HAT)
+            .strength(0.3F)
+            .sound(SoundType.GLASS)
+            .noOcclusion()
+            .isValidSpawn((state, level, pos, type) -> false)
+            .isRedstoneConductor((state, level, pos) -> false)
+            .isSuffocating((state, level, pos) -> false);
     }
 }

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "A": "avalinexus:aerogel"
+  },
+  "pattern": [
+    "A  ",
+    "AA ",
+    "AAA"
+  ],
+  "result": {
+    "count": 4,
+    "id": "avalinexus:aerogel_stairs"
+  }
+}
