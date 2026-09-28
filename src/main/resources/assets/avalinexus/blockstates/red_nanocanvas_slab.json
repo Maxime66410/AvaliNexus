@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "avalinexus:block/nanocanvas_slab"
+    },
+    "type=double": {
+      "model": "avalinexus:block/nanocanvas"
+    },
+    "type=top": {
+      "model": "avalinexus:block/nanocanvas_slab_top"
+    }
+  }
+}

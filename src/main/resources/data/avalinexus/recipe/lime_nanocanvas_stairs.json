@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "nanocanvas_stairs",
+  "key": {
+    "#": "avalinexus:lime_nanocanvas"
+  },
+  "pattern": [
+    "#  ",
+    "## ",
+    "###"
+  ],
+  "result": {
+    "count": 4,
+    "id": "avalinexus:lime_nanocanvas_stairs"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "parent": "avalinexus:block/template/tinted_stairs",
+  "textures": {
+    "bottom": "avalinexus:block/nanocanvas",
+    "side": "avalinexus:block/nanocanvas",
+    "top": "avalinexus:block/nanocanvas"
+  }
+}

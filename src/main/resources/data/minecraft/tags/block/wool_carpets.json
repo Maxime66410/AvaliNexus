@@ -1,6 +1,22 @@
 {
   "replace": false,
   "values": [
-    "avalinexus:avali_carpet"
+    "avalinexus:avali_carpet",
+    "avalinexus:white_nanocanvas_carpet",
+    "avalinexus:orange_nanocanvas_carpet",
+    "avalinexus:magenta_nanocanvas_carpet",
+    "avalinexus:light_blue_nanocanvas_carpet",
+    "avalinexus:yellow_nanocanvas_carpet",
+    "avalinexus:lime_nanocanvas_carpet",
+    "avalinexus:pink_nanocanvas_carpet",
+    "avalinexus:gray_nanocanvas_carpet",
+    "avalinexus:light_gray_nanocanvas_carpet",
+    "avalinexus:cyan_nanocanvas_carpet",
+    "avalinexus:purple_nanocanvas_carpet",
+    "avalinexus:blue_nanocanvas_carpet",
+    "avalinexus:brown_nanocanvas_carpet",
+    "avalinexus:green_nanocanvas_carpet",
+    "avalinexus:red_nanocanvas_carpet",
+    "avalinexus:black_nanocanvas_carpet"
   ]
 }

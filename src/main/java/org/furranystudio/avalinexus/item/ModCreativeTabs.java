@@ -11,8 +11,10 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import org.furranystudio.avalinexus.Platform;
+import org.furranystudio.avalinexus.block.NanocanvasBlocks;
 import org.furranystudio.avalinexus.registry.ModRegistry;
 import org.furranystudio.avalinexus.registry.RegistryEntry;
 
@@ -42,6 +44,11 @@ public final class ModCreativeTabs {
                 output.accept(ModItems.AEROGEL_SLAB.get());
                 output.accept(ModItems.AEROGEL_STAIRS.get());
                 output.accept(ModItems.AEROGEL_WALL.get());
+                for (NanocanvasBlocks.Shape shape : NanocanvasBlocks.Shape.values()) {
+                    for (DyeColor color : DyeColor.values()) {
+                        output.accept(NanocanvasBlocks.item(shape, color));
+                    }
+                }
                 output.accept(ModItems.AVALI_BED.get());
                 output.accept(ModItems.AVALI_CUSHION.get());
                 output.accept(ModItems.AVALI_CARPET.get());

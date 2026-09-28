@@ -1,0 +1,12 @@
+{
+  "parent": "avalinexus:block/template/tinted_cube",
+  "textures": {
+    "particle": "avalinexus:block/nanocanvas",
+    "down": "avalinexus:block/nanocanvas",
+    "up": "avalinexus:block/nanocanvas",
+    "north": "avalinexus:block/nanocanvas",
+    "east": "avalinexus:block/nanocanvas",
+    "south": "avalinexus:block/nanocanvas",
+    "west": "avalinexus:block/nanocanvas"
+  }
+}

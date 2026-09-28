@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "nanocanvas_slab",
+  "key": {
+    "#": "avalinexus:cyan_nanocanvas"
+  },
+  "pattern": [
+    "###"
+  ],
+  "result": {
+    "count": 6,
+    "id": "avalinexus:cyan_nanocanvas_slab"
+  }
+}

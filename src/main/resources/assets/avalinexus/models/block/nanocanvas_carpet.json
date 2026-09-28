@@ -1,0 +1,6 @@
+{
+  "parent": "avalinexus:block/template/tinted_carpet",
+  "textures": {
+    "wool": "avalinexus:block/nanocanvas"
+  }
+}

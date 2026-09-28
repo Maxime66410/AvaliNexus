@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "nanocanvas",
+  "key": {
+    "W": "minecraft:gray_wool",
+    "G": "avalinexus:graphene"
+  },
+  "pattern": [
+    "WWW",
+    "WGW",
+    "WWW"
+  ],
+  "result": {
+    "count": 8,
+    "id": "avalinexus:gray_nanocanvas"
+  }
+}

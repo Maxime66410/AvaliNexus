@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "avalinexus:block/nanocanvas_slab",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": -425955
+      }
+    ]
+  }
+}

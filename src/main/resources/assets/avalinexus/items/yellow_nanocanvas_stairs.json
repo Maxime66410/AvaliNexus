@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "avalinexus:block/nanocanvas_stairs",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": -75715
+      }
+    ]
+  }
+}

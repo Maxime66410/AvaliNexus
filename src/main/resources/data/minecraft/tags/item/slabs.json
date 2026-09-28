@@ -3,6 +3,22 @@
   "values": [
     "avalinexus:aerogel_slab",
     "avalinexus:graphene_slab",
-    "avalinexus:cut_graphene_slab"
+    "avalinexus:cut_graphene_slab",
+    "avalinexus:white_nanocanvas_slab",
+    "avalinexus:orange_nanocanvas_slab",
+    "avalinexus:magenta_nanocanvas_slab",
+    "avalinexus:light_blue_nanocanvas_slab",
+    "avalinexus:yellow_nanocanvas_slab",
+    "avalinexus:lime_nanocanvas_slab",
+    "avalinexus:pink_nanocanvas_slab",
+    "avalinexus:gray_nanocanvas_slab",
+    "avalinexus:light_gray_nanocanvas_slab",
+    "avalinexus:cyan_nanocanvas_slab",
+    "avalinexus:purple_nanocanvas_slab",
+    "avalinexus:blue_nanocanvas_slab",
+    "avalinexus:brown_nanocanvas_slab",
+    "avalinexus:green_nanocanvas_slab",
+    "avalinexus:red_nanocanvas_slab",
+    "avalinexus:black_nanocanvas_slab"
   ]
 }

@@ -3,6 +3,22 @@
   "values": [
     "avalinexus:aerogel_stairs",
     "avalinexus:graphene_stairs",
-    "avalinexus:cut_graphene_stairs"
+    "avalinexus:cut_graphene_stairs",
+    "avalinexus:white_nanocanvas_stairs",
+    "avalinexus:orange_nanocanvas_stairs",
+    "avalinexus:magenta_nanocanvas_stairs",
+    "avalinexus:light_blue_nanocanvas_stairs",
+    "avalinexus:yellow_nanocanvas_stairs",
+    "avalinexus:lime_nanocanvas_stairs",
+    "avalinexus:pink_nanocanvas_stairs",
+    "avalinexus:gray_nanocanvas_stairs",
+    "avalinexus:light_gray_nanocanvas_stairs",
+    "avalinexus:cyan_nanocanvas_stairs",
+    "avalinexus:purple_nanocanvas_stairs",
+    "avalinexus:blue_nanocanvas_stairs",
+    "avalinexus:brown_nanocanvas_stairs",
+    "avalinexus:green_nanocanvas_stairs",
+    "avalinexus:red_nanocanvas_stairs",
+    "avalinexus:black_nanocanvas_stairs"
   ]
 }

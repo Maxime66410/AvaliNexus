@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "condition": {
+        "type": "minecraft:survives_explosion"
+      },
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "avalinexus:light_blue_nanocanvas_carpet"
+        }
+      ],
+      "rolls": 1
+    }
+  ],
+  "random_sequence": "avalinexus:blocks/light_blue_nanocanvas_carpet"
+}

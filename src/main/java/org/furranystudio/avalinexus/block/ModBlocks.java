@@ -123,14 +123,14 @@ public final class ModBlocks {
     public static void init() {
     }
 
-    // Iron block settings
+    // Iron block hardness, tough enough to shrug off TNT and charged creepers
     private static BlockBehaviour.Properties graphene(ResourceKey<Block> key) {
         return BlockBehaviour.Properties.of()
             .setId(key)
             .mapColor(MapColor.COLOR_GRAY)
             .instrument(NoteBlockInstrument.IRON_XYLOPHONE)
             .requiresCorrectToolForDrops()
-            .strength(5.0F, 6.0F)
+            .strength(5.0F, 30.0F)
             .sound(SoundType.IRON);
     }
 

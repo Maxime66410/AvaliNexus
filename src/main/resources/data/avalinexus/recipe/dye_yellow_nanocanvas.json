@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "group": "nanocanvas",
+  "ingredients": [
+    "minecraft:yellow_dye",
+    [
+      "avalinexus:white_nanocanvas",
+      "avalinexus:orange_nanocanvas",
+      "avalinexus:magenta_nanocanvas",
+      "avalinexus:light_blue_nanocanvas",
+      "avalinexus:lime_nanocanvas",
+      "avalinexus:pink_nanocanvas",
+      "avalinexus:gray_nanocanvas",
+      "avalinexus:light_gray_nanocanvas",
+      "avalinexus:cyan_nanocanvas",
+      "avalinexus:purple_nanocanvas",
+      "avalinexus:blue_nanocanvas",
+      "avalinexus:brown_nanocanvas",
+      "avalinexus:green_nanocanvas",
+      "avalinexus:red_nanocanvas",
+      "avalinexus:black_nanocanvas"
+    ]
+  ],
+  "result": {
+    "id": "avalinexus:yellow_nanocanvas"
+  }
+}
