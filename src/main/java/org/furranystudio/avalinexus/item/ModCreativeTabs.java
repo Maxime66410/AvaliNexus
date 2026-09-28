@@ -44,6 +44,7 @@ public final class ModCreativeTabs {
                 output.accept(ModItems.NANOFIBRE.get());
                 output.accept(ModItems.NANOFIBRE_WALL.get());
                 output.accept(ModItems.AVALI_LAMP.get());
+                output.accept(ModItems.CRYSTAL_POT.get());
                 output.accept(ModItems.AEROGEL.get());
                 output.accept(ModItems.AEROGEL_PANE.get());
                 output.accept(ModItems.AEROGEL_SLAB.get());

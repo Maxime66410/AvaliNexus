@@ -68,6 +68,17 @@ public final class ModBlocks {
             .sound(SoundType.GLASS)
             .lightLevel(state -> 15)));
 
+    // Glows softly like a soul lantern, breaks in one hit like a flower pot
+    public static final RegistryEntry<Block> CRYSTAL_POT = ModRegistry.register(Registries.BLOCK, "crystal_pot",
+        key -> new CrystalPotBlock(BlockBehaviour.Properties.of()
+            .setId(key)
+            .mapColor(MapColor.GOLD)
+            .instabreak()
+            .sound(SoundType.AMETHYST)
+            .lightLevel(state -> 7)
+            .noOcclusion()
+            .pushReaction(PushReaction.POPPED)));
+
     public static final RegistryEntry<Block> AVALI_BED = ModRegistry.register(Registries.BLOCK, "avali_bed",
         key -> new BedBlock(DyeColor.ORANGE, BlockBehaviour.Properties.of()
             .setId(key)

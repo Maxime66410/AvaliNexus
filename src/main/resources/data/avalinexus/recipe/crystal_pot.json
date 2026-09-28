@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:flower_pot",
+    "avalinexus:nexite_shard",
+    "avalinexus:nexite_shard",
+    "avalinexus:nexite_shard"
+  ],
+  "result": {
+    "id": "avalinexus:crystal_pot"
+  }
+}
