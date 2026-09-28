@@ -6,13 +6,22 @@
  */
 package org.furranystudio.avalinexus.item;
 
+import net.minecraft.core.HolderSet;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.EntityTypes;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.item.component.TypedEntityData;
+import net.minecraft.world.item.equipment.EquipmentAssets;
+import net.minecraft.world.item.equipment.Equippable;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
+import org.furranystudio.avalinexus.AvaliNexus;
 import org.furranystudio.avalinexus.block.ModBlocks;
 import org.furranystudio.avalinexus.entity.ModEntities;
 import org.furranystudio.avalinexus.registry.ModRegistry;
@@ -42,12 +51,25 @@ public final class ModItems {
         key -> new BlockItem(ModBlocks.AVALI_BED.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix().stacksTo(1)));
 
     public static final RegistryEntry<BlockItem> AVALI_CARPET = ModRegistry.register(Registries.ITEM, "avali_carpet",
-        key -> new BlockItem(ModBlocks.AVALI_CARPET.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
+        key -> new BlockItem(ModBlocks.AVALI_CARPET.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()
+            .component(DataComponents.EQUIPPABLE, llamaSwag("avali_carpet"))
+            .cookingFuel(ContextIntProviders.COOKING_TIME_WOOL_CARPETS)));
 
     public static final RegistryEntry<AvaliCushionItem> AVALI_CUSHION = ModRegistry.register(Registries.ITEM, "avali_cushion",
         key -> new AvaliCushionItem(new Item.Properties().setId(key)));
 
     private ModItems() {
+    }
+
+    // Same as Equippable.llamaSwag, which only knows the vanilla carpet colors
+    private static Equippable llamaSwag(String asset) {
+        return Equippable.builder(EquipmentSlot.BODY)
+            .setEquipSound(SoundEvents.LLAMA_SWAG)
+            .setAsset(ResourceKey.create(EquipmentAssets.ROOT_ID, AvaliNexus.id(asset)))
+            .setAllowedEntities(HolderSet.direct(EntityTypes.LLAMA.builtInRegistryHolder(), EntityTypes.TRADER_LLAMA.builtInRegistryHolder()))
+            .setCanBeSheared(true)
+            .setShearingSound(SoundEvents.LLAMA_CARPET_UNEQUIP)
+            .build();
     }
 
     public static void init() {
