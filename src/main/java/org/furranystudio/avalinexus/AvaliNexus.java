@@ -13,6 +13,7 @@ import org.furranystudio.avalinexus.block.NanocanvasBlocks;
 import org.furranystudio.avalinexus.entity.ModEntities;
 import org.furranystudio.avalinexus.item.ModCreativeTabs;
 import org.furranystudio.avalinexus.item.ModItems;
+import org.furranystudio.avalinexus.item.TapestryItems;
 import org.furranystudio.avalinexus.network.ModPackets;
 import org.furranystudio.avalinexus.sound.ModSounds;
 import org.furranystudio.avalinexus.worldgen.ModFeatures;
@@ -32,6 +33,7 @@ public final class AvaliNexus {
         NanocanvasBlocks.init();
         ModEntities.init();
         ModItems.init();
+        TapestryItems.init();
         ModCreativeTabs.init();
         ModFeatures.init();
         ModPackets.init();

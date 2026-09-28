@@ -17,6 +17,7 @@ import org.furranystudio.avalinexus.client.AvaliNexusClient;
 import org.furranystudio.avalinexus.client.avali.AvaliRenderer;
 import org.furranystudio.avalinexus.client.block.NanocanvasTints;
 import org.furranystudio.avalinexus.client.cushion.AvaliCushionRenderer;
+import org.furranystudio.avalinexus.client.tapestry.AvaliTapestryRenderer;
 import org.furranystudio.avalinexus.client.dialogue.ClientDialogue;
 import org.furranystudio.avalinexus.client.dialogue.DialogueHud;
 import org.furranystudio.avalinexus.client.dialogue.DialogueKeys;
@@ -34,5 +35,6 @@ public final class AvaliNexusFabricClient implements ClientModInitializer {
         EntityRendererRegistry.register(ModEntities.AVALI.get(), AvaliRenderer::new);
         NanocanvasTints.register(BlockColorRegistry::register);
         EntityRendererRegistry.register(ModEntities.AVALI_CUSHION.get(), AvaliCushionRenderer::new);
+        EntityRendererRegistry.register(ModEntities.AVALI_TAPESTRY.get(), AvaliTapestryRenderer::new);
     }
 }

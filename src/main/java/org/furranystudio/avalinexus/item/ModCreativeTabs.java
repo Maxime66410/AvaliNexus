@@ -15,6 +15,7 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import org.furranystudio.avalinexus.Platform;
 import org.furranystudio.avalinexus.block.NanocanvasBlocks;
+import org.furranystudio.avalinexus.entity.tapestry.TapestryPattern;
 import org.furranystudio.avalinexus.registry.ModRegistry;
 import org.furranystudio.avalinexus.registry.RegistryEntry;
 
@@ -49,6 +50,11 @@ public final class ModCreativeTabs {
                 for (NanocanvasBlocks.Shape shape : NanocanvasBlocks.Shape.values()) {
                     for (DyeColor color : DyeColor.values()) {
                         output.accept(NanocanvasBlocks.item(shape, color));
+                    }
+                }
+                for (TapestryPattern pattern : TapestryPattern.values()) {
+                    for (DyeColor color : DyeColor.values()) {
+                        output.accept(TapestryItems.get(pattern, color));
                     }
                 }
                 output.accept(ModItems.AVALI_BED.get());

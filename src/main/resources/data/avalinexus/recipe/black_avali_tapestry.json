@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "avali_tapestry",
+  "key": {
+    "F": "avalinexus:nanofibre",
+    "C": "avalinexus:black_nanocanvas"
+  },
+  "pattern": [
+    "F",
+    "C",
+    "C"
+  ],
+  "result": {
+    "count": 3,
+    "id": "avalinexus:black_avali_tapestry"
+  }
+}

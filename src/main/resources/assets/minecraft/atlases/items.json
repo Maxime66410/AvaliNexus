@@ -1,0 +1,16 @@
+{
+  "sources": [
+    {
+      "type": "minecraft:single",
+      "resource": "avalinexus:entity/tapestry/avali_tapestry"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "avalinexus:entity/tapestry/avali_tapestry_overlay"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "avalinexus:entity/tapestry/avali_tapestry_overlay2"
+    }
+  ]
+}

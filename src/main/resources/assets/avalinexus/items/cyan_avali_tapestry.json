@@ -1,0 +1,16 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "avalinexus:item/avali_tapestry",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": -15295332
+      },
+      {
+        "type": "minecraft:constant",
+        "value": -1
+      }
+    ]
+  }
+}

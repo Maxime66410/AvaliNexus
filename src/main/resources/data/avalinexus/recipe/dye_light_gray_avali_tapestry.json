@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "avali_tapestry_dye",
+  "ingredients": [
+    "minecraft:light_gray_dye",
+    [
+      "avalinexus:white_avali_tapestry",
+      "avalinexus:orange_avali_tapestry",
+      "avalinexus:magenta_avali_tapestry",
+      "avalinexus:light_blue_avali_tapestry",
+      "avalinexus:yellow_avali_tapestry",
+      "avalinexus:lime_avali_tapestry",
+      "avalinexus:pink_avali_tapestry",
+      "avalinexus:gray_avali_tapestry",
+      "avalinexus:cyan_avali_tapestry",
+      "avalinexus:purple_avali_tapestry",
+      "avalinexus:blue_avali_tapestry",
+      "avalinexus:brown_avali_tapestry",
+      "avalinexus:green_avali_tapestry",
+      "avalinexus:red_avali_tapestry",
+      "avalinexus:black_avali_tapestry"
+    ]
+  ],
+  "result": {
+    "id": "avalinexus:light_gray_avali_tapestry"
+  }
+}

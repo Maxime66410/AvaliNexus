@@ -1,0 +1,16 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "avalinexus:item/avali_chevron_tapestry",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": -8170446
+      },
+      {
+        "type": "minecraft:constant",
+        "value": -1
+      }
+    ]
+  }
+}

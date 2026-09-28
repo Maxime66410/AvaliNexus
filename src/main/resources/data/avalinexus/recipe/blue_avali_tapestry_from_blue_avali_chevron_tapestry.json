@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "avali_tapestry",
+  "ingredients": [
+    "avalinexus:blue_avali_chevron_tapestry"
+  ],
+  "result": {
+    "id": "avalinexus:blue_avali_tapestry"
+  }
+}

@@ -20,6 +20,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.Heightmap;
 import org.furranystudio.avalinexus.entity.avali.AvaliEntity;
 import org.furranystudio.avalinexus.entity.cushion.AvaliCushion;
+import org.furranystudio.avalinexus.entity.tapestry.AvaliTapestry;
 import org.furranystudio.avalinexus.registry.ModRegistry;
 import org.furranystudio.avalinexus.registry.RegistryEntry;
 
@@ -55,6 +56,15 @@ public final class ModEntities {
             .clientTrackingRange(10)
             .updateInterval(Integer.MAX_VALUE)
             .dontTrackDeltas()
+            .build(key));
+
+    // Same settings as the item frame
+    public static final RegistryEntry<EntityType<AvaliTapestry>> AVALI_TAPESTRY = ModRegistry.register(Registries.ENTITY_TYPE, "avali_tapestry",
+        key -> EntityType.Builder.<AvaliTapestry>of(AvaliTapestry::new, MobCategory.MISC)
+            .noLootTable()
+            .sized(0.5F, 0.5F)
+            .clientTrackingRange(10)
+            .updateInterval(Integer.MAX_VALUE)
             .build(key));
 
     private ModEntities() {

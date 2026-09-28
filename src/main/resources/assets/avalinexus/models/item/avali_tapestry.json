@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "avalinexus:entity/tapestry/avali_tapestry",
+    "layer1": "avalinexus:entity/tapestry/avali_tapestry_overlay"
+  }
+}

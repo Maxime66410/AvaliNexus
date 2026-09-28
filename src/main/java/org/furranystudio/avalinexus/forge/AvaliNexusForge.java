@@ -37,6 +37,7 @@ import org.furranystudio.avalinexus.client.AvaliNexusClient;
 import org.furranystudio.avalinexus.client.avali.AvaliRenderer;
 import org.furranystudio.avalinexus.client.block.NanocanvasTints;
 import org.furranystudio.avalinexus.client.cushion.AvaliCushionRenderer;
+import org.furranystudio.avalinexus.client.tapestry.AvaliTapestryRenderer;
 import org.furranystudio.avalinexus.client.dialogue.ClientDialogue;
 import org.furranystudio.avalinexus.client.dialogue.DialogueHud;
 import org.furranystudio.avalinexus.client.dialogue.DialogueKeys;
@@ -91,6 +92,7 @@ public class AvaliNexusForge {
             EntityRenderersEvent.RegisterRenderers.BUS.addListener(event -> {
                 event.registerEntityRenderer(ModEntities.AVALI.get(), AvaliRenderer::new);
                 event.registerEntityRenderer(ModEntities.AVALI_CUSHION.get(), AvaliCushionRenderer::new);
+                event.registerEntityRenderer(ModEntities.AVALI_TAPESTRY.get(), AvaliTapestryRenderer::new);
             });
         }
 

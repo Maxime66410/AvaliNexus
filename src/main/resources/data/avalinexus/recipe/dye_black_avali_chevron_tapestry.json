@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "avali_chevron_tapestry_dye",
+  "ingredients": [
+    "minecraft:black_dye",
+    [
+      "avalinexus:white_avali_chevron_tapestry",
+      "avalinexus:orange_avali_chevron_tapestry",
+      "avalinexus:magenta_avali_chevron_tapestry",
+      "avalinexus:light_blue_avali_chevron_tapestry",
+      "avalinexus:yellow_avali_chevron_tapestry",
+      "avalinexus:lime_avali_chevron_tapestry",
+      "avalinexus:pink_avali_chevron_tapestry",
+      "avalinexus:gray_avali_chevron_tapestry",
+      "avalinexus:light_gray_avali_chevron_tapestry",
+      "avalinexus:cyan_avali_chevron_tapestry",
+      "avalinexus:purple_avali_chevron_tapestry",
+      "avalinexus:blue_avali_chevron_tapestry",
+      "avalinexus:brown_avali_chevron_tapestry",
+      "avalinexus:green_avali_chevron_tapestry",
+      "avalinexus:red_avali_chevron_tapestry"
+    ]
+  ],
+  "result": {
+    "id": "avalinexus:black_avali_chevron_tapestry"
+  }
+}
