@@ -265,5 +265,11 @@
   "avalinexus.pack.ember": "Ember Pack",
   "avalinexus.pack.dawn": "Dawn Pack",
   "avalinexus.pack.shard": "Shard Pack",
-  "avalinexus.pack.drift": "Drift Pack"
+  "avalinexus.pack.drift": "Drift Pack",
+  "block.avalinexus.ammonia": "Liquid Ammonia",
+  "item.avalinexus.ammonia_bucket": "Liquid Ammonia Bucket",
+  "block.avalinexus.coolant": "Coolant",
+  "item.avalinexus.coolant_bucket": "Coolant Bucket",
+  "block.avalinexus.fuel": "Avali Fuel",
+  "item.avalinexus.fuel_bucket": "Avali Fuel Bucket"
 }

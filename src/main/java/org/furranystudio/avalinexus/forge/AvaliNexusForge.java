@@ -53,6 +53,10 @@ import org.furranystudio.avalinexus.entity.ModEntities;
 import org.furranystudio.avalinexus.entity.MonsterTargeting;
 import org.furranystudio.avalinexus.item.ModCreativeTabs;
 import org.furranystudio.avalinexus.registry.ModRegistry;
+import org.furranystudio.avalinexus.client.fluid.AvaliFluidModels;
+import org.furranystudio.avalinexus.fluid.AvaliFluidKind;
+import org.furranystudio.avalinexus.fluid.ModFluids;
+import net.minecraftforge.client.event.ModelEvent;
 import org.furranystudio.avalinexus.worldgen.ModBiomes;
 
 import java.util.function.Predicate;
@@ -64,9 +68,13 @@ public class AvaliNexusForge {
         Platform.init(FMLPaths.GAMEDIR.get(), CreativeModeTab::builder);
         Config.registerSettings();
 
+        ForgeFluids.init();
         AvaliNexus.registerContent();
         ForgeNetwork.register();
-        RegisterEvent.getBus(context.getModBusGroup()).addListener(event -> ModRegistry.registerAll(event::register));
+        RegisterEvent.getBus(context.getModBusGroup()).addListener(event -> {
+            ForgeFluids.register(event);
+            ModRegistry.registerAll(event::register);
+        });
         EntityAttributeCreationEvent.BUS.addListener(event -> ModEntities.registerAttributes(event::put));
         SpawnPlacementRegisterEvent.BUS.addListener(event -> ModEntities.registerSpawnPlacements(new ModEntities.SpawnSink() {
             @Override
@@ -89,6 +97,13 @@ public class AvaliNexusForge {
 
         if (FMLEnvironment.dist == Dist.CLIENT) {
             AvaliNexusClient.init();
+            ModelEvent.BakeFluidModels.BUS.addListener(event -> {
+                for (AvaliFluidKind kind : AvaliFluidKind.values()) {
+                    var model = AvaliFluidModels.model(kind).bake(event.materials(), () -> AvaliNexus.id(kind.fluidName()).toString());
+                    event.register(ModFluids.source(kind), model);
+                    event.register(ModFluids.flowing(kind), model);
+                }
+            });
             context.registerExtensionPoint(ConfigScreenHandler.ConfigScreenFactory.class,
                 () -> new ConfigScreenHandler.ConfigScreenFactory(AvaliSettingsScreen::new));
             FMLClientSetupEvent.getBus(context.getModBusGroup()).addListener(event ->

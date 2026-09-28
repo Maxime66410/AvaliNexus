@@ -265,5 +265,11 @@
   "avalinexus.pack.ember": "Manada de la Brasa",
   "avalinexus.pack.dawn": "Manada del Alba",
   "avalinexus.pack.shard": "Manada del Fragmento",
-  "avalinexus.pack.drift": "Manada de la Ventisca"
+  "avalinexus.pack.drift": "Manada de la Ventisca",
+  "block.avalinexus.ammonia": "Amoníaco líquido",
+  "item.avalinexus.ammonia_bucket": "Cubo de amoníaco líquido",
+  "block.avalinexus.coolant": "Refrigerante",
+  "item.avalinexus.coolant_bucket": "Cubo de refrigerante",
+  "block.avalinexus.fuel": "Combustible avali",
+  "item.avalinexus.fuel_bucket": "Cubo de combustible avali"
 }

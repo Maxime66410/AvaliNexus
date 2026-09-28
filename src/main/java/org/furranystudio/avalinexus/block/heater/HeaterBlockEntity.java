@@ -24,6 +24,8 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.level.storage.loot.providers.number.ints.ResolvableInt;
 import org.furranystudio.avalinexus.block.ModBlockEntities;
+import org.furranystudio.avalinexus.fluid.AvaliFluidKind;
+import org.furranystudio.avalinexus.fluid.ModFluids;
 
 // One fuel slot, burns like a furnace but only takes new fuel when someone is around to be warmed
 public class HeaterBlockEntity extends BaseContainerBlockEntity {
@@ -88,8 +90,8 @@ public class HeaterBlockEntity extends BaseContainerBlockEntity {
         }
         litTime = duration;
         litDuration = duration;
-        // Lava leaves its bucket behind like in a furnace
-        if (fuel.is(Items.LAVA_BUCKET)) {
+        // Fuel buckets leave their bucket behind like in a furnace
+        if (fuel.is(Items.LAVA_BUCKET) || fuel.is(ModFluids.bucket(AvaliFluidKind.FUEL))) {
             items.set(0, new ItemStack(Items.BUCKET));
         } else {
             fuel.shrink(1);

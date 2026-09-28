@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "avalinexus:ammonia",
+    "avalinexus:flowing_ammonia",
+    "avalinexus:coolant",
+    "avalinexus:flowing_coolant",
+    "avalinexus:fuel",
+    "avalinexus:flowing_fuel"
+  ]
+}

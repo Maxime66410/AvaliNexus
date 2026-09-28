@@ -11,6 +11,7 @@ import net.minecraft.resources.Identifier;
 import org.furranystudio.avalinexus.block.ModBlockEntities;
 import org.furranystudio.avalinexus.block.ModBlocks;
 import org.furranystudio.avalinexus.block.NanocanvasBlocks;
+import org.furranystudio.avalinexus.fluid.ModFluids;
 import org.furranystudio.avalinexus.entity.ModEntities;
 import org.furranystudio.avalinexus.item.ModCreativeTabs;
 import org.furranystudio.avalinexus.item.ModItems;
@@ -34,6 +35,7 @@ public final class AvaliNexus {
         ModSounds.init();
         ModBlocks.init();
         NanocanvasBlocks.init();
+        ModFluids.init();
         ModEntities.init();
         ModItems.init();
         NexiteGear.init();

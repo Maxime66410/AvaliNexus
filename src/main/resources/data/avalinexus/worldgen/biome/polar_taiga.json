@@ -149,7 +149,9 @@
   "features": [
     [],
     [
-      "minecraft:lake_lava_underground"
+      "minecraft:lake_lava_underground",
+      "avalinexus:lake_ammonia_underground",
+      "avalinexus:lake_ammonia_surface"
     ],
     [
       "minecraft:amethyst_geode"

@@ -56,6 +56,10 @@ import org.furranystudio.avalinexus.entity.ModEntities;
 import org.furranystudio.avalinexus.entity.MonsterTargeting;
 import org.furranystudio.avalinexus.item.ModCreativeTabs;
 import org.furranystudio.avalinexus.registry.ModRegistry;
+import org.furranystudio.avalinexus.client.fluid.AvaliFluidModels;
+import org.furranystudio.avalinexus.fluid.AvaliFluidKind;
+import org.furranystudio.avalinexus.fluid.ModFluids;
+import net.neoforged.neoforge.client.event.RegisterFluidModelsEvent;
 import org.furranystudio.avalinexus.worldgen.ModBiomes;
 
 @Mod(AvaliNexus.MODID)
@@ -65,10 +69,14 @@ public class AvaliNexusNeoForge {
         Platform.init(FMLPaths.GAMEDIR.get(), CreativeModeTab::builder);
         Config.registerSettings();
 
+        NeoForgeFluids.init();
         AvaliNexus.registerContent();
         NeoForgeNetwork.initSender();
         modEventBus.addListener((RegisterPayloadHandlersEvent event) -> NeoForgeNetwork.register(event));
-        modEventBus.addListener((RegisterEvent event) -> ModRegistry.registerAll(event::register));
+        modEventBus.addListener((RegisterEvent event) -> {
+            NeoForgeFluids.register(event);
+            ModRegistry.registerAll(event::register);
+        });
         modEventBus.addListener((EntityAttributeCreationEvent event) -> ModEntities.registerAttributes(event::put));
         modEventBus.addListener((RegisterSpawnPlacementsEvent event) -> ModEntities.registerSpawnPlacements(new ModEntities.SpawnSink() {
             @Override
@@ -92,6 +100,11 @@ public class AvaliNexusNeoForge {
 
         if (FMLEnvironment.getDist() == Dist.CLIENT) {
             AvaliNexusClient.init();
+            modEventBus.addListener((RegisterFluidModelsEvent event) -> {
+                for (AvaliFluidKind kind : AvaliFluidKind.values()) {
+                    event.register(AvaliFluidModels.model(kind), ModFluids.source(kind), ModFluids.flowing(kind));
+                }
+            });
             modContainer.registerExtensionPoint(IConfigScreenFactory.class, (container, parent) -> new AvaliSettingsScreen(parent));
             modEventBus.addListener((RegisterMenuScreensEvent event) -> event.register(ModMenus.HEATER.get(), HeaterScreen::new));
             modEventBus.addListener((RegisterGuiLayersEvent event) -> event.registerAboveAll(AvaliNexus.id("dialogue"), DialogueHud::render));

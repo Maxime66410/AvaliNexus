@@ -34,6 +34,11 @@ public final class AvaliNexusFabricClient implements ClientModInitializer {
     public void onInitializeClient() {
         FabricNetwork.registerClient();
         AvaliNexusClient.init();
+        for (org.furranystudio.avalinexus.fluid.AvaliFluidKind kind : org.furranystudio.avalinexus.fluid.AvaliFluidKind.values()) {
+            net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderingRegistry.register(
+                org.furranystudio.avalinexus.fluid.ModFluids.source(kind), org.furranystudio.avalinexus.fluid.ModFluids.flowing(kind),
+                org.furranystudio.avalinexus.client.fluid.AvaliFluidModels.model(kind));
+        }
         HudElementRegistry.addLast(AvaliNexus.id("dialogue"), DialogueHud::render);
         KeyMappingHelper.registerKeyMapping(DialogueKeys.CURSOR);
         ClientTickEvents.START_CLIENT_TICK.register(client -> ClientDialogue.tick());

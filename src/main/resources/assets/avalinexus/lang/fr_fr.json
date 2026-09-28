@@ -265,5 +265,11 @@
   "avalinexus.pack.ember": "Meute de la Braise",
   "avalinexus.pack.dawn": "Meute de l'Aube",
   "avalinexus.pack.shard": "Meute de l'Éclat",
-  "avalinexus.pack.drift": "Meute de la Congère"
+  "avalinexus.pack.drift": "Meute de la Congère",
+  "block.avalinexus.ammonia": "Ammoniac liquide",
+  "item.avalinexus.ammonia_bucket": "Seau d'ammoniac liquide",
+  "block.avalinexus.coolant": "Liquide de refroidissement",
+  "item.avalinexus.coolant_bucket": "Seau de liquide de refroidissement",
+  "block.avalinexus.fuel": "Carburant Avali",
+  "item.avalinexus.fuel_bucket": "Seau de carburant Avali"
 }

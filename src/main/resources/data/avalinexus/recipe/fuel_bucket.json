@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "avalinexus:ammonia_bucket",
+    "#minecraft:coals",
+    "avalinexus:nexite_shard"
+  ],
+  "result": {
+    "id": "avalinexus:fuel_bucket"
+  }
+}
