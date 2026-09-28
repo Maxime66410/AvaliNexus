@@ -36,6 +36,9 @@ public final class ModItems {
     public static final RegistryEntry<Item> NEXITE_SHARD = ModRegistry.register(Registries.ITEM, "nexite_shard",
         key -> new Item(new Item.Properties().setId(key)));
 
+    public static final RegistryEntry<BlockItem> NEXITE_BLOCK = ModRegistry.register(Registries.ITEM, "nexite_block",
+        key -> new BlockItem(ModBlocks.NEXITE_BLOCK.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
+
     public static final RegistryEntry<Item> GRAPHENE = ModRegistry.register(Registries.ITEM, "graphene",
         key -> new Item(new Item.Properties().setId(key)));
 

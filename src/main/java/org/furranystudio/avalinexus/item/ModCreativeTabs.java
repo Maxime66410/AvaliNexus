@@ -31,6 +31,7 @@ public final class ModCreativeTabs {
                 output.accept(ModItems.GRAPHENE.get());
                 output.accept(ModItems.NEXITE_ORE.get());
                 output.accept(ModItems.DEEPSLATE_NEXITE_ORE.get());
+                output.accept(ModItems.NEXITE_BLOCK.get());
                 output.accept(ModItems.GRAPHENE_BLOCK.get());
                 output.accept(ModItems.GRAPHENE_SLAB.get());
                 output.accept(ModItems.GRAPHENE_STAIRS.get());

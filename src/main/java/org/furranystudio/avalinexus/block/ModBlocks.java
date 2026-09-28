@@ -49,6 +49,15 @@ public final class ModBlocks {
             .sound(SoundType.DEEPSLATE)));
 
     // Same settings as the vanilla beds
+    // Diamond block settings, as tough as graphene against explosions
+    public static final RegistryEntry<Block> NEXITE_BLOCK = ModRegistry.register(Registries.BLOCK, "nexite_block",
+        key -> new Block(BlockBehaviour.Properties.of()
+            .setId(key)
+            .mapColor(MapColor.GOLD)
+            .requiresCorrectToolForDrops()
+            .strength(5.0F, 30.0F)
+            .sound(SoundType.METAL)));
+
     public static final RegistryEntry<Block> AVALI_BED = ModRegistry.register(Registries.BLOCK, "avali_bed",
         key -> new BedBlock(DyeColor.ORANGE, BlockBehaviour.Properties.of()
             .setId(key)
