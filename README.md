@@ -81,3 +81,4 @@ You need Gradle 9.7+ running on JDK 25.
 ## Credits
 
 - The **Avali Latin** font used in the dialogue UI is made by **AikaDee** on [FontStruct](https://fontstruct.com/fontstructions/show/2855105/avali-scratch-28), under the [Creative Commons Attribution Share Alike 3.0](http://creativecommons.org/licenses/by-sa/3.0/) license.
+- The lore entries of the terminal archives are rewritten from [The Official Avali Wiki](https://avali.fandom.com/wiki/The_Official_Avali_Wiki), whose content is under the [Creative Commons Attribution Share Alike](https://www.fandom.com/licensing) license. The Avali were created by **RyuujinZERO**.

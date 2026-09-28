@@ -53,7 +53,8 @@ public class TerminalBlock extends Block {
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
         if (player instanceof ServerPlayer serverPlayer) {
-            ModNetworking.sendToPlayer(serverPlayer, new OpenArchivesPayload(ArchiveData.entries(serverPlayer.level().getServer())));
+            ArchiveData.Archives archives = ArchiveData.get(serverPlayer.level().getServer());
+            ModNetworking.sendToPlayer(serverPlayer, new OpenArchivesPayload(archives.categories(), archives.entries()));
         }
         return InteractionResult.SUCCESS;
     }

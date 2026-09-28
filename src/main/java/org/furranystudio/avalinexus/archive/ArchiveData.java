@@ -24,38 +24,46 @@ public final class ArchiveData {
 
     private static final Identifier ENTRIES = AvaliNexus.id("archives/entries.json");
 
+    public record Archives(List<ArchiveCategory> categories, List<ArchiveEntry> entries) {
+    }
+
     // Reloaded when the resource manager changes, so /reload picks up edited archives
     private static ResourceManager loadedFrom;
-    private static List<ArchiveEntry> entries = List.of();
+    private static Archives archives = new Archives(List.of(), List.of());
 
     private ArchiveData() {
     }
 
-    public static List<ArchiveEntry> entries(MinecraftServer server) {
+    public static Archives get(MinecraftServer server) {
         ResourceManager manager = server.getResourceManager();
         if (manager != loadedFrom) {
             loadedFrom = manager;
-            entries = load(manager);
+            archives = load(manager);
         }
-        return entries;
+        return archives;
     }
 
-    private static List<ArchiveEntry> load(ResourceManager manager) {
+    private static Archives load(ResourceManager manager) {
         Optional<Resource> resource = manager.getResource(ENTRIES);
         if (resource.isEmpty()) {
             AvaliNexus.LOGGER.error("[AvaliNexus] Missing archives file {}", ENTRIES);
-            return List.of();
+            return new Archives(List.of(), List.of());
         }
-        List<ArchiveEntry> result = new ArrayList<>();
+        List<ArchiveCategory> categories = new ArrayList<>();
+        List<ArchiveEntry> entries = new ArrayList<>();
         try (Reader reader = resource.get().openAsReader()) {
             JsonObject root = JsonParser.parseReader(reader).getAsJsonObject();
+            for (JsonElement category : root.getAsJsonArray("categories")) {
+                categories.add(new ArchiveCategory(category.getAsString()));
+            }
             for (JsonElement element : root.getAsJsonArray("entries")) {
                 JsonObject entry = element.getAsJsonObject();
-                result.add(new ArchiveEntry(entry.get("id").getAsString(), Identifier.parse(entry.get("icon").getAsString())));
+                entries.add(new ArchiveEntry(entry.get("id").getAsString(), entry.get("category").getAsString(),
+                    Identifier.parse(entry.get("icon").getAsString())));
             }
         } catch (Exception e) {
             AvaliNexus.LOGGER.error("[AvaliNexus] Couldn't read archives file {}", ENTRIES, e);
         }
-        return result;
+        return new Archives(categories, entries);
     }
 }

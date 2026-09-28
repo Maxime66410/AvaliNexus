@@ -1,16 +1,118 @@
 {
+  "categories": [
+    "lore",
+    "mod"
+  ],
   "entries": [
     {
       "id": "avali",
+      "category": "lore",
       "icon": "avalinexus:icon"
     },
     {
+      "id": "avalon",
+      "category": "lore",
+      "icon": "minecraft:blue_ice"
+    },
+    {
+      "id": "biology",
+      "category": "lore",
+      "icon": "minecraft:feather"
+    },
+    {
+      "id": "senses",
+      "category": "lore",
+      "icon": "minecraft:note_block"
+    },
+    {
+      "id": "packs",
+      "category": "lore",
+      "icon": "avalinexus:avali_spawn_egg"
+    },
+    {
+      "id": "tribes",
+      "category": "lore",
+      "icon": "minecraft:bell"
+    },
+    {
+      "id": "nomads",
+      "category": "lore",
+      "icon": "avalinexus:orange_nanocanvas"
+    },
+    {
+      "id": "arts",
+      "category": "lore",
+      "icon": "minecraft:amethyst_shard"
+    },
+    {
+      "id": "the_nexus",
+      "category": "lore",
+      "icon": "avalinexus:terminal"
+    },
+    {
+      "id": "illuminate",
+      "category": "lore",
+      "icon": "minecraft:ender_eye"
+    },
+    {
+      "id": "independents",
+      "category": "lore",
+      "icon": "minecraft:compass"
+    },
+    {
+      "id": "augmentation",
+      "category": "lore",
+      "icon": "minecraft:redstone"
+    },
+    {
+      "id": "aerotech",
+      "category": "lore",
+      "icon": "avalinexus:aerogel"
+    },
+    {
+      "id": "drones",
+      "category": "lore",
+      "icon": "minecraft:phantom_membrane"
+    },
+    {
       "id": "nexite",
+      "category": "mod",
       "icon": "avalinexus:nexite_shard"
     },
     {
       "id": "polar_taiga",
+      "category": "mod",
       "icon": "minecraft:snow_block"
+    },
+    {
+      "id": "meeting_avali",
+      "category": "mod",
+      "icon": "avalinexus:avali_spawn_egg"
+    },
+    {
+      "id": "graphene",
+      "category": "mod",
+      "icon": "avalinexus:graphene"
+    },
+    {
+      "id": "aerogel",
+      "category": "mod",
+      "icon": "avalinexus:aerogel"
+    },
+    {
+      "id": "camps",
+      "category": "mod",
+      "icon": "avalinexus:nanofibre"
+    },
+    {
+      "id": "heater",
+      "category": "mod",
+      "icon": "avalinexus:heater"
+    },
+    {
+      "id": "decorations",
+      "category": "mod",
+      "icon": "avalinexus:orange_avali_tapestry"
     }
   ]
 }

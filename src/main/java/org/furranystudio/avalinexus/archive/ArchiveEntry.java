@@ -13,10 +13,11 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.Identifier;
 
 // One page of the Avali archives, its title and text live in the lang files
-public record ArchiveEntry(String id, Identifier icon) {
+public record ArchiveEntry(String id, String category, Identifier icon) {
 
     public static final StreamCodec<RegistryFriendlyByteBuf, ArchiveEntry> STREAM_CODEC = StreamCodec.composite(
         ByteBufCodecs.STRING_UTF8, ArchiveEntry::id,
+        ByteBufCodecs.STRING_UTF8, ArchiveEntry::category,
         Identifier.STREAM_CODEC, ArchiveEntry::icon,
         ArchiveEntry::new);
 

@@ -18,6 +18,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
+import org.furranystudio.avalinexus.archive.ArchiveCategory;
 import org.furranystudio.avalinexus.archive.ArchiveEntry;
 import org.furranystudio.avalinexus.client.ui.AvaliUi;
 import org.furranystudio.avalinexus.dialogue.DialogueChoice;
@@ -25,26 +26,45 @@ import org.furranystudio.avalinexus.sound.ModSounds;
 
 import java.util.List;
 
-// Avali archives shown by the terminal: entries on the left, the chosen one on the right, the wheel scrolls long texts
+// Avali archives shown by the terminal: a tab per category, entries on the left, the chosen one on the right
+// Both the list and the text get a scrollbar once they overflow, the wheel or a drag on the bar moves them
 public class ArchiveScreen extends Screen {
 
-    private static final int WIDTH = 300;
-    private static final int HEIGHT = 200;
-    private static final int LIST_WIDTH = 104;
-    private static final int ROW_HEIGHT = 20;
+    private static final int WIDTH = 320;
+    private static final int HEIGHT = 220;
     private static final int PADDING = 8;
     private static final int HEADER = 24;
+    private static final int TAB_WIDTH = 72;
+    private static final int TAB_HEIGHT = 14;
+    private static final int CONTENT_TOP = HEADER + TAB_HEIGHT + 6;
+    private static final int LIST_WIDTH = 112;
+    private static final int ROW_HEIGHT = 20;
+    private static final int BAR_WIDTH = 4;
     private static final int CLOSE_SIZE = 12;
+    private static final int TEXT_TOP = 19;
 
-    private final List<ArchiveEntry> entries;
+    private final List<ArchiveCategory> categories;
+    private final List<ArchiveEntry> allEntries;
+    private List<ArchiveEntry> entries;
+    private int category;
     private int selected;
-    private int scroll;
+    private int listScroll;
+    private int textScroll;
+    // Which scrollbar the mouse is holding, if any
+    private Scrollbar dragging;
     private int left;
     private int top;
 
-    public ArchiveScreen(List<ArchiveEntry> entries) {
+    private enum Scrollbar {
+        LIST,
+        TEXT
+    }
+
+    public ArchiveScreen(List<ArchiveCategory> categories, List<ArchiveEntry> entries) {
         super(Component.translatable("avalinexus.archive.title"));
-        this.entries = entries;
+        this.categories = categories;
+        this.allEntries = entries;
+        this.entries = entriesOf(0);
     }
 
     @Override
@@ -68,52 +88,79 @@ public class ArchiveScreen extends Screen {
         }
         graphics.blitSprite(RenderPipelines.GUI_TEXTURED, DialogueChoice.LEAVE.icon(), closeX(), closeY(), CLOSE_SIZE, CLOSE_SIZE);
 
+        renderTabs(graphics, mouseX, mouseY);
         if (entries.isEmpty()) {
-            graphics.text(font, Component.translatable("avalinexus.archive.empty"), left + PADDING, top + HEADER + 4, AvaliUi.TEXT_DISABLED, false);
+            graphics.text(font, AvaliUi.reading(Component.translatable("avalinexus.archive.empty")), left + PADDING, contentTop() + 4,
+                AvaliUi.TEXT_DISABLED, false);
             return;
         }
         renderList(graphics, mouseX, mouseY);
-        renderText(graphics);
+        renderText(graphics, mouseX, mouseY);
+    }
+
+    private void renderTabs(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
+        for (int i = 0; i < categories.size(); i++) {
+            int x = tabX(i);
+            int y = top + HEADER;
+            boolean active = i == category;
+            boolean hovered = inside(mouseX, mouseY, x, y, TAB_WIDTH, TAB_HEIGHT);
+            graphics.fill(x, y, x + TAB_WIDTH, y + TAB_HEIGHT,
+                active ? AvaliUi.PRIMARY_ORANGE : hovered ? AvaliUi.PRIMARY_BORDER : AvaliUi.SECONDARY_BORDER);
+            graphics.centeredText(font, AvaliUi.styled(categories.get(i).title()), x + TAB_WIDTH / 2, y + 3,
+                active ? AvaliUi.TEXT_PRIMARY : AvaliUi.TEXT_SECONDARY);
+        }
     }
 
     private void renderList(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
-        for (int i = 0; i < entries.size(); i++) {
-            ArchiveEntry entry = entries.get(i);
-            int x = left + PADDING;
-            int y = top + HEADER + i * ROW_HEIGHT;
-            boolean active = i == selected;
-            if (active || inside(mouseX, mouseY, x, y, LIST_WIDTH, ROW_HEIGHT - 2)) {
-                AvaliUi.panel(graphics, x, y, LIST_WIDTH, ROW_HEIGHT - 2, AvaliUi.BACKDROP);
+        listScroll = Mth.clamp(listScroll, 0, maxListScroll());
+        int x = left + PADDING;
+        int rowWidth = LIST_WIDTH - BAR_WIDTH - 3;
+        for (int row = 0; row < visibleRows(); row++) {
+            int index = listScroll + row;
+            if (index >= entries.size()) {
+                break;
+            }
+            ArchiveEntry entry = entries.get(index);
+            int y = contentTop() + row * ROW_HEIGHT;
+            boolean active = index == selected;
+            if (active || inside(mouseX, mouseY, x, y, rowWidth, ROW_HEIGHT - 2)) {
+                AvaliUi.panel(graphics, x, y, rowWidth, ROW_HEIGHT - 2, AvaliUi.BACKDROP);
             }
             graphics.item(new ItemStack(BuiltInRegistries.ITEM.getValue(entry.icon())), x + 2, y + 1);
-            Component title = AvaliUi.styled(font.substrByWidth(AvaliUi.styled(entry.title()), LIST_WIDTH - 24).getString());
-            graphics.text(font, title, x + 21, y + 5, active ? AvaliUi.ORANGE_GLOW : AvaliUi.TEXT_PRIMARY, false);
+            Component name = AvaliUi.styled(font.substrByWidth(AvaliUi.styled(entry.title()), rowWidth - 24).getString());
+            graphics.text(font, name, x + 21, y + 5, active ? AvaliUi.ORANGE_GLOW : AvaliUi.TEXT_PRIMARY, false);
         }
+        renderScrollbar(graphics, listBarX(), contentTop(), contentHeight(), entries.size(), visibleRows(), listScroll, mouseX, mouseY);
     }
 
-    private void renderText(GuiGraphicsExtractor graphics) {
+    private void renderText(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
         ArchiveEntry entry = entries.get(selected);
         int x = textLeft();
-        int y = top + HEADER;
-        AvaliUi.panel(graphics, x - 4, y, textWidth() + 8, HEIGHT - HEADER - PADDING, AvaliUi.BACKDROP);
+        int y = contentTop();
+        AvaliUi.panel(graphics, x - 4, y, textWidth() + BAR_WIDTH + 10, contentHeight(), AvaliUi.BACKDROP);
         AvaliUi.shadowedText(graphics, font, AvaliUi.styled(entry.title()), x, y + 5, AvaliUi.TEXT_SECONDARY);
 
-        List<FormattedCharSequence> lines = font.split(AvaliUi.reading(entry.text()), textWidth());
-        int first = Mth.clamp(scroll, 0, Math.max(0, lines.size() - visibleLines()));
-        scroll = first;
-        int lineY = y + 19;
-        for (int i = first; i < Math.min(lines.size(), first + visibleLines()); i++) {
+        List<FormattedCharSequence> lines = lines(entry);
+        textScroll = Mth.clamp(textScroll, 0, Math.max(0, lines.size() - visibleLines()));
+        int lineY = y + TEXT_TOP;
+        for (int i = textScroll; i < Math.min(lines.size(), textScroll + visibleLines()); i++) {
             graphics.text(font, lines.get(i), x, lineY, AvaliUi.TEXT_PRIMARY, false);
             lineY += font.lineHeight;
         }
-        // Small orange marks tell there is more text above or below
-        if (first > 0) {
-            graphics.fill(x + textWidth() - 6, y + 16, x + textWidth(), y + 17, AvaliUi.PRIMARY_ORANGE);
+        renderScrollbar(graphics, textBarX(), y + TEXT_TOP, textBarHeight(), lines.size(), visibleLines(), textScroll, mouseX, mouseY);
+    }
+
+    // Dark track with an orange thumb sized to the visible part, hidden when everything already fits
+    private void renderScrollbar(GuiGraphicsExtractor graphics, int x, int y, int height, int total, int visible, int offset,
+                                 int mouseX, int mouseY) {
+        if (total <= visible) {
+            return;
         }
-        if (first + visibleLines() < lines.size()) {
-            int bottom = top + HEIGHT - PADDING - 4;
-            graphics.fill(x + textWidth() - 6, bottom, x + textWidth(), bottom + 1, AvaliUi.PRIMARY_ORANGE);
-        }
+        graphics.fill(x, y, x + BAR_WIDTH, y + height, AvaliUi.PRIMARY_BORDER);
+        int thumbHeight = thumbHeight(height, total, visible);
+        int thumbY = y + Math.round((float) offset / (total - visible) * (height - thumbHeight));
+        boolean hot = dragging != null || inside(mouseX, mouseY, x, y, BAR_WIDTH, height);
+        graphics.fill(x, thumbY, x + BAR_WIDTH, thumbY + thumbHeight, hot ? AvaliUi.ORANGE_GLOW : AvaliUi.PRIMARY_ORANGE);
     }
 
     @Override
@@ -125,10 +172,37 @@ public class ArchiveScreen extends Screen {
             onClose();
             return true;
         }
-        for (int i = 0; i < entries.size(); i++) {
-            if (i != selected && inside(x, y, left + PADDING, top + HEADER + i * ROW_HEIGHT, LIST_WIDTH, ROW_HEIGHT - 2)) {
-                selected = i;
-                scroll = 0;
+        for (int i = 0; i < categories.size(); i++) {
+            if (i != category && inside(x, y, tabX(i), top + HEADER, TAB_WIDTH, TAB_HEIGHT)) {
+                category = i;
+                entries = entriesOf(i);
+                selected = 0;
+                listScroll = 0;
+                textScroll = 0;
+                playSound(ModSounds.UI_HOVER.get());
+                return true;
+            }
+        }
+        if (entries.isEmpty()) {
+            return super.mouseClicked(event, doubleClick);
+        }
+        if (inside(x, y, listBarX(), contentTop(), BAR_WIDTH, contentHeight()) && entries.size() > visibleRows()) {
+            dragging = Scrollbar.LIST;
+            dragTo(y);
+            return true;
+        }
+        if (inside(x, y, textBarX(), contentTop() + TEXT_TOP, BAR_WIDTH, textBarHeight())
+            && lines(entries.get(selected)).size() > visibleLines()) {
+            dragging = Scrollbar.TEXT;
+            dragTo(y);
+            return true;
+        }
+        for (int row = 0; row < visibleRows(); row++) {
+            int index = listScroll + row;
+            if (index < entries.size() && index != selected
+                && inside(x, y, left + PADDING, contentTop() + row * ROW_HEIGHT, LIST_WIDTH - BAR_WIDTH - 3, ROW_HEIGHT - 2)) {
+                selected = index;
+                textScroll = 0;
                 playSound(ModSounds.UI_HOVER.get());
                 return true;
             }
@@ -137,24 +211,107 @@ public class ArchiveScreen extends Screen {
     }
 
     @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
-        if (!entries.isEmpty() && mouseX >= textLeft()) {
-            scroll -= (int) Math.signum(scrollY);
+    public boolean mouseDragged(MouseButtonEvent event, double dragX, double dragY) {
+        if (dragging != null) {
+            dragTo(event.y());
             return true;
         }
-        return super.mouseScrolled(mouseX, mouseY, scrollX, scrollY);
+        return super.mouseDragged(event, dragX, dragY);
     }
 
-    private int textLeft() {
-        return left + PADDING + LIST_WIDTH + 12;
+    @Override
+    public boolean mouseReleased(MouseButtonEvent event) {
+        dragging = null;
+        return super.mouseReleased(event);
     }
 
-    private int textWidth() {
-        return left + WIDTH - PADDING - 4 - textLeft();
+    @Override
+    public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
+        if (entries.isEmpty()) {
+            return super.mouseScrolled(mouseX, mouseY, scrollX, scrollY);
+        }
+        int step = (int) Math.signum(scrollY);
+        if (mouseX < textLeft() - 4) {
+            listScroll = Mth.clamp(listScroll - step, 0, maxListScroll());
+        } else {
+            textScroll -= step;
+        }
+        return true;
+    }
+
+    // Puts the thumb under the mouse on the held scrollbar
+    private void dragTo(double mouseY) {
+        if (dragging == Scrollbar.LIST) {
+            listScroll = offsetAt(mouseY, contentTop(), contentHeight(), entries.size(), visibleRows());
+        } else if (dragging == Scrollbar.TEXT) {
+            textScroll = offsetAt(mouseY, contentTop() + TEXT_TOP, textBarHeight(), lines(entries.get(selected)).size(), visibleLines());
+        }
+    }
+
+    private static int offsetAt(double mouseY, int barY, int height, int total, int visible) {
+        int thumbHeight = thumbHeight(height, total, visible);
+        float progress = (float) (mouseY - barY - thumbHeight / 2.0) / Math.max(1, height - thumbHeight);
+        return Math.round(Mth.clamp(progress, 0.0F, 1.0F) * (total - visible));
+    }
+
+    private static int thumbHeight(int height, int total, int visible) {
+        return Math.max(8, height * visible / total);
+    }
+
+    private List<ArchiveEntry> entriesOf(int index) {
+        if (index >= categories.size()) {
+            return List.of();
+        }
+        String id = categories.get(index).id();
+        return allEntries.stream().filter(entry -> entry.category().equals(id)).toList();
+    }
+
+    private List<FormattedCharSequence> lines(ArchiveEntry entry) {
+        return font.split(AvaliUi.reading(entry.text()), textWidth());
+    }
+
+    private int contentTop() {
+        return top + CONTENT_TOP;
+    }
+
+    private int contentHeight() {
+        return HEIGHT - CONTENT_TOP - PADDING;
+    }
+
+    private int visibleRows() {
+        return contentHeight() / ROW_HEIGHT;
+    }
+
+    private int maxListScroll() {
+        return Math.max(0, entries.size() - visibleRows());
     }
 
     private int visibleLines() {
-        return (HEIGHT - HEADER - PADDING - 26) / font.lineHeight;
+        return (contentHeight() - TEXT_TOP - 6) / font.lineHeight;
+    }
+
+    private int textBarHeight() {
+        return visibleLines() * font.lineHeight;
+    }
+
+    private int listBarX() {
+        return left + PADDING + LIST_WIDTH - BAR_WIDTH;
+    }
+
+    private int textLeft() {
+        return left + PADDING + LIST_WIDTH + 10;
+    }
+
+    private int textWidth() {
+        return left + WIDTH - PADDING - 4 - BAR_WIDTH - 6 - textLeft();
+    }
+
+    private int textBarX() {
+        return textLeft() + textWidth() + 4;
+    }
+
+    private int tabX(int index) {
+        return left + PADDING + index * (TAB_WIDTH + 4);
     }
 
     private int closeX() {

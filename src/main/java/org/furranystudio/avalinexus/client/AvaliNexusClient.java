@@ -38,7 +38,7 @@ public final class AvaliNexusClient {
         ModNetworking.setClientHandler(OpenShopPayload.TYPE, open ->
             Minecraft.getInstance().gui.setScreen(new AvaliShopScreen(open.entityId(), open.offers())));
         ModNetworking.setClientHandler(OpenArchivesPayload.TYPE, open ->
-            Minecraft.getInstance().gui.setScreen(new ArchiveScreen(open.entries())));
+            Minecraft.getInstance().gui.setScreen(new ArchiveScreen(open.categories(), open.entries())));
         ModNetworking.setClientHandler(ShopUpdatePayload.TYPE, update -> {
             if (Minecraft.getInstance().gui.screen() instanceof AvaliShopScreen shop && shop.entityId() == update.entityId()) {
                 shop.update(update.offer(), update.uses());
