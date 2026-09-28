@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/stairs",
+  "textures": {
+    "bottom": "avalinexus:block/cut_graphene_block",
+    "side": "avalinexus:block/cut_graphene_block",
+    "top": "avalinexus:block/cut_graphene_block"
+  }
+}

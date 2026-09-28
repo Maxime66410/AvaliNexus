@@ -1,0 +1,14 @@
+{
+  "replace": false,
+  "values": [
+    "avalinexus:graphene_block",
+    "avalinexus:cut_graphene_block",
+    "avalinexus:chiseled_graphene_block",
+    "avalinexus:graphene_stairs",
+    "avalinexus:graphene_slab",
+    "avalinexus:graphene_wall",
+    "avalinexus:cut_graphene_stairs",
+    "avalinexus:cut_graphene_slab",
+    "avalinexus:cut_graphene_wall"
+  ]
+}

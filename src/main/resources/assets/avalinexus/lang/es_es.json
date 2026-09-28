@@ -59,5 +59,14 @@
   "block.avalinexus.aerogel_slab": "Losa de aerogel",
   "block.avalinexus.aerogel_stairs": "Escaleras de aerogel",
   "block.avalinexus.aerogel_wall": "Muro de aerogel",
-  "item.avalinexus.graphene": "Grafeno"
+  "item.avalinexus.graphene": "Grafeno",
+  "block.avalinexus.graphene_block": "Bloque de grafeno",
+  "block.avalinexus.cut_graphene_block": "Bloque de grafeno cortado",
+  "block.avalinexus.chiseled_graphene_block": "Bloque de grafeno cincelado",
+  "block.avalinexus.graphene_slab": "Losa de grafeno",
+  "block.avalinexus.graphene_stairs": "Escaleras de grafeno",
+  "block.avalinexus.graphene_wall": "Muro de grafeno",
+  "block.avalinexus.cut_graphene_slab": "Losa de grafeno cortado",
+  "block.avalinexus.cut_graphene_stairs": "Escaleras de grafeno cortado",
+  "block.avalinexus.cut_graphene_wall": "Muro de grafeno cortado"
 }

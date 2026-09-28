@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "avalinexus:block/cut_graphene_slab"
+    },
+    "type=double": {
+      "model": "avalinexus:block/cut_graphene_block"
+    },
+    "type=top": {
+      "model": "avalinexus:block/cut_graphene_slab_top"
+    }
+  }
+}

@@ -1,6 +1,8 @@
 {
   "replace": false,
   "values": [
-    "avalinexus:aerogel_slab"
+    "avalinexus:aerogel_slab",
+    "avalinexus:graphene_slab",
+    "avalinexus:cut_graphene_slab"
   ]
 }

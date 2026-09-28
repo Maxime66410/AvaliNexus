@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "G": "avalinexus:graphene_block",
+    "D": "avalinexus:nexite_shard"
+  },
+  "pattern": [
+    "GGG",
+    "GDG",
+    "GGG"
+  ],
+  "result": {
+    "count": 8,
+    "id": "avalinexus:chiseled_graphene_block"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "avalinexus:cut_graphene_block",
+  "result": {
+    "id": "avalinexus:cut_graphene_stairs"
+  }
+}

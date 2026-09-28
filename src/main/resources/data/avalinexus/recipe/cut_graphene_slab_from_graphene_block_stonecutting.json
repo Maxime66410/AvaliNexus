@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "avalinexus:graphene_block",
+  "result": {
+    "id": "avalinexus:cut_graphene_slab",
+    "count": 2
+  }
+}

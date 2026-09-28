@@ -1,6 +1,15 @@
 {
   "values": [
     "avalinexus:nexite_ore",
-    "avalinexus:deepslate_nexite_ore"
+    "avalinexus:deepslate_nexite_ore",
+    "avalinexus:graphene_block",
+    "avalinexus:cut_graphene_block",
+    "avalinexus:chiseled_graphene_block",
+    "avalinexus:graphene_stairs",
+    "avalinexus:graphene_slab",
+    "avalinexus:graphene_wall",
+    "avalinexus:cut_graphene_stairs",
+    "avalinexus:cut_graphene_slab",
+    "avalinexus:cut_graphene_wall"
   ]
 }

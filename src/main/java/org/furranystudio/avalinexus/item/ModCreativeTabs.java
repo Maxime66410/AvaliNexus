@@ -28,6 +28,15 @@ public final class ModCreativeTabs {
                 output.accept(ModItems.GRAPHENE.get());
                 output.accept(ModItems.NEXITE_ORE.get());
                 output.accept(ModItems.DEEPSLATE_NEXITE_ORE.get());
+                output.accept(ModItems.GRAPHENE_BLOCK.get());
+                output.accept(ModItems.GRAPHENE_SLAB.get());
+                output.accept(ModItems.GRAPHENE_STAIRS.get());
+                output.accept(ModItems.GRAPHENE_WALL.get());
+                output.accept(ModItems.CUT_GRAPHENE_BLOCK.get());
+                output.accept(ModItems.CUT_GRAPHENE_SLAB.get());
+                output.accept(ModItems.CUT_GRAPHENE_STAIRS.get());
+                output.accept(ModItems.CUT_GRAPHENE_WALL.get());
+                output.accept(ModItems.CHISELED_GRAPHENE_BLOCK.get());
                 output.accept(ModItems.AEROGEL.get());
                 output.accept(ModItems.AEROGEL_PANE.get());
                 output.accept(ModItems.AEROGEL_SLAB.get());

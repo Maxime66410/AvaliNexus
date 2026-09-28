@@ -88,10 +88,50 @@ public final class ModBlocks {
     public static final RegistryEntry<Block> AEROGEL_WALL = ModRegistry.register(Registries.BLOCK, "aerogel_wall",
         key -> new WallBlock(aerogel(key)));
 
+    public static final RegistryEntry<Block> GRAPHENE_BLOCK = ModRegistry.register(Registries.BLOCK, "graphene_block",
+        key -> new Block(graphene(key)));
+
+    public static final RegistryEntry<Block> CUT_GRAPHENE_BLOCK = ModRegistry.register(Registries.BLOCK, "cut_graphene_block",
+        key -> new Block(graphene(key)));
+
+    public static final RegistryEntry<Block> CHISELED_GRAPHENE_BLOCK = ModRegistry.register(Registries.BLOCK, "chiseled_graphene_block",
+        key -> new Block(graphene(key)));
+
+    public static final RegistryEntry<Block> GRAPHENE_SLAB = ModRegistry.register(Registries.BLOCK, "graphene_slab",
+        key -> new SlabBlock(graphene(key)));
+
+    public static final RegistryEntry<Block> GRAPHENE_STAIRS = ModRegistry.register(Registries.BLOCK, "graphene_stairs",
+        key -> new StairBlock(GRAPHENE_BLOCK.get().defaultBlockState(), graphene(key)) {
+        });
+
+    public static final RegistryEntry<Block> GRAPHENE_WALL = ModRegistry.register(Registries.BLOCK, "graphene_wall",
+        key -> new WallBlock(graphene(key)));
+
+    public static final RegistryEntry<Block> CUT_GRAPHENE_SLAB = ModRegistry.register(Registries.BLOCK, "cut_graphene_slab",
+        key -> new SlabBlock(graphene(key)));
+
+    public static final RegistryEntry<Block> CUT_GRAPHENE_STAIRS = ModRegistry.register(Registries.BLOCK, "cut_graphene_stairs",
+        key -> new StairBlock(CUT_GRAPHENE_BLOCK.get().defaultBlockState(), graphene(key)) {
+        });
+
+    public static final RegistryEntry<Block> CUT_GRAPHENE_WALL = ModRegistry.register(Registries.BLOCK, "cut_graphene_wall",
+        key -> new WallBlock(graphene(key)));
+
     private ModBlocks() {
     }
 
     public static void init() {
+    }
+
+    // Iron block settings
+    private static BlockBehaviour.Properties graphene(ResourceKey<Block> key) {
+        return BlockBehaviour.Properties.of()
+            .setId(key)
+            .mapColor(MapColor.COLOR_GRAY)
+            .instrument(NoteBlockInstrument.IRON_XYLOPHONE)
+            .requiresCorrectToolForDrops()
+            .strength(5.0F, 6.0F)
+            .sound(SoundType.IRON);
     }
 
     // Glass settings, every shape stays see through so nothing behind it gets culled

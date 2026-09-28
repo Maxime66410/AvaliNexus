@@ -50,6 +50,33 @@ public final class ModItems {
         key -> new SpawnEggItem(new Item.Properties().setId(key).delayedComponent(DataComponents.ENTITY_DATA,
             registries -> TypedEntityData.of(ModEntities.AVALI.get(), new CompoundTag()))));
 
+    public static final RegistryEntry<BlockItem> GRAPHENE_BLOCK = ModRegistry.register(Registries.ITEM, "graphene_block",
+        key -> new BlockItem(ModBlocks.GRAPHENE_BLOCK.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
+
+    public static final RegistryEntry<BlockItem> GRAPHENE_SLAB = ModRegistry.register(Registries.ITEM, "graphene_slab",
+        key -> new BlockItem(ModBlocks.GRAPHENE_SLAB.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
+
+    public static final RegistryEntry<BlockItem> GRAPHENE_STAIRS = ModRegistry.register(Registries.ITEM, "graphene_stairs",
+        key -> new BlockItem(ModBlocks.GRAPHENE_STAIRS.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
+
+    public static final RegistryEntry<BlockItem> GRAPHENE_WALL = ModRegistry.register(Registries.ITEM, "graphene_wall",
+        key -> new BlockItem(ModBlocks.GRAPHENE_WALL.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
+
+    public static final RegistryEntry<BlockItem> CUT_GRAPHENE_BLOCK = ModRegistry.register(Registries.ITEM, "cut_graphene_block",
+        key -> new BlockItem(ModBlocks.CUT_GRAPHENE_BLOCK.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
+
+    public static final RegistryEntry<BlockItem> CUT_GRAPHENE_SLAB = ModRegistry.register(Registries.ITEM, "cut_graphene_slab",
+        key -> new BlockItem(ModBlocks.CUT_GRAPHENE_SLAB.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
+
+    public static final RegistryEntry<BlockItem> CUT_GRAPHENE_STAIRS = ModRegistry.register(Registries.ITEM, "cut_graphene_stairs",
+        key -> new BlockItem(ModBlocks.CUT_GRAPHENE_STAIRS.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
+
+    public static final RegistryEntry<BlockItem> CUT_GRAPHENE_WALL = ModRegistry.register(Registries.ITEM, "cut_graphene_wall",
+        key -> new BlockItem(ModBlocks.CUT_GRAPHENE_WALL.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
+
+    public static final RegistryEntry<BlockItem> CHISELED_GRAPHENE_BLOCK = ModRegistry.register(Registries.ITEM, "chiseled_graphene_block",
+        key -> new BlockItem(ModBlocks.CHISELED_GRAPHENE_BLOCK.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
+
     public static final RegistryEntry<BlockItem> AEROGEL = ModRegistry.register(Registries.ITEM, "aerogel",
         key -> new BlockItem(ModBlocks.AEROGEL.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
 
