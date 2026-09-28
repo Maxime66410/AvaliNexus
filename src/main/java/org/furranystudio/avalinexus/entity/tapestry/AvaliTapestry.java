@@ -179,6 +179,8 @@ public class AvaliTapestry extends HangingEntity {
     @Override
     protected void addAdditionalSaveData(ValueOutput output) {
         super.addAdditionalSaveData(output);
+        // HangingEntity does not keep the facing itself, the item frame saves it on its own too
+        output.putByte("Facing", (byte) getDirection().get3DDataValue());
         output.putByte("Color", (byte) getColor().getId());
         output.putByte("Pattern", (byte) getPattern().ordinal());
         output.putByte("Turn", (byte) getTurn());
@@ -187,6 +189,7 @@ public class AvaliTapestry extends HangingEntity {
     @Override
     protected void readAdditionalSaveData(ValueInput input) {
         super.readAdditionalSaveData(input);
+        setDirection(Direction.from3DDataValue(input.getByteOr("Facing", (byte) Direction.NORTH.get3DDataValue())));
         setColor(DyeColor.byId(input.getByteOr("Color", (byte) 0)));
         setPattern(TapestryPattern.byId(input.getByteOr("Pattern", (byte) 0)));
         setTurn(input.getByteOr("Turn", (byte) 0));

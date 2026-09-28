@@ -34,6 +34,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.decoration.Cushion;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.player.Player;
@@ -104,6 +105,7 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     private int happyTicks;
     private boolean playerNearby;
     private int gestureTicks;
+    private boolean justLoaded;
     private boolean panicking;
     private ServerPlayer talkingTo;
     private AvaliShop shop;
@@ -171,6 +173,7 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     @Override
     protected void readAdditionalSaveData(ValueInput input) {
         super.readAdditionalSaveData(input);
+        justLoaded = true;
         shop = input.read("avalinexus_shop", AvaliShop.CODEC).orElse(null);
     }
 
@@ -241,6 +244,10 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         swimPitch += (targetSwimPitch() - swimPitch) * 0.15F;
 
         if (!level().isClientSide()) {
+            if (justLoaded) {
+                justLoaded = false;
+                standUpAfterLoad();
+            }
             updateMood();
             updateGesture();
             if (talkingTo != null && (!talkingTo.isAlive() || talkingTo.level() != level()
@@ -248,6 +255,19 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
                 DialogueManager.close(talkingTo, true);
             }
         }
+    }
+
+    // Vanilla keeps the bed and the vehicle across a reload but not the goals that would end them
+    // so the Avali gets up and its goals send it back to bed or to a cushion later on
+    private void standUpAfterLoad() {
+        if (isSleeping()) {
+            stopSleeping();
+        }
+        if (getVehicle() instanceof Cushion) {
+            stopRiding();
+        }
+        setNapping(false);
+        setRestPose(null);
     }
 
     private void updateMood() {
