@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "G": "avalinexus:graphene",
+    "A": "avalinexus:aerogel",
+    "R": "minecraft:redstone",
+    "N": "avalinexus:nexite_shard"
+  },
+  "pattern": [
+    "GAG",
+    "GRG",
+    "GNG"
+  ],
+  "result": {
+    "id": "avalinexus:terminal"
+  }
+}

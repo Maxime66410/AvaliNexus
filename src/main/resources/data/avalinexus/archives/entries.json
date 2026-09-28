@@ -1,0 +1,16 @@
+{
+  "entries": [
+    {
+      "id": "avali",
+      "icon": "avalinexus:icon"
+    },
+    {
+      "id": "nexite",
+      "icon": "avalinexus:nexite_shard"
+    },
+    {
+      "id": "polar_taiga",
+      "icon": "minecraft:snow_block"
+    }
+  ]
+}

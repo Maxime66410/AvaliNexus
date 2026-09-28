@@ -7,11 +7,13 @@
 package org.furranystudio.avalinexus.client;
 
 import net.minecraft.client.Minecraft;
+import org.furranystudio.avalinexus.client.archive.ArchiveScreen;
 import org.furranystudio.avalinexus.client.dialogue.ClientDialogue;
 import org.furranystudio.avalinexus.client.shop.AvaliShopScreen;
 import org.furranystudio.avalinexus.network.ModNetworking;
 import org.furranystudio.avalinexus.network.packet.CloseDialoguePayload;
 import org.furranystudio.avalinexus.network.packet.DialogueLinePayload;
+import org.furranystudio.avalinexus.network.packet.OpenArchivesPayload;
 import org.furranystudio.avalinexus.network.packet.OpenDialoguePayload;
 import org.furranystudio.avalinexus.network.packet.OpenShopPayload;
 import org.furranystudio.avalinexus.network.packet.PingPayload;
@@ -35,6 +37,8 @@ public final class AvaliNexusClient {
         });
         ModNetworking.setClientHandler(OpenShopPayload.TYPE, open ->
             Minecraft.getInstance().gui.setScreen(new AvaliShopScreen(open.entityId(), open.offers())));
+        ModNetworking.setClientHandler(OpenArchivesPayload.TYPE, open ->
+            Minecraft.getInstance().gui.setScreen(new ArchiveScreen(open.entries())));
         ModNetworking.setClientHandler(ShopUpdatePayload.TYPE, update -> {
             if (Minecraft.getInstance().gui.screen() instanceof AvaliShopScreen shop && shop.entityId() == update.entityId()) {
                 shop.update(update.offer(), update.uses());

@@ -46,6 +46,7 @@ public final class ModCreativeTabs {
                 output.accept(ModItems.AVALI_LAMP.get());
                 output.accept(ModItems.CRYSTAL_POT.get());
                 output.accept(ModItems.HEATER.get());
+                output.accept(ModItems.TERMINAL.get());
                 output.accept(ModItems.AEROGEL.get());
                 output.accept(ModItems.AEROGEL_PANE.get());
                 output.accept(ModItems.AEROGEL_SLAB.get());

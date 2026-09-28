@@ -172,5 +172,14 @@
   "block.avalinexus.avali_lamp": "Lámpara avali",
   "block.avalinexus.crystal_pot": "Maceta de cristales",
   "block.avalinexus.heater": "Calefactor",
-  "container.avalinexus.heater": "Calefactor"
+  "container.avalinexus.heater": "Calefactor",
+  "block.avalinexus.terminal": "Terminal avali",
+  "avalinexus.archive.title": "Archivos avali",
+  "avalinexus.archive.empty": "Los archivos están vacíos.",
+  "avalinexus.archive.avali.title": "Los avali",
+  "avalinexus.archive.avali.text": "Los avali son un pueblo pequeño, emplumado y nómada que vive en manadas. Prosperan en el frío y viajan ligeros, llevando su tecnología de un campamento a otro.",
+  "avalinexus.archive.nexite.title": "La Nexita",
+  "avalinexus.archive.nexite.text": "La Nexita es un cristal amarillo que se encuentra en las profundidades, y más cerca de la superficie en la taiga polar. Los avali la usan como moneda y en el corazón de su tecnología.",
+  "avalinexus.archive.polar_taiga.title": "La taiga polar",
+  "avalinexus.archive.polar_taiga.text": "Un bosque helado azotado por ventiscas. Sin ropa de abrigo, un refugio o un calefactor, los viajeros se congelan poco a poco. Es el hogar de los avali."
 }

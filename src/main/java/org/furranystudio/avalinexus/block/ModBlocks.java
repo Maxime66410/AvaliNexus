@@ -92,6 +92,17 @@ public final class ModBlocks {
             .noOcclusion()
             .lightLevel(state -> state.getValue(HeaterBlock.LIT) ? 13 : 0)));
 
+    // The screen glows a little
+    public static final RegistryEntry<Block> TERMINAL = ModRegistry.register(Registries.BLOCK, "terminal",
+        key -> new TerminalBlock(BlockBehaviour.Properties.of()
+            .setId(key)
+            .mapColor(MapColor.COLOR_GRAY)
+            .requiresCorrectToolForDrops()
+            .strength(3.5F, 30.0F)
+            .sound(SoundType.METAL)
+            .noOcclusion()
+            .lightLevel(state -> 7)));
+
     public static final RegistryEntry<Block> AVALI_BED = ModRegistry.register(Registries.BLOCK, "avali_bed",
         key -> new BedBlock(DyeColor.ORANGE, BlockBehaviour.Properties.of()
             .setId(key)

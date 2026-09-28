@@ -12,6 +12,7 @@ import org.furranystudio.avalinexus.dialogue.DialogueManager;
 import org.furranystudio.avalinexus.network.packet.CloseDialoguePayload;
 import org.furranystudio.avalinexus.network.packet.DialogueChoicePayload;
 import org.furranystudio.avalinexus.network.packet.DialogueLinePayload;
+import org.furranystudio.avalinexus.network.packet.OpenArchivesPayload;
 import org.furranystudio.avalinexus.network.packet.OpenDialoguePayload;
 import org.furranystudio.avalinexus.network.packet.PingPayload;
 import org.furranystudio.avalinexus.network.packet.OpenShopPayload;
@@ -35,6 +36,7 @@ public final class ModPackets {
             (payload, player) -> DialogueManager.onChoice(player, payload.entityId(), payload.choice()));
 
         ModNetworking.clientbound(OpenShopPayload.TYPE, OpenShopPayload.STREAM_CODEC);
+        ModNetworking.clientbound(OpenArchivesPayload.TYPE, OpenArchivesPayload.STREAM_CODEC);
         ModNetworking.clientbound(ShopUpdatePayload.TYPE, ShopUpdatePayload.STREAM_CODEC);
         ModNetworking.serverbound(ShopTradePayload.TYPE, ShopTradePayload.STREAM_CODEC,
             (payload, player) -> DialogueManager.onShopTrade(player, payload.entityId(), payload.offer()));

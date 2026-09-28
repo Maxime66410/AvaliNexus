@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=west": {
+      "model": "avalinexus:block/terminal"
+    },
+    "facing=north": {
+      "model": "avalinexus:block/terminal",
+      "y": 90
+    },
+    "facing=east": {
+      "model": "avalinexus:block/terminal",
+      "y": 180
+    },
+    "facing=south": {
+      "model": "avalinexus:block/terminal",
+      "y": 270
+    }
+  }
+}

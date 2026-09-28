@@ -172,5 +172,14 @@
   "block.avalinexus.avali_lamp": "Avali Lamp",
   "block.avalinexus.crystal_pot": "Crystal Pot",
   "block.avalinexus.heater": "Heater",
-  "container.avalinexus.heater": "Heater"
+  "container.avalinexus.heater": "Heater",
+  "block.avalinexus.terminal": "Avali Terminal",
+  "avalinexus.archive.title": "Avali Archives",
+  "avalinexus.archive.empty": "The archives are empty.",
+  "avalinexus.archive.avali.title": "The Avali",
+  "avalinexus.archive.avali.text": "The Avali are a small, feathered and nomadic people who live in packs. They thrive in the cold and travel light, carrying their technology from one camp to the next.",
+  "avalinexus.archive.nexite.title": "Nexite",
+  "avalinexus.archive.nexite.text": "Nexite is a yellow crystal found deep underground, and closer to the surface in the polar taiga. The Avali use it as currency and at the heart of their technology.",
+  "avalinexus.archive.polar_taiga.title": "The Polar Taiga",
+  "avalinexus.archive.polar_taiga.text": "A frozen forest swept by blizzards. Without warm clothes, a shelter or a heater, travellers slowly freeze. It is the home of the Avali."
 }
