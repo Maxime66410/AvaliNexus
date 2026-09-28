@@ -132,5 +132,7 @@
   "block.avalinexus.black_nanocanvas": "Black Nanocanvas",
   "block.avalinexus.black_nanocanvas_slab": "Black Nanocanvas Slab",
   "block.avalinexus.black_nanocanvas_stairs": "Black Nanocanvas Stairs",
-  "block.avalinexus.black_nanocanvas_carpet": "Black Nanocanvas Carpet"
+  "block.avalinexus.black_nanocanvas_carpet": "Black Nanocanvas Carpet",
+  "block.avalinexus.nanofibre": "Nanofibre Block",
+  "block.avalinexus.nanofibre_wall": "Nanofibre Wall"
 }

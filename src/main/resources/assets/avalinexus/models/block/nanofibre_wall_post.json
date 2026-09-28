@@ -1,0 +1,7 @@
+{
+  "parent": "avalinexus:block/template/wall_post_with_top",
+  "textures": {
+    "wall": "avalinexus:block/nanofibre",
+    "top": "avalinexus:block/nanofibre_top"
+  }
+}

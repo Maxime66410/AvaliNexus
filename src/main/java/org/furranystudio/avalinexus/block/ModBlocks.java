@@ -14,6 +14,7 @@ import net.minecraft.world.level.block.BedBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.CarpetBlock;
 import net.minecraft.world.level.block.IronBarsBlock;
+import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.TransparentBlock;
@@ -117,6 +118,12 @@ public final class ModBlocks {
     public static final RegistryEntry<Block> CUT_GRAPHENE_WALL = ModRegistry.register(Registries.BLOCK, "cut_graphene_wall",
         key -> new WallBlock(graphene(key)));
 
+    public static final RegistryEntry<Block> NANOFIBRE = ModRegistry.register(Registries.BLOCK, "nanofibre",
+        key -> new RotatedPillarBlock(nanofibre(key)));
+
+    public static final RegistryEntry<Block> NANOFIBRE_WALL = ModRegistry.register(Registries.BLOCK, "nanofibre_wall",
+        key -> new WallBlock(nanofibre(key)));
+
     private ModBlocks() {
     }
 
@@ -132,6 +139,16 @@ public final class ModBlocks {
             .requiresCorrectToolForDrops()
             .strength(5.0F, 30.0F)
             .sound(SoundType.IRON);
+    }
+
+    // Same toughness as the nanocanvas it holds up
+    private static BlockBehaviour.Properties nanofibre(ResourceKey<Block> key) {
+        return BlockBehaviour.Properties.of()
+            .setId(key)
+            .mapColor(MapColor.COLOR_GRAY)
+            .instrument(NoteBlockInstrument.BASS)
+            .strength(1.3F, 15.0F)
+            .sound(SoundType.COPPER);
     }
 
     // Glass settings, every shape stays see through so nothing behind it gets culled

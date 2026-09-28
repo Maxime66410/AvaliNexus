@@ -77,6 +77,12 @@ public final class ModItems {
     public static final RegistryEntry<BlockItem> CHISELED_GRAPHENE_BLOCK = ModRegistry.register(Registries.ITEM, "chiseled_graphene_block",
         key -> new BlockItem(ModBlocks.CHISELED_GRAPHENE_BLOCK.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
 
+    public static final RegistryEntry<BlockItem> NANOFIBRE = ModRegistry.register(Registries.ITEM, "nanofibre",
+        key -> new BlockItem(ModBlocks.NANOFIBRE.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
+
+    public static final RegistryEntry<BlockItem> NANOFIBRE_WALL = ModRegistry.register(Registries.ITEM, "nanofibre_wall",
+        key -> new BlockItem(ModBlocks.NANOFIBRE_WALL.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
+
     public static final RegistryEntry<BlockItem> AEROGEL = ModRegistry.register(Registries.ITEM, "aerogel",
         key -> new BlockItem(ModBlocks.AEROGEL.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
 

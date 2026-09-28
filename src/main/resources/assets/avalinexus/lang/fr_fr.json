@@ -132,5 +132,7 @@
   "block.avalinexus.black_nanocanvas": "Nanocanvas noir",
   "block.avalinexus.black_nanocanvas_slab": "Dalle en nanocanvas noir",
   "block.avalinexus.black_nanocanvas_stairs": "Escalier en nanocanvas noir",
-  "block.avalinexus.black_nanocanvas_carpet": "Tapis en nanocanvas noir"
+  "block.avalinexus.black_nanocanvas_carpet": "Tapis en nanocanvas noir",
+  "block.avalinexus.nanofibre": "Bloc de nanofibre",
+  "block.avalinexus.nanofibre_wall": "Muret de nanofibre"
 }

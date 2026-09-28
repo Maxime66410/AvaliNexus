@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "avalinexus:block/nanofibre_horizontal",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "avalinexus:block/nanofibre"
+    },
+    "axis=z": {
+      "model": "avalinexus:block/nanofibre_horizontal",
+      "x": 90
+    }
+  }
+}

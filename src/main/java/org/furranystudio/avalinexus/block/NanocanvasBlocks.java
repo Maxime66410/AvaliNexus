@@ -97,19 +97,17 @@ public final class NanocanvasBlocks {
                 .setId(key)
                 .mapColor(color.getMapColor())
                 .strength(0.1F, 15.0F)
-                .sound(SoundType.WOOL)
-                .ignitedByLava());
+                .sound(SoundType.WOOL));
         };
     }
 
-    // Wool block settings, the graphene makes it tougher and creeper proof
+    // Wool block settings, the graphene makes it tougher, creeper proof and fireproof
     private static BlockBehaviour.Properties wool(DyeColor color, ResourceKey<Block> key) {
         return BlockBehaviour.Properties.of()
             .setId(key)
             .mapColor(color.getMapColor())
             .instrument(NoteBlockInstrument.GUITAR)
             .strength(1.3F, 15.0F)
-            .sound(SoundType.WOOL)
-            .ignitedByLava();
+            .sound(SoundType.WOOL);
     }
 }

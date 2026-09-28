@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "avalinexus:nanofibre",
+  "result": {
+    "id": "avalinexus:nanofibre_wall"
+  }
+}
