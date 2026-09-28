@@ -101,6 +101,9 @@ public final class ModItems {
     public static final RegistryEntry<BlockItem> AEROGEL_WALL = ModRegistry.register(Registries.ITEM, "aerogel_wall",
         key -> new BlockItem(ModBlocks.AEROGEL_WALL.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
 
+    public static final RegistryEntry<BlockItem> AVALI_LAMP = ModRegistry.register(Registries.ITEM, "avali_lamp",
+        key -> new BlockItem(ModBlocks.AVALI_LAMP.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
+
     public static final RegistryEntry<BlockItem> AVALI_BED = ModRegistry.register(Registries.ITEM, "avali_bed",
         key -> new BlockItem(ModBlocks.AVALI_BED.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix().stacksTo(1)));
 

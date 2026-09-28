@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "G": "avalinexus:graphene",
+    "A": "avalinexus:aerogel",
+    "L": "minecraft:glowstone"
+  },
+  "pattern": [
+    "GAG",
+    "ALA",
+    "GAG"
+  ],
+  "result": {
+    "count": 4,
+    "id": "avalinexus:avali_lamp"
+  }
+}

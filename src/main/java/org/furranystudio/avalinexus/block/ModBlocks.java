@@ -58,6 +58,16 @@ public final class ModBlocks {
             .strength(5.0F, 30.0F)
             .sound(SoundType.METAL)));
 
+    // Always lit like a sea lantern, easy to break by hand but it shrugs off explosions like the village blocks
+    public static final RegistryEntry<Block> AVALI_LAMP = ModRegistry.register(Registries.BLOCK, "avali_lamp",
+        key -> new Block(BlockBehaviour.Properties.of()
+            .setId(key)
+            .mapColor(MapColor.COLOR_ORANGE)
+            .instrument(NoteBlockInstrument.HAT)
+            .strength(1.5F, 30.0F)
+            .sound(SoundType.GLASS)
+            .lightLevel(state -> 15)));
+
     public static final RegistryEntry<Block> AVALI_BED = ModRegistry.register(Registries.BLOCK, "avali_bed",
         key -> new BedBlock(DyeColor.ORANGE, BlockBehaviour.Properties.of()
             .setId(key)
