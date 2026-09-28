@@ -248,5 +248,22 @@
   "item.avalinexus.nexite_horse_armor": "Nexite Horse Armor",
   "item.avalinexus.nexite_nautilus_armor": "Nexite Nautilus Armor",
   "item.avalinexus.nexite_ingot": "Nexite Ingot",
-  "item.avalinexus.nexite_nugget": "Nexite Nugget"
+  "item.avalinexus.nexite_nugget": "Nexite Nugget",
+  "avalinexus.avali.title": "%s, %s",
+  "avalinexus.pack.frost": "Frost Pack",
+  "avalinexus.pack.echo": "Echo Pack",
+  "avalinexus.pack.wind": "Wind Pack",
+  "avalinexus.pack.aurora": "Aurora Pack",
+  "avalinexus.pack.glacier": "Glacier Pack",
+  "avalinexus.pack.storm": "Storm Pack",
+  "avalinexus.pack.star": "Star Pack",
+  "avalinexus.pack.crystal": "Crystal Pack",
+  "avalinexus.pack.moon": "Moon Pack",
+  "avalinexus.pack.tundra": "Tundra Pack",
+  "avalinexus.pack.song": "Song Pack",
+  "avalinexus.pack.feather": "Feather Pack",
+  "avalinexus.pack.ember": "Ember Pack",
+  "avalinexus.pack.dawn": "Dawn Pack",
+  "avalinexus.pack.shard": "Shard Pack",
+  "avalinexus.pack.drift": "Drift Pack"
 }

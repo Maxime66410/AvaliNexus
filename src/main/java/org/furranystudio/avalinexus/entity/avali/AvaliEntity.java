@@ -27,7 +27,10 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -95,6 +98,7 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     private static final EntityDataAccessor<Integer> DATA_GESTURE = SynchedEntityData.defineId(AvaliEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> DATA_POSE = SynchedEntityData.defineId(AvaliEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> DATA_NAP = SynchedEntityData.defineId(AvaliEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<String> DATA_PACK = SynchedEntityData.defineId(AvaliEntity.class, EntityDataSerializers.STRING);
     private static final EntityDataAccessor<Integer> DATA_DIALOGUE_FACE = SynchedEntityData.defineId(AvaliEntity.class, EntityDataSerializers.INT);
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
@@ -106,6 +110,8 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     private boolean playerNearby;
     private int gestureTicks;
     private boolean justLoaded;
+    // Set once the Avali got its name and pack, older Avalis get theirs on their first tick
+    private boolean named;
     private boolean panicking;
     private ServerPlayer talkingTo;
     private AvaliShop shop;
@@ -147,6 +153,7 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         builder.define(DATA_POSE, -1);
         builder.define(DATA_NAP, false);
         builder.define(DATA_DIALOGUE_FACE, -1);
+        builder.define(DATA_PACK, "");
     }
 
     @Override
@@ -168,6 +175,8 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         if (shop != null) {
             output.store("avalinexus_shop", AvaliShop.CODEC, shop);
         }
+        output.putString("avalinexus_pack", getPack());
+        output.putBoolean("avalinexus_named", named);
     }
 
     @Override
@@ -175,6 +184,8 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         super.readAdditionalSaveData(input);
         justLoaded = true;
         shop = input.read("avalinexus_shop", AvaliShop.CODEC).orElse(null);
+        setPack(input.getStringOr("avalinexus_pack", ""));
+        named = input.getBooleanOr("avalinexus_named", false);
     }
 
     @Override
@@ -214,7 +225,59 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
 
     @Override
     public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob partner) {
-        return ModEntities.AVALI.get().create(level, EntitySpawnReason.BREEDING);
+        AvaliEntity kit = ModEntities.AVALI.get().create(level, EntitySpawnReason.BREEDING);
+        // Kits are raised by the pack of their parents
+        if (kit != null) {
+            kit.setPack(getPack());
+        }
+        return kit;
+    }
+
+    // Avalis spawned together form one pack and share its name
+    @Override
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, EntitySpawnReason reason, SpawnGroupData data) {
+        if (!(data instanceof PackData)) {
+            data = new PackData(AvaliNames.pack(level.getServer(), getRandom()));
+        }
+        setPack(((PackData) data).pack);
+        giveName(level.getServer());
+        return super.finalizeSpawn(level, difficulty, reason, data);
+    }
+
+    private void giveName(net.minecraft.server.MinecraftServer server) {
+        named = true;
+        if (getPack().isEmpty()) {
+            setPack(AvaliNames.pack(server, getRandom()));
+        }
+        if (!hasCustomName()) {
+            setCustomName(Component.literal(AvaliNames.name(server, getRandom())));
+        }
+    }
+
+    public String getPack() {
+        return entityData.get(DATA_PACK);
+    }
+
+    public void setPack(String pack) {
+        entityData.set(DATA_PACK, pack);
+    }
+
+    // Shown in the dialogue and the shop, like Kiri, Frost Pack
+    public Component title() {
+        Component name = hasCustomName() ? getCustomName() : getType().getDescription();
+        if (getPack().isEmpty()) {
+            return name;
+        }
+        return Component.translatable("avalinexus.avali.title", name, Component.translatable("avalinexus.pack." + getPack()));
+    }
+
+    private static final class PackData extends AgeableMob.AgeableMobGroupData {
+        private final String pack;
+
+        private PackData(String pack) {
+            super(true);
+            this.pack = pack;
+        }
     }
 
     @Override
@@ -247,6 +310,9 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
             if (justLoaded) {
                 justLoaded = false;
                 standUpAfterLoad();
+            }
+            if (!named) {
+                giveName(level().getServer());
             }
             updateMood();
             updateGesture();

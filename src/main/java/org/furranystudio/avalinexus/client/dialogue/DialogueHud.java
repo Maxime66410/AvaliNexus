@@ -68,7 +68,7 @@ public final class DialogueHud {
         int top = height - SUBTITLE_BOTTOM - panelHeight;
 
         AvaliUi.panel(graphics, left, top, panelWidth, panelHeight, AvaliUi.BACKDROP);
-        AvaliUi.shadowedText(graphics, font, AvaliUi.styled(Component.translatable("entity.avalinexus.avali")),
+        AvaliUi.shadowedText(graphics, font, AvaliUi.styled(ClientDialogue.speakerTitle()),
             left + PADDING, top + PADDING, AvaliUi.TEXT_SECONDARY);
         for (int i = 0; i < lines.size(); i++) {
             AvaliUi.shadowedText(graphics, font, lines.get(i), left + PADDING, top + PADDING + 12 + i * font.lineHeight, AvaliUi.TEXT_PRIMARY);

@@ -248,5 +248,22 @@
   "item.avalinexus.nexite_horse_armor": "Armadura de Nexita para caballo",
   "item.avalinexus.nexite_nautilus_armor": "Armadura de Nexita para nautilo",
   "item.avalinexus.nexite_ingot": "Lingote de Nexita",
-  "item.avalinexus.nexite_nugget": "Pepita de Nexita"
+  "item.avalinexus.nexite_nugget": "Pepita de Nexita",
+  "avalinexus.avali.title": "%s, %s",
+  "avalinexus.pack.frost": "Manada de la Escarcha",
+  "avalinexus.pack.echo": "Manada del Eco",
+  "avalinexus.pack.wind": "Manada de los Vientos",
+  "avalinexus.pack.aurora": "Manada de la Aurora",
+  "avalinexus.pack.glacier": "Manada del Glaciar",
+  "avalinexus.pack.storm": "Manada de la Tormenta",
+  "avalinexus.pack.star": "Manada de las Estrellas",
+  "avalinexus.pack.crystal": "Manada del Cristal",
+  "avalinexus.pack.moon": "Manada de la Luna",
+  "avalinexus.pack.tundra": "Manada de la Tundra",
+  "avalinexus.pack.song": "Manada del Canto",
+  "avalinexus.pack.feather": "Manada de la Pluma",
+  "avalinexus.pack.ember": "Manada de la Brasa",
+  "avalinexus.pack.dawn": "Manada del Alba",
+  "avalinexus.pack.shard": "Manada del Fragmento",
+  "avalinexus.pack.drift": "Manada de la Ventisca"
 }

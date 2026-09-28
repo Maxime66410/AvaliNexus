@@ -138,6 +138,14 @@ public final class ClientDialogue {
         ModNetworking.sendToServer(new DialogueChoicePayload(entityId, selected));
     }
 
+    // The Avali name and pack when it is loaded, the species name otherwise
+    public static net.minecraft.network.chat.Component speakerTitle() {
+        Minecraft minecraft = Minecraft.getInstance();
+        Entity avali = minecraft.level == null ? null : minecraft.level.getEntity(entityId);
+        return avali instanceof org.furranystudio.avalinexus.entity.avali.AvaliEntity named
+            ? named.title() : net.minecraft.network.chat.Component.translatable("entity.avalinexus.avali");
+    }
+
     public static boolean isActive() {
         return entityId >= 0;
     }

@@ -137,7 +137,10 @@ public class AvaliShopScreen extends Screen {
     }
 
     private void renderHeader(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
-        AvaliUi.shadowedText(graphics, font, AvaliUi.styled(Component.translatable("entity.avalinexus.avali")),
+        net.minecraft.world.entity.Entity avali = Minecraft.getInstance().level.getEntity(entityId);
+        Component speaker = avali instanceof org.furranystudio.avalinexus.entity.avali.AvaliEntity named
+            ? named.title() : Component.translatable("entity.avalinexus.avali");
+        AvaliUi.shadowedText(graphics, font, AvaliUi.styled(font.substrByWidth(speaker, 150).getString()),
             left + 8, top + 9, AvaliUi.TEXT_SECONDARY);
 
         if (inside(mouseX, mouseY, closeX(), closeY(), CLOSE_SIZE, CLOSE_SIZE)) {

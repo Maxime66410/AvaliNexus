@@ -248,5 +248,22 @@
   "item.avalinexus.nexite_horse_armor": "Armure en Nexite pour cheval",
   "item.avalinexus.nexite_nautilus_armor": "Armure en Nexite pour nautile",
   "item.avalinexus.nexite_ingot": "Lingot de Nexite",
-  "item.avalinexus.nexite_nugget": "Pépite de Nexite"
+  "item.avalinexus.nexite_nugget": "Pépite de Nexite",
+  "avalinexus.avali.title": "%s, %s",
+  "avalinexus.pack.frost": "Meute du Givre",
+  "avalinexus.pack.echo": "Meute de l'Écho",
+  "avalinexus.pack.wind": "Meute des Vents",
+  "avalinexus.pack.aurora": "Meute de l'Aurore",
+  "avalinexus.pack.glacier": "Meute du Glacier",
+  "avalinexus.pack.storm": "Meute de la Tempête",
+  "avalinexus.pack.star": "Meute des Étoiles",
+  "avalinexus.pack.crystal": "Meute du Cristal",
+  "avalinexus.pack.moon": "Meute de la Lune",
+  "avalinexus.pack.tundra": "Meute de la Toundra",
+  "avalinexus.pack.song": "Meute du Chant",
+  "avalinexus.pack.feather": "Meute de la Plume",
+  "avalinexus.pack.ember": "Meute de la Braise",
+  "avalinexus.pack.dawn": "Meute de l'Aube",
+  "avalinexus.pack.shard": "Meute de l'Éclat",
+  "avalinexus.pack.drift": "Meute de la Congère"
 }
