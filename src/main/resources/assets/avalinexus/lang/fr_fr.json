@@ -52,5 +52,6 @@
   "biome.avalinexus.polar_taiga": "Taïga polaire",
   "item.avalinexus.avali_cushion": "Coussin Avali",
   "entity.avalinexus.avali_cushion": "Coussin Avali",
-  "block.avalinexus.avali_bed": "Lit Avali"
+  "block.avalinexus.avali_bed": "Lit Avali",
+  "block.avalinexus.avali_carpet": "Tapis Avali"
 }

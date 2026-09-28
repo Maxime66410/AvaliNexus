@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "woolen_carpet",
+  "key": {
+    "O": "minecraft:orange_wool",
+    "Y": "minecraft:yellow_wool"
+  },
+  "pattern": [
+    "OY"
+  ],
+  "result": {
+    "count": 3,
+    "id": "avalinexus:avali_carpet"
+  }
+}

@@ -11,6 +11,7 @@ import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.BedBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.CarpetBlock;
 import net.minecraft.world.level.block.DropExperienceBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -52,6 +53,15 @@ public final class ModBlocks {
             .noOcclusion()
             .ignitedByLava()
             .pushReaction(PushReaction.POPPED)));
+
+    // Same settings as the vanilla wool carpets
+    public static final RegistryEntry<Block> AVALI_CARPET = ModRegistry.register(Registries.BLOCK, "avali_carpet",
+        key -> new CarpetBlock(BlockBehaviour.Properties.of()
+            .setId(key)
+            .mapColor(DyeColor.ORANGE.getMapColor())
+            .strength(0.1F)
+            .sound(SoundType.WOOL)
+            .ignitedByLava()));
 
     private ModBlocks() {
     }

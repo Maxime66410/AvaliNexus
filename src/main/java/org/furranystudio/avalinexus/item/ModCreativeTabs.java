@@ -29,6 +29,7 @@ public final class ModCreativeTabs {
                 output.accept(ModItems.DEEPSLATE_NEXITE_ORE.get());
                 output.accept(ModItems.AVALI_BED.get());
                 output.accept(ModItems.AVALI_CUSHION.get());
+                output.accept(ModItems.AVALI_CARPET.get());
             })
             .build());
 

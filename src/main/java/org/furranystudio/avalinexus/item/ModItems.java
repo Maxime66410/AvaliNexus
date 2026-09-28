@@ -41,6 +41,9 @@ public final class ModItems {
     public static final RegistryEntry<BlockItem> AVALI_BED = ModRegistry.register(Registries.ITEM, "avali_bed",
         key -> new BlockItem(ModBlocks.AVALI_BED.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix().stacksTo(1)));
 
+    public static final RegistryEntry<BlockItem> AVALI_CARPET = ModRegistry.register(Registries.ITEM, "avali_carpet",
+        key -> new BlockItem(ModBlocks.AVALI_CARPET.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
+
     public static final RegistryEntry<AvaliCushionItem> AVALI_CUSHION = ModRegistry.register(Registries.ITEM, "avali_cushion",
         key -> new AvaliCushionItem(new Item.Properties().setId(key)));
 
