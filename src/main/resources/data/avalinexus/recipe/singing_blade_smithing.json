@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smithing_transform",
+  "template": "avalinexus:nexite_upgrade_smithing_template",
+  "base": "avalinexus:aerotech_blade",
+  "addition": "#avalinexus:nexite_tool_materials",
+  "result": {
+    "id": "avalinexus:singing_blade"
+  }
+}

@@ -271,5 +271,11 @@
   "block.avalinexus.coolant": "Refrigerante",
   "item.avalinexus.coolant_bucket": "Cubo de refrigerante",
   "block.avalinexus.fuel": "Combustible avali",
-  "item.avalinexus.fuel_bucket": "Cubo de combustible avali"
+  "item.avalinexus.fuel_bucket": "Cubo de combustible avali",
+  "item.avalinexus.aerotech_dagger": "Daga aerotécnica",
+  "item.avalinexus.aerotech_blade": "Hoja aerotécnica",
+  "item.avalinexus.singing_blade": "Hoja cantora",
+  "item.avalinexus.aerotech_hilt": "Empuñadura aerotécnica",
+  "item.avalinexus.aerotech_hilt.blade": "Hoja: %s",
+  "item.avalinexus.aerotech_hilt.reforge": "Clic derecho con aerogel para reforjar"
 }

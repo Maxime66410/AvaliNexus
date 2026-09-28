@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "A": "avalinexus:aerogel",
+    "N": "avalinexus:nexite_shard",
+    "G": "avalinexus:graphene"
+  },
+  "pattern": [
+    " A ",
+    " A ",
+    "GNG"
+  ],
+  "result": {
+    "id": "avalinexus:aerotech_blade"
+  }
+}

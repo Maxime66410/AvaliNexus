@@ -271,5 +271,11 @@
   "block.avalinexus.coolant": "Liquide de refroidissement",
   "item.avalinexus.coolant_bucket": "Seau de liquide de refroidissement",
   "block.avalinexus.fuel": "Carburant Avali",
-  "item.avalinexus.fuel_bucket": "Seau de carburant Avali"
+  "item.avalinexus.fuel_bucket": "Seau de carburant Avali",
+  "item.avalinexus.aerotech_dagger": "Dague aérotech",
+  "item.avalinexus.aerotech_blade": "Lame aérotech",
+  "item.avalinexus.singing_blade": "Lame chantante",
+  "item.avalinexus.aerotech_hilt": "Poignée aérotech",
+  "item.avalinexus.aerotech_hilt.blade": "Lame : %s",
+  "item.avalinexus.aerotech_hilt.reforge": "Clic droit avec de l'aérogel pour reforger"
 }

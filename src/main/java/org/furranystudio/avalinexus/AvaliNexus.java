@@ -39,6 +39,7 @@ public final class AvaliNexus {
         ModEntities.init();
         ModItems.init();
         NexiteGear.init();
+        org.furranystudio.avalinexus.item.weapon.AerotechWeapons.init();
         TapestryItems.init();
         ModBlockEntities.init();
         ModMenus.init();

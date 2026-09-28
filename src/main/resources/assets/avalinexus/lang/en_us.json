@@ -271,5 +271,11 @@
   "block.avalinexus.coolant": "Coolant",
   "item.avalinexus.coolant_bucket": "Coolant Bucket",
   "block.avalinexus.fuel": "Avali Fuel",
-  "item.avalinexus.fuel_bucket": "Avali Fuel Bucket"
+  "item.avalinexus.fuel_bucket": "Avali Fuel Bucket",
+  "item.avalinexus.aerotech_dagger": "Aerotech Dagger",
+  "item.avalinexus.aerotech_blade": "Aerotech Blade",
+  "item.avalinexus.singing_blade": "Singing Blade",
+  "item.avalinexus.aerotech_hilt": "Aerotech Hilt",
+  "item.avalinexus.aerotech_hilt.blade": "Blade: %s",
+  "item.avalinexus.aerotech_hilt.reforge": "Right click with aerogel to reforge"
 }

@@ -38,6 +38,7 @@ public final class ModCreativeTabs {
                     output.accept(org.furranystudio.avalinexus.fluid.ModFluids.bucket(kind));
                 }
                 NexiteGear.ALL.forEach(item -> output.accept(item.get()));
+                org.furranystudio.avalinexus.item.weapon.AerotechWeapons.ALL.forEach(item -> output.accept(item.get()));
                 output.accept(ModItems.GRAPHENE_BLOCK.get());
                 output.accept(ModItems.GRAPHENE_SLAB.get());
                 output.accept(ModItems.GRAPHENE_STAIRS.get());

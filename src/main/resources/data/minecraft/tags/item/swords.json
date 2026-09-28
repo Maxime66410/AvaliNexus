@@ -1,6 +1,9 @@
 {
   "replace": false,
   "values": [
-    "avalinexus:nexite_sword"
+    "avalinexus:nexite_sword",
+    "avalinexus:aerotech_dagger",
+    "avalinexus:aerotech_blade",
+    "avalinexus:singing_blade"
   ]
 }
