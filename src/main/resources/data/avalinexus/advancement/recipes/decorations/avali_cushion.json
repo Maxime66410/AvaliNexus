@@ -1,0 +1,43 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_orange_wool_slab": {
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:orange_wool_slab"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_yellow_wool_slab": {
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:yellow_wool_slab"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipes": "avalinexus:avali_cushion"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_orange_wool_slab",
+      "has_yellow_wool_slab"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "avalinexus:avali_cushion"
+    ]
+  }
+}

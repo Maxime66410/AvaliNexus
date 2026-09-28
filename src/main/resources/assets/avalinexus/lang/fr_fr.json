@@ -49,5 +49,7 @@
   "avalinexus.shop.close": "Fermer",
   "block.avalinexus.nexite_ore": "Minerai de Nexite",
   "block.avalinexus.deepslate_nexite_ore": "Minerai de Nexite des abîmes",
-  "biome.avalinexus.polar_taiga": "Taïga polaire"
+  "biome.avalinexus.polar_taiga": "Taïga polaire",
+  "item.avalinexus.avali_cushion": "Coussin Avali",
+  "entity.avalinexus.avali_cushion": "Coussin Avali"
 }

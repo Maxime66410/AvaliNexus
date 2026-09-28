@@ -15,9 +15,11 @@ import net.minecraft.world.entity.SpawnPlacementType;
 import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.decoration.Cushion;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.Heightmap;
 import org.furranystudio.avalinexus.entity.avali.AvaliEntity;
+import org.furranystudio.avalinexus.entity.cushion.AvaliCushion;
 import org.furranystudio.avalinexus.registry.ModRegistry;
 import org.furranystudio.avalinexus.registry.RegistryEntry;
 
@@ -43,6 +45,16 @@ public final class ModEntities {
             .sized(0.6F, 1.8F)
             .eyeHeight(1.62F)
             .ridingOffset(-0.75F)
+            .build(key));
+
+    // Same settings as the vanilla cushion
+    public static final RegistryEntry<EntityType<Cushion>> AVALI_CUSHION = ModRegistry.register(Registries.ENTITY_TYPE, "avali_cushion",
+        key -> EntityType.Builder.<Cushion>of(AvaliCushion::new, MobCategory.MISC)
+            .noLootTable()
+            .sized(1.0F, 0.25F)
+            .clientTrackingRange(10)
+            .updateInterval(Integer.MAX_VALUE)
+            .dontTrackDeltas()
             .build(key));
 
     private ModEntities() {

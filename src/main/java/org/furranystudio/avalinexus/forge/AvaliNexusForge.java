@@ -34,6 +34,7 @@ import org.furranystudio.avalinexus.Config;
 import org.furranystudio.avalinexus.Platform;
 import org.furranystudio.avalinexus.client.AvaliNexusClient;
 import org.furranystudio.avalinexus.client.avali.AvaliRenderer;
+import org.furranystudio.avalinexus.client.cushion.AvaliCushionRenderer;
 import org.furranystudio.avalinexus.client.dialogue.ClientDialogue;
 import org.furranystudio.avalinexus.client.dialogue.DialogueHud;
 import org.furranystudio.avalinexus.client.dialogue.DialogueKeys;
@@ -84,8 +85,10 @@ public class AvaliNexusForge {
             TickEvent.ClientTickEvent.Pre.BUS.addListener(event -> ClientDialogue.tick());
             InputEvent.MouseScrollingEvent.BUS.addListener((Predicate<InputEvent.MouseScrollingEvent>) event ->
                 ClientDialogue.onScroll(event.getDeltaY()));
-            EntityRenderersEvent.RegisterRenderers.BUS.addListener(event ->
-                event.registerEntityRenderer(ModEntities.AVALI.get(), AvaliRenderer::new));
+            EntityRenderersEvent.RegisterRenderers.BUS.addListener(event -> {
+                event.registerEntityRenderer(ModEntities.AVALI.get(), AvaliRenderer::new);
+                event.registerEntityRenderer(ModEntities.AVALI_CUSHION.get(), AvaliCushionRenderer::new);
+            });
         }
 
         FMLCommonSetupEvent.getBus(context.getModBusGroup()).addListener(event -> {

@@ -38,6 +38,9 @@ public final class ModItems {
         key -> new SpawnEggItem(new Item.Properties().setId(key).delayedComponent(DataComponents.ENTITY_DATA,
             registries -> TypedEntityData.of(ModEntities.AVALI.get(), new CompoundTag()))));
 
+    public static final RegistryEntry<AvaliCushionItem> AVALI_CUSHION = ModRegistry.register(Registries.ITEM, "avali_cushion",
+        key -> new AvaliCushionItem(new Item.Properties().setId(key)));
+
     private ModItems() {
     }
 

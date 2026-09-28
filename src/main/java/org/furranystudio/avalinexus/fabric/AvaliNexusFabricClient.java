@@ -14,6 +14,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import org.furranystudio.avalinexus.AvaliNexus;
 import org.furranystudio.avalinexus.client.AvaliNexusClient;
 import org.furranystudio.avalinexus.client.avali.AvaliRenderer;
+import org.furranystudio.avalinexus.client.cushion.AvaliCushionRenderer;
 import org.furranystudio.avalinexus.client.dialogue.ClientDialogue;
 import org.furranystudio.avalinexus.client.dialogue.DialogueHud;
 import org.furranystudio.avalinexus.client.dialogue.DialogueKeys;
@@ -29,5 +30,6 @@ public final class AvaliNexusFabricClient implements ClientModInitializer {
         KeyMappingHelper.registerKeyMapping(DialogueKeys.CURSOR);
         ClientTickEvents.START_CLIENT_TICK.register(client -> ClientDialogue.tick());
         EntityRendererRegistry.register(ModEntities.AVALI.get(), AvaliRenderer::new);
+        EntityRendererRegistry.register(ModEntities.AVALI_CUSHION.get(), AvaliCushionRenderer::new);
     }
 }

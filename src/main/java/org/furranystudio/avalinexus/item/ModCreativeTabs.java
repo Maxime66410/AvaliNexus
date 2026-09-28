@@ -27,6 +27,7 @@ public final class ModCreativeTabs {
                 output.accept(ModItems.NEXITE_SHARD.get());
                 output.accept(ModItems.NEXITE_ORE.get());
                 output.accept(ModItems.DEEPSLATE_NEXITE_ORE.get());
+                output.accept(ModItems.AVALI_CUSHION.get());
             })
             .build());
 

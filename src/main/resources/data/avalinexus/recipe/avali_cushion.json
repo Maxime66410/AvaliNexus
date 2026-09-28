@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "cushion",
+  "key": {
+    "O": "minecraft:orange_wool_slab",
+    "Y": "minecraft:yellow_wool_slab"
+  },
+  "pattern": [
+    "OYO"
+  ],
+  "result": {
+    "id": "avalinexus:avali_cushion"
+  }
+}

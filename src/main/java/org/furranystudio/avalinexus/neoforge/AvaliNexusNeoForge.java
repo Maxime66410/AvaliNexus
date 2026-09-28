@@ -38,6 +38,7 @@ import org.furranystudio.avalinexus.Config;
 import org.furranystudio.avalinexus.Platform;
 import org.furranystudio.avalinexus.client.AvaliNexusClient;
 import org.furranystudio.avalinexus.client.avali.AvaliRenderer;
+import org.furranystudio.avalinexus.client.cushion.AvaliCushionRenderer;
 import org.furranystudio.avalinexus.client.dialogue.ClientDialogue;
 import org.furranystudio.avalinexus.client.dialogue.DialogueHud;
 import org.furranystudio.avalinexus.client.dialogue.DialogueKeys;
@@ -91,8 +92,10 @@ public class AvaliNexusNeoForge {
                     event.setCanceled(true);
                 }
             });
-            modEventBus.addListener((EntityRenderersEvent.RegisterRenderers event) ->
-                event.registerEntityRenderer(ModEntities.AVALI.get(), AvaliRenderer::new));
+            modEventBus.addListener((EntityRenderersEvent.RegisterRenderers event) -> {
+                event.registerEntityRenderer(ModEntities.AVALI.get(), AvaliRenderer::new);
+                event.registerEntityRenderer(ModEntities.AVALI_CUSHION.get(), AvaliCushionRenderer::new);
+            });
         }
 
         modEventBus.addListener((FMLCommonSetupEvent event) -> {
