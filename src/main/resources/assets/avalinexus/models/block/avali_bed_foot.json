@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/template_bed_foot",
+  "textures": {
+    "east": "avalinexus:block/avali_bed_foot_east",
+    "south": "avalinexus:block/avali_bed_foot_south",
+    "up": "avalinexus:block/avali_bed_foot_up",
+    "west": "avalinexus:block/avali_bed_foot_west"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "bed",
+  "key": {
+    "O": "minecraft:orange_wool",
+    "Y": "minecraft:yellow_wool",
+    "#": "#minecraft:planks"
+  },
+  "pattern": [
+    "OYO",
+    "###"
+  ],
+  "result": {
+    "id": "avalinexus:avali_bed"
+  }
+}

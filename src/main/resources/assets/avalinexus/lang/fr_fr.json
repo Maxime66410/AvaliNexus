@@ -51,5 +51,6 @@
   "block.avalinexus.deepslate_nexite_ore": "Minerai de Nexite des abîmes",
   "biome.avalinexus.polar_taiga": "Taïga polaire",
   "item.avalinexus.avali_cushion": "Coussin Avali",
-  "entity.avalinexus.avali_cushion": "Coussin Avali"
+  "entity.avalinexus.avali_cushion": "Coussin Avali",
+  "block.avalinexus.avali_bed": "Lit Avali"
 }

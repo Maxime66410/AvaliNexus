@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/template_bed_head",
+  "textures": {
+    "east": "avalinexus:block/avali_bed_head_east",
+    "north": "avalinexus:block/avali_bed_head_north",
+    "up": "avalinexus:block/avali_bed_head_up",
+    "west": "avalinexus:block/avali_bed_head_west"
+  }
+}
