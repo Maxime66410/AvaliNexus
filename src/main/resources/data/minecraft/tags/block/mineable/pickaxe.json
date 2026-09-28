@@ -11,6 +11,7 @@
     "avalinexus:cut_graphene_stairs",
     "avalinexus:cut_graphene_slab",
     "avalinexus:cut_graphene_wall",
-    "avalinexus:nexite_block"
+    "avalinexus:nexite_block",
+    "avalinexus:heater"
   ]
 }

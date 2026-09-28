@@ -1,0 +1,34 @@
+{
+  "variants": {
+    "facing=west,lit=false": {
+      "model": "avalinexus:block/heater"
+    },
+    "facing=west,lit=true": {
+      "model": "avalinexus:block/heater"
+    },
+    "facing=north,lit=false": {
+      "model": "avalinexus:block/heater",
+      "y": 90
+    },
+    "facing=north,lit=true": {
+      "model": "avalinexus:block/heater",
+      "y": 90
+    },
+    "facing=east,lit=false": {
+      "model": "avalinexus:block/heater",
+      "y": 180
+    },
+    "facing=east,lit=true": {
+      "model": "avalinexus:block/heater",
+      "y": 180
+    },
+    "facing=south,lit=false": {
+      "model": "avalinexus:block/heater",
+      "y": 270
+    },
+    "facing=south,lit=true": {
+      "model": "avalinexus:block/heater",
+      "y": 270
+    }
+  }
+}

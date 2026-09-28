@@ -35,6 +35,10 @@ import org.furranystudio.avalinexus.Config;
 import org.furranystudio.avalinexus.Platform;
 import org.furranystudio.avalinexus.client.AvaliNexusClient;
 import org.furranystudio.avalinexus.client.avali.AvaliRenderer;
+import org.furranystudio.avalinexus.client.heater.HeaterScreen;
+import org.furranystudio.avalinexus.inventory.ModMenus;
+import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import org.furranystudio.avalinexus.client.block.NanocanvasTints;
 import org.furranystudio.avalinexus.client.cushion.AvaliCushionRenderer;
 import org.furranystudio.avalinexus.client.tapestry.AvaliTapestryRenderer;
@@ -83,6 +87,8 @@ public class AvaliNexusForge {
 
         if (FMLEnvironment.dist == Dist.CLIENT) {
             AvaliNexusClient.init();
+            FMLClientSetupEvent.getBus(context.getModBusGroup()).addListener(event ->
+                event.enqueueWork(() -> MenuScreens.register(ModMenus.HEATER.get(), HeaterScreen::new)));
             AddGuiOverlayLayersEvent.BUS.addListener(event -> event.getLayeredDraw().add(AvaliNexus.id("dialogue"), DialogueHud::render));
             RegisterKeyMappingsEvent.BUS.addListener(event -> event.register(DialogueKeys.CURSOR));
             RegisterColorHandlersEvent.Block.BUS.addListener(event -> NanocanvasTints.register(event::register));

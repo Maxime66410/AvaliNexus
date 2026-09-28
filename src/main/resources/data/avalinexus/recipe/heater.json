@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "G": "avalinexus:graphene",
+    "F": "minecraft:furnace",
+    "N": "avalinexus:nexite_shard"
+  },
+  "pattern": [
+    "GGG",
+    "GFG",
+    "GNG"
+  ],
+  "result": {
+    "id": "avalinexus:heater"
+  }
+}

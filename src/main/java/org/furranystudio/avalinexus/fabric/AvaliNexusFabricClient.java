@@ -15,6 +15,11 @@ import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import org.furranystudio.avalinexus.AvaliNexus;
 import org.furranystudio.avalinexus.client.AvaliNexusClient;
 import org.furranystudio.avalinexus.client.avali.AvaliRenderer;
+import org.furranystudio.avalinexus.client.heater.HeaterScreen;
+import org.furranystudio.avalinexus.inventory.ModMenus;
+import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.world.inventory.MenuType;
+import java.lang.reflect.Method;
 import org.furranystudio.avalinexus.client.block.NanocanvasTints;
 import org.furranystudio.avalinexus.client.cushion.AvaliCushionRenderer;
 import org.furranystudio.avalinexus.client.tapestry.AvaliTapestryRenderer;
@@ -33,8 +38,39 @@ public final class AvaliNexusFabricClient implements ClientModInitializer {
         KeyMappingHelper.registerKeyMapping(DialogueKeys.CURSOR);
         ClientTickEvents.START_CLIENT_TICK.register(client -> ClientDialogue.tick());
         EntityRendererRegistry.register(ModEntities.AVALI.get(), AvaliRenderer::new);
+        registerScreen(ModMenus.HEATER.get(), (menu, inventory, title) -> new HeaterScreen((org.furranystudio.avalinexus.block.heater.HeaterMenu) menu, inventory, title));
         NanocanvasTints.register(BlockColorRegistry::register);
         EntityRendererRegistry.register(ModEntities.AVALI_CUSHION.get(), AvaliCushionRenderer::new);
         EntityRendererRegistry.register(ModEntities.AVALI_TAPESTRY.get(), AvaliTapestryRenderer::new);
+    }
+
+    public interface ScreenFactory {
+        net.minecraft.client.gui.screens.Screen create(net.minecraft.world.inventory.AbstractContainerMenu menu,
+                                                       net.minecraft.world.entity.player.Inventory inventory,
+                                                       net.minecraft.network.chat.Component title);
+    }
+
+    // MenuScreens.register is private and Fabric API only opens it to itself
+    private static void registerScreen(MenuType<?> type, ScreenFactory factory) {
+        try {
+            Class<?> constructorClass = Class.forName("net.minecraft.client.gui.screens.MenuScreens$ScreenConstructor");
+            Object constructor = java.lang.reflect.Proxy.newProxyInstance(constructorClass.getClassLoader(), new Class<?>[] {constructorClass},
+                (proxy, method, args) -> {
+                    if (method.getDeclaringClass() == Object.class) {
+                        return switch (method.getName()) {
+                            case "hashCode" -> System.identityHashCode(proxy);
+                            case "equals" -> proxy == args[0];
+                            default -> "AvaliScreenConstructor";
+                        };
+                    }
+                    return factory.create((net.minecraft.world.inventory.AbstractContainerMenu) args[0],
+                        (net.minecraft.world.entity.player.Inventory) args[1], (net.minecraft.network.chat.Component) args[2]);
+                });
+            Method register = MenuScreens.class.getDeclaredMethod("register", MenuType.class, constructorClass);
+            register.setAccessible(true);
+            register.invoke(null, type, constructor);
+        } catch (ReflectiveOperationException e) {
+            throw new IllegalStateException("Could not register the screen of " + type, e);
+        }
     }
 }

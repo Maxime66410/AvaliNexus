@@ -170,5 +170,7 @@
   "item.avalinexus.black_avali_chevron_tapestry": "Black Avali Chevron Tapestry",
   "block.avalinexus.nexite_block": "Block of Nexite",
   "block.avalinexus.avali_lamp": "Avali Lamp",
-  "block.avalinexus.crystal_pot": "Crystal Pot"
+  "block.avalinexus.crystal_pot": "Crystal Pot",
+  "block.avalinexus.heater": "Heater",
+  "container.avalinexus.heater": "Heater"
 }

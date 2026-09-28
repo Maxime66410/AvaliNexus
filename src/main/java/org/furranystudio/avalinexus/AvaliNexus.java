@@ -8,11 +8,13 @@ package org.furranystudio.avalinexus;
 
 import com.mojang.logging.LogUtils;
 import net.minecraft.resources.Identifier;
+import org.furranystudio.avalinexus.block.ModBlockEntities;
 import org.furranystudio.avalinexus.block.ModBlocks;
 import org.furranystudio.avalinexus.block.NanocanvasBlocks;
 import org.furranystudio.avalinexus.entity.ModEntities;
 import org.furranystudio.avalinexus.item.ModCreativeTabs;
 import org.furranystudio.avalinexus.item.ModItems;
+import org.furranystudio.avalinexus.inventory.ModMenus;
 import org.furranystudio.avalinexus.item.TapestryItems;
 import org.furranystudio.avalinexus.network.ModPackets;
 import org.furranystudio.avalinexus.sound.ModSounds;
@@ -34,6 +36,8 @@ public final class AvaliNexus {
         ModEntities.init();
         ModItems.init();
         TapestryItems.init();
+        ModBlockEntities.init();
+        ModMenus.init();
         ModCreativeTabs.init();
         ModFeatures.init();
         ModPackets.init();

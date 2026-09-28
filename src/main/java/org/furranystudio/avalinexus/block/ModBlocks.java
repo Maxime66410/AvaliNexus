@@ -26,6 +26,7 @@ import net.minecraft.world.level.block.state.properties.BedPart;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
+import org.furranystudio.avalinexus.block.heater.HeaterBlock;
 import org.furranystudio.avalinexus.registry.ModRegistry;
 import org.furranystudio.avalinexus.registry.RegistryEntry;
 
@@ -78,6 +79,18 @@ public final class ModBlocks {
             .lightLevel(state -> 7)
             .noOcclusion()
             .pushReaction(PushReaction.POPPED)));
+
+    // Furnace toughness, glows while it burns
+    public static final RegistryEntry<Block> HEATER = ModRegistry.register(Registries.BLOCK, "heater",
+        key -> new HeaterBlock(BlockBehaviour.Properties.of()
+            .setId(key)
+            .mapColor(MapColor.COLOR_GRAY)
+            .instrument(NoteBlockInstrument.BASEDRUM)
+            .requiresCorrectToolForDrops()
+            .strength(3.5F, 30.0F)
+            .sound(SoundType.METAL)
+            .noOcclusion()
+            .lightLevel(state -> state.getValue(HeaterBlock.LIT) ? 13 : 0)));
 
     public static final RegistryEntry<Block> AVALI_BED = ModRegistry.register(Registries.BLOCK, "avali_bed",
         key -> new BedBlock(DyeColor.ORANGE, BlockBehaviour.Properties.of()

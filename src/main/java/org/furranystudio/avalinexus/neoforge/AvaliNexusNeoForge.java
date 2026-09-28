@@ -39,6 +39,9 @@ import org.furranystudio.avalinexus.Config;
 import org.furranystudio.avalinexus.Platform;
 import org.furranystudio.avalinexus.client.AvaliNexusClient;
 import org.furranystudio.avalinexus.client.avali.AvaliRenderer;
+import org.furranystudio.avalinexus.client.heater.HeaterScreen;
+import org.furranystudio.avalinexus.inventory.ModMenus;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import org.furranystudio.avalinexus.client.block.NanocanvasTints;
 import org.furranystudio.avalinexus.client.cushion.AvaliCushionRenderer;
 import org.furranystudio.avalinexus.client.tapestry.AvaliTapestryRenderer;
@@ -87,6 +90,7 @@ public class AvaliNexusNeoForge {
 
         if (FMLEnvironment.getDist() == Dist.CLIENT) {
             AvaliNexusClient.init();
+            modEventBus.addListener((RegisterMenuScreensEvent event) -> event.register(ModMenus.HEATER.get(), HeaterScreen::new));
             modEventBus.addListener((RegisterGuiLayersEvent event) -> event.registerAboveAll(AvaliNexus.id("dialogue"), DialogueHud::render));
             modEventBus.addListener((RegisterKeyMappingsEvent event) -> event.register(DialogueKeys.CURSOR));
             modEventBus.addListener((RegisterColorHandlersEvent.BlockTintSources event) -> NanocanvasTints.register(event::register));

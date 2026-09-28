@@ -107,6 +107,9 @@ public final class ModItems {
     public static final RegistryEntry<BlockItem> CRYSTAL_POT = ModRegistry.register(Registries.ITEM, "crystal_pot",
         key -> new BlockItem(ModBlocks.CRYSTAL_POT.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
 
+    public static final RegistryEntry<BlockItem> HEATER = ModRegistry.register(Registries.ITEM, "heater",
+        key -> new BlockItem(ModBlocks.HEATER.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
+
     public static final RegistryEntry<BlockItem> AVALI_BED = ModRegistry.register(Registries.ITEM, "avali_bed",
         key -> new BlockItem(ModBlocks.AVALI_BED.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix().stacksTo(1)));
 
