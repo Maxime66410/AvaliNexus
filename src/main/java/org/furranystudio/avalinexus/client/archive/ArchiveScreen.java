@@ -86,7 +86,7 @@ public class ArchiveScreen extends Screen {
                 AvaliUi.panel(graphics, x, y, LIST_WIDTH, ROW_HEIGHT - 2, AvaliUi.BACKDROP);
             }
             graphics.item(new ItemStack(BuiltInRegistries.ITEM.getValue(entry.icon())), x + 2, y + 1);
-            String title = font.substrByWidth(entry.title(), LIST_WIDTH - 24).getString();
+            Component title = AvaliUi.styled(font.substrByWidth(AvaliUi.styled(entry.title()), LIST_WIDTH - 24).getString());
             graphics.text(font, title, x + 21, y + 5, active ? AvaliUi.ORANGE_GLOW : AvaliUi.TEXT_PRIMARY, false);
         }
     }
@@ -98,7 +98,7 @@ public class ArchiveScreen extends Screen {
         AvaliUi.panel(graphics, x - 4, y, textWidth() + 8, HEIGHT - HEADER - PADDING, AvaliUi.BACKDROP);
         AvaliUi.shadowedText(graphics, font, AvaliUi.styled(entry.title()), x, y + 5, AvaliUi.TEXT_SECONDARY);
 
-        List<FormattedCharSequence> lines = font.split(entry.text(), textWidth());
+        List<FormattedCharSequence> lines = font.split(AvaliUi.reading(entry.text()), textWidth());
         int first = Mth.clamp(scroll, 0, Math.max(0, lines.size() - visibleLines()));
         scroll = first;
         int lineY = y + 19;

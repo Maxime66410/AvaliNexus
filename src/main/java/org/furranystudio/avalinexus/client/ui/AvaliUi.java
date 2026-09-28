@@ -15,6 +15,7 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.FormattedCharSequence;
 import org.furranystudio.avalinexus.AvaliNexus;
+import org.furranystudio.avalinexus.Config;
 
 // Avali theme shared by every mod UI
 public final class AvaliUi {
@@ -39,12 +40,27 @@ public final class AvaliUi {
     private AvaliUi() {
     }
 
+    // Titles, buttons and labels, the Avali font unless turned off in the settings
     public static MutableComponent styled(String text) {
-        return Component.literal(text).withStyle(style -> style.withFont(FONT));
+        return withFont(text, Config.AVALI_FONT_UI.get());
     }
 
     public static MutableComponent styled(Component text) {
         return styled(text.getString());
+    }
+
+    // Texts meant to be read, plain font unless the Avali one is turned on for them
+    public static MutableComponent reading(String text) {
+        return withFont(text, Config.AVALI_FONT_READING.get());
+    }
+
+    public static MutableComponent reading(Component text) {
+        return reading(text.getString());
+    }
+
+    private static MutableComponent withFont(String text, boolean avali) {
+        MutableComponent component = Component.literal(text);
+        return avali ? component.withStyle(style -> style.withFont(FONT)) : component;
     }
 
     public static void panel(GuiGraphicsExtractor graphics, int x, int y, int width, int height, int backdrop) {

@@ -181,5 +181,13 @@
   "avalinexus.archive.nexite.title": "Nexite",
   "avalinexus.archive.nexite.text": "Nexite is a yellow crystal found deep underground, and closer to the surface in the polar taiga. The Avali use it as currency and at the heart of their technology.",
   "avalinexus.archive.polar_taiga.title": "The Polar Taiga",
-  "avalinexus.archive.polar_taiga.text": "A frozen forest swept by blizzards. Without warm clothes, a shelter or a heater, travellers slowly freeze. It is the home of the Avali."
+  "avalinexus.archive.polar_taiga.text": "A frozen forest swept by blizzards. Without warm clothes, a shelter or a heater, travellers slowly freeze. It is the home of the Avali.",
+  "avalinexus.settings.title": "Avali Nexus Options",
+  "avalinexus.settings.avaliFontUi": "Avali font on titles",
+  "avalinexus.settings.avaliFontUi.desc": "Titles, buttons and labels",
+  "avalinexus.settings.avaliFontReading": "Avali font on texts",
+  "avalinexus.settings.avaliFontReading.desc": "Archives, dialogue lines and shop",
+  "avalinexus.settings.on": "ON",
+  "avalinexus.settings.off": "OFF",
+  "avalinexus.settings.done": "Done"
 }

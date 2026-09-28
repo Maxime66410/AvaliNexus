@@ -146,7 +146,7 @@ public class AvaliShopScreen extends Screen {
         }
         graphics.blitSprite(RenderPipelines.GUI_TEXTURED, DialogueChoice.LEAVE.icon(), closeX(), closeY(), CLOSE_SIZE, CLOSE_SIZE);
 
-        Component balance = Component.translatable("avalinexus.shop.balance", nexite());
+        Component balance = AvaliUi.reading(Component.translatable("avalinexus.shop.balance", nexite()));
         int textWidth = font.width(balance);
         int x = closeX() - 8 - textWidth;
         AvaliUi.shadowedText(graphics, font, balance, x, top + 9, AvaliUi.TEXT_PRIMARY);
@@ -165,7 +165,7 @@ public class AvaliShopScreen extends Screen {
 
     private void renderList(GuiGraphicsExtractor graphics, List<Integer> visible, int mouseX, int mouseY) {
         if (visible.isEmpty()) {
-            graphics.text(font, Component.translatable("avalinexus.shop.empty"), left + 12, listTop() + 4, AvaliUi.TEXT_DISABLED, false);
+            graphics.text(font, AvaliUi.reading(Component.translatable("avalinexus.shop.empty")), left + 12, listTop() + 4, AvaliUi.TEXT_DISABLED, false);
             return;
         }
         for (int row = 0; row < visible.size(); row++) {
@@ -177,8 +177,9 @@ public class AvaliShopScreen extends Screen {
             graphics.item(offer.item(), left + 10, y + 1);
             graphics.itemDecorations(font, offer.item(), left + 10, y + 1);
             int nameColor = offer.remaining() > 0 ? AvaliUi.TEXT_PRIMARY : AvaliUi.TEXT_DISABLED;
-            graphics.text(font, font.substrByWidth(offer.item().getHoverName(), 80).getString(), left + 30, y + 5, nameColor, false);
-            String price = String.valueOf(offer.price());
+            Component itemName = AvaliUi.reading(font.substrByWidth(AvaliUi.reading(offer.item().getHoverName()), 80).getString());
+            graphics.text(font, itemName, left + 30, y + 5, nameColor, false);
+            Component price = AvaliUi.reading(String.valueOf(offer.price()));
             int priceX = left + 8 + LIST_WIDTH - 14 - font.width(price);
             graphics.text(font, price, priceX, y + 5, AvaliUi.ORANGE_GLOW, false);
             smallNexite(graphics, left + 8 + LIST_WIDTH - 12, y + 4);
@@ -207,10 +208,11 @@ public class AvaliShopScreen extends Screen {
         }
 
         Component name = Component.literal(offer.item().getCount() + "x ").append(offer.item().getHoverName());
-        graphics.centeredText(font, font.substrByWidth(name, DETAIL_WIDTH - 8).getString(), x + DETAIL_WIDTH / 2, y + 42, AvaliUi.TEXT_PRIMARY);
-        Component price = Component.translatable("avalinexus.shop.price", offer.price());
+        Component shortName = AvaliUi.reading(font.substrByWidth(AvaliUi.reading(name), DETAIL_WIDTH - 8).getString());
+        graphics.centeredText(font, shortName, x + DETAIL_WIDTH / 2, y + 42, AvaliUi.TEXT_PRIMARY);
+        Component price = AvaliUi.reading(Component.translatable("avalinexus.shop.price", offer.price()));
         graphics.centeredText(font, price, x + DETAIL_WIDTH / 2, y + 54, AvaliUi.ORANGE_GLOW);
-        Component stock = Component.translatable("avalinexus.shop.stock", offer.remaining(), offer.maxUses());
+        Component stock = AvaliUi.reading(Component.translatable("avalinexus.shop.stock", offer.remaining(), offer.maxUses()));
         graphics.centeredText(font, stock, x + DETAIL_WIDTH / 2, y + 64, AvaliUi.TEXT_DISABLED);
 
         Component problem = problem(offer);

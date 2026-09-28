@@ -62,7 +62,7 @@ public final class DialogueHud {
 
     private static void renderSubtitle(GuiGraphicsExtractor graphics, Font font, int width, int height) {
         int panelWidth = Math.min(SUBTITLE_MAX_WIDTH, width - 40);
-        List<FormattedCharSequence> lines = font.split(AvaliUi.styled(ClientDialogue.visibleText()), panelWidth - PADDING * 2);
+        List<FormattedCharSequence> lines = font.split(AvaliUi.reading(ClientDialogue.visibleText()), panelWidth - PADDING * 2);
         int panelHeight = PADDING * 2 + 12 + Math.max(1, lines.size()) * font.lineHeight;
         int left = (width - panelWidth) / 2;
         int top = height - SUBTITLE_BOTTOM - panelHeight;

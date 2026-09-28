@@ -34,6 +34,11 @@ repositories {
         content { includeGroupAndSubgroups 'com.geckolib' }
     }
     maven {
+        name = 'TerraformersMC'
+        url = 'https://maven.terraformersmc.com/releases/'
+        content { includeGroup 'com.terraformersmc' }
+    }
+    maven {
         name = 'Glitchfiend'
         url = 'https://maven.minecraftforge.net/'
         content { includeGroup 'com.github.glitchfiend' }
@@ -49,6 +54,8 @@ dependencies {
     implementation "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}"
     implementation "com.geckolib:geckolib-fabric-${minecraft_version}:${geckolib_version}"
     implementation "com.github.glitchfiend:TerraBlender-fabric:${minecraft_version}-${terrablender_version}"
+    // Optional, only adds the config button to the mod list when installed
+    compileOnly "com.terraformersmc:modmenu:${modmenu_version}"
 }
 
 tasks.withType(JavaCompile).configureEach {

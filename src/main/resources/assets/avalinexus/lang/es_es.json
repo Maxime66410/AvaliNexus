@@ -181,5 +181,13 @@
   "avalinexus.archive.nexite.title": "La Nexita",
   "avalinexus.archive.nexite.text": "La Nexita es un cristal amarillo que se encuentra en las profundidades, y más cerca de la superficie en la taiga polar. Los avali la usan como moneda y en el corazón de su tecnología.",
   "avalinexus.archive.polar_taiga.title": "La taiga polar",
-  "avalinexus.archive.polar_taiga.text": "Un bosque helado azotado por ventiscas. Sin ropa de abrigo, un refugio o un calefactor, los viajeros se congelan poco a poco. Es el hogar de los avali."
+  "avalinexus.archive.polar_taiga.text": "Un bosque helado azotado por ventiscas. Sin ropa de abrigo, un refugio o un calefactor, los viajeros se congelan poco a poco. Es el hogar de los avali.",
+  "avalinexus.settings.title": "Opciones de Avali Nexus",
+  "avalinexus.settings.avaliFontUi": "Fuente avali en títulos",
+  "avalinexus.settings.avaliFontUi.desc": "Títulos, botones y etiquetas",
+  "avalinexus.settings.avaliFontReading": "Fuente avali en textos",
+  "avalinexus.settings.avaliFontReading.desc": "Archivos, diálogos y tienda",
+  "avalinexus.settings.on": "SÍ",
+  "avalinexus.settings.off": "NO",
+  "avalinexus.settings.done": "Hecho"
 }

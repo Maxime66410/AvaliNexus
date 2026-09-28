@@ -4,7 +4,9 @@
   "version": "${mod_version}",
   "name": "${mod_name}",
   "description": "${mod_description}",
-  "authors": ["${mod_authors}"],
+  "authors": [
+    "${mod_authors}"
+  ],
   "contact": {
     "homepage": "https://furranystudio.fr"
   },
@@ -12,9 +14,18 @@
   "icon": "assets/avalinexus/img/AN-Icon.png",
   "environment": "*",
   "entrypoints": {
-    "main": ["org.furranystudio.avalinexus.fabric.AvaliNexusFabric"],
-    "client": ["org.furranystudio.avalinexus.fabric.AvaliNexusFabricClient"],
-    "terrablender": ["org.furranystudio.avalinexus.fabric.AvaliNexusTerraBlender"]
+    "main": [
+      "org.furranystudio.avalinexus.fabric.AvaliNexusFabric"
+    ],
+    "client": [
+      "org.furranystudio.avalinexus.fabric.AvaliNexusFabricClient"
+    ],
+    "terrablender": [
+      "org.furranystudio.avalinexus.fabric.AvaliNexusTerraBlender"
+    ],
+    "modmenu": [
+      "org.furranystudio.avalinexus.fabric.AvaliNexusModMenu"
+    ]
   },
   "mixins": [
     "avalinexus.fabric.mixins.json"
@@ -26,5 +37,8 @@
     "fabric-api": "*",
     "geckolib": ">=${geckolib_version}",
     "terrablender": ">=${terrablender_version}"
+  },
+  "suggests": {
+    "modmenu": "*"
   }
 }

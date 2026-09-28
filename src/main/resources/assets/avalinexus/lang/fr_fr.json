@@ -181,5 +181,13 @@
   "avalinexus.archive.nexite.title": "La Nexite",
   "avalinexus.archive.nexite.text": "La Nexite est un cristal jaune qu'on trouve dans les profondeurs, et plus près de la surface dans la taïga polaire. Les Avalis s'en servent comme monnaie et au cœur de leur technologie.",
   "avalinexus.archive.polar_taiga.title": "La taïga polaire",
-  "avalinexus.archive.polar_taiga.text": "Une forêt gelée balayée par les blizzards. Sans vêtements chauds, sans abri ou sans radiateur, les voyageurs gèlent peu à peu. C'est le foyer des Avalis."
+  "avalinexus.archive.polar_taiga.text": "Une forêt gelée balayée par les blizzards. Sans vêtements chauds, sans abri ou sans radiateur, les voyageurs gèlent peu à peu. C'est le foyer des Avalis.",
+  "avalinexus.settings.title": "Options Avali Nexus",
+  "avalinexus.settings.avaliFontUi": "Police Avali sur les titres",
+  "avalinexus.settings.avaliFontUi.desc": "Titres, boutons et libellés",
+  "avalinexus.settings.avaliFontReading": "Police Avali sur les textes",
+  "avalinexus.settings.avaliFontReading.desc": "Archives, dialogues et boutique",
+  "avalinexus.settings.on": "OUI",
+  "avalinexus.settings.off": "NON",
+  "avalinexus.settings.done": "Terminé"
 }

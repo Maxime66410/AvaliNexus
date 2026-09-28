@@ -23,9 +23,15 @@ public final class Config {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     public static final ConfigValue<Boolean> DEBUG_LOGGING = new ConfigValue<>("debugLogging", false);
+    // Avali font on titles, buttons and labels of the mod screens
+    public static final ConfigValue<Boolean> AVALI_FONT_UI = new ConfigValue<>("avaliFontUi", true);
+    // Avali font on longer texts meant to be read, like archives and dialogue lines
+    public static final ConfigValue<Boolean> AVALI_FONT_READING = new ConfigValue<>("avaliFontReading", false);
 
     private static final ConfigValue<?>[] VALUES = {
-        DEBUG_LOGGING
+        DEBUG_LOGGING,
+        AVALI_FONT_UI,
+        AVALI_FONT_READING
     };
 
     private Config() {
@@ -33,6 +39,8 @@ public final class Config {
 
     public static void registerSettings() {
         SettingsRegistry.register("debugLogging", new BoolSetting(DEBUG_LOGGING));
+        SettingsRegistry.register("avaliFontUi", new BoolSetting(AVALI_FONT_UI));
+        SettingsRegistry.register("avaliFontReading", new BoolSetting(AVALI_FONT_READING));
     }
 
     public static void load() {

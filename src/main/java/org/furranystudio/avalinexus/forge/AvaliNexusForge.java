@@ -13,6 +13,7 @@ import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.ConfigScreenHandler;
 import net.minecraftforge.client.event.AddGuiOverlayLayersEvent;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.InputEvent;
@@ -36,6 +37,7 @@ import org.furranystudio.avalinexus.Platform;
 import org.furranystudio.avalinexus.client.AvaliNexusClient;
 import org.furranystudio.avalinexus.client.avali.AvaliRenderer;
 import org.furranystudio.avalinexus.client.heater.HeaterScreen;
+import org.furranystudio.avalinexus.client.settings.AvaliSettingsScreen;
 import org.furranystudio.avalinexus.inventory.ModMenus;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -87,6 +89,8 @@ public class AvaliNexusForge {
 
         if (FMLEnvironment.dist == Dist.CLIENT) {
             AvaliNexusClient.init();
+            context.registerExtensionPoint(ConfigScreenHandler.ConfigScreenFactory.class,
+                () -> new ConfigScreenHandler.ConfigScreenFactory(AvaliSettingsScreen::new));
             FMLClientSetupEvent.getBus(context.getModBusGroup()).addListener(event ->
                 event.enqueueWork(() -> MenuScreens.register(ModMenus.HEATER.get(), HeaterScreen::new)));
             AddGuiOverlayLayersEvent.BUS.addListener(event -> event.getLayeredDraw().add(AvaliNexus.id("dialogue"), DialogueHud::render));
