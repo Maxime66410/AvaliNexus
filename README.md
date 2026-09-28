@@ -43,6 +43,7 @@ Saved in `config/avalinexus.json`.
 - NeoForge 26.3.0.23-beta
 - Fabric Loader 0.19.5 / Fabric API 0.161.0+26.3
 - GeckoLib 5.5.7 (models and animations), needs to be installed with the mod
+- TerraBlender 26.3.0.0.7 (adds the polar biome to the overworld), needs to be installed with the mod too
 - FTB Quests + FTB Library support is planned for way later
 
 ## Project structure
