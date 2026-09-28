@@ -48,5 +48,6 @@
   "avalinexus.shop.not_enough_nexite": "Pas assez de Nexite",
   "avalinexus.shop.close": "Fermer",
   "block.avalinexus.nexite_ore": "Minerai de Nexite",
-  "block.avalinexus.deepslate_nexite_ore": "Minerai de Nexite des abîmes"
+  "block.avalinexus.deepslate_nexite_ore": "Minerai de Nexite des abîmes",
+  "biome.avalinexus.polar_taiga": "Taïga polaire"
 }

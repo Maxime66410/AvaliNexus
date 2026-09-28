@@ -70,3 +70,9 @@ description='''${mod_description}'''
    versionRange="[${geckolib_version},)"
    ordering="NONE"
    side="BOTH"
+[[dependencies."${mod_id}"]]
+   modId="terrablender"
+   mandatory=true
+   versionRange="[${terrablender_version},)"
+   ordering="NONE"
+   side="BOTH"

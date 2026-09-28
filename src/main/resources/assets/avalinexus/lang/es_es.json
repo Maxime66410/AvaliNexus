@@ -48,5 +48,6 @@
   "avalinexus.shop.not_enough_nexite": "No tienes suficiente Nexita",
   "avalinexus.shop.close": "Cerrar",
   "block.avalinexus.nexite_ore": "Mena de Nexita",
-  "block.avalinexus.deepslate_nexite_ore": "Mena de Nexita de pizarra profunda"
+  "block.avalinexus.deepslate_nexite_ore": "Mena de Nexita de pizarra profunda",
+  "biome.avalinexus.polar_taiga": "Taiga polar"
 }

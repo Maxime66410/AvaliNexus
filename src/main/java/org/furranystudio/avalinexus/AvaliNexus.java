@@ -14,6 +14,7 @@ import org.furranystudio.avalinexus.item.ModCreativeTabs;
 import org.furranystudio.avalinexus.item.ModItems;
 import org.furranystudio.avalinexus.network.ModPackets;
 import org.furranystudio.avalinexus.sound.ModSounds;
+import org.furranystudio.avalinexus.worldgen.ModFeatures;
 import org.slf4j.Logger;
 
 public final class AvaliNexus {
@@ -30,6 +31,7 @@ public final class AvaliNexus {
         ModEntities.init();
         ModItems.init();
         ModCreativeTabs.init();
+        ModFeatures.init();
         ModPackets.init();
     }
 

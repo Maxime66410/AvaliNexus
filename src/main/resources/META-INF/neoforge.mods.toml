@@ -33,3 +33,10 @@ description='''${mod_description}'''
     versionRange="[${geckolib_version},)"
     ordering="NONE"
     side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="terrablender"
+    type="required"
+    versionRange="[${terrablender_version},)"
+    ordering="NONE"
+    side="BOTH"

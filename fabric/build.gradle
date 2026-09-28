@@ -33,6 +33,11 @@ repositories {
         url = 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
         content { includeGroupAndSubgroups 'com.geckolib' }
     }
+    maven {
+        name = 'Glitchfiend'
+        url = 'https://maven.minecraftforge.net/'
+        content { includeGroup 'com.github.glitchfiend' }
+    }
 }
 
 dependencies {
@@ -43,6 +48,7 @@ dependencies {
     implementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
     implementation "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}"
     implementation "com.geckolib:geckolib-fabric-${minecraft_version}:${geckolib_version}"
+    implementation "com.github.glitchfiend:TerraBlender-fabric:${minecraft_version}-${terrablender_version}"
 }
 
 tasks.withType(JavaCompile).configureEach {
@@ -57,7 +63,7 @@ java {
 
 tasks.named('processResources', ProcessResources).configure {
     var replaceProperties = [
-            minecraft_version: minecraft_version, geckolib_version: geckolib_version,
+            minecraft_version: minecraft_version, geckolib_version: geckolib_version, terrablender_version: terrablender_version,
             mod_id: mod_id, mod_name: mod_name, mod_license: mod_license, mod_version: mod_version,
             mod_authors: mod_authors, mod_description: mod_description,
     ]

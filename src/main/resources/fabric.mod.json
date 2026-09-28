@@ -13,7 +13,8 @@
   "environment": "*",
   "entrypoints": {
     "main": ["org.furranystudio.avalinexus.fabric.AvaliNexusFabric"],
-    "client": ["org.furranystudio.avalinexus.fabric.AvaliNexusFabricClient"]
+    "client": ["org.furranystudio.avalinexus.fabric.AvaliNexusFabricClient"],
+    "terrablender": ["org.furranystudio.avalinexus.fabric.AvaliNexusTerraBlender"]
   },
   "mixins": [
     "avalinexus.fabric.mixins.json"
@@ -23,6 +24,7 @@
     "minecraft": "~26.3",
     "java": ">=25",
     "fabric-api": "*",
-    "geckolib": ">=${geckolib_version}"
+    "geckolib": ">=${geckolib_version}",
+    "terrablender": ">=${terrablender_version}"
   }
 }

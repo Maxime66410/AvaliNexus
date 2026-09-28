@@ -1,0 +1,8 @@
+{
+  "feature": "avalinexus:snow_drift",
+  "placement": [
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}
