@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smithing_transform",
+  "template": "avalinexus:nexite_upgrade_smithing_template",
+  "base": "minecraft:diamond_horse_armor",
+  "addition": "#avalinexus:nexite_tool_materials",
+  "result": {
+    "id": "avalinexus:nexite_horse_armor"
+  }
+}

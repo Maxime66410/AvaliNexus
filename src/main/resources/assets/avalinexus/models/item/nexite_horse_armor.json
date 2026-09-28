@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "avalinexus:item/nexite_horse_armor"
+  }
+}

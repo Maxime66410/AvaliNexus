@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "nexite_ingot",
+  "ingredients": [
+    "avalinexus:nexite_shard",
+    "avalinexus:nexite_shard",
+    "avalinexus:nexite_shard",
+    "avalinexus:nexite_shard",
+    "avalinexus:graphene",
+    "avalinexus:graphene",
+    "avalinexus:graphene",
+    "avalinexus:graphene"
+  ],
+  "result": {
+    "id": "avalinexus:nexite_ingot"
+  }
+}

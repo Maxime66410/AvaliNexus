@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": "avalinexus:nexite_shard",
+    "C": "avalinexus:graphene",
+    "S": "avalinexus:nexite_upgrade_smithing_template"
+  },
+  "pattern": [
+    "#S#",
+    "#C#",
+    "###"
+  ],
+  "result": {
+    "count": 2,
+    "id": "avalinexus:nexite_upgrade_smithing_template"
+  }
+}

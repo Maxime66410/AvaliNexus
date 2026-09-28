@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:smelting",
+  "cookingtime": 200,
+  "experience": 0.1,
+  "ingredient": [
+    "avalinexus:nexite_pickaxe",
+    "avalinexus:nexite_shovel",
+    "avalinexus:nexite_axe",
+    "avalinexus:nexite_hoe",
+    "avalinexus:nexite_sword",
+    "avalinexus:nexite_spear",
+    "avalinexus:nexite_helmet",
+    "avalinexus:nexite_chestplate",
+    "avalinexus:nexite_leggings",
+    "avalinexus:nexite_boots",
+    "avalinexus:nexite_horse_armor",
+    "avalinexus:nexite_nautilus_armor"
+  ],
+  "result": {
+    "id": "avalinexus:nexite_nugget"
+  }
+}

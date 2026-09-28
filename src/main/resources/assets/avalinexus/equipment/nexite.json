@@ -1,0 +1,29 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "avalinexus:nexite"
+      }
+    ],
+    "humanoid_baby": [
+      {
+        "texture": "avalinexus:nexite"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "avalinexus:nexite"
+      }
+    ],
+    "horse_body": [
+      {
+        "texture": "avalinexus:nexite"
+      }
+    ],
+    "nautilus_body": [
+      {
+        "texture": "avalinexus:nexite"
+      }
+    ]
+  }
+}

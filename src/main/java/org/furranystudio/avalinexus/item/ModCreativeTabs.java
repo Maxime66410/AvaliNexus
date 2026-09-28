@@ -28,10 +28,13 @@ public final class ModCreativeTabs {
             .displayItems((parameters, output) -> {
                 output.accept(ModItems.AVALI_SPAWN_EGG.get());
                 output.accept(ModItems.NEXITE_SHARD.get());
+                output.accept(ModItems.NEXITE_INGOT.get());
+                output.accept(ModItems.NEXITE_NUGGET.get());
                 output.accept(ModItems.GRAPHENE.get());
                 output.accept(ModItems.NEXITE_ORE.get());
                 output.accept(ModItems.DEEPSLATE_NEXITE_ORE.get());
                 output.accept(ModItems.NEXITE_BLOCK.get());
+                NexiteGear.ALL.forEach(item -> output.accept(item.get()));
                 output.accept(ModItems.GRAPHENE_BLOCK.get());
                 output.accept(ModItems.GRAPHENE_SLAB.get());
                 output.accept(ModItems.GRAPHENE_STAIRS.get());

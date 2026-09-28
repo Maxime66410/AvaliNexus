@@ -14,6 +14,7 @@ import org.furranystudio.avalinexus.block.NanocanvasBlocks;
 import org.furranystudio.avalinexus.entity.ModEntities;
 import org.furranystudio.avalinexus.item.ModCreativeTabs;
 import org.furranystudio.avalinexus.item.ModItems;
+import org.furranystudio.avalinexus.item.NexiteGear;
 import org.furranystudio.avalinexus.inventory.ModMenus;
 import org.furranystudio.avalinexus.item.TapestryItems;
 import org.furranystudio.avalinexus.network.ModPackets;
@@ -35,6 +36,7 @@ public final class AvaliNexus {
         NanocanvasBlocks.init();
         ModEntities.init();
         ModItems.init();
+        NexiteGear.init();
         TapestryItems.init();
         ModBlockEntities.init();
         ModMenus.init();

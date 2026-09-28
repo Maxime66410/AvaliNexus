@@ -39,6 +39,13 @@ public final class ModItems {
     public static final RegistryEntry<BlockItem> NEXITE_BLOCK = ModRegistry.register(Registries.ITEM, "nexite_block",
         key -> new BlockItem(ModBlocks.NEXITE_BLOCK.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
 
+    // One ingot per upgrade, like netherite
+    public static final RegistryEntry<Item> NEXITE_INGOT = ModRegistry.register(Registries.ITEM, "nexite_ingot",
+        key -> new Item(new Item.Properties().setId(key)));
+
+    public static final RegistryEntry<Item> NEXITE_NUGGET = ModRegistry.register(Registries.ITEM, "nexite_nugget",
+        key -> new Item(new Item.Properties().setId(key)));
+
     public static final RegistryEntry<Item> GRAPHENE = ModRegistry.register(Registries.ITEM, "graphene",
         key -> new Item(new Item.Properties().setId(key)));
 

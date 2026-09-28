@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "G": "avalinexus:graphene",
+    "N": "avalinexus:nexite_block",
+    "D": "minecraft:diamond"
+  },
+  "pattern": [
+    "GNG",
+    "GDG",
+    "GGG"
+  ],
+  "result": {
+    "id": "avalinexus:nexite_upgrade_smithing_template"
+  }
+}

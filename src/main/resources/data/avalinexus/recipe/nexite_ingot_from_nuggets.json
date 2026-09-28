@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "nexite_ingot",
+  "key": {
+    "#": "avalinexus:nexite_nugget"
+  },
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "result": {
+    "id": "avalinexus:nexite_ingot"
+  }
+}

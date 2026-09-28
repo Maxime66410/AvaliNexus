@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "avalinexus:item/nexite_pickaxe"
+  }
+}

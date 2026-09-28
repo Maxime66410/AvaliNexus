@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "avalinexus:nexite_helmet",
+    "avalinexus:nexite_chestplate",
+    "avalinexus:nexite_leggings",
+    "avalinexus:nexite_boots"
+  ]
+}

@@ -1,0 +1,153 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_nexite_pickaxe": {
+      "conditions": {
+        "items": [
+          {
+            "items": "avalinexus:nexite_pickaxe"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_nexite_shovel": {
+      "conditions": {
+        "items": [
+          {
+            "items": "avalinexus:nexite_shovel"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_nexite_axe": {
+      "conditions": {
+        "items": [
+          {
+            "items": "avalinexus:nexite_axe"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_nexite_hoe": {
+      "conditions": {
+        "items": [
+          {
+            "items": "avalinexus:nexite_hoe"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_nexite_sword": {
+      "conditions": {
+        "items": [
+          {
+            "items": "avalinexus:nexite_sword"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_nexite_spear": {
+      "conditions": {
+        "items": [
+          {
+            "items": "avalinexus:nexite_spear"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_nexite_helmet": {
+      "conditions": {
+        "items": [
+          {
+            "items": "avalinexus:nexite_helmet"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_nexite_chestplate": {
+      "conditions": {
+        "items": [
+          {
+            "items": "avalinexus:nexite_chestplate"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_nexite_leggings": {
+      "conditions": {
+        "items": [
+          {
+            "items": "avalinexus:nexite_leggings"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_nexite_boots": {
+      "conditions": {
+        "items": [
+          {
+            "items": "avalinexus:nexite_boots"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_nexite_horse_armor": {
+      "conditions": {
+        "items": [
+          {
+            "items": "avalinexus:nexite_horse_armor"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_nexite_nautilus_armor": {
+      "conditions": {
+        "items": [
+          {
+            "items": "avalinexus:nexite_nautilus_armor"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipes": "avalinexus:nexite_nugget_from_blasting"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_nexite_pickaxe",
+      "has_nexite_shovel",
+      "has_nexite_axe",
+      "has_nexite_hoe",
+      "has_nexite_sword",
+      "has_nexite_spear",
+      "has_nexite_helmet",
+      "has_nexite_chestplate",
+      "has_nexite_leggings",
+      "has_nexite_boots",
+      "has_nexite_horse_armor",
+      "has_nexite_nautilus_armor"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "avalinexus:nexite_nugget_from_blasting"
+    ]
+  }
+}
