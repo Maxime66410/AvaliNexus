@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": "#minecraft:coals",
+    "N": "avalinexus:nexite_shard"
+  },
+  "pattern": [
+    " C ",
+    "CNC",
+    " C "
+  ],
+  "result": {
+    "count": 4,
+    "id": "avalinexus:graphene"
+  }
+}

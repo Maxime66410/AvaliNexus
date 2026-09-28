@@ -25,6 +25,7 @@ public final class ModCreativeTabs {
             .displayItems((parameters, output) -> {
                 output.accept(ModItems.AVALI_SPAWN_EGG.get());
                 output.accept(ModItems.NEXITE_SHARD.get());
+                output.accept(ModItems.GRAPHENE.get());
                 output.accept(ModItems.NEXITE_ORE.get());
                 output.accept(ModItems.DEEPSLATE_NEXITE_ORE.get());
                 output.accept(ModItems.AEROGEL.get());
