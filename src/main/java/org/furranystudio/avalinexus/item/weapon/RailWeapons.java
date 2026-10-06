@@ -39,15 +39,15 @@ public final class RailWeapons {
         key -> DataComponentType.<Integer>builder().persistent(Codec.INT).networkSynchronized(ByteBufCodecs.VAR_INT).build());
 
     // Automatic, light and quick to reload
-    public static final RailStats PISTOL = new RailStats(6.0F, 4, 16, 30, 4.5F, 2.0F, 0.5F, 0.85F, 0.6F, true, 1.8F, 1, false);
+    public static final RailStats PISTOL = new RailStats(6.0F, 4, 16, 30, 4.5F, 2.0F, 0.5F, 0.85F, 0.6F, true, 1, false);
     // Automatic with a big magazine, loses its aim on long bursts
-    public static final RailStats ASSAULT_RIFLE = new RailStats(7.0F, 3, 30, 50, 5.5F, 2.5F, 0.6F, 0.7F, 0.8F, true, 1.6F, 1, false);
+    public static final RailStats ASSAULT_RIFLE = new RailStats(7.0F, 3, 30, 50, 5.5F, 2.5F, 0.6F, 0.7F, 0.8F, true, 1, false);
     // Semi automatic, precise when aimed
-    public static final RailStats CARBINE = new RailStats(11.0F, 8, 10, 45, 6.0F, 1.5F, 0.2F, 0.6F, 1.2F, false, 1.4F, 1, false);
+    public static final RailStats CARBINE = new RailStats(11.0F, 8, 10, 45, 6.0F, 1.5F, 0.2F, 0.6F, 1.2F, false, 1, false);
     // A wide spray of darts, deadly up close and weak at range, loaded one Nexite quill at a time
-    public static final RailStats SHOTGUN = new RailStats(4.0F, 16, 6, 60, 3.5F, 7.0F, 5.0F, 0.9F, 3.5F, false, 0.9F, 8, true);
+    public static final RailStats SHOTGUN = new RailStats(4.0F, 16, 6, 60, 3.5F, 7.0F, 5.0F, 0.9F, 3.5F, false, 8, true);
     // One heavy shot, useless from the hip, dead on through the scope
-    public static final RailStats SNIPER = new RailStats(30.0F, 30, 4, 60, 9.0F, 4.0F, 0.0F, 0.2F, 3.0F, false, 0.8F, 1, false);
+    public static final RailStats SNIPER = new RailStats(30.0F, 30, 4, 60, 9.0F, 4.0F, 0.0F, 0.2F, 3.0F, false, 1, false);
 
     public static final RegistryEntry<RailGunItem> RAIL_PISTOL = gun("rail_pistol", PISTOL, ModSounds.RAIL_PISTOL_FIRE);
     public static final RegistryEntry<RailGunItem> RAIL_ASSAULT_RIFLE = gun("rail_assault_rifle", ASSAULT_RIFLE, ModSounds.RAIL_ASSAULT_RIFLE_FIRE);

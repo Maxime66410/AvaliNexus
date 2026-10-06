@@ -27,10 +27,7 @@ public class RailGunRenderer extends GeoItemRenderer<RailGunItem> {
         super.captureDefaultRenderState(gun, data, state, partialTick);
         boolean firstPerson = data.renderPerspective() != null && data.renderPerspective().firstPerson();
         boolean aiming = firstPerson && data.itemOwner() instanceof Player player && RailGunItem.isAiming(player);
-        ItemDisplayContext context = data.renderPerspective();
-        boolean held = firstPerson || context == ItemDisplayContext.THIRD_PERSON_RIGHT_HAND || context == ItemDisplayContext.THIRD_PERSON_LEFT_HAND;
         state.addGeckolibData(RailGunItem.FIRST_PERSON, firstPerson);
-        state.addGeckolibData(RailGunItem.HELD, held);
         state.addGeckolibData(RailGunItem.AIMING, aiming);
         state.addGeckolibData(RailGunItem.RELOADING, RailGunItem.isReloading(data.itemStack()));
         long now = data.level() != null ? data.level().getGameTime() : 0L;

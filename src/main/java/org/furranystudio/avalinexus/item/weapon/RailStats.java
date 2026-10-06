@@ -8,6 +8,6 @@ package org.furranystudio.avalinexus.item.weapon;
 
 // How a rail weapon shoots
 public record RailStats(float damage, int interval, int magazine, int reload, float speed,
-                        float hipSpread, float aimSpread, float zoom, float recoil, boolean automatic, float pitch, int pellets,
+                        float hipSpread, float aimSpread, float zoom, float recoil, boolean automatic, int pellets,
                         boolean shellByShell) {
 }

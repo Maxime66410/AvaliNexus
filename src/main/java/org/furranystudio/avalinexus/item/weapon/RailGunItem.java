@@ -60,7 +60,6 @@ public class RailGunItem extends Item implements GeoItem {
     public static final DataTicket<Boolean> RELOADING = DataTicket.create("avalinexus_rail_reloading", Boolean.class);
     public static final DataTicket<ReloadStep> RELOAD_STEP = DataTicket.create("avalinexus_rail_reload_step", ReloadStep.class);
     public static final DataTicket<Boolean> FIRST_PERSON = DataTicket.create("avalinexus_rail_first_person", Boolean.class);
-    public static final DataTicket<Boolean> HELD = DataTicket.create("avalinexus_rail_held", Boolean.class);
 
     private static final int BAR_COLOR = 0xFF8C1A;
     // Shell by shell timings in ticks, the reload_start, reload_shell and reload_end animations last as long
