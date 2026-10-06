@@ -7,6 +7,7 @@
 package org.furranystudio.avalinexus.entity.projectile;
 
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
@@ -30,6 +31,8 @@ import org.furranystudio.avalinexus.sound.ModSounds;
 public class NexiteQuill extends ThrowableItemProjectile {
 
     private static final int LIFETIME = 100;
+    private static final DustParticleOptions TRAIL = new DustParticleOptions(0xFF8C1A, 0.6F);
+    private static final double TRAIL_SPACING = 0.4;
 
     private float damage = 4.0F;
 
@@ -68,8 +71,26 @@ public class NexiteQuill extends ThrowableItemProjectile {
             }
         }
         super.tick();
+        if (level().isClientSide()) {
+            spawnTrail();
+        }
         if (!level().isClientSide() && tickCount > LIFETIME) {
             discard();
+        }
+    }
+
+    // Orange dust along the path flown this tick, skipped right at the muzzle so it never blinds the shooter
+    private void spawnTrail() {
+        if (tickCount < 2) {
+            return;
+        }
+        double dx = getX() - xo;
+        double dy = getY() - yo;
+        double dz = getZ() - zo;
+        int steps = Math.max(1, (int) (Math.sqrt(dx * dx + dy * dy + dz * dz) / TRAIL_SPACING));
+        for (int i = 0; i < steps; i++) {
+            double t = (double) i / steps;
+            level().addParticle(TRAIL, xo + dx * t, yo + dy * t, zo + dz * t, 0.0, 0.0, 0.0);
         }
     }
 

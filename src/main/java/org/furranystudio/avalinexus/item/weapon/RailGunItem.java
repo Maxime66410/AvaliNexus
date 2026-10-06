@@ -16,6 +16,8 @@ import com.geckolib.animation.object.PlayState;
 import com.geckolib.constant.dataticket.DataTicket;
 import com.geckolib.renderer.GeoItemRenderer;
 import com.geckolib.util.GeckoLibUtil;
+import net.minecraft.core.particles.DustParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -34,6 +36,7 @@ import net.minecraft.world.item.ItemUseAnimation;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import org.furranystudio.avalinexus.client.weapon.RailGunRenderer;
 import org.furranystudio.avalinexus.entity.projectile.NexiteQuill;
 import org.furranystudio.avalinexus.registry.RegistryEntry;
@@ -62,6 +65,7 @@ public class RailGunItem extends Item implements GeoItem {
     public static final DataTicket<Boolean> FIRST_PERSON = DataTicket.create("avalinexus_rail_first_person", Boolean.class);
 
     private static final int BAR_COLOR = 0xFF8C1A;
+    private static final DustParticleOptions MUZZLE_FLASH = new DustParticleOptions(0xFFFFFF, 0.8F);
     // Shell by shell timings in ticks, the reload_start, reload_shell and reload_end animations last as long
     public static final int SHELL_START = 8;
     public static final int SHELL_INSERT = 10;
@@ -252,6 +256,17 @@ public class RailGunItem extends Item implements GeoItem {
         }
         triggerAnim(player, GeoItem.getOrAssignId(gun, level), "shoot", "fire");
         ModSounds.play(level, player, fireSound.get(), 0.9F, 0.08F);
+        muzzleFlash(level, player);
+    }
+
+    // White sparks at the barrel tip, a bit to the right and below the eyes, centered while aiming
+    private static void muzzleFlash(ServerLevel level, ServerPlayer player) {
+        Vec3 look = player.getLookAngle();
+        Vec3 right = new Vec3(-look.z, 0.0, look.x).normalize();
+        boolean aiming = isAiming(player);
+        Vec3 muzzle = player.getEyePosition().add(look.scale(0.9)).add(right.scale(aiming ? 0.0 : 0.3)).add(0.0, aiming ? -0.08 : -0.2, 0.0);
+        level.sendParticles(MUZZLE_FLASH, muzzle.x, muzzle.y, muzzle.z, 4, 0.03, 0.03, 0.03, 0.0);
+        level.sendParticles(ParticleTypes.ELECTRIC_SPARK, muzzle.x, muzzle.y, muzzle.z, 3, 0.02, 0.02, 0.02, 0.15);
     }
 
     public void startReload(ServerPlayer player, ItemStack gun) {

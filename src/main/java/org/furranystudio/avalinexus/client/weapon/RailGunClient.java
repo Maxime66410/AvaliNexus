@@ -78,6 +78,15 @@ public final class RailGunClient {
         return modifier;
     }
 
+    // Mouse speed while aiming follows the zoom, so the crosshair moves as fast on screen as without it
+    public static double aimSensitivity() {
+        Player player = Minecraft.getInstance().player;
+        if (player != null && RailGunItem.isAiming(player) && player.getUseItem().getItem() instanceof RailGunItem gun) {
+            return gun.stats().zoom();
+        }
+        return 1.0;
+    }
+
     public static ItemStack heldGun(Player player) {
         ItemStack stack = player.getMainHandItem();
         return stack.getItem() instanceof RailGunItem ? stack : ItemStack.EMPTY;

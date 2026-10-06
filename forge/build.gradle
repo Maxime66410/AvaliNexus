@@ -49,6 +49,9 @@ minecraft {
 
             // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
             systemProperty 'forge.enabledGameTestNamespaces', mod_id
+
+            // Forge reads mixins from the jar manifest, dev runs need them passed by hand
+            args '--mixin.config', 'avalinexus.mixins.json'
         }
 
         register('client')
@@ -69,6 +72,12 @@ minecraft {
             // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
             args '--mod', mod_id, '--all', '--output', layout.projectDirectory.dir('../src/generated/resources'), '--existing', layout.projectDirectory.dir('../src/main/resources')
         }
+    }
+}
+
+jar {
+    manifest {
+        attributes('MixinConfigs': 'avalinexus.mixins.json')
     }
 }
 
