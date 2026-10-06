@@ -289,5 +289,13 @@
   "item.avalinexus.rail_gun.controls": "Clic gauche : tirer, clic droit : viser, %s : recharger",
   "item.avalinexus.rail_gun.no_quills": "Plus de pennes de Nexite",
   "key.avalinexus.reload": "Recharger l'arme à rail",
-  "item.avalinexus.aerotech_longblade": "Lame longue aérotech"
+  "item.avalinexus.aerotech_longblade": "Lame longue aérotech",
+  "subtitles.avalinexus.rail.fire": "Tir d'arme à rail",
+  "subtitles.avalinexus.rail.empty": "Arme à rail vide",
+  "subtitles.avalinexus.rail.reload": "Arme à rail rechargée",
+  "subtitles.avalinexus.rail.reloaded": "Arme à rail prête",
+  "subtitles.avalinexus.rail.pump": "Fusil à pompe armé",
+  "subtitles.avalinexus.nexite_quill.impact": "Impact de penne de Nexite",
+  "subtitles.avalinexus.aerotech.shatter": "Lame aérotech brisée",
+  "subtitles.avalinexus.aerotech.reforge": "Lame aérotech reformée"
 }

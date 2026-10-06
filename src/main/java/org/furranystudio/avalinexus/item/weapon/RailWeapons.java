@@ -11,10 +11,12 @@ import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.component.UseEffects;
 import org.furranystudio.avalinexus.registry.ModRegistry;
 import org.furranystudio.avalinexus.registry.RegistryEntry;
+import org.furranystudio.avalinexus.sound.ModSounds;
 
 import java.util.List;
 
@@ -47,11 +49,11 @@ public final class RailWeapons {
     // One heavy shot, useless from the hip, dead on through the scope
     public static final RailStats SNIPER = new RailStats(30.0F, 30, 4, 60, 9.0F, 4.0F, 0.0F, 0.2F, 3.0F, false, 0.8F, 1, false);
 
-    public static final RegistryEntry<RailGunItem> RAIL_PISTOL = gun("rail_pistol", PISTOL);
-    public static final RegistryEntry<RailGunItem> RAIL_ASSAULT_RIFLE = gun("rail_assault_rifle", ASSAULT_RIFLE);
-    public static final RegistryEntry<RailGunItem> RAIL_CARBINE = gun("rail_carbine", CARBINE);
-    public static final RegistryEntry<RailGunItem> RAIL_SHOTGUN = gun("rail_shotgun", SHOTGUN);
-    public static final RegistryEntry<RailGunItem> RAIL_SNIPER = gun("rail_sniper", SNIPER);
+    public static final RegistryEntry<RailGunItem> RAIL_PISTOL = gun("rail_pistol", PISTOL, ModSounds.RAIL_PISTOL_FIRE);
+    public static final RegistryEntry<RailGunItem> RAIL_ASSAULT_RIFLE = gun("rail_assault_rifle", ASSAULT_RIFLE, ModSounds.RAIL_ASSAULT_RIFLE_FIRE);
+    public static final RegistryEntry<RailGunItem> RAIL_CARBINE = gun("rail_carbine", CARBINE, ModSounds.RAIL_CARBINE_FIRE);
+    public static final RegistryEntry<RailGunItem> RAIL_SHOTGUN = gun("rail_shotgun", SHOTGUN, ModSounds.RAIL_SHOTGUN_FIRE);
+    public static final RegistryEntry<RailGunItem> RAIL_SNIPER = gun("rail_sniper", SNIPER, ModSounds.RAIL_SNIPER_FIRE);
 
     public static final RegistryEntry<Item> NEXITE_QUILL = ModRegistry.register(Registries.ITEM, "nexite_quill",
         key -> new Item(new Item.Properties().setId(key)));
@@ -65,8 +67,8 @@ public final class RailWeapons {
     }
 
     // Aiming slows down a bit instead of the heavy bow slowdown
-    private static RegistryEntry<RailGunItem> gun(String name, RailStats stats) {
-        return ModRegistry.register(Registries.ITEM, name, key -> new RailGunItem(stats, new Item.Properties().setId(key).stacksTo(1)
+    private static RegistryEntry<RailGunItem> gun(String name, RailStats stats, RegistryEntry<SoundEvent> fireSound) {
+        return ModRegistry.register(Registries.ITEM, name, key -> new RailGunItem(stats, fireSound, new Item.Properties().setId(key).stacksTo(1)
             .component(DataComponents.USE_EFFECTS, new UseEffects(false, false, 0.6F))));
     }
 }

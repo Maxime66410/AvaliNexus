@@ -11,8 +11,6 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -25,6 +23,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.Level;
 import org.furranystudio.avalinexus.item.ModItems;
+import org.furranystudio.avalinexus.sound.ModSounds;
 
 import java.util.function.Consumer;
 
@@ -46,7 +45,7 @@ public class AerotechHiltItem extends Item {
         }
         if (!level.isClientSide()) {
             player.setItemInHand(hand, reforge(hilt));
-            level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.AMETHYST_BLOCK_RESONATE, SoundSource.PLAYERS, 1.0F, 1.4F);
+            ModSounds.play(level, player, ModSounds.AEROTECH_REFORGE.get(), 1.0F, 0.05F);
         }
         return InteractionResult.SUCCESS;
     }
@@ -66,7 +65,7 @@ public class AerotechHiltItem extends Item {
         for (int i = 0; i < inventory.getContainerSize(); i++) {
             if (inventory.getItem(i) == hilt) {
                 inventory.setItem(i, reforge(hilt));
-                level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.AMETHYST_BLOCK_RESONATE, SoundSource.PLAYERS, 0.6F, 1.4F);
+                ModSounds.play(level, player, ModSounds.AEROTECH_REFORGE.get(), 0.6F, 0.05F);
                 return;
             }
         }

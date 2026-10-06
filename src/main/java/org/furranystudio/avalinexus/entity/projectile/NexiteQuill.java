@@ -24,6 +24,7 @@ import net.minecraft.world.phys.HitResult;
 import org.furranystudio.avalinexus.AvaliNexus;
 import org.furranystudio.avalinexus.entity.ModEntities;
 import org.furranystudio.avalinexus.item.weapon.RailWeapons;
+import org.furranystudio.avalinexus.sound.ModSounds;
 
 // A rail gun dart: flies almost straight, hits for a fixed damage and breaks on impact
 public class NexiteQuill extends ThrowableItemProjectile {
@@ -95,6 +96,7 @@ public class NexiteQuill extends ThrowableItemProjectile {
         super.onHit(result);
         if (level() instanceof ServerLevel level) {
             level.sendParticles(ParticleTypes.CRIT, getX(), getY(), getZ(), 4, 0.05, 0.05, 0.05, 0.1);
+            ModSounds.play(level, this, ModSounds.NEXITE_QUILL_IMPACT.get(), 0.5F, 0.12F);
             discard();
         }
     }

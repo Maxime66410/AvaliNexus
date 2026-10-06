@@ -9,14 +9,13 @@ package org.furranystudio.avalinexus.item.weapon;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import org.furranystudio.avalinexus.sound.ModSounds;
 
 // Wears down one point per hit, Unbreaking included, and turns into the hilt when the crystal is spent
 public class AerotechBladeItem extends Item {
@@ -38,7 +37,7 @@ public class AerotechBladeItem extends Item {
         }
         if (attacker.getMainHandItem() == stack) {
             attacker.setItemInHand(InteractionHand.MAIN_HAND, shatter(stack));
-            level.playSound(null, attacker.getX(), attacker.getY(), attacker.getZ(), SoundEvents.GLASS_BREAK, SoundSource.PLAYERS, 1.0F, 1.2F);
+            ModSounds.play(level, attacker, ModSounds.AEROTECH_SHATTER.get(), 1.0F, 0.06F);
         }
     }
 

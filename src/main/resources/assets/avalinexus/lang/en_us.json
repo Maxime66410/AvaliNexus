@@ -289,5 +289,13 @@
   "item.avalinexus.rail_gun.controls": "Left click: fire, right click: aim, %s: reload",
   "item.avalinexus.rail_gun.no_quills": "No Nexite quills",
   "key.avalinexus.reload": "Reload rail weapon",
-  "item.avalinexus.aerotech_longblade": "Aerotech Longblade"
+  "item.avalinexus.aerotech_longblade": "Aerotech Longblade",
+  "subtitles.avalinexus.rail.fire": "Rail gun fires",
+  "subtitles.avalinexus.rail.empty": "Rail gun clicks empty",
+  "subtitles.avalinexus.rail.reload": "Rail gun reloads",
+  "subtitles.avalinexus.rail.reloaded": "Rail gun loaded",
+  "subtitles.avalinexus.rail.pump": "Shotgun pumps",
+  "subtitles.avalinexus.nexite_quill.impact": "Nexite quill hits",
+  "subtitles.avalinexus.aerotech.shatter": "Aerotech blade shatters",
+  "subtitles.avalinexus.aerotech.reforge": "Aerotech blade reforms"
 }

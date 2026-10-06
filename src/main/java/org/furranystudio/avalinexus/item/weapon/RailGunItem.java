@@ -19,8 +19,7 @@ import com.geckolib.util.GeckoLibUtil;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -37,6 +36,8 @@ import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.Level;
 import org.furranystudio.avalinexus.client.weapon.RailGunRenderer;
 import org.furranystudio.avalinexus.entity.projectile.NexiteQuill;
+import org.furranystudio.avalinexus.registry.RegistryEntry;
+import org.furranystudio.avalinexus.sound.ModSounds;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -75,11 +76,13 @@ public class RailGunItem extends Item implements GeoItem {
     private static final Map<UUID, Long> NEXT_SHOT = new HashMap<>();
 
     private final RailStats stats;
+    private final RegistryEntry<SoundEvent> fireSound;
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-    public RailGunItem(RailStats stats, Properties properties) {
+    public RailGunItem(RailStats stats, RegistryEntry<SoundEvent> fireSound, Properties properties) {
         super(properties);
         this.stats = stats;
+        this.fireSound = fireSound;
         GeoItem.registerSyncedAnimatable(this);
     }
 
@@ -236,7 +239,7 @@ public class RailGunItem extends Item implements GeoItem {
         int ammo = ammo(gun);
         boolean creative = player.hasInfiniteMaterials();
         if (ammo <= 0 && !creative) {
-            level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.DISPENSER_FAIL, SoundSource.PLAYERS, 0.6F, 1.6F);
+            ModSounds.play(level, player, ModSounds.RAIL_EMPTY.get(), 0.6F, 0.05F);
             startReload(player, gun);
             return;
         }
@@ -249,7 +252,7 @@ public class RailGunItem extends Item implements GeoItem {
             gun.set(RailWeapons.AMMO.get(), ammo - 1);
         }
         triggerAnim(player, GeoItem.getOrAssignId(gun, level), "shoot", "fire");
-        level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.CROSSBOW_SHOOT, SoundSource.PLAYERS, 0.8F, stats.pitch());
+        ModSounds.play(level, player, fireSound.get(), 0.9F, 0.08F);
     }
 
     public void startReload(ServerPlayer player, ItemStack gun) {
@@ -272,7 +275,7 @@ public class RailGunItem extends Item implements GeoItem {
         } else {
             gun.set(RailWeapons.RELOAD_END.get(), now + stats.reload());
         }
-        player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.CROSSBOW_LOADING_START.value(), SoundSource.PLAYERS, 0.8F, 1.2F);
+        ModSounds.play(player.level(), player, ModSounds.RAIL_RELOAD_START.get(), 0.8F, 0.04F);
     }
 
     // Finishes the reload, or drops it when the gun leaves the hand
@@ -292,7 +295,7 @@ public class RailGunItem extends Item implements GeoItem {
             tickShells(gun, level, player);
             if (level.getGameTime() >= gun.getOrDefault(RailWeapons.RELOAD_END.get(), 0L)) {
                 stopReload(gun);
-                level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.CROSSBOW_LOADING_END.value(), SoundSource.PLAYERS, 0.8F, 1.0F);
+                ModSounds.play(level, player, ModSounds.RAIL_SHOTGUN_PUMP.get(), 0.8F, 0.04F);
             }
             return;
         }
@@ -303,7 +306,7 @@ public class RailGunItem extends Item implements GeoItem {
         int missing = stats.magazine() - ammo(gun);
         int loaded = player.hasInfiniteMaterials() ? missing : takeQuills(player.getInventory(), missing);
         gun.set(RailWeapons.AMMO.get(), ammo(gun) + loaded);
-        level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.CROSSBOW_LOADING_END.value(), SoundSource.PLAYERS, 0.8F, 1.2F);
+        ModSounds.play(level, player, ModSounds.RAIL_RELOAD_END.get(), 0.8F, 0.04F);
     }
 
     // Each finished reload_shell puts one Nexite quill in, running out of Nexite quills ends with the pump
@@ -320,7 +323,7 @@ public class RailGunItem extends Item implements GeoItem {
             loaded++;
             gun.set(RailWeapons.AMMO.get(), ammo(gun) + 1);
             gun.set(RailWeapons.RELOAD_LOADED.get(), loaded);
-            level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.CROSSBOW_LOADING_MIDDLE.value(), SoundSource.PLAYERS, 0.7F, 1.3F);
+            ModSounds.play(level, player, ModSounds.RAIL_SHELL_INSERT.get(), 0.7F, 0.06F);
         }
     }
 

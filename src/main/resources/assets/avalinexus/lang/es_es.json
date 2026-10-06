@@ -289,5 +289,13 @@
   "item.avalinexus.rail_gun.controls": "Clic izquierdo: disparar, clic derecho: apuntar, %s: recargar",
   "item.avalinexus.rail_gun.no_quills": "Sin plumas de nexita",
   "key.avalinexus.reload": "Recargar arma de riel",
-  "item.avalinexus.aerotech_longblade": "Hoja larga aerotécnica"
+  "item.avalinexus.aerotech_longblade": "Hoja larga aerotécnica",
+  "subtitles.avalinexus.rail.fire": "Disparo de arma de riel",
+  "subtitles.avalinexus.rail.empty": "Arma de riel vacía",
+  "subtitles.avalinexus.rail.reload": "Arma de riel recargando",
+  "subtitles.avalinexus.rail.reloaded": "Arma de riel lista",
+  "subtitles.avalinexus.rail.pump": "Escopeta bombeada",
+  "subtitles.avalinexus.nexite_quill.impact": "Impacto de pluma de nexita",
+  "subtitles.avalinexus.aerotech.shatter": "Hoja aerotécnica rota",
+  "subtitles.avalinexus.aerotech.reforge": "Hoja aerotécnica reformada"
 }

@@ -30,5 +30,83 @@
     "sounds": [
       "avalinexus:ui/hover"
     ]
+  },
+  "weapon.rail_pistol.fire": {
+    "subtitle": "subtitles.avalinexus.rail.fire",
+    "sounds": [
+      "avalinexus:weapon/rail_pistol/fire"
+    ]
+  },
+  "weapon.rail_assault_rifle.fire": {
+    "subtitle": "subtitles.avalinexus.rail.fire",
+    "sounds": [
+      "avalinexus:weapon/rail_assault_rifle/fire"
+    ]
+  },
+  "weapon.rail_carbine.fire": {
+    "subtitle": "subtitles.avalinexus.rail.fire",
+    "sounds": [
+      "avalinexus:weapon/rail_carbine/fire"
+    ]
+  },
+  "weapon.rail_shotgun.fire": {
+    "subtitle": "subtitles.avalinexus.rail.fire",
+    "sounds": [
+      "avalinexus:weapon/rail_shotgun/fire"
+    ]
+  },
+  "weapon.rail_sniper.fire": {
+    "subtitle": "subtitles.avalinexus.rail.fire",
+    "sounds": [
+      "avalinexus:weapon/rail_sniper/fire"
+    ]
+  },
+  "weapon.rail.empty": {
+    "subtitle": "subtitles.avalinexus.rail.empty",
+    "sounds": [
+      "avalinexus:weapon/rail/empty"
+    ]
+  },
+  "weapon.rail.reload_start": {
+    "subtitle": "subtitles.avalinexus.rail.reload",
+    "sounds": [
+      "avalinexus:weapon/rail/reload_start"
+    ]
+  },
+  "weapon.rail.reload_end": {
+    "subtitle": "subtitles.avalinexus.rail.reloaded",
+    "sounds": [
+      "avalinexus:weapon/rail/reload_end"
+    ]
+  },
+  "weapon.rail.shell_insert": {
+    "subtitle": "subtitles.avalinexus.rail.reload",
+    "sounds": [
+      "avalinexus:weapon/rail/shell_insert"
+    ]
+  },
+  "weapon.rail.shotgun_pump": {
+    "subtitle": "subtitles.avalinexus.rail.pump",
+    "sounds": [
+      "avalinexus:weapon/rail/shotgun_pump"
+    ]
+  },
+  "weapon.nexite_quill.impact": {
+    "subtitle": "subtitles.avalinexus.nexite_quill.impact",
+    "sounds": [
+      "avalinexus:weapon/nexite_quill/impact"
+    ]
+  },
+  "weapon.aerotech.shatter": {
+    "subtitle": "subtitles.avalinexus.aerotech.shatter",
+    "sounds": [
+      "avalinexus:weapon/aerotech/shatter"
+    ]
+  },
+  "weapon.aerotech.reforge": {
+    "subtitle": "subtitles.avalinexus.aerotech.reforge",
+    "sounds": [
+      "avalinexus:weapon/aerotech/reforge"
+    ]
   }
 }
