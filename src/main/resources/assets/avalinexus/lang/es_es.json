@@ -277,5 +277,17 @@
   "item.avalinexus.singing_blade": "Hoja cantora",
   "item.avalinexus.aerotech_hilt": "Empuñadura aerotécnica",
   "item.avalinexus.aerotech_hilt.blade": "Hoja: %s",
-  "item.avalinexus.aerotech_hilt.reforge": "Clic derecho con aerogel para reforjar"
+  "item.avalinexus.aerotech_hilt.reforge": "Clic derecho con aerogel para reforjar",
+  "item.avalinexus.rail_pistol": "Pistola de riel",
+  "item.avalinexus.rail_carbine": "Carabina de riel",
+  "item.avalinexus.rail_assault_rifle": "Fusil de asalto de riel",
+  "item.avalinexus.rail_shotgun": "Escopeta de riel",
+  "item.avalinexus.rail_sniper": "Francotirador de riel",
+  "item.avalinexus.nexite_quill": "Pluma de nexita",
+  "entity.avalinexus.nexite_quill": "Pluma de nexita",
+  "item.avalinexus.rail_gun.ammo": "Cargador: %s / %s",
+  "item.avalinexus.rail_gun.controls": "Clic izquierdo: disparar, clic derecho: apuntar, %s: recargar",
+  "item.avalinexus.rail_gun.no_quills": "Sin plumas de nexita",
+  "key.avalinexus.reload": "Recargar arma de riel",
+  "item.avalinexus.aerotech_longblade": "Hoja larga aerotécnica"
 }

@@ -277,5 +277,17 @@
   "item.avalinexus.singing_blade": "Lame chantante",
   "item.avalinexus.aerotech_hilt": "Poignée aérotech",
   "item.avalinexus.aerotech_hilt.blade": "Lame : %s",
-  "item.avalinexus.aerotech_hilt.reforge": "Clic droit avec de l'aérogel pour reforger"
+  "item.avalinexus.aerotech_hilt.reforge": "Clic droit avec de l'aérogel pour reforger",
+  "item.avalinexus.rail_pistol": "Pistolet à rail",
+  "item.avalinexus.rail_carbine": "Carabine à rail",
+  "item.avalinexus.rail_assault_rifle": "Fusil d'assaut à rail",
+  "item.avalinexus.rail_shotgun": "Fusil à pompe à rail",
+  "item.avalinexus.rail_sniper": "Sniper à rail",
+  "item.avalinexus.nexite_quill": "Penne de Nexite",
+  "entity.avalinexus.nexite_quill": "Penne de Nexite",
+  "item.avalinexus.rail_gun.ammo": "Chargeur : %s / %s",
+  "item.avalinexus.rail_gun.controls": "Clic gauche : tirer, clic droit : viser, %s : recharger",
+  "item.avalinexus.rail_gun.no_quills": "Plus de pennes de Nexite",
+  "key.avalinexus.reload": "Recharger l'arme à rail",
+  "item.avalinexus.aerotech_longblade": "Lame longue aérotech"
 }

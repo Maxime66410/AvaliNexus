@@ -11,6 +11,10 @@
     {
       "type": "minecraft:single",
       "resource": "avalinexus:entity/tapestry/avali_tapestry_overlay2"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "avalinexus:entity/nexite_quill/nexite_quill_base"
     }
   ]
 }

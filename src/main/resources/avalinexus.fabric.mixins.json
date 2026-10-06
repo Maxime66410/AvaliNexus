@@ -3,6 +3,8 @@
   "package": "org.furranystudio.avalinexus.fabric.mixin",
   "compatibilityLevel": "JAVA_21",
   "client": [
+    "AbstractClientPlayerMixin",
+    "MinecraftAttackMixin",
     "MouseHandlerMixin"
   ],
   "injectors": {

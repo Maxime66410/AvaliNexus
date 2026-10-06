@@ -277,5 +277,17 @@
   "item.avalinexus.singing_blade": "Singing Blade",
   "item.avalinexus.aerotech_hilt": "Aerotech Hilt",
   "item.avalinexus.aerotech_hilt.blade": "Blade: %s",
-  "item.avalinexus.aerotech_hilt.reforge": "Right click with aerogel to reforge"
+  "item.avalinexus.aerotech_hilt.reforge": "Right click with aerogel to reforge",
+  "item.avalinexus.rail_pistol": "Rail Pistol",
+  "item.avalinexus.rail_carbine": "Rail Carbine",
+  "item.avalinexus.rail_assault_rifle": "Rail Assault Rifle",
+  "item.avalinexus.rail_shotgun": "Rail Shotgun",
+  "item.avalinexus.rail_sniper": "Rail Sniper",
+  "item.avalinexus.nexite_quill": "Nexite Quill",
+  "entity.avalinexus.nexite_quill": "Nexite Quill",
+  "item.avalinexus.rail_gun.ammo": "Magazine: %s / %s",
+  "item.avalinexus.rail_gun.controls": "Left click: fire, right click: aim, %s: reload",
+  "item.avalinexus.rail_gun.no_quills": "No Nexite quills",
+  "key.avalinexus.reload": "Reload rail weapon",
+  "item.avalinexus.aerotech_longblade": "Aerotech Longblade"
 }

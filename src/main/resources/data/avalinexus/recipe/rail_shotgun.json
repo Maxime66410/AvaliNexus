@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "I": "avalinexus:nexite_ingot",
+    "G": "avalinexus:graphene"
+  },
+  "pattern": [
+    "IGG",
+    "IGG",
+    "G  "
+  ],
+  "result": {
+    "id": "avalinexus:rail_shotgun"
+  }
+}

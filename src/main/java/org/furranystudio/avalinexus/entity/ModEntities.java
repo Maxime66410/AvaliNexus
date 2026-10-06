@@ -20,6 +20,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.Heightmap;
 import org.furranystudio.avalinexus.entity.avali.AvaliEntity;
 import org.furranystudio.avalinexus.entity.cushion.AvaliCushion;
+import org.furranystudio.avalinexus.entity.projectile.NexiteQuill;
 import org.furranystudio.avalinexus.entity.tapestry.AvaliTapestry;
 import org.furranystudio.avalinexus.registry.ModRegistry;
 import org.furranystudio.avalinexus.registry.RegistryEntry;
@@ -65,6 +66,15 @@ public final class ModEntities {
             .sized(0.5F, 0.5F)
             .clientTrackingRange(10)
             .updateInterval(Integer.MAX_VALUE)
+            .build(key));
+
+    // Same tracking as arrows so fast darts stay smooth on the client
+    public static final RegistryEntry<EntityType<NexiteQuill>> NEXITE_QUILL = ModRegistry.register(Registries.ENTITY_TYPE, "nexite_quill",
+        key -> EntityType.Builder.<NexiteQuill>of(NexiteQuill::new, MobCategory.MISC)
+            .noLootTable()
+            .sized(0.25F, 0.25F)
+            .clientTrackingRange(4)
+            .updateInterval(20)
             .build(key));
 
     private ModEntities() {

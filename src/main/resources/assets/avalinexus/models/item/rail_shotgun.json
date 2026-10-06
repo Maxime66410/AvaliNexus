@@ -1,0 +1,76 @@
+{
+  "textures": {
+    "particle": "avalinexus:item/rail_shotgun/rail_shotgun_base"
+  },
+  "display": {
+    "thirdperson_righthand": {
+      "translation": [
+        0,
+        0,
+        -0.75
+      ]
+    },
+    "thirdperson_lefthand": {
+      "translation": [
+        0,
+        0,
+        -0.75
+      ]
+    },
+    "ground": {
+      "translation": [
+        0,
+        2.5,
+        0
+      ]
+    },
+    "gui": {
+      "rotation": [
+        91.48,
+        46.19,
+        -91.08
+      ],
+      "translation": [
+        -0.75,
+        -0.5,
+        0
+      ],
+      "scale": [
+        0.95,
+        0.95,
+        0.95
+      ]
+    },
+    "head": {
+      "translation": [
+        0,
+        11,
+        0
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        91.48,
+        46.19,
+        -91.08
+      ],
+      "translation": [
+        -0.75,
+        -0.5,
+        0
+      ]
+    },
+    "on_shelf": {
+      "rotation": [
+        91.48,
+        46.19,
+        -91.08
+      ],
+      "translation": [
+        -0.75,
+        -0.5,
+        0
+      ]
+    }
+  }
+}

@@ -9,6 +9,7 @@ package org.furranystudio.avalinexus.network;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import org.furranystudio.avalinexus.dialogue.DialogueManager;
+import org.furranystudio.avalinexus.item.weapon.RailGunItem;
 import org.furranystudio.avalinexus.network.packet.CloseDialoguePayload;
 import org.furranystudio.avalinexus.network.packet.DialogueChoicePayload;
 import org.furranystudio.avalinexus.network.packet.DialogueLinePayload;
@@ -17,6 +18,8 @@ import org.furranystudio.avalinexus.network.packet.OpenDialoguePayload;
 import org.furranystudio.avalinexus.network.packet.PingPayload;
 import org.furranystudio.avalinexus.network.packet.OpenShopPayload;
 import org.furranystudio.avalinexus.network.packet.PongPayload;
+import org.furranystudio.avalinexus.network.packet.RailFirePayload;
+import org.furranystudio.avalinexus.network.packet.RailReloadPayload;
 import org.furranystudio.avalinexus.network.packet.ShopTradePayload;
 import org.furranystudio.avalinexus.network.packet.ShopUpdatePayload;
 
@@ -40,6 +43,17 @@ public final class ModPackets {
         ModNetworking.clientbound(ShopUpdatePayload.TYPE, ShopUpdatePayload.STREAM_CODEC);
         ModNetworking.serverbound(ShopTradePayload.TYPE, ShopTradePayload.STREAM_CODEC,
             (payload, player) -> DialogueManager.onShopTrade(player, payload.entityId(), payload.offer()));
+
+        ModNetworking.serverbound(RailFirePayload.TYPE, RailFirePayload.STREAM_CODEC, (payload, player) -> {
+            if (player.getMainHandItem().getItem() instanceof RailGunItem gun) {
+                gun.fire(player, player.getMainHandItem());
+            }
+        });
+        ModNetworking.serverbound(RailReloadPayload.TYPE, RailReloadPayload.STREAM_CODEC, (payload, player) -> {
+            if (player.getMainHandItem().getItem() instanceof RailGunItem gun) {
+                gun.startReload(player, player.getMainHandItem());
+            }
+        });
     }
 
     private static void onPong(PongPayload payload, ServerPlayer player) {

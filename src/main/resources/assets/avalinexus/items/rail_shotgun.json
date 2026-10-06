@@ -1,0 +1,10 @@
+{
+  "model": {
+    "type": "minecraft:special",
+    "base": "avalinexus:item/rail_shotgun",
+    "model": {
+      "type": "geckolib:geckolib"
+    }
+  },
+  "hand_animation_on_swap": false
+}

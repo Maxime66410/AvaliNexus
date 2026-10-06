@@ -50,6 +50,9 @@ import org.furranystudio.avalinexus.client.tapestry.AvaliTapestryRenderer;
 import org.furranystudio.avalinexus.client.dialogue.ClientDialogue;
 import org.furranystudio.avalinexus.client.dialogue.DialogueHud;
 import org.furranystudio.avalinexus.client.dialogue.DialogueKeys;
+import org.furranystudio.avalinexus.client.weapon.RailGunClient;
+import org.furranystudio.avalinexus.client.weapon.RailGunHud;
+import org.furranystudio.avalinexus.client.weapon.NexiteQuillRenderer;
 import org.furranystudio.avalinexus.command.AvaliNexusCommand;
 import org.furranystudio.avalinexus.entity.ColdExposure;
 import org.furranystudio.avalinexus.entity.ModEntities;
@@ -108,7 +111,20 @@ public class AvaliNexusNeoForge {
             modContainer.registerExtensionPoint(IConfigScreenFactory.class, (container, parent) -> new AvaliSettingsScreen(parent));
             modEventBus.addListener((RegisterMenuScreensEvent event) -> event.register(ModMenus.HEATER.get(), HeaterScreen::new));
             modEventBus.addListener((RegisterGuiLayersEvent event) -> event.registerAboveAll(AvaliNexus.id("dialogue"), DialogueHud::render));
-            modEventBus.addListener((RegisterKeyMappingsEvent event) -> event.register(DialogueKeys.CURSOR));
+            modEventBus.addListener((RegisterKeyMappingsEvent event) -> {
+                event.register(DialogueKeys.CURSOR);
+                event.register(RailGunClient.RELOAD);
+            });
+            modEventBus.addListener((RegisterGuiLayersEvent event) -> event.registerAboveAll(AvaliNexus.id("rail_gun"), RailGunHud::render));
+            NeoForge.EVENT_BUS.addListener((ClientTickEvent.Pre event) -> RailGunClient.tick());
+            NeoForge.EVENT_BUS.addListener((InputEvent.InteractionKeyMappingTriggered event) -> {
+                if (event.isAttack() && RailGunClient.blocksAttack()) {
+                    event.setSwingHand(false);
+                    event.setCanceled(true);
+                }
+            });
+            NeoForge.EVENT_BUS.addListener((net.neoforged.neoforge.client.event.ComputeFovModifierEvent event) ->
+                event.setNewFovModifier(RailGunClient.fovModifier(event.getPlayer(), event.getNewFovModifier())));
             modEventBus.addListener((RegisterColorHandlersEvent.BlockTintSources event) -> NanocanvasTints.register(event::register));
             NeoForge.EVENT_BUS.addListener((ClientTickEvent.Pre event) -> ClientDialogue.tick());
             NeoForge.EVENT_BUS.addListener((InputEvent.MouseScrollingEvent event) -> {
@@ -120,6 +136,7 @@ public class AvaliNexusNeoForge {
                 event.registerEntityRenderer(ModEntities.AVALI.get(), AvaliRenderer::new);
                 event.registerEntityRenderer(ModEntities.AVALI_CUSHION.get(), AvaliCushionRenderer::new);
                 event.registerEntityRenderer(ModEntities.AVALI_TAPESTRY.get(), AvaliTapestryRenderer::new);
+                event.registerEntityRenderer(ModEntities.NEXITE_QUILL.get(), NexiteQuillRenderer::new);
             });
         }
 

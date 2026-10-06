@@ -26,6 +26,9 @@ import org.furranystudio.avalinexus.client.tapestry.AvaliTapestryRenderer;
 import org.furranystudio.avalinexus.client.dialogue.ClientDialogue;
 import org.furranystudio.avalinexus.client.dialogue.DialogueHud;
 import org.furranystudio.avalinexus.client.dialogue.DialogueKeys;
+import org.furranystudio.avalinexus.client.weapon.RailGunClient;
+import org.furranystudio.avalinexus.client.weapon.RailGunHud;
+import org.furranystudio.avalinexus.client.weapon.NexiteQuillRenderer;
 import org.furranystudio.avalinexus.entity.ModEntities;
 
 public final class AvaliNexusFabricClient implements ClientModInitializer {
@@ -47,6 +50,10 @@ public final class AvaliNexusFabricClient implements ClientModInitializer {
         NanocanvasTints.register(BlockColorRegistry::register);
         EntityRendererRegistry.register(ModEntities.AVALI_CUSHION.get(), AvaliCushionRenderer::new);
         EntityRendererRegistry.register(ModEntities.AVALI_TAPESTRY.get(), AvaliTapestryRenderer::new);
+        EntityRendererRegistry.register(ModEntities.NEXITE_QUILL.get(), NexiteQuillRenderer::new);
+        HudElementRegistry.addLast(AvaliNexus.id("rail_gun"), RailGunHud::render);
+        KeyMappingHelper.registerKeyMapping(RailGunClient.RELOAD);
+        ClientTickEvents.START_CLIENT_TICK.register(client -> RailGunClient.tick());
     }
 
     public interface ScreenFactory {

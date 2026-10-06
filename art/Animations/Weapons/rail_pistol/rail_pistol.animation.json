@@ -1,0 +1,154 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"idle": {
+			"loop": true,
+			"animation_length": 3,
+			"bones": {
+				"GFX": {
+					"position": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"1.5": {
+							"vector": [0, 0.05, 0],
+							"easing": "easeInSine"
+						},
+						"3.0": {
+							"vector": [0, 0, 0],
+							"easing": "easeInSine"
+						}
+					}
+				}
+			}
+		},
+		"fire": {
+			"animation_length": 0.25,
+			"bones": {
+				"Barrel": {
+					"position": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.125": {
+							"vector": [1, 0, 0]
+						},
+						"0.25": {
+							"vector": [0, 0, 0]
+						}
+					},
+					"scale": {
+						"0.0": {
+							"vector": [1, 1, 1]
+						},
+						"0.125": {
+							"vector": [0.9, 1, 0.9]
+						},
+						"0.25": {
+							"vector": [1, 1, 1]
+						}
+					}
+				},
+				"GFX": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.0833": {
+							"vector": [0, 0, 7.5]
+						},
+						"0.25": {
+							"vector": [0, 0, 0]
+						}
+					}
+				}
+			}
+		},
+		"reload": {
+			"animation_length": 1.5,
+			"bones": {
+				"Magazine": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.2083": {
+							"vector": [0, 0, 65]
+						},
+						"0.75": {
+							"vector": [0, 0, -115]
+						},
+						"1.25": {
+							"vector": [0, 0, 0]
+						},
+						"1.5": {
+							"vector": [0, 0, 0]
+						}
+					},
+					"position": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.2083": {
+							"vector": [-2, 0, 0]
+						},
+						"0.75": {
+							"vector": [-2, -6, 0]
+						},
+						"1.25": {
+							"vector": [-1, -1, 0]
+						},
+						"1.5": {
+							"vector": [0, 0, 0]
+						}
+					}
+				},
+				"GFX": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.25": {
+							"vector": [-14.8774, 1.936, 7.2472]
+						},
+						"0.5833": {
+							"vector": [-22.3064, -7.7468, 16.6031]
+						},
+						"1.2083": {
+							"vector": [-14.8774, 1.936, 7.2472]
+						},
+						"1.5": {
+							"vector": [0, 0, 0]
+						}
+					}
+				}
+			}
+		},
+		"aim": {
+			"loop": true,
+			"animation_length": 3,
+			"bones": {
+				"Root": {
+					"position": {
+						"vector": [9, 2.75, 5.25]
+					}
+				},
+				"GFX": {
+					"position": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"1.5": {
+							"vector": [0, 0.05, 0],
+							"easing": "easeInSine"
+						},
+						"3.0": {
+							"vector": [0, 0, 0],
+							"easing": "easeInSine"
+						}
+					}
+				}
+			}
+		}
+	}
+}

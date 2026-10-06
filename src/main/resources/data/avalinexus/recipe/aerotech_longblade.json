@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "A": "avalinexus:aerogel",
+    "B": "avalinexus:aerotech_blade",
+    "G": "avalinexus:graphene"
+  },
+  "pattern": [
+    "A",
+    "B",
+    "G"
+  ],
+  "result": {
+    "id": "avalinexus:aerotech_longblade"
+  }
+}

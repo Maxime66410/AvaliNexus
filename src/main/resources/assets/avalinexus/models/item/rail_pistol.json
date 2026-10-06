@@ -1,0 +1,64 @@
+{
+  "textures": {
+    "particle": "avalinexus:item/rail_pistol/rail_pistol_base"
+  },
+  "display": {
+    "thirdperson_righthand": {
+      "translation": [
+        0,
+        -1.75,
+        -0.5
+      ]
+    },
+    "thirdperson_lefthand": {
+      "translation": [
+        0,
+        -1.75,
+        -0.5
+      ]
+    },
+    "gui": {
+      "rotation": [
+        0,
+        105,
+        0
+      ],
+      "translation": [
+        0,
+        -2.75,
+        0
+      ],
+      "scale": [
+        1.15,
+        1.15,
+        1.15
+      ]
+    },
+    "head": {
+      "translation": [
+        0,
+        7.75,
+        0
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        0,
+        90,
+        0
+      ],
+      "translation": [
+        0,
+        -1.75,
+        0
+      ]
+    },
+    "on_shelf": {
+      "rotation": [
+        0,
+        90,
+        0
+      ]
+    }
+  }
+}

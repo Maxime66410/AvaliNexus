@@ -1,0 +1,71 @@
+{
+	"format_version": "1.21.110",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.avalinexus:rail_pistol",
+				"texture_width": 16,
+				"texture_height": 16,
+				"visible_bounds_width": 2,
+				"visible_bounds_height": 1.5,
+				"visible_bounds_offset": [0, 0.25, 0]
+			},
+			"bones": [
+				{
+					"name": "Root",
+					"pivot": [0, 0, 0],
+					"rotation": [0, -90, 0]
+				},
+				{
+					"name": "GFX",
+					"parent": "Root",
+					"pivot": [0, 0, 0]
+				},
+				{
+					"name": "Body",
+					"parent": "GFX",
+					"pivot": [4, 2, 0],
+					"cubes": [
+						{"origin": [2, 2, -1], "size": [3, 3, 2], "uv": [0, 4]}
+					]
+				},
+				{
+					"name": "Barrel",
+					"parent": "GFX",
+					"pivot": [0, 0, 0],
+					"cubes": [
+						{"origin": [-4, 3.75, -0.5], "size": [1, 1, 1], "pivot": [-3.05, 3.8, 0], "rotation": [0, 0, 45], "uv": [0, 14]},
+						{"origin": [0.25, 3.75, -0.5], "size": [1, 1, 1], "pivot": [1.2, 3.8, 0], "rotation": [0, 0, 45], "uv": [0, 14]},
+						{"origin": [-3.75, 2, -0.5], "size": [4, 1, 1], "uv": [0, 9]},
+						{"origin": [-4, 3, -1], "size": [6, 2, 2], "uv": [0, 0]}
+					]
+				},
+				{
+					"name": "Muzzle",
+					"parent": "Barrel",
+					"pivot": [0, 0, 0],
+					"cubes": [
+						{"origin": [-5.75, 3.5, -0.5], "size": [2, 1, 1], "uv": [10, 9]}
+					]
+				},
+				{
+					"name": "Grip",
+					"parent": "GFX",
+					"pivot": [0, 0, 0],
+					"cubes": [
+						{"origin": [-1, 0, -0.95], "size": [2, 4, 1.9], "pivot": [0, 0, 0.05], "rotation": [0, 0, 45], "uv": [10, 4]},
+						{"origin": [-1.5, 1.5, -0.5], "size": [2, 1, 1], "pivot": [-0.5, 1.5, 0.5], "rotation": [0, 0, 47.5], "uv": [7, 12]}
+					]
+				},
+				{
+					"name": "Magazine",
+					"parent": "Grip",
+					"pivot": [0, 0, 0],
+					"cubes": [
+						{"origin": [-0.75, -0.5, -0.5], "size": [2, 1, 1], "pivot": [0.25, -0.5, 0.5], "rotation": [0, 0, -45], "uv": [0, 11]}
+					]
+				}
+			]
+		}
+	]
+}
