@@ -113,6 +113,21 @@
       "id": "decorations",
       "category": "mod",
       "icon": "avalinexus:orange_avali_tapestry"
+    },
+    {
+      "id": "aerotech_blades",
+      "category": "mod",
+      "icon": "avalinexus:aerotech_blade"
+    },
+    {
+      "id": "rail_weapons",
+      "category": "mod",
+      "icon": "avalinexus:rail_pistol"
+    },
+    {
+      "id": "quills_magazines",
+      "category": "mod",
+      "icon": "avalinexus:nexite_quill"
     }
   ]
 }

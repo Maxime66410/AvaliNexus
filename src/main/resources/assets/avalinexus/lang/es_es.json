@@ -191,7 +191,7 @@
   "avalinexus.settings.off": "NO",
   "avalinexus.settings.done": "Hecho",
   "avalinexus.archive.category.lore": "Historia",
-  "avalinexus.archive.category.mod": "El mod",
+  "avalinexus.archive.category.mod": "Avali Nexus",
   "avalinexus.archive.avalon.title": "Avalon",
   "avalinexus.archive.avalon.text": "Avalon es el mundo natal de los avali, una luna helada que orbita un gigante gaseoso lejos de su estrella. La temperatura ronda entre -40 y -50 °C, su gravedad es cerca de una cuarta parte de la terrestre y su aire denso está hecho de metano y nitrógeno. Sus océanos son de amoníaco líquido y sus placas de hielo se desplazan y se rompen sin cesar. El calor de las mareas derrite agua bajo el hielo, que brota de criovolcanes: para los avali, el agua líquida es tan peligrosa como la lava, y la nieve que deja alimenta feroces ventiscas.",
   "avalinexus.archive.biology.title": "Biología",
@@ -304,5 +304,11 @@
   "item.avalinexus.rail_sniper_magazine": "Cargador de francotirador de riel",
   "item.avalinexus.rail_magazine.ammo": "Plumas: %s / %s",
   "item.avalinexus.rail_magazine.fill": "Clic derecho para llenar con plumas de nexita",
-  "item.avalinexus.rail_gun.no_magazine": "Sin cargador lleno"
+  "item.avalinexus.rail_gun.no_magazine": "Sin cargador lleno",
+  "avalinexus.archive.aerotech_blades.title": "Hojas aerotécnicas",
+  "avalinexus.archive.aerotech_blades.text": "Una empuñadura aerotécnica imprime una hoja de cristal duro, parecido al aerogel. Cada golpe la desgasta un poco y, cuando se agota, se rompe y solo queda la empuñadura. Haz clic derecho con aerogel en el inventario para reforjarla al instante, o lleva la empuñadura contigo: se reforja sola en cinco minutos. Hay cuatro hojas: la daga, rápida, la hoja, equilibrada, la hoja larga, lenta pero con más alcance, y la hoja cantora, forjada en la mesa de herrería con una hoja aerotécnica y un lingote de nexita.",
+  "avalinexus.archive.rail_weapons.title": "Armas de riel",
+  "avalinexus.archive.rail_weapons.text": "Las armas de riel disparan plumas de nexita con un campo magnético. Clic izquierdo para disparar, mantén clic derecho para apuntar, R para recargar. La pistola y el fusil de asalto disparan en ráfaga, la carabina es precisa, la escopeta dispersa ocho plumas a corta distancia y el francotirador, forjado a partir de una carabina, golpea muy fuerte a larga distancia.",
+  "avalinexus.archive.quills_magazines.title": "Plumas y cargadores",
+  "avalinexus.archive.quills_magazines.text": "Las plumas de nexita son la munición de las armas de riel: una pepita de nexita y un grafeno dan dieciséis. Cada arma usa su propio cargador. Haz clic derecho con un cargador en la mano para llenarlo de plumas y pulsa R para insertarlo: el arma toma el cargador más lleno y el anterior vuelve a tu bolsa. Mantén R para sacar el cargador. La escopeta no tiene cargador, carga las plumas una a una."
 }

@@ -191,7 +191,7 @@
   "avalinexus.settings.off": "OFF",
   "avalinexus.settings.done": "Done",
   "avalinexus.archive.category.lore": "Lore",
-  "avalinexus.archive.category.mod": "The Mod",
+  "avalinexus.archive.category.mod": "Avali Nexus",
   "avalinexus.archive.avalon.title": "Avalon",
   "avalinexus.archive.avalon.text": "Avalon is the Avali homeworld, an icy moon orbiting a gas giant far from its star. It hovers between -40 and -50°C, its gravity is about a quarter of Earth's and its thick air is made of methane and nitrogen. Its oceans are liquid ammonia, and its ice shelves drift and crack endlessly. Tidal heat melts water under the ice, which bursts out of cryovolcanoes: to the Avali, liquid water is as dangerous as lava, and the snow it leaves feeds fierce blizzards.",
   "avalinexus.archive.biology.title": "Biology",
@@ -304,5 +304,11 @@
   "item.avalinexus.rail_sniper_magazine": "Rail Sniper Magazine",
   "item.avalinexus.rail_magazine.ammo": "Quills: %s / %s",
   "item.avalinexus.rail_magazine.fill": "Right click to fill with Nexite quills",
-  "item.avalinexus.rail_gun.no_magazine": "No loaded magazine"
+  "item.avalinexus.rail_gun.no_magazine": "No loaded magazine",
+  "avalinexus.archive.aerotech_blades.title": "Aerotech Blades",
+  "avalinexus.archive.aerotech_blades.text": "An aerotech hilt prints a blade of hard crystal, close to aerogel. Every hit wears it down a little, and once it is spent it shatters and leaves only the hilt. Right click with aerogel in your inventory to reforge it at once, or keep the hilt on you: it reforges by itself in five minutes. There are four blades: the dagger, quick, the blade, balanced, the longblade, slow but with a longer reach, and the singing blade, forged at the smithing table from an aerotech blade and a Nexite ingot.",
+  "avalinexus.archive.rail_weapons.title": "Rail Weapons",
+  "avalinexus.archive.rail_weapons.text": "Rail weapons launch Nexite quills with a magnetic field. Left click to fire, hold right click to aim, R to reload. The pistol and the assault rifle fire in bursts, the carbine is precise, the shotgun spreads eight quills at close range, and the sniper, forged from a carbine, hits very hard at long range.",
+  "avalinexus.archive.quills_magazines.title": "Quills and Magazines",
+  "avalinexus.archive.quills_magazines.text": "Nexite quills are the ammo of rail weapons: one Nexite nugget and one graphene make sixteen. Each weapon uses its own magazine. Right click with a magazine in hand to fill it with quills, then press R to insert it: the weapon takes the fullest magazine and the old one goes back to your bag. Hold R to take the magazine out. The shotgun has no magazine, it loads quills one by one."
 }
