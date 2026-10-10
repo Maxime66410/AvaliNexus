@@ -42,6 +42,7 @@ import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
@@ -110,7 +111,6 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     private boolean playerNearby;
     private int gestureTicks;
     private boolean justLoaded;
-    // Set once the Avali got its name and pack, older Avalis get theirs on their first tick
     private boolean named;
     private boolean panicking;
     private ServerPlayer talkingTo;
@@ -126,9 +126,17 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
             .add(Attributes.MOVEMENT_SPEED, 0.3);
     }
 
+    @Override
+    public boolean removeWhenFarAway(double distanceToPlayer) {
+        return false;
+    }
+
     public static boolean checkAvaliSpawnRules(EntityType<AvaliEntity> type, ServerLevelAccessor level, EntitySpawnReason reason,
                                                BlockPos pos, RandomSource random) {
-        return level.getRawBrightness(pos, 0) > 8 && Mob.checkMobSpawnRules(type, level, reason, pos, random);
+        if (level.getRawBrightness(pos, 0) <= 8) {
+            return false;
+        }
+        return level.getBlockState(pos.below()).is(Blocks.SNOW) || Mob.checkMobSpawnRules(type, level, reason, pos, random);
     }
 
     @Override
@@ -226,7 +234,6 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     @Override
     public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob partner) {
         AvaliEntity kit = ModEntities.AVALI.get().create(level, EntitySpawnReason.BREEDING);
-        // Kits are raised by the pack of their parents
         if (kit != null) {
             kit.setPack(getPack());
         }
@@ -323,8 +330,6 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         }
     }
 
-    // Vanilla keeps the bed and the vehicle across a reload but not the goals that would end them
-    // so the Avali gets up and its goals send it back to bed or to a cushion later on
     private void standUpAfterLoad() {
         if (isSleeping()) {
             stopSleeping();

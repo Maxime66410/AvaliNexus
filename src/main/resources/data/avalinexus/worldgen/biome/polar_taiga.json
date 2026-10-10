@@ -17,8 +17,8 @@
               "type": "avalinexus:avali",
               "count": {
                 "type": "minecraft:uniform",
-                "min_inclusive": 1,
-                "max_inclusive": 3
+                "min_inclusive": 3,
+                "max_inclusive": 5
               },
               "weight": 6
             },
