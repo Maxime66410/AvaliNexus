@@ -197,7 +197,9 @@
       "minecraft:disk_gravel",
       "avalinexus:ore_nexite_polar"
     ],
-    [],
+    [
+      "avalinexus:frozen_caves"
+    ],
     [
       "minecraft:spring_water",
       "minecraft:spring_lava"

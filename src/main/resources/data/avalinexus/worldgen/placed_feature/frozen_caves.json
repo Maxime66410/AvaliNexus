@@ -1,0 +1,8 @@
+{
+  "feature": "avalinexus:frozen_caves",
+  "placement": [
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}
