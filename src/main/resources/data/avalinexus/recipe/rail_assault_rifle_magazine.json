@@ -3,12 +3,12 @@
   "category": "equipment",
   "key": {
     "G": "avalinexus:graphene",
-    "S": "avalinexus:nexite_shard"
+    "I": "avalinexus:nexite_ingot"
   },
   "pattern": [
-    "GG",
-    "SS",
-    "GG"
+    "G",
+    "I",
+    "G"
   ],
   "result": {
     "id": "avalinexus:rail_assault_rifle_magazine"

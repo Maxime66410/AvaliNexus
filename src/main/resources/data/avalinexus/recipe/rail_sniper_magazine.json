@@ -6,9 +6,9 @@
     "I": "avalinexus:nexite_ingot"
   },
   "pattern": [
-    "G",
-    "I",
-    "G"
+    "GG",
+    "II",
+    "GG"
   ],
   "result": {
     "id": "avalinexus:rail_sniper_magazine"
