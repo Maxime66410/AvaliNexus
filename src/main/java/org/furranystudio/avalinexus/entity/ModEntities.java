@@ -68,7 +68,6 @@ public final class ModEntities {
             .updateInterval(Integer.MAX_VALUE)
             .build(key));
 
-    // Same tracking as arrows so fast darts stay smooth on the client
     public static final RegistryEntry<EntityType<NexiteQuill>> NEXITE_QUILL = ModRegistry.register(Registries.ENTITY_TYPE, "nexite_quill",
         key -> EntityType.Builder.<NexiteQuill>of(NexiteQuill::new, MobCategory.MISC)
             .noLootTable()

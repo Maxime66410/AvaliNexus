@@ -27,7 +27,6 @@ import org.furranystudio.avalinexus.sound.ModSounds;
 
 import java.util.function.Consumer;
 
-// A spent blade: right click with aerogel to print it back, or wait five minutes and it reforges on its own
 public class AerotechHiltItem extends Item {
 
     private static final int REFORGE_SECONDS = 300;
@@ -71,7 +70,6 @@ public class AerotechHiltItem extends Item {
         }
     }
 
-    // The bar shows how far the blade reforged on its own
     @Override
     public boolean isBarVisible(ItemStack hilt) {
         return true;

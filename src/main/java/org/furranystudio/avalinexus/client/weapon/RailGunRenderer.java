@@ -15,7 +15,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemDisplayContext;
 import org.furranystudio.avalinexus.item.weapon.RailGunItem;
 
-// Tells the animations whether the gun is held in first person, aimed or reloaded
 public class RailGunRenderer extends GeoItemRenderer<RailGunItem> {
 
     public RailGunRenderer(RailGunItem gun) {
@@ -34,7 +33,6 @@ public class RailGunRenderer extends GeoItemRenderer<RailGunItem> {
         state.addGeckolibData(RailGunItem.RELOAD_STEP, RailGunItem.reloadStep(data.itemStack(), now));
     }
 
-    // Creative copies share the gun id, so a gun out of a hand gets its own animation instance and never sees the shots
     @Override
     public long getInstanceId(RailGunItem gun, RenderData data) {
         long id = super.getInstanceId(gun, data);
@@ -44,7 +42,6 @@ public class RailGunRenderer extends GeoItemRenderer<RailGunItem> {
         return held ? id : ~id;
     }
 
-    // geckolib/models/item/<name>.geo.json, geckolib/animations/item/<name>.animation.json, textures/item/<name>/<name>_base.png
     private static class Model extends GeoModel<RailGunItem> {
 
         private final Identifier model;

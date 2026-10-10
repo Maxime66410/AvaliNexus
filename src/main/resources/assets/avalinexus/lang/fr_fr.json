@@ -297,5 +297,12 @@
   "subtitles.avalinexus.rail.pump": "Fusil à pompe armé",
   "subtitles.avalinexus.nexite_quill.impact": "Impact de penne de Nexite",
   "subtitles.avalinexus.aerotech.shatter": "Lame aérotech brisée",
-  "subtitles.avalinexus.aerotech.reforge": "Lame aérotech reformée"
+  "subtitles.avalinexus.aerotech.reforge": "Lame aérotech reformée",
+  "item.avalinexus.rail_pistol_magazine": "Chargeur de pistolet à rail",
+  "item.avalinexus.rail_assault_rifle_magazine": "Chargeur de fusil d'assaut à rail",
+  "item.avalinexus.rail_carbine_magazine": "Chargeur de carabine à rail",
+  "item.avalinexus.rail_sniper_magazine": "Chargeur de sniper à rail",
+  "item.avalinexus.rail_magazine.ammo": "Pennes : %s / %s",
+  "item.avalinexus.rail_magazine.fill": "Clic droit pour remplir avec des pennes de Nexite",
+  "item.avalinexus.rail_gun.no_magazine": "Pas de chargeur rempli"
 }

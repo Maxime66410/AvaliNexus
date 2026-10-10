@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "G": "avalinexus:graphene",
+    "N": "avalinexus:nexite_nugget"
+  },
+  "pattern": [
+    "G",
+    "N",
+    "G"
+  ],
+  "result": {
+    "id": "avalinexus:rail_pistol_magazine"
+  }
+}

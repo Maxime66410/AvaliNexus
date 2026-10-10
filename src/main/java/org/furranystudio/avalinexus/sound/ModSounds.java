@@ -42,7 +42,6 @@ public final class ModSounds {
     public static void init() {
     }
 
-    // Each play picks a slightly different pitch so repeated sounds never feel copy pasted
     public static void play(Level level, Entity source, SoundEvent sound, float volume, float pitchSpread) {
         float pitch = 1.0F + (level.getRandom().nextFloat() * 2.0F - 1.0F) * pitchSpread;
         level.playSound(null, source.getX(), source.getY(), source.getZ(), sound, SoundSource.PLAYERS, volume, pitch);

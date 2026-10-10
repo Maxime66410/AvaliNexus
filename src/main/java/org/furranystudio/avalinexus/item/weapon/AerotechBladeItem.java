@@ -17,7 +17,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import org.furranystudio.avalinexus.sound.ModSounds;
 
-// Wears down one point per hit, Unbreaking included, and turns into the hilt when the crystal is spent
 public class AerotechBladeItem extends Item {
 
     public AerotechBladeItem(Properties properties) {
@@ -41,7 +40,6 @@ public class AerotechBladeItem extends Item {
         }
     }
 
-    // Keeps enchantments and name, the hilt remembers which blade to print back
     static ItemStack shatter(ItemStack blade) {
         ItemStack hilt = blade.transmuteCopy(AerotechWeapons.AEROTECH_HILT.get());
         hilt.remove(DataComponents.DAMAGE);

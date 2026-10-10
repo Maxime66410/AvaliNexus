@@ -17,7 +17,6 @@ import org.furranystudio.avalinexus.client.ui.AvaliUi;
 import org.furranystudio.avalinexus.item.weapon.RailGunItem;
 import org.furranystudio.avalinexus.item.weapon.RailWeapons;
 
-// Ammo panel in the bottom right corner: magazine, spare Nexite quills and the reload bar
 public final class RailGunHud {
 
     private static final int WIDTH = 86;
@@ -52,7 +51,8 @@ public final class RailGunHud {
         int ammoColor = ammo == 0 ? AvaliUi.DANGER : AvaliUi.TEXT_PRIMARY;
         AvaliUi.shadowedText(graphics, font, Component.literal(ammo + " / " + magazine), left + PADDING, top + PADDING + 12, ammoColor);
 
-        String spare = player.hasInfiniteMaterials() ? "∞" : String.valueOf(RailGunItem.countQuills(player.getInventory()));
+        int reserve = item.usesMagazines() ? item.countMagazines(player.getInventory()) : RailGunItem.countQuills(player.getInventory());
+        String spare = player.hasInfiniteMaterials() ? "∞" : String.valueOf(reserve);
         Component spareText = Component.literal(spare);
         AvaliUi.shadowedText(graphics, font, spareText, left + WIDTH - PADDING - font.width(spareText), top + PADDING + 12, AvaliUi.TEXT_DISABLED);
 

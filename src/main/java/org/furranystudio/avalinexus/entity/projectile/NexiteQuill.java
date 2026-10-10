@@ -27,7 +27,6 @@ import org.furranystudio.avalinexus.entity.ModEntities;
 import org.furranystudio.avalinexus.item.weapon.RailWeapons;
 import org.furranystudio.avalinexus.sound.ModSounds;
 
-// A rail gun dart: flies almost straight, hits for a fixed damage and breaks on impact
 public class NexiteQuill extends ThrowableItemProjectile {
 
     private static final int LIFETIME = 100;
@@ -43,7 +42,6 @@ public class NexiteQuill extends ThrowableItemProjectile {
     public NexiteQuill(Level level, LivingEntity shooter, float damage) {
         super(ModEntities.NEXITE_QUILL.get(), shooter, level, new ItemStack(RailWeapons.NEXITE_QUILL.get()));
         this.damage = damage;
-        // In flight it shows the 3D quill, the item keeps its 2D icon
         ItemStack flying = getItem().copy();
         flying.set(DataComponents.ITEM_MODEL, AvaliNexus.id("nexite_quill_projectile"));
         setItem(flying);
@@ -61,7 +59,7 @@ public class NexiteQuill extends ThrowableItemProjectile {
 
     @Override
     public void tick() {
-        // Vanilla only finds a hit where the path enters a hitbox, a dart fired from inside one point blank would fly through
+        // Vanilla only finds hits where the path enters a hitbox, point blank shots start inside it
         if (tickCount == 0 && !level().isClientSide()) {
             for (Entity target : level().getEntities(this, getBoundingBox(), this::canHitEntity)) {
                 if (target.getBoundingBox().contains(position())) {
@@ -79,7 +77,6 @@ public class NexiteQuill extends ThrowableItemProjectile {
         }
     }
 
-    // Orange dust along the path flown this tick, skipped right at the muzzle so it never blinds the shooter
     private void spawnTrail() {
         if (tickCount < 2) {
             return;
@@ -106,7 +103,7 @@ public class NexiteQuill extends ThrowableItemProjectile {
             ? damageSources().mobProjectile(this, shooter)
             : damageSources().thrown(this, owner);
         target.hurtServer(level, source, damage);
-        // Rapid fire and the shotgun pellets would lose most hits to the damage cooldown
+        // In 26.3 the hit cooldown is damageCooldownTime, rapid fire and pellets would lose most hits to it
         if (target instanceof LivingEntity living) {
             living.damageCooldownTime = 0;
         }

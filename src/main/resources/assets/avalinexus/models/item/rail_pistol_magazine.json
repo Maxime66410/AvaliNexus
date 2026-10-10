@@ -1,0 +1,136 @@
+{
+	"format_version": "26.3",
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "avalinexus:item/rail_pistol/rail_pistol_base",
+		"particle": "avalinexus:item/rail_pistol/rail_pistol_base"
+	},
+	"elements": [
+		{
+			"name": "Magazine",
+			"from": [
+				7,
+				8,
+				8
+			],
+			"to": [
+				9,
+				9,
+				9
+			],
+			"rotation": {
+				"x": 0,
+				"y": 0,
+				"z": -90,
+				"origin": [
+					8,
+					8.5,
+					8.5
+				]
+			},
+			"faces": {
+				"north": {
+					"uv": [
+						1,
+						12,
+						3,
+						13
+					],
+					"texture": "#0"
+				},
+				"east": {
+					"uv": [
+						0,
+						12,
+						1,
+						13
+					],
+					"texture": "#0"
+				},
+				"south": {
+					"uv": [
+						4,
+						12,
+						6,
+						13
+					],
+					"texture": "#0"
+				},
+				"west": {
+					"uv": [
+						3,
+						12,
+						4,
+						13
+					],
+					"texture": "#0"
+				},
+				"up": {
+					"uv": [
+						3,
+						12,
+						1,
+						11
+					],
+					"texture": "#0"
+				},
+				"down": {
+					"uv": [
+						5,
+						11,
+						3,
+						12
+					],
+					"texture": "#0"
+				}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"translation": [
+				0,
+				0,
+				-0.25
+			]
+		},
+		"thirdperson_lefthand": {
+			"translation": [
+				0,
+				0,
+				-0.25
+			]
+		},
+		"gui": {
+			"rotation": [
+				20,
+				27,
+				0
+			],
+			"translation": [
+				-1,
+				-1.25,
+				0
+			],
+			"scale": [
+				4,
+				4,
+				4
+			]
+		},
+		"head": {
+			"translation": [
+				0,
+				6.75,
+				0
+			]
+		},
+		"fixed": {
+			"translation": [
+				0,
+				-1.75,
+				0
+			]
+		}
+	}
+}

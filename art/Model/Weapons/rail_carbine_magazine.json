@@ -1,0 +1,47 @@
+{
+	"format_version": "26.3",
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "rail_carbine_base",
+		"particle": "rail_carbine_base"
+	},
+	"elements": [
+		{
+			"name": "Magazine",
+			"from": [7.5, 8, 7],
+			"to": [8.5, 11, 9],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 9.5, 8]},
+			"faces": {
+				"north": {"uv": [7.50417, 7.4975, 7.74063, 8.25], "texture": "#0"},
+				"east": {"uv": [7, 7.50375, 7.50417, 8.25], "texture": "#0"},
+				"south": {"uv": [8.24479, 7.50375, 8.5, 8.25], "texture": "#0"},
+				"west": {"uv": [7.74063, 7.4975, 8.24479, 8.25], "texture": "#0"},
+				"up": {"uv": [7.74063, 7.4975, 7.49792, 7], "texture": "#0"},
+				"down": {"uv": [8.00208, 7, 7.74063, 7.4975], "texture": "#0"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"translation": [0, -1.25, 0]
+		},
+		"thirdperson_lefthand": {
+			"translation": [0, -1.25, 0]
+		},
+		"gui": {
+			"rotation": [-168.5, 72.75, -180],
+			"translation": [0, -6, 0],
+			"scale": [4, 4, 4]
+		},
+		"head": {
+			"translation": [0, 6.5, 0]
+		},
+		"fixed": {
+			"rotation": [0, 90, 0],
+			"translation": [0, -1, 0]
+		},
+		"on_shelf": {
+			"rotation": [0, 90, 0]
+		}
+	}
+}

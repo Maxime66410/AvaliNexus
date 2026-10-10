@@ -14,7 +14,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-// Slows the mouse while aiming a rail gun, as much as the view zooms in, shared by the three loaders
 @Mixin(MouseHandler.class)
 public class MouseHandlerAimMixin {
 

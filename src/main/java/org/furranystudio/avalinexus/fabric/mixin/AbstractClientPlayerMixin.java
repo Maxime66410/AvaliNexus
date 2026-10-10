@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-// Fabric API has no field of view event, this zooms while aiming a rail gun
+// Fabric API has no field of view event
 @Mixin(AbstractClientPlayer.class)
 public class AbstractClientPlayerMixin {
 

@@ -297,5 +297,12 @@
   "subtitles.avalinexus.rail.pump": "Escopeta bombeada",
   "subtitles.avalinexus.nexite_quill.impact": "Impacto de pluma de nexita",
   "subtitles.avalinexus.aerotech.shatter": "Hoja aerotécnica rota",
-  "subtitles.avalinexus.aerotech.reforge": "Hoja aerotécnica reformada"
+  "subtitles.avalinexus.aerotech.reforge": "Hoja aerotécnica reformada",
+  "item.avalinexus.rail_pistol_magazine": "Cargador de pistola de riel",
+  "item.avalinexus.rail_assault_rifle_magazine": "Cargador de fusil de asalto de riel",
+  "item.avalinexus.rail_carbine_magazine": "Cargador de carabina de riel",
+  "item.avalinexus.rail_sniper_magazine": "Cargador de francotirador de riel",
+  "item.avalinexus.rail_magazine.ammo": "Plumas: %s / %s",
+  "item.avalinexus.rail_magazine.fill": "Clic derecho para llenar con plumas de nexita",
+  "item.avalinexus.rail_gun.no_magazine": "Sin cargador lleno"
 }

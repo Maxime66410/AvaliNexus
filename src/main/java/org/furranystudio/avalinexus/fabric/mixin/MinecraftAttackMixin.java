@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-// Left click fires a held rail gun, so it must not hit or mine, Forge and NeoForge cancel their attack event instead
+// Forge and NeoForge cancel their attack event instead
 @Mixin(Minecraft.class)
 public class MinecraftAttackMixin {
 

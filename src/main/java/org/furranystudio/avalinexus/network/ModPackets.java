@@ -18,6 +18,7 @@ import org.furranystudio.avalinexus.network.packet.OpenDialoguePayload;
 import org.furranystudio.avalinexus.network.packet.PingPayload;
 import org.furranystudio.avalinexus.network.packet.OpenShopPayload;
 import org.furranystudio.avalinexus.network.packet.PongPayload;
+import org.furranystudio.avalinexus.network.packet.RailEjectPayload;
 import org.furranystudio.avalinexus.network.packet.RailFirePayload;
 import org.furranystudio.avalinexus.network.packet.RailReloadPayload;
 import org.furranystudio.avalinexus.network.packet.ShopTradePayload;
@@ -47,6 +48,11 @@ public final class ModPackets {
         ModNetworking.serverbound(RailFirePayload.TYPE, RailFirePayload.STREAM_CODEC, (payload, player) -> {
             if (player.getMainHandItem().getItem() instanceof RailGunItem gun) {
                 gun.fire(player, player.getMainHandItem());
+            }
+        });
+        ModNetworking.serverbound(RailEjectPayload.TYPE, RailEjectPayload.STREAM_CODEC, (payload, player) -> {
+            if (player.getMainHandItem().getItem() instanceof RailGunItem gun) {
+                gun.ejectMagazine(player, player.getMainHandItem());
             }
         });
         ModNetworking.serverbound(RailReloadPayload.TYPE, RailReloadPayload.STREAM_CODEC, (payload, player) -> {

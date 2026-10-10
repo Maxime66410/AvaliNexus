@@ -1,0 +1,152 @@
+{
+	"format_version": "26.3",
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "avalinexus:item/rail_assault_rifle/rail_assault_rifle_base",
+		"particle": "avalinexus:item/rail_assault_rifle/rail_assault_rifle_base"
+	},
+	"elements": [
+		{
+			"name": "Magazine",
+			"from": [
+				7.5,
+				8,
+				7
+			],
+			"to": [
+				8.5,
+				11,
+				9
+			],
+			"rotation": {
+				"angle": 0,
+				"axis": "x",
+				"origin": [
+					8,
+					9.5,
+					8
+				]
+			},
+			"faces": {
+				"north": {
+					"uv": [
+						5.5,
+						7,
+						5.75,
+						7.75
+					],
+					"texture": "#0"
+				},
+				"east": {
+					"uv": [
+						5,
+						7,
+						5.5,
+						7.75
+					],
+					"texture": "#0"
+				},
+				"south": {
+					"uv": [
+						6.25,
+						7,
+						6.5,
+						7.75
+					],
+					"texture": "#0"
+				},
+				"west": {
+					"uv": [
+						5.75,
+						7,
+						6.25,
+						7.75
+					],
+					"texture": "#0"
+				},
+				"up": {
+					"uv": [
+						5.75,
+						7,
+						5.5,
+						6.5
+					],
+					"texture": "#0"
+				},
+				"down": {
+					"uv": [
+						5.75,
+						6.5,
+						6,
+						7
+					],
+					"texture": "#0"
+				}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"translation": [
+				0,
+				-1,
+				0
+			]
+		},
+		"thirdperson_lefthand": {
+			"translation": [
+				0,
+				-1,
+				0
+			]
+		},
+		"gui": {
+			"rotation": [
+				-174.85,
+				66,
+				-176.16
+			],
+			"translation": [
+				0,
+				-6,
+				0
+			],
+			"scale": [
+				4,
+				4,
+				4
+			]
+		},
+		"head": {
+			"translation": [
+				0,
+				6.5,
+				0
+			]
+		},
+		"fixed": {
+			"rotation": [
+				0,
+				90,
+				0
+			],
+			"translation": [
+				0,
+				-2,
+				0
+			]
+		},
+		"on_shelf": {
+			"rotation": [
+				0,
+				90,
+				0
+			],
+			"translation": [
+				0,
+				-2,
+				0
+			]
+		}
+	}
+}

@@ -1,0 +1,7 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "avalinexus:item/rail_carbine_magazine"
+  },
+  "hand_animation_on_swap": false
+}

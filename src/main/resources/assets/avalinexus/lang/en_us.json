@@ -297,5 +297,12 @@
   "subtitles.avalinexus.rail.pump": "Shotgun pumps",
   "subtitles.avalinexus.nexite_quill.impact": "Nexite quill hits",
   "subtitles.avalinexus.aerotech.shatter": "Aerotech blade shatters",
-  "subtitles.avalinexus.aerotech.reforge": "Aerotech blade reforms"
+  "subtitles.avalinexus.aerotech.reforge": "Aerotech blade reforms",
+  "item.avalinexus.rail_pistol_magazine": "Rail Pistol Magazine",
+  "item.avalinexus.rail_assault_rifle_magazine": "Rail Assault Rifle Magazine",
+  "item.avalinexus.rail_carbine_magazine": "Rail Carbine Magazine",
+  "item.avalinexus.rail_sniper_magazine": "Rail Sniper Magazine",
+  "item.avalinexus.rail_magazine.ammo": "Quills: %s / %s",
+  "item.avalinexus.rail_magazine.fill": "Right click to fill with Nexite quills",
+  "item.avalinexus.rail_gun.no_magazine": "No loaded magazine"
 }
