@@ -120,6 +120,9 @@ public final class ModItems {
     public static final RegistryEntry<BlockItem> HEATER = ModRegistry.register(Registries.ITEM, "heater",
         key -> new BlockItem(ModBlocks.HEATER.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
 
+    public static final RegistryEntry<BlockItem> AVALI_LOOM = ModRegistry.register(Registries.ITEM, "avali_loom",
+        key -> new BlockItem(ModBlocks.AVALI_LOOM.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
+
     public static final RegistryEntry<BlockItem> TERMINAL = ModRegistry.register(Registries.ITEM, "terminal",
         key -> new BlockItem(ModBlocks.TERMINAL.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
 

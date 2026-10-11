@@ -31,6 +31,14 @@ public class TapestryItem extends Item {
         this.color = color;
     }
 
+    public TapestryPattern pattern() {
+        return pattern;
+    }
+
+    public DyeColor color() {
+        return color;
+    }
+
     @Override
     public InteractionResult useOn(UseOnContext context) {
         Direction direction = context.getClickedFace();

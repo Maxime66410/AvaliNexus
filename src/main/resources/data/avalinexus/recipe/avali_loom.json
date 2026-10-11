@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "G": "avalinexus:graphene",
+    "N": "avalinexus:nanofibre",
+    "P": "#minecraft:planks"
+  },
+  "pattern": [
+    "GNG",
+    "PPP",
+    "P P"
+  ],
+  "result": {
+    "id": "avalinexus:avali_loom"
+  }
+}

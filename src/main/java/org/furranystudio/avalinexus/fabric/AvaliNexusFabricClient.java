@@ -16,6 +16,7 @@ import org.furranystudio.avalinexus.AvaliNexus;
 import org.furranystudio.avalinexus.client.AvaliNexusClient;
 import org.furranystudio.avalinexus.client.avali.AvaliRenderer;
 import org.furranystudio.avalinexus.client.heater.HeaterScreen;
+import org.furranystudio.avalinexus.client.loom.AvaliLoomScreen;
 import org.furranystudio.avalinexus.inventory.ModMenus;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.world.inventory.MenuType;
@@ -47,6 +48,7 @@ public final class AvaliNexusFabricClient implements ClientModInitializer {
         ClientTickEvents.START_CLIENT_TICK.register(client -> ClientDialogue.tick());
         EntityRendererRegistry.register(ModEntities.AVALI.get(), AvaliRenderer::new);
         registerScreen(ModMenus.HEATER.get(), (menu, inventory, title) -> new HeaterScreen((org.furranystudio.avalinexus.block.heater.HeaterMenu) menu, inventory, title));
+        registerScreen(ModMenus.AVALI_LOOM.get(), (menu, inventory, title) -> new AvaliLoomScreen((org.furranystudio.avalinexus.block.loom.AvaliLoomMenu) menu, inventory, title));
         NanocanvasTints.register(BlockColorRegistry::register);
         EntityRendererRegistry.register(ModEntities.AVALI_CUSHION.get(), AvaliCushionRenderer::new);
         EntityRendererRegistry.register(ModEntities.AVALI_TAPESTRY.get(), AvaliTapestryRenderer::new);

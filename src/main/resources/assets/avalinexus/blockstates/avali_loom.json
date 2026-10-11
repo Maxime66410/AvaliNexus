@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=west": {
+      "model": "avalinexus:block/avali_loom"
+    },
+    "facing=north": {
+      "model": "avalinexus:block/avali_loom",
+      "y": 90
+    },
+    "facing=east": {
+      "model": "avalinexus:block/avali_loom",
+      "y": 180
+    },
+    "facing=south": {
+      "model": "avalinexus:block/avali_loom",
+      "y": 270
+    }
+  }
+}

@@ -37,6 +37,7 @@ import org.furranystudio.avalinexus.Platform;
 import org.furranystudio.avalinexus.client.AvaliNexusClient;
 import org.furranystudio.avalinexus.client.avali.AvaliRenderer;
 import org.furranystudio.avalinexus.client.heater.HeaterScreen;
+import org.furranystudio.avalinexus.client.loom.AvaliLoomScreen;
 import org.furranystudio.avalinexus.client.settings.AvaliSettingsScreen;
 import org.furranystudio.avalinexus.inventory.ModMenus;
 import net.minecraft.client.gui.screens.MenuScreens;
@@ -110,7 +111,10 @@ public class AvaliNexusForge {
             context.registerExtensionPoint(ConfigScreenHandler.ConfigScreenFactory.class,
                 () -> new ConfigScreenHandler.ConfigScreenFactory(AvaliSettingsScreen::new));
             FMLClientSetupEvent.getBus(context.getModBusGroup()).addListener(event ->
-                event.enqueueWork(() -> MenuScreens.register(ModMenus.HEATER.get(), HeaterScreen::new)));
+                event.enqueueWork(() -> {
+                    MenuScreens.register(ModMenus.HEATER.get(), HeaterScreen::new);
+                    MenuScreens.register(ModMenus.AVALI_LOOM.get(), AvaliLoomScreen::new);
+                }));
             AddGuiOverlayLayersEvent.BUS.addListener(event -> event.getLayeredDraw().add(AvaliNexus.id("dialogue"), DialogueHud::render));
             RegisterKeyMappingsEvent.BUS.addListener(event -> {
                 event.register(DialogueKeys.CURSOR);

@@ -13,6 +13,7 @@ import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import org.furranystudio.avalinexus.block.heater.HeaterMenu;
+import org.furranystudio.avalinexus.block.loom.AvaliLoomMenu;
 import org.furranystudio.avalinexus.registry.ModRegistry;
 import org.furranystudio.avalinexus.registry.RegistryEntry;
 
@@ -24,6 +25,8 @@ public final class ModMenus {
 
     public static final RegistryEntry<MenuType<HeaterMenu>> HEATER = ModRegistry.register(Registries.MENU, "heater",
         key -> create(HeaterMenu::new));
+    public static final RegistryEntry<MenuType<AvaliLoomMenu>> AVALI_LOOM = ModRegistry.register(Registries.MENU, "avali_loom",
+        key -> create(AvaliLoomMenu::new));
 
     private ModMenus() {
     }
@@ -41,7 +44,7 @@ public final class ModMenus {
                     return switch (method.getName()) {
                         case "hashCode" -> System.identityHashCode(proxy);
                         case "equals" -> proxy == args[0];
-                        default -> "HeaterMenuSupplier";
+                        default -> "AvaliNexusMenuSupplier";
                     };
                 }
                 return factory.apply((Integer) args[0], (Inventory) args[1]);

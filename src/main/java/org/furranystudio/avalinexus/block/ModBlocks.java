@@ -27,6 +27,7 @@ import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import org.furranystudio.avalinexus.block.heater.HeaterBlock;
+import org.furranystudio.avalinexus.block.loom.AvaliLoomBlock;
 import org.furranystudio.avalinexus.registry.ModRegistry;
 import org.furranystudio.avalinexus.registry.RegistryEntry;
 
@@ -91,6 +92,17 @@ public final class ModBlocks {
             .sound(SoundType.METAL)
             .noOcclusion()
             .lightLevel(state -> state.getValue(HeaterBlock.LIT) ? 13 : 0)));
+
+    // Loom toughness
+    public static final RegistryEntry<Block> AVALI_LOOM = ModRegistry.register(Registries.BLOCK, "avali_loom",
+        key -> new AvaliLoomBlock(BlockBehaviour.Properties.of()
+            .setId(key)
+            .mapColor(MapColor.WOOD)
+            .instrument(NoteBlockInstrument.BASS)
+            .strength(2.5F)
+            .sound(SoundType.WOOD)
+            .noOcclusion()
+            .ignitedByLava()));
 
     // The screen glows a little
     public static final RegistryEntry<Block> TERMINAL = ModRegistry.register(Registries.BLOCK, "terminal",
