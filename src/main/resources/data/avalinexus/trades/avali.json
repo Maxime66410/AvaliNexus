@@ -11,7 +11,7 @@
     { "item": "minecraft:spyglass", "count": 1, "price": 15 }
   ],
   "sell": [
-    { "item": "minecraft:feather", "count": 8, "price": 2 },
+    { "item": "avalinexus:avali_feather", "count": 8, "price": 2 },
     { "item": "minecraft:leather", "count": 6, "price": 3 },
     { "item": "minecraft:cod", "count": 6, "price": 2 },
     { "item": "minecraft:iron_ingot", "count": 4, "price": 4 },

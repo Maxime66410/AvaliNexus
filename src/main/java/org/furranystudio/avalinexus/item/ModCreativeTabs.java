@@ -31,6 +31,7 @@ public final class ModCreativeTabs {
                 output.accept(ModItems.NEXITE_INGOT.get());
                 output.accept(ModItems.NEXITE_NUGGET.get());
                 output.accept(ModItems.GRAPHENE.get());
+                output.accept(ModItems.AVALI_FEATHER.get());
                 output.accept(ModItems.NEXITE_ORE.get());
                 output.accept(ModItems.DEEPSLATE_NEXITE_ORE.get());
                 output.accept(ModItems.NEXITE_BLOCK.get());

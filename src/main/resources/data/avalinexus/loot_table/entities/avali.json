@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minecraft:feather",
+          "name": "avalinexus:avali_feather",
           "modifier": [
             {
               "type": "minecraft:set_count",
