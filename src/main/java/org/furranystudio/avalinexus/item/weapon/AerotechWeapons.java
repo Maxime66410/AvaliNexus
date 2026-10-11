@@ -40,17 +40,21 @@ public final class AerotechWeapons {
     private static final ToolMaterial DAGGER = new ToolMaterial(BlockTags.INCORRECT_FOR_IRON_TOOL, 150, 6.0F, 2.0F, 14, REPAIRS);
     private static final ToolMaterial BLADE_MATERIAL = new ToolMaterial(BlockTags.INCORRECT_FOR_IRON_TOOL, 600, 6.0F, 2.5F, 14, REPAIRS);
     private static final ToolMaterial LONGBLADE_MATERIAL = new ToolMaterial(BlockTags.INCORRECT_FOR_IRON_TOOL, 750, 6.0F, 2.5F, 14, REPAIRS);
+    private static final ToolMaterial AXE_MATERIAL = new ToolMaterial(BlockTags.INCORRECT_FOR_DIAMOND_TOOL, 750, 8.0F, 2.0F, 14, REPAIRS);
     private static final ToolMaterial SINGING = new ToolMaterial(BlockTags.INCORRECT_FOR_DIAMOND_TOOL, 1500, 8.0F, 3.25F, 15, REPAIRS);
 
     public static final RegistryEntry<AerotechBladeItem> AEROTECH_DAGGER = blade("aerotech_dagger", DAGGER, 2.0F, -1.6F);
     public static final RegistryEntry<AerotechBladeItem> AEROTECH_BLADE = blade("aerotech_blade", BLADE_MATERIAL, 3.0F, -2.4F);
     public static final RegistryEntry<AerotechBladeItem> AEROTECH_LONGBLADE = blade("aerotech_longblade", LONGBLADE_MATERIAL, 4.5F, -2.9F, 0.75F);
+    public static final RegistryEntry<AerotechBladeItem> AEROTECH_AXE = ModRegistry.register(Registries.ITEM, "aerotech_axe", key ->
+        new AerotechBladeItem(new Item.Properties().setId(key).axe(AXE_MATERIAL, 6.0F, -3.0F)
+            .component(DataComponents.WEAPON, new Weapon(0, Weapon.AXE_DISABLES_BLOCKING_FOR_SECONDS))));
     public static final RegistryEntry<AerotechBladeItem> SINGING_BLADE = blade("singing_blade", SINGING, 3.0F, -2.2F);
 
     public static final RegistryEntry<AerotechHiltItem> AEROTECH_HILT = ModRegistry.register(Registries.ITEM, "aerotech_hilt",
         key -> new AerotechHiltItem(new Item.Properties().setId(key).stacksTo(1)));
 
-    public static final List<RegistryEntry<? extends Item>> ALL = List.of(AEROTECH_DAGGER, AEROTECH_BLADE, AEROTECH_LONGBLADE, SINGING_BLADE, AEROTECH_HILT);
+    public static final List<RegistryEntry<? extends Item>> ALL = List.of(AEROTECH_DAGGER, AEROTECH_BLADE, AEROTECH_LONGBLADE, AEROTECH_AXE, SINGING_BLADE, AEROTECH_HILT);
 
     private AerotechWeapons() {
     }
