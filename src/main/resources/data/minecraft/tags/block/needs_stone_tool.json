@@ -14,6 +14,7 @@
     "avalinexus:graphene_brick_slab",
     "avalinexus:graphene_brick_stairs",
     "avalinexus:graphene_brick_wall",
-    "avalinexus:graphene_pillar"
+    "avalinexus:graphene_pillar",
+    "avalinexus:graphene_trapdoor"
   ]
 }

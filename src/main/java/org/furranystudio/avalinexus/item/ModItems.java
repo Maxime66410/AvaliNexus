@@ -105,6 +105,9 @@ public final class ModItems {
     public static final RegistryEntry<BlockItem> GRAPHENE_PILLAR = ModRegistry.register(Registries.ITEM, "graphene_pillar",
         key -> new BlockItem(ModBlocks.GRAPHENE_PILLAR.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
 
+    public static final RegistryEntry<BlockItem> GRAPHENE_TRAPDOOR = ModRegistry.register(Registries.ITEM, "graphene_trapdoor",
+        key -> new BlockItem(ModBlocks.GRAPHENE_TRAPDOOR.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
+
     public static final RegistryEntry<BlockItem> NANOFIBRE = ModRegistry.register(Registries.ITEM, "nanofibre",
         key -> new BlockItem(ModBlocks.NANOFIBRE.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
 

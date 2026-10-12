@@ -8,6 +8,7 @@ package org.furranystudio.avalinexus.block;
 
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.BedBlock;
@@ -18,11 +19,13 @@ import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.TransparentBlock;
+import net.minecraft.world.level.block.TrapDoorBlock;
 import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.DropExperienceBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.BedPart;
+import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
@@ -166,6 +169,15 @@ public final class ModBlocks {
 
     public static final RegistryEntry<Block> GRAPHENE_PILLAR = ModRegistry.register(Registries.BLOCK, "graphene_pillar",
         key -> new RotatedPillarBlock(graphene(key)));
+
+    public static final BlockSetType GRAPHENE_SET = new BlockSetType("avalinexus:graphene", true, true, false,
+        BlockSetType.PressurePlateSensitivity.MOBS, SoundType.IRON, SoundEvents.IRON_DOOR_CLOSE, SoundEvents.IRON_DOOR_OPEN,
+        SoundEvents.IRON_TRAPDOOR_CLOSE, SoundEvents.IRON_TRAPDOOR_OPEN, SoundEvents.METAL_PRESSURE_PLATE_CLICK_OFF,
+        SoundEvents.METAL_PRESSURE_PLATE_CLICK_ON, SoundEvents.STONE_BUTTON_CLICK_OFF, SoundEvents.STONE_BUTTON_CLICK_ON);
+
+    public static final RegistryEntry<Block> GRAPHENE_TRAPDOOR = ModRegistry.register(Registries.BLOCK, "graphene_trapdoor",
+        key -> new TrapDoorBlock(GRAPHENE_SET, graphene(key).noOcclusion().isValidSpawn((state, level, pos, type) -> false)) {
+        });
 
     public static final RegistryEntry<Block> GRAPHENE_SLAB = ModRegistry.register(Registries.BLOCK, "graphene_slab",
         key -> new SlabBlock(graphene(key)));

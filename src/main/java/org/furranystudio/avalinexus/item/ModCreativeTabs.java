@@ -55,6 +55,7 @@ public final class ModCreativeTabs {
                 output.accept(ModItems.GRAPHENE_BRICK_WALL.get());
                 output.accept(ModItems.CHISELED_GRAPHENE_BLOCK.get());
                 output.accept(ModItems.GRAPHENE_PILLAR.get());
+                output.accept(ModItems.GRAPHENE_TRAPDOOR.get());
                 output.accept(ModItems.NANOFIBRE.get());
                 output.accept(ModItems.NANOFIBRE_WALL.get());
                 output.accept(ModItems.AVALI_LAMP.get());
