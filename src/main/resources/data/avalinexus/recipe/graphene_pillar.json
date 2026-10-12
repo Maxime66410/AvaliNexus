@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "G": "avalinexus:graphene_block"
+  },
+  "pattern": [
+    "G",
+    "G"
+  ],
+  "result": {
+    "count": 2,
+    "id": "avalinexus:graphene_pillar"
+  }
+}

@@ -164,6 +164,9 @@ public final class ModBlocks {
     public static final RegistryEntry<Block> CHISELED_GRAPHENE_BLOCK = ModRegistry.register(Registries.BLOCK, "chiseled_graphene_block",
         key -> new Block(graphene(key)));
 
+    public static final RegistryEntry<Block> GRAPHENE_PILLAR = ModRegistry.register(Registries.BLOCK, "graphene_pillar",
+        key -> new RotatedPillarBlock(graphene(key)));
+
     public static final RegistryEntry<Block> GRAPHENE_SLAB = ModRegistry.register(Registries.BLOCK, "graphene_slab",
         key -> new SlabBlock(graphene(key)));
 
