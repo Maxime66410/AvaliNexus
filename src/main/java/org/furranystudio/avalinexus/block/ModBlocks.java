@@ -21,6 +21,7 @@ import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.TransparentBlock;
 import net.minecraft.world.level.block.TrapDoorBlock;
 import net.minecraft.world.level.block.WallBlock;
+import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.DropExperienceBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -177,6 +178,10 @@ public final class ModBlocks {
 
     public static final RegistryEntry<Block> GRAPHENE_TRAPDOOR = ModRegistry.register(Registries.BLOCK, "graphene_trapdoor",
         key -> new TrapDoorBlock(GRAPHENE_SET, graphene(key).noOcclusion().isValidSpawn((state, level, pos, type) -> false)) {
+        });
+
+    public static final RegistryEntry<Block> GRAPHENE_DOOR = ModRegistry.register(Registries.BLOCK, "graphene_door",
+        key -> new DoorBlock(GRAPHENE_SET, graphene(key).noOcclusion().pushReaction(PushReaction.POPPED)) {
         });
 
     public static final RegistryEntry<Block> GRAPHENE_SLAB = ModRegistry.register(Registries.BLOCK, "graphene_slab",

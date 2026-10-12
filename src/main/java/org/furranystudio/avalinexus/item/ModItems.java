@@ -15,6 +15,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.DoubleHighBlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.item.component.TypedEntityData;
@@ -107,6 +108,9 @@ public final class ModItems {
 
     public static final RegistryEntry<BlockItem> GRAPHENE_TRAPDOOR = ModRegistry.register(Registries.ITEM, "graphene_trapdoor",
         key -> new BlockItem(ModBlocks.GRAPHENE_TRAPDOOR.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
+
+    public static final RegistryEntry<DoubleHighBlockItem> GRAPHENE_DOOR = ModRegistry.register(Registries.ITEM, "graphene_door",
+        key -> new DoubleHighBlockItem(ModBlocks.GRAPHENE_DOOR.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
 
     public static final RegistryEntry<BlockItem> NANOFIBRE = ModRegistry.register(Registries.ITEM, "nanofibre",
         key -> new BlockItem(ModBlocks.NANOFIBRE.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
