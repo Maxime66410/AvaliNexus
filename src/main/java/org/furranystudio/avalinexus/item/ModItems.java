@@ -87,6 +87,18 @@ public final class ModItems {
     public static final RegistryEntry<BlockItem> CUT_GRAPHENE_WALL = ModRegistry.register(Registries.ITEM, "cut_graphene_wall",
         key -> new BlockItem(ModBlocks.CUT_GRAPHENE_WALL.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
 
+    public static final RegistryEntry<BlockItem> GRAPHENE_BRICKS = ModRegistry.register(Registries.ITEM, "graphene_bricks",
+        key -> new BlockItem(ModBlocks.GRAPHENE_BRICKS.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
+
+    public static final RegistryEntry<BlockItem> GRAPHENE_BRICK_SLAB = ModRegistry.register(Registries.ITEM, "graphene_brick_slab",
+        key -> new BlockItem(ModBlocks.GRAPHENE_BRICK_SLAB.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
+
+    public static final RegistryEntry<BlockItem> GRAPHENE_BRICK_STAIRS = ModRegistry.register(Registries.ITEM, "graphene_brick_stairs",
+        key -> new BlockItem(ModBlocks.GRAPHENE_BRICK_STAIRS.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
+
+    public static final RegistryEntry<BlockItem> GRAPHENE_BRICK_WALL = ModRegistry.register(Registries.ITEM, "graphene_brick_wall",
+        key -> new BlockItem(ModBlocks.GRAPHENE_BRICK_WALL.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
+
     public static final RegistryEntry<BlockItem> CHISELED_GRAPHENE_BLOCK = ModRegistry.register(Registries.ITEM, "chiseled_graphene_block",
         key -> new BlockItem(ModBlocks.CHISELED_GRAPHENE_BLOCK.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
 

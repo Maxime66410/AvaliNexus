@@ -184,6 +184,19 @@ public final class ModBlocks {
     public static final RegistryEntry<Block> CUT_GRAPHENE_WALL = ModRegistry.register(Registries.BLOCK, "cut_graphene_wall",
         key -> new WallBlock(graphene(key)));
 
+    public static final RegistryEntry<Block> GRAPHENE_BRICKS = ModRegistry.register(Registries.BLOCK, "graphene_bricks",
+        key -> new Block(graphene(key)));
+
+    public static final RegistryEntry<Block> GRAPHENE_BRICK_SLAB = ModRegistry.register(Registries.BLOCK, "graphene_brick_slab",
+        key -> new SlabBlock(graphene(key)));
+
+    public static final RegistryEntry<Block> GRAPHENE_BRICK_STAIRS = ModRegistry.register(Registries.BLOCK, "graphene_brick_stairs",
+        key -> new StairBlock(GRAPHENE_BRICKS.get().defaultBlockState(), graphene(key)) {
+        });
+
+    public static final RegistryEntry<Block> GRAPHENE_BRICK_WALL = ModRegistry.register(Registries.BLOCK, "graphene_brick_wall",
+        key -> new WallBlock(graphene(key)));
+
     public static final RegistryEntry<Block> NANOFIBRE = ModRegistry.register(Registries.BLOCK, "nanofibre",
         key -> new RotatedPillarBlock(nanofibre(key)));
 

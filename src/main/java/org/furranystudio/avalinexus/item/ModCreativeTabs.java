@@ -49,6 +49,10 @@ public final class ModCreativeTabs {
                 output.accept(ModItems.CUT_GRAPHENE_SLAB.get());
                 output.accept(ModItems.CUT_GRAPHENE_STAIRS.get());
                 output.accept(ModItems.CUT_GRAPHENE_WALL.get());
+                output.accept(ModItems.GRAPHENE_BRICKS.get());
+                output.accept(ModItems.GRAPHENE_BRICK_SLAB.get());
+                output.accept(ModItems.GRAPHENE_BRICK_STAIRS.get());
+                output.accept(ModItems.GRAPHENE_BRICK_WALL.get());
                 output.accept(ModItems.CHISELED_GRAPHENE_BLOCK.get());
                 output.accept(ModItems.NANOFIBRE.get());
                 output.accept(ModItems.NANOFIBRE_WALL.get());

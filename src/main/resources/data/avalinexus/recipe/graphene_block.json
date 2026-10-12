@@ -5,11 +5,11 @@
     "G": "avalinexus:graphene"
   },
   "pattern": [
-    "GG",
-    "GG"
+    "GGG",
+    "GGG",
+    "GGG"
   ],
   "result": {
-    "count": 4,
     "id": "avalinexus:graphene_block"
   }
 }

@@ -13,6 +13,10 @@
     "avalinexus:cut_graphene_wall",
     "avalinexus:nexite_block",
     "avalinexus:heater",
-    "avalinexus:terminal"
+    "avalinexus:terminal",
+    "avalinexus:graphene_bricks",
+    "avalinexus:graphene_brick_slab",
+    "avalinexus:graphene_brick_stairs",
+    "avalinexus:graphene_brick_wall"
   ]
 }
