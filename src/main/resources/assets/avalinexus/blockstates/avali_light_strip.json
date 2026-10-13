@@ -1,0 +1,56 @@
+{
+  "variants": {
+    "facing=up,rotated=false": {
+      "model": "avalinexus:block/avali_light_strip"
+    },
+    "facing=up,rotated=true": {
+      "model": "avalinexus:block/avali_light_strip_rotated"
+    },
+    "facing=down,rotated=false": {
+      "model": "avalinexus:block/avali_light_strip",
+      "x": 180
+    },
+    "facing=down,rotated=true": {
+      "model": "avalinexus:block/avali_light_strip_rotated",
+      "x": 180
+    },
+    "facing=north,rotated=false": {
+      "model": "avalinexus:block/avali_light_strip",
+      "x": 90
+    },
+    "facing=north,rotated=true": {
+      "model": "avalinexus:block/avali_light_strip_rotated",
+      "x": 90
+    },
+    "facing=east,rotated=false": {
+      "model": "avalinexus:block/avali_light_strip",
+      "x": 90,
+      "y": 90
+    },
+    "facing=east,rotated=true": {
+      "model": "avalinexus:block/avali_light_strip_rotated",
+      "x": 90,
+      "y": 90
+    },
+    "facing=south,rotated=false": {
+      "model": "avalinexus:block/avali_light_strip",
+      "x": 90,
+      "y": 180
+    },
+    "facing=south,rotated=true": {
+      "model": "avalinexus:block/avali_light_strip_rotated",
+      "x": 90,
+      "y": 180
+    },
+    "facing=west,rotated=false": {
+      "model": "avalinexus:block/avali_light_strip",
+      "x": 90,
+      "y": 270
+    },
+    "facing=west,rotated=true": {
+      "model": "avalinexus:block/avali_light_strip_rotated",
+      "x": 90,
+      "y": 270
+    }
+  }
+}

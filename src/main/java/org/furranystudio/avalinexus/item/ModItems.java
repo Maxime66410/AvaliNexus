@@ -139,6 +139,9 @@ public final class ModItems {
     public static final RegistryEntry<BlockItem> AVALI_LAMP = ModRegistry.register(Registries.ITEM, "avali_lamp",
         key -> new BlockItem(ModBlocks.AVALI_LAMP.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
 
+    public static final RegistryEntry<BlockItem> AVALI_LIGHT_STRIP = ModRegistry.register(Registries.ITEM, "avali_light_strip",
+        key -> new BlockItem(ModBlocks.AVALI_LIGHT_STRIP.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
+
     public static final RegistryEntry<BlockItem> CRYSTAL_POT = ModRegistry.register(Registries.ITEM, "crystal_pot",
         key -> new BlockItem(ModBlocks.CRYSTAL_POT.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
 

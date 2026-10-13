@@ -54,8 +54,6 @@ public final class ModBlocks {
             .strength(4.5F, 3.0F)
             .sound(SoundType.DEEPSLATE)));
 
-    // Same settings as the vanilla beds
-    // Diamond block settings, as tough as graphene against explosions
     public static final RegistryEntry<Block> NEXITE_BLOCK = ModRegistry.register(Registries.BLOCK, "nexite_block",
         key -> new Block(BlockBehaviour.Properties.of()
             .setId(key)
@@ -64,7 +62,6 @@ public final class ModBlocks {
             .strength(5.0F, 30.0F)
             .sound(SoundType.METAL)));
 
-    // Always lit like a sea lantern, easy to break by hand but it shrugs off explosions like the village blocks
     public static final RegistryEntry<Block> AVALI_LAMP = ModRegistry.register(Registries.BLOCK, "avali_lamp",
         key -> new Block(BlockBehaviour.Properties.of()
             .setId(key)
@@ -74,7 +71,18 @@ public final class ModBlocks {
             .sound(SoundType.GLASS)
             .lightLevel(state -> 15)));
 
-    // Glows softly like a soul lantern, breaks in one hit like a flower pot
+    // Thin glowing strip
+    public static final RegistryEntry<Block> AVALI_LIGHT_STRIP = ModRegistry.register(Registries.BLOCK, "avali_light_strip",
+        key -> new LightStripBlock(BlockBehaviour.Properties.of()
+            .setId(key)
+            .mapColor(MapColor.COLOR_ORANGE)
+            .instabreak()
+            .noCollision()
+            .noOcclusion()
+            .sound(SoundType.GLASS)
+            .lightLevel(state -> 10)
+            .pushReaction(PushReaction.POPPED)));
+
     public static final RegistryEntry<Block> CRYSTAL_POT = ModRegistry.register(Registries.BLOCK, "crystal_pot",
         key -> new CrystalPotBlock(BlockBehaviour.Properties.of()
             .setId(key)
@@ -85,7 +93,6 @@ public final class ModBlocks {
             .noOcclusion()
             .pushReaction(PushReaction.POPPED)));
 
-    // Furnace toughness, glows while it burns
     public static final RegistryEntry<Block> HEATER = ModRegistry.register(Registries.BLOCK, "heater",
         key -> new HeaterBlock(BlockBehaviour.Properties.of()
             .setId(key)
@@ -131,7 +138,6 @@ public final class ModBlocks {
             .ignitedByLava()
             .pushReaction(PushReaction.POPPED)));
 
-    // Same settings as the vanilla wool carpets
     public static final RegistryEntry<Block> AVALI_CARPET = ModRegistry.register(Registries.BLOCK, "avali_carpet",
         key -> new CarpetBlock(BlockBehaviour.Properties.of()
             .setId(key)
@@ -140,7 +146,6 @@ public final class ModBlocks {
             .sound(SoundType.WOOL)
             .ignitedByLava()));
 
-    // Vanilla keeps the glass and pane constructors protected, hence the empty subclasses
     public static final RegistryEntry<Block> AEROGEL = ModRegistry.register(Registries.BLOCK, "aerogel",
         key -> new TransparentBlock(aerogel(key)) {
         });

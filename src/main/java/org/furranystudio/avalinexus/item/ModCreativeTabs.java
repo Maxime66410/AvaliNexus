@@ -61,6 +61,7 @@ public final class ModCreativeTabs {
                 output.accept(ModItems.NANOFIBRE.get());
                 output.accept(ModItems.NANOFIBRE_WALL.get());
                 output.accept(ModItems.AVALI_LAMP.get());
+                output.accept(ModItems.AVALI_LIGHT_STRIP.get());
                 output.accept(ModItems.CRYSTAL_POT.get());
                 output.accept(ModItems.HEATER.get());
                 output.accept(ModItems.TERMINAL.get());
