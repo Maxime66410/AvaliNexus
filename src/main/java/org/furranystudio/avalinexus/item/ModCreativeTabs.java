@@ -70,6 +70,7 @@ public final class ModCreativeTabs {
                 output.accept(ModItems.AEROGEL_SLAB.get());
                 output.accept(ModItems.AEROGEL_STAIRS.get());
                 output.accept(ModItems.AEROGEL_WALL.get());
+                output.accept(ModItems.GLOWING_AEROGEL.get());
                 for (AerogelBlocks.Shape shape : AerogelBlocks.Shape.values()) {
                     for (DyeColor color : DyeColor.values()) {
                         output.accept(AerogelBlocks.item(shape, color));

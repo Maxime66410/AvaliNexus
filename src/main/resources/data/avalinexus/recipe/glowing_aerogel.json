@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "A": "avalinexus:aerogel",
+    "G": "minecraft:glowstone_dust"
+  },
+  "pattern": [
+    "AAA",
+    "AGA",
+    "AAA"
+  ],
+  "result": {
+    "count": 8,
+    "id": "avalinexus:glowing_aerogel"
+  }
+}

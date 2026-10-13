@@ -159,6 +159,10 @@ public final class ModBlocks {
     public static final RegistryEntry<Block> AEROGEL_WALL = ModRegistry.register(Registries.BLOCK, "aerogel_wall",
         key -> new WallBlock(aerogel(key)));
 
+    public static final RegistryEntry<Block> GLOWING_AEROGEL = ModRegistry.register(Registries.BLOCK, "glowing_aerogel",
+        key -> new TransparentBlock(aerogel(key).lightLevel(state -> 12)) {
+        });
+
     public static final RegistryEntry<Block> GRAPHENE_BLOCK = ModRegistry.register(Registries.BLOCK, "graphene_block",
         key -> new Block(graphene(key)));
 
