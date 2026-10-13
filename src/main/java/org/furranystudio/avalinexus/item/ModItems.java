@@ -157,6 +157,12 @@ public final class ModItems {
     public static final RegistryEntry<BlockItem> CHISELED_PACKED_SNOW = ModRegistry.register(Registries.ITEM, "chiseled_packed_snow",
         key -> new BlockItem(ModBlocks.CHISELED_PACKED_SNOW.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
 
+    public static final RegistryEntry<BlockItem> AMMONIA_ICE = ModRegistry.register(Registries.ITEM, "ammonia_ice",
+        key -> new BlockItem(ModBlocks.AMMONIA_ICE.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
+
+    public static final RegistryEntry<BlockItem> PACKED_AMMONIA_ICE = ModRegistry.register(Registries.ITEM, "packed_ammonia_ice",
+        key -> new BlockItem(ModBlocks.PACKED_AMMONIA_ICE.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
+
     public static final RegistryEntry<BlockItem> NANOFIBRE = ModRegistry.register(Registries.ITEM, "nanofibre",
         key -> new BlockItem(ModBlocks.NANOFIBRE.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
 

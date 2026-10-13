@@ -163,6 +163,8 @@
   "block.avalinexus.cut_packed_snow_stairs": "Escalier en neige tassée taillée",
   "block.avalinexus.cut_packed_snow_wall": "Muret en neige tassée taillée",
   "block.avalinexus.chiseled_packed_snow": "Neige tassée gravée",
+  "block.avalinexus.ammonia_ice": "Glace d'ammoniac",
+  "block.avalinexus.packed_ammonia_ice": "Glace d'ammoniac compactée",
   "block.avalinexus.graphene_slab": "Dalle en graphène",
   "block.avalinexus.graphene_stairs": "Escalier en graphène",
   "block.avalinexus.graphene_wall": "Muret en graphène",

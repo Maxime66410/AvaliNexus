@@ -73,6 +73,8 @@ public final class ModCreativeTabs {
                 output.accept(ModItems.CUT_PACKED_SNOW_STAIRS.get());
                 output.accept(ModItems.CUT_PACKED_SNOW_WALL.get());
                 output.accept(ModItems.CHISELED_PACKED_SNOW.get());
+                output.accept(ModItems.AMMONIA_ICE.get());
+                output.accept(ModItems.PACKED_AMMONIA_ICE.get());
                 output.accept(ModItems.NANOFIBRE.get());
                 output.accept(ModItems.NANOFIBRE_WALL.get());
                 output.accept(ModItems.AVALI_LAMP.get());

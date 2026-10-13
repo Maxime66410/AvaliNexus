@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    "avalinexus:ammonia_ice",
+    "avalinexus:ammonia_ice",
+    "avalinexus:ammonia_ice",
+    "avalinexus:ammonia_ice",
+    "avalinexus:ammonia_ice",
+    "avalinexus:ammonia_ice",
+    "avalinexus:ammonia_ice",
+    "avalinexus:ammonia_ice",
+    "avalinexus:ammonia_ice"
+  ],
+  "result": {
+    "id": "avalinexus:packed_ammonia_ice"
+  }
+}

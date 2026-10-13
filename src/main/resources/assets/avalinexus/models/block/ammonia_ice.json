@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "avalinexus:block/ammonia_ice/ammonia_ice"
+  }
+}

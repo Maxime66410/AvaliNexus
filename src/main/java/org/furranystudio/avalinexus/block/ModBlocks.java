@@ -293,6 +293,26 @@ public final class ModBlocks {
     public static final RegistryEntry<Block> CHISELED_PACKED_SNOW = ModRegistry.register(Registries.BLOCK, "chiseled_packed_snow",
         key -> new Block(packedSnow(key)));
 
+    public static final RegistryEntry<Block> AMMONIA_ICE = ModRegistry.register(Registries.BLOCK, "ammonia_ice",
+        key -> new AmmoniaIceBlock(BlockBehaviour.Properties.of()
+            .setId(key)
+            .mapColor(MapColor.ICE)
+            .friction(0.98F)
+            .randomTicks()
+            .strength(0.5F)
+            .sound(SoundType.GLASS)
+            .noOcclusion()
+            .isValidSpawn((state, level, pos, type) -> false)
+            .isRedstoneConductor((state, level, pos) -> false)));
+    public static final RegistryEntry<Block> PACKED_AMMONIA_ICE = ModRegistry.register(Registries.BLOCK, "packed_ammonia_ice",
+        key -> new Block(BlockBehaviour.Properties.of()
+            .setId(key)
+            .mapColor(MapColor.ICE)
+            .instrument(NoteBlockInstrument.CHIME)
+            .friction(0.98F)
+            .strength(0.5F)
+            .sound(SoundType.GLASS)));
+
     private static BlockBehaviour.Properties iceBricks(ResourceKey<Block> key) {
         return BlockBehaviour.Properties.of()
             .setId(key)

@@ -1,7 +1,7 @@
 {
   "type": "minecraft:lake",
   "barrier": {
-    "id": "minecraft:packed_ice"
+    "id": "avalinexus:packed_ammonia_ice"
   },
   "can_place_feature": {
     "type": "minecraft:true"

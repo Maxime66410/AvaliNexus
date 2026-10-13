@@ -26,6 +26,8 @@
     "avalinexus:ice_bricks",
     "avalinexus:ice_brick_slab",
     "avalinexus:ice_brick_stairs",
-    "avalinexus:ice_brick_wall"
+    "avalinexus:ice_brick_wall",
+    "avalinexus:ammonia_ice",
+    "avalinexus:packed_ammonia_ice"
   ]
 }

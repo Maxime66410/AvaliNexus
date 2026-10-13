@@ -21,13 +21,13 @@ import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.redstone.Orientation;
+import org.furranystudio.avalinexus.block.ModBlocks;
 import org.furranystudio.avalinexus.entity.avali.AvaliEntity;
 
 // The placed fluid: freezes players, heals Avalis and reacts with the lava it touches
 public class AvaliLiquidBlock extends LiquidBlock {
 
     private static final int HEAL_INTERVAL = 40;
-    // A little over the cap so the vanilla thaw still leaves the player fully frozen
     private static final int CAP_MARGIN = 2;
 
     private final AvaliFluidKind kind;
@@ -46,7 +46,7 @@ public class AvaliLiquidBlock extends LiquidBlock {
         if (kind.healsAvali() && entity instanceof AvaliEntity avali && avali.tickCount % HEAL_INTERVAL == 0) {
             avali.heal(1.0F);
         }
-        // Warm armor or an Avali body keeps the cold out, like powder snow
+        // Warm armor or an Avali body keeps the cold out
         if (kind.freezing() > 0 && entity.canFreeze() && !(entity instanceof AvaliEntity)) {
             int cap = entity.getTicksRequiredToFreeze() + CAP_MARGIN;
             entity.setTicksFrozen(Math.min(cap, entity.getTicksFrozen() + 2 + kind.freezing()));
@@ -56,16 +56,36 @@ public class AvaliLiquidBlock extends LiquidBlock {
     @Override
     protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean movedByPiston) {
         reactWithLava(level, pos);
+        if (freezeOnCoolant(state, level, pos)) {
+            return;
+        }
         super.onPlace(state, level, pos, oldState, movedByPiston);
     }
 
     @Override
     protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block neighbor, Orientation orientation, boolean movedByPiston) {
         reactWithLava(level, pos);
+        if (freezeOnCoolant(state, level, pos)) {
+            return;
+        }
         super.neighborChanged(state, level, pos, neighbor, orientation, movedByPiston);
     }
 
-    // Ammonia and coolant freeze the lava they touch, fuel catches fire next to it
+    private boolean freezeOnCoolant(BlockState state, Level level, BlockPos pos) {
+        if (kind != AvaliFluidKind.AMMONIA || state.getValue(LEVEL) != 0 || level.isClientSide()) {
+            return false;
+        }
+        for (Direction direction : Direction.values()) {
+            if (level.getFluidState(pos.relative(direction)).getType().isSame(ModFluids.source(AvaliFluidKind.COOLANT))) {
+                level.setBlockAndUpdate(pos, ModBlocks.AMMONIA_ICE.get().defaultBlockState());
+                level.playSound(null, pos, SoundEvents.GLASS_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Ammonia and coolant freeze the lava they touch
     private void reactWithLava(Level level, BlockPos pos) {
         if (!(level instanceof ServerLevel server)) {
             return;
