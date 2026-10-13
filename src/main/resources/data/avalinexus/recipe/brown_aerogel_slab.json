@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "dyed_aerogel_slab",
+  "key": {
+    "A": "avalinexus:brown_aerogel"
+  },
+  "pattern": [
+    "AAA"
+  ],
+  "result": {
+    "count": 6,
+    "id": "avalinexus:brown_aerogel_slab"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "dyed_aerogel",
+  "key": {
+    "A": "avalinexus:aerogel",
+    "D": "minecraft:gray_dye"
+  },
+  "pattern": [
+    "AAA",
+    "ADA",
+    "AAA"
+  ],
+  "result": {
+    "count": 8,
+    "id": "avalinexus:gray_aerogel"
+  }
+}

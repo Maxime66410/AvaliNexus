@@ -20,6 +20,22 @@
     "avalinexus:green_nanocanvas_slab",
     "avalinexus:red_nanocanvas_slab",
     "avalinexus:black_nanocanvas_slab",
-    "avalinexus:graphene_brick_slab"
+    "avalinexus:graphene_brick_slab",
+    "avalinexus:white_aerogel_slab",
+    "avalinexus:orange_aerogel_slab",
+    "avalinexus:magenta_aerogel_slab",
+    "avalinexus:light_blue_aerogel_slab",
+    "avalinexus:yellow_aerogel_slab",
+    "avalinexus:lime_aerogel_slab",
+    "avalinexus:pink_aerogel_slab",
+    "avalinexus:gray_aerogel_slab",
+    "avalinexus:light_gray_aerogel_slab",
+    "avalinexus:cyan_aerogel_slab",
+    "avalinexus:purple_aerogel_slab",
+    "avalinexus:blue_aerogel_slab",
+    "avalinexus:brown_aerogel_slab",
+    "avalinexus:green_aerogel_slab",
+    "avalinexus:red_aerogel_slab",
+    "avalinexus:black_aerogel_slab"
   ]
 }

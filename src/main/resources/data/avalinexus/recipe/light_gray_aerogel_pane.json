@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "dyed_aerogel_pane",
+  "key": {
+    "A": "avalinexus:light_gray_aerogel"
+  },
+  "pattern": [
+    "AAA",
+    "AAA"
+  ],
+  "result": {
+    "count": 16,
+    "id": "avalinexus:light_gray_aerogel_pane"
+  }
+}

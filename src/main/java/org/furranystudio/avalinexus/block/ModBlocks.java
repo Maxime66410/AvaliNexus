@@ -251,7 +251,7 @@ public final class ModBlocks {
     }
 
     // Glass settings, every shape stays see through so nothing behind it gets culled
-    private static BlockBehaviour.Properties aerogel(ResourceKey<Block> key) {
+    static BlockBehaviour.Properties aerogel(ResourceKey<Block> key) {
         return BlockBehaviour.Properties.of()
             .setId(key)
             .mapColor(MapColor.ICE)

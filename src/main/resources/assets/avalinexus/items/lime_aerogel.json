@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "avalinexus:block/dyed_aerogel",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": -8337633
+      }
+    ]
+  }
+}

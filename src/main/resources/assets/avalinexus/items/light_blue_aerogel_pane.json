@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "avalinexus:item/dyed_aerogel_pane",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": -12930086
+      }
+    ]
+  }
+}

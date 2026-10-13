@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "avalinexus:light_blue_aerogel",
+  "result": {
+    "id": "avalinexus:light_blue_aerogel_wall"
+  }
+}

@@ -10,6 +10,7 @@ import net.minecraft.client.color.block.BlockTintSource;
 import net.minecraft.client.color.block.BlockTintSources;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.Block;
+import org.furranystudio.avalinexus.block.AerogelBlocks;
 import org.furranystudio.avalinexus.block.NanocanvasBlocks;
 
 import java.util.List;
@@ -26,6 +27,9 @@ public final class NanocanvasTints {
         for (DyeColor color : DyeColor.values()) {
             sink.accept(List.of(BlockTintSources.constant(0xFF000000 | color.getTextureDiffuseColor())),
                 NanocanvasBlocks.all(color).toArray(Block[]::new));
+
+            sink.accept(List.of(BlockTintSources.constant(0xFF000000 | color.getTextureDiffuseColor())),
+                AerogelBlocks.all(color).toArray(Block[]::new));
         }
     }
 }

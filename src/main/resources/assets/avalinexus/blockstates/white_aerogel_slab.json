@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "avalinexus:block/dyed_aerogel_slab"
+    },
+    "type=double": {
+      "model": "avalinexus:block/dyed_aerogel"
+    },
+    "type=top": {
+      "model": "avalinexus:block/dyed_aerogel_slab_top"
+    }
+  }
+}

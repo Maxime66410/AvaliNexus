@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "dyed_aerogel_stairs",
+  "key": {
+    "A": "avalinexus:purple_aerogel"
+  },
+  "pattern": [
+    "A  ",
+    "AA ",
+    "AAA"
+  ],
+  "result": {
+    "count": 4,
+    "id": "avalinexus:purple_aerogel_stairs"
+  }
+}

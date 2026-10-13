@@ -1,0 +1,9 @@
+{
+  "parent": "avalinexus:block/template/tinted_template_wall_side",
+  "textures": {
+    "wall": {
+      "force_translucent": true,
+      "sprite": "avalinexus:block/aerogel_tintable"
+    }
+  }
+}

@@ -14,6 +14,7 @@ import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import org.furranystudio.avalinexus.Platform;
+import org.furranystudio.avalinexus.block.AerogelBlocks;
 import org.furranystudio.avalinexus.block.NanocanvasBlocks;
 import org.furranystudio.avalinexus.entity.tapestry.TapestryPattern;
 import org.furranystudio.avalinexus.registry.ModRegistry;
@@ -69,6 +70,11 @@ public final class ModCreativeTabs {
                 output.accept(ModItems.AEROGEL_SLAB.get());
                 output.accept(ModItems.AEROGEL_STAIRS.get());
                 output.accept(ModItems.AEROGEL_WALL.get());
+                for (AerogelBlocks.Shape shape : AerogelBlocks.Shape.values()) {
+                    for (DyeColor color : DyeColor.values()) {
+                        output.accept(AerogelBlocks.item(shape, color));
+                    }
+                }
                 for (NanocanvasBlocks.Shape shape : NanocanvasBlocks.Shape.values()) {
                     for (DyeColor color : DyeColor.values()) {
                         output.accept(NanocanvasBlocks.item(shape, color));

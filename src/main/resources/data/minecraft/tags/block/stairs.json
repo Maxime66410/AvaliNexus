@@ -20,6 +20,22 @@
     "avalinexus:green_nanocanvas_stairs",
     "avalinexus:red_nanocanvas_stairs",
     "avalinexus:black_nanocanvas_stairs",
-    "avalinexus:graphene_brick_stairs"
+    "avalinexus:graphene_brick_stairs",
+    "avalinexus:white_aerogel_stairs",
+    "avalinexus:orange_aerogel_stairs",
+    "avalinexus:magenta_aerogel_stairs",
+    "avalinexus:light_blue_aerogel_stairs",
+    "avalinexus:yellow_aerogel_stairs",
+    "avalinexus:lime_aerogel_stairs",
+    "avalinexus:pink_aerogel_stairs",
+    "avalinexus:gray_aerogel_stairs",
+    "avalinexus:light_gray_aerogel_stairs",
+    "avalinexus:cyan_aerogel_stairs",
+    "avalinexus:purple_aerogel_stairs",
+    "avalinexus:blue_aerogel_stairs",
+    "avalinexus:brown_aerogel_stairs",
+    "avalinexus:green_aerogel_stairs",
+    "avalinexus:red_aerogel_stairs",
+    "avalinexus:black_aerogel_stairs"
   ]
 }

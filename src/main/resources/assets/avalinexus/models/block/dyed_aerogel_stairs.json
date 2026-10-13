@@ -1,0 +1,17 @@
+{
+  "parent": "avalinexus:block/template/tinted_stairs",
+  "textures": {
+    "bottom": {
+      "force_translucent": true,
+      "sprite": "avalinexus:block/aerogel_tintable"
+    },
+    "side": {
+      "force_translucent": true,
+      "sprite": "avalinexus:block/aerogel_tintable"
+    },
+    "top": {
+      "force_translucent": true,
+      "sprite": "avalinexus:block/aerogel_tintable"
+    }
+  }
+}

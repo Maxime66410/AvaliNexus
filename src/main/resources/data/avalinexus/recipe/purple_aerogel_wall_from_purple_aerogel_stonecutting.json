@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "avalinexus:purple_aerogel",
+  "result": {
+    "id": "avalinexus:purple_aerogel_wall"
+  }
+}

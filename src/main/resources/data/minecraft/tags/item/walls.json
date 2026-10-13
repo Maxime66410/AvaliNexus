@@ -5,6 +5,22 @@
     "avalinexus:graphene_wall",
     "avalinexus:cut_graphene_wall",
     "avalinexus:nanofibre_wall",
-    "avalinexus:graphene_brick_wall"
+    "avalinexus:graphene_brick_wall",
+    "avalinexus:white_aerogel_wall",
+    "avalinexus:orange_aerogel_wall",
+    "avalinexus:magenta_aerogel_wall",
+    "avalinexus:light_blue_aerogel_wall",
+    "avalinexus:yellow_aerogel_wall",
+    "avalinexus:lime_aerogel_wall",
+    "avalinexus:pink_aerogel_wall",
+    "avalinexus:gray_aerogel_wall",
+    "avalinexus:light_gray_aerogel_wall",
+    "avalinexus:cyan_aerogel_wall",
+    "avalinexus:purple_aerogel_wall",
+    "avalinexus:blue_aerogel_wall",
+    "avalinexus:brown_aerogel_wall",
+    "avalinexus:green_aerogel_wall",
+    "avalinexus:red_aerogel_wall",
+    "avalinexus:black_aerogel_wall"
   ]
 }

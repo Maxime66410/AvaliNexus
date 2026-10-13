@@ -1,0 +1,33 @@
+{
+  "parent": "avalinexus:block/template/tinted_cube",
+  "textures": {
+    "particle": {
+      "force_translucent": true,
+      "sprite": "avalinexus:block/aerogel_tintable"
+    },
+    "down": {
+      "force_translucent": true,
+      "sprite": "avalinexus:block/aerogel_tintable"
+    },
+    "up": {
+      "force_translucent": true,
+      "sprite": "avalinexus:block/aerogel_tintable"
+    },
+    "north": {
+      "force_translucent": true,
+      "sprite": "avalinexus:block/aerogel_tintable"
+    },
+    "east": {
+      "force_translucent": true,
+      "sprite": "avalinexus:block/aerogel_tintable"
+    },
+    "south": {
+      "force_translucent": true,
+      "sprite": "avalinexus:block/aerogel_tintable"
+    },
+    "west": {
+      "force_translucent": true,
+      "sprite": "avalinexus:block/aerogel_tintable"
+    }
+  }
+}

@@ -10,6 +10,7 @@ import com.mojang.logging.LogUtils;
 import net.minecraft.resources.Identifier;
 import org.furranystudio.avalinexus.block.ModBlockEntities;
 import org.furranystudio.avalinexus.block.ModBlocks;
+import org.furranystudio.avalinexus.block.AerogelBlocks;
 import org.furranystudio.avalinexus.block.NanocanvasBlocks;
 import org.furranystudio.avalinexus.fluid.ModFluids;
 import org.furranystudio.avalinexus.entity.ModEntities;
@@ -35,6 +36,7 @@ public final class AvaliNexus {
         ModSounds.init();
         ModBlocks.init();
         NanocanvasBlocks.init();
+        AerogelBlocks.init();
         ModFluids.init();
         ModEntities.init();
         ModItems.init();
