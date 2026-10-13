@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "avalinexus:block/cut_packed_snow_slab"
+    },
+    "type=double": {
+      "model": "avalinexus:block/cut_packed_snow"
+    },
+    "type=top": {
+      "model": "avalinexus:block/cut_packed_snow_slab_top"
+    }
+  }
+}

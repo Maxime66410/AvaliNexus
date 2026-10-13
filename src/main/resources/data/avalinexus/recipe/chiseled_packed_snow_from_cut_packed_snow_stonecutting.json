@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "avalinexus:cut_packed_snow",
+  "result": {
+    "id": "avalinexus:chiseled_packed_snow"
+  }
+}

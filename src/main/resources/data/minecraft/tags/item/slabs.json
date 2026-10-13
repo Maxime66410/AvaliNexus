@@ -36,6 +36,9 @@
     "avalinexus:brown_aerogel_slab",
     "avalinexus:green_aerogel_slab",
     "avalinexus:red_aerogel_slab",
-    "avalinexus:black_aerogel_slab"
+    "avalinexus:black_aerogel_slab",
+    "avalinexus:ice_brick_slab",
+    "avalinexus:packed_snow_slab",
+    "avalinexus:cut_packed_snow_slab"
   ]
 }

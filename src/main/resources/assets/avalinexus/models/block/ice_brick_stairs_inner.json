@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/inner_stairs",
+  "textures": {
+    "bottom": "avalinexus:block/ice_bricks/ice_bricks",
+    "side": "avalinexus:block/ice_bricks/ice_bricks",
+    "top": "avalinexus:block/ice_bricks/ice_bricks"
+  }
+}

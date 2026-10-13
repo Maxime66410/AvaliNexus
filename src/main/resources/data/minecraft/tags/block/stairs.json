@@ -36,6 +36,9 @@
     "avalinexus:brown_aerogel_stairs",
     "avalinexus:green_aerogel_stairs",
     "avalinexus:red_aerogel_stairs",
-    "avalinexus:black_aerogel_stairs"
+    "avalinexus:black_aerogel_stairs",
+    "avalinexus:ice_brick_stairs",
+    "avalinexus:packed_snow_stairs",
+    "avalinexus:cut_packed_snow_stairs"
   ]
 }

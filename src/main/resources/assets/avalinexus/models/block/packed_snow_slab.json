@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab",
+  "textures": {
+    "bottom": "avalinexus:block/packed_snow/packed_snow",
+    "side": "avalinexus:block/packed_snow/packed_snow",
+    "top": "avalinexus:block/packed_snow/packed_snow"
+  }
+}

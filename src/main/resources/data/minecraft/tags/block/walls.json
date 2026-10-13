@@ -21,6 +21,9 @@
     "avalinexus:brown_aerogel_wall",
     "avalinexus:green_aerogel_wall",
     "avalinexus:red_aerogel_wall",
-    "avalinexus:black_aerogel_wall"
+    "avalinexus:black_aerogel_wall",
+    "avalinexus:ice_brick_wall",
+    "avalinexus:packed_snow_wall",
+    "avalinexus:cut_packed_snow_wall"
   ]
 }

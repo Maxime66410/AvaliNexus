@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/wall_inventory",
+  "textures": {
+    "wall": "avalinexus:block/ice_bricks/ice_bricks"
+  }
+}

@@ -118,6 +118,45 @@ public final class ModItems {
     public static final RegistryEntry<BlockItem> GRAPHENE_VENT = ModRegistry.register(Registries.ITEM, "graphene_vent",
         key -> new BlockItem(ModBlocks.GRAPHENE_VENT.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
 
+    public static final RegistryEntry<BlockItem> ICE_BRICKS = ModRegistry.register(Registries.ITEM, "ice_bricks",
+        key -> new BlockItem(ModBlocks.ICE_BRICKS.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
+
+    public static final RegistryEntry<BlockItem> ICE_BRICK_SLAB = ModRegistry.register(Registries.ITEM, "ice_brick_slab",
+        key -> new BlockItem(ModBlocks.ICE_BRICK_SLAB.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
+
+    public static final RegistryEntry<BlockItem> ICE_BRICK_STAIRS = ModRegistry.register(Registries.ITEM, "ice_brick_stairs",
+        key -> new BlockItem(ModBlocks.ICE_BRICK_STAIRS.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
+
+    public static final RegistryEntry<BlockItem> ICE_BRICK_WALL = ModRegistry.register(Registries.ITEM, "ice_brick_wall",
+        key -> new BlockItem(ModBlocks.ICE_BRICK_WALL.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
+
+    public static final RegistryEntry<BlockItem> PACKED_SNOW = ModRegistry.register(Registries.ITEM, "packed_snow",
+        key -> new BlockItem(ModBlocks.PACKED_SNOW.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
+
+    public static final RegistryEntry<BlockItem> PACKED_SNOW_SLAB = ModRegistry.register(Registries.ITEM, "packed_snow_slab",
+        key -> new BlockItem(ModBlocks.PACKED_SNOW_SLAB.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
+
+    public static final RegistryEntry<BlockItem> PACKED_SNOW_STAIRS = ModRegistry.register(Registries.ITEM, "packed_snow_stairs",
+        key -> new BlockItem(ModBlocks.PACKED_SNOW_STAIRS.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
+
+    public static final RegistryEntry<BlockItem> PACKED_SNOW_WALL = ModRegistry.register(Registries.ITEM, "packed_snow_wall",
+        key -> new BlockItem(ModBlocks.PACKED_SNOW_WALL.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
+
+    public static final RegistryEntry<BlockItem> CUT_PACKED_SNOW = ModRegistry.register(Registries.ITEM, "cut_packed_snow",
+        key -> new BlockItem(ModBlocks.CUT_PACKED_SNOW.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
+
+    public static final RegistryEntry<BlockItem> CUT_PACKED_SNOW_SLAB = ModRegistry.register(Registries.ITEM, "cut_packed_snow_slab",
+        key -> new BlockItem(ModBlocks.CUT_PACKED_SNOW_SLAB.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
+
+    public static final RegistryEntry<BlockItem> CUT_PACKED_SNOW_STAIRS = ModRegistry.register(Registries.ITEM, "cut_packed_snow_stairs",
+        key -> new BlockItem(ModBlocks.CUT_PACKED_SNOW_STAIRS.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
+
+    public static final RegistryEntry<BlockItem> CUT_PACKED_SNOW_WALL = ModRegistry.register(Registries.ITEM, "cut_packed_snow_wall",
+        key -> new BlockItem(ModBlocks.CUT_PACKED_SNOW_WALL.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
+
+    public static final RegistryEntry<BlockItem> CHISELED_PACKED_SNOW = ModRegistry.register(Registries.ITEM, "chiseled_packed_snow",
+        key -> new BlockItem(ModBlocks.CHISELED_PACKED_SNOW.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
+
     public static final RegistryEntry<BlockItem> NANOFIBRE = ModRegistry.register(Registries.ITEM, "nanofibre",
         key -> new BlockItem(ModBlocks.NANOFIBRE.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
 

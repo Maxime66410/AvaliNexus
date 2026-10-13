@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "avalinexus:ice_bricks",
+  "result": {
+    "id": "avalinexus:ice_brick_slab",
+    "count": 2
+  }
+}

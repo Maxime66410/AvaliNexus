@@ -251,7 +251,65 @@ public final class ModBlocks {
     public static void init() {
     }
 
-    // Iron block hardness, tough enough to shrug off TNT and charged creepers
+    public static final RegistryEntry<Block> ICE_BRICKS = ModRegistry.register(Registries.BLOCK, "ice_bricks",
+        key -> new Block(iceBricks(key)));
+
+    public static final RegistryEntry<Block> ICE_BRICK_SLAB = ModRegistry.register(Registries.BLOCK, "ice_brick_slab",
+        key -> new SlabBlock(iceBricks(key)));
+
+    public static final RegistryEntry<Block> ICE_BRICK_STAIRS = ModRegistry.register(Registries.BLOCK, "ice_brick_stairs",
+        key -> new StairBlock(ICE_BRICKS.get().defaultBlockState(), iceBricks(key)) {
+        });
+
+    public static final RegistryEntry<Block> ICE_BRICK_WALL = ModRegistry.register(Registries.BLOCK, "ice_brick_wall",
+        key -> new WallBlock(iceBricks(key)));
+
+    public static final RegistryEntry<Block> PACKED_SNOW = ModRegistry.register(Registries.BLOCK, "packed_snow",
+        key -> new Block(packedSnow(key)));
+
+    public static final RegistryEntry<Block> PACKED_SNOW_SLAB = ModRegistry.register(Registries.BLOCK, "packed_snow_slab",
+        key -> new SlabBlock(packedSnow(key)));
+
+    public static final RegistryEntry<Block> PACKED_SNOW_STAIRS = ModRegistry.register(Registries.BLOCK, "packed_snow_stairs",
+        key -> new StairBlock(PACKED_SNOW.get().defaultBlockState(), packedSnow(key)) {
+        });
+
+    public static final RegistryEntry<Block> PACKED_SNOW_WALL = ModRegistry.register(Registries.BLOCK, "packed_snow_wall",
+        key -> new WallBlock(packedSnow(key)));
+
+    public static final RegistryEntry<Block> CUT_PACKED_SNOW = ModRegistry.register(Registries.BLOCK, "cut_packed_snow",
+        key -> new Block(packedSnow(key)));
+
+    public static final RegistryEntry<Block> CUT_PACKED_SNOW_SLAB = ModRegistry.register(Registries.BLOCK, "cut_packed_snow_slab",
+        key -> new SlabBlock(packedSnow(key)));
+
+    public static final RegistryEntry<Block> CUT_PACKED_SNOW_STAIRS = ModRegistry.register(Registries.BLOCK, "cut_packed_snow_stairs",
+        key -> new StairBlock(CUT_PACKED_SNOW.get().defaultBlockState(), packedSnow(key)) {
+        });
+
+    public static final RegistryEntry<Block> CUT_PACKED_SNOW_WALL = ModRegistry.register(Registries.BLOCK, "cut_packed_snow_wall",
+        key -> new WallBlock(packedSnow(key)));
+
+    public static final RegistryEntry<Block> CHISELED_PACKED_SNOW = ModRegistry.register(Registries.BLOCK, "chiseled_packed_snow",
+        key -> new Block(packedSnow(key)));
+
+    private static BlockBehaviour.Properties iceBricks(ResourceKey<Block> key) {
+        return BlockBehaviour.Properties.of()
+            .setId(key)
+            .mapColor(MapColor.ICE)
+            .instrument(NoteBlockInstrument.CHIME)
+            .strength(1.0F)
+            .sound(SoundType.GLASS);
+    }
+
+    private static BlockBehaviour.Properties packedSnow(ResourceKey<Block> key) {
+        return BlockBehaviour.Properties.of()
+            .setId(key)
+            .mapColor(MapColor.SNOW)
+            .strength(0.6F)
+            .sound(SoundType.SNOW);
+    }
+
     private static BlockBehaviour.Properties graphene(ResourceKey<Block> key) {
         return BlockBehaviour.Properties.of()
             .setId(key)
@@ -262,7 +320,6 @@ public final class ModBlocks {
             .sound(SoundType.IRON);
     }
 
-    // Same toughness as the nanocanvas it holds up
     private static BlockBehaviour.Properties nanofibre(ResourceKey<Block> key) {
         return BlockBehaviour.Properties.of()
             .setId(key)
@@ -272,7 +329,6 @@ public final class ModBlocks {
             .sound(SoundType.COPPER);
     }
 
-    // Glass settings, every shape stays see through so nothing behind it gets culled
     static BlockBehaviour.Properties aerogel(ResourceKey<Block> key) {
         return BlockBehaviour.Properties.of()
             .setId(key)
