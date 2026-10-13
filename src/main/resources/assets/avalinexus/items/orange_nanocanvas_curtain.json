@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "avalinexus:block/nanocanvas_curtain",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": -425955
+      }
+    ]
+  }
+}

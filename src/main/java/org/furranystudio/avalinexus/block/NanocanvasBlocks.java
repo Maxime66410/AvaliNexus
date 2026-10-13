@@ -26,14 +26,15 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
-// One gray texture tinted with the dye color, every color gets its block, slab, stairs and carpet
+// One gray texture tinted with the dye color, every color gets its block, slab, stairs, carpet and curtain
 public final class NanocanvasBlocks {
 
     public enum Shape {
         BLOCK(""),
         SLAB("_slab"),
         STAIRS("_stairs"),
-        CARPET("_carpet");
+        CARPET("_carpet"),
+        CURTAIN("_curtain");
 
         private final String suffix;
 
@@ -98,6 +99,13 @@ public final class NanocanvasBlocks {
                 .mapColor(color.getMapColor())
                 .strength(0.1F, 15.0F)
                 .sound(SoundType.WOOL));
+            case CURTAIN -> new NanocanvasCurtainBlock(BlockBehaviour.Properties.of()
+                .setId(key)
+                .mapColor(color.getMapColor())
+                .strength(0.1F, 15.0F)
+                .sound(SoundType.WOOL)
+                .noCollision()
+                .noOcclusion());
         };
     }
 

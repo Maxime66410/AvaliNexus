@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "nanocanvas_curtain",
+  "key": {
+    "#": "avalinexus:purple_nanocanvas_carpet"
+  },
+  "pattern": [
+    "##",
+    "##",
+    "##"
+  ],
+  "result": {
+    "count": 3,
+    "id": "avalinexus:purple_nanocanvas_curtain"
+  }
+}
