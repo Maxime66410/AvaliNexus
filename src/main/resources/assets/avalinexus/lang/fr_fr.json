@@ -148,6 +148,8 @@
   "block.avalinexus.graphene_pillar": "Pilier de graphène",
   "block.avalinexus.graphene_door": "Porte en graphène",
   "block.avalinexus.graphene_trapdoor": "Trappe en graphène",
+  "block.avalinexus.graphene_vent": "Grille d'aération en graphène",
+  "block.avalinexus.graphene_pipe": "Tuyau en graphène",
   "block.avalinexus.graphene_slab": "Dalle en graphène",
   "block.avalinexus.graphene_stairs": "Escalier en graphène",
   "block.avalinexus.graphene_wall": "Muret en graphène",

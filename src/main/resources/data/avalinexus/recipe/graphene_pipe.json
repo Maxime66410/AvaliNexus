@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "G": "avalinexus:graphene"
+  },
+  "pattern": [
+    "GGG",
+    "   ",
+    "GGG"
+  ],
+  "result": {
+    "count": 6,
+    "id": "avalinexus:graphene_pipe"
+  }
+}

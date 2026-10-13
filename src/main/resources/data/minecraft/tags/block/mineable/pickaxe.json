@@ -20,6 +20,8 @@
     "avalinexus:graphene_brick_wall",
     "avalinexus:graphene_pillar",
     "avalinexus:graphene_trapdoor",
-    "avalinexus:graphene_door"
+    "avalinexus:graphene_door",
+    "avalinexus:graphene_pipe",
+    "avalinexus:graphene_vent"
   ]
 }

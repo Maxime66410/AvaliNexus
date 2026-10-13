@@ -112,6 +112,12 @@ public final class ModItems {
     public static final RegistryEntry<DoubleHighBlockItem> GRAPHENE_DOOR = ModRegistry.register(Registries.ITEM, "graphene_door",
         key -> new DoubleHighBlockItem(ModBlocks.GRAPHENE_DOOR.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
 
+    public static final RegistryEntry<BlockItem> GRAPHENE_PIPE = ModRegistry.register(Registries.ITEM, "graphene_pipe",
+        key -> new BlockItem(ModBlocks.GRAPHENE_PIPE.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
+
+    public static final RegistryEntry<BlockItem> GRAPHENE_VENT = ModRegistry.register(Registries.ITEM, "graphene_vent",
+        key -> new BlockItem(ModBlocks.GRAPHENE_VENT.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
+
     public static final RegistryEntry<BlockItem> NANOFIBRE = ModRegistry.register(Registries.ITEM, "nanofibre",
         key -> new BlockItem(ModBlocks.NANOFIBRE.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
 

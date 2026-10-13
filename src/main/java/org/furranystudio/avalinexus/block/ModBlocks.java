@@ -21,6 +21,7 @@ import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.TransparentBlock;
 import net.minecraft.world.level.block.TrapDoorBlock;
 import net.minecraft.world.level.block.WallBlock;
+import net.minecraft.world.level.block.WaterloggedTransparentBlock;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.DropExperienceBlock;
 import net.minecraft.world.level.block.SoundType;
@@ -191,6 +192,18 @@ public final class ModBlocks {
 
     public static final RegistryEntry<Block> GRAPHENE_DOOR = ModRegistry.register(Registries.BLOCK, "graphene_door",
         key -> new DoorBlock(GRAPHENE_SET, graphene(key).noOcclusion().pushReaction(PushReaction.POPPED)) {
+        });
+
+    public static final RegistryEntry<Block> GRAPHENE_PIPE = ModRegistry.register(Registries.BLOCK, "graphene_pipe",
+        key -> new GraphenePipeBlock(6.0F, graphene(key).noOcclusion()));
+
+    public static final RegistryEntry<Block> GRAPHENE_VENT = ModRegistry.register(Registries.BLOCK, "graphene_vent",
+        key -> new WaterloggedTransparentBlock(graphene(key)
+            .noOcclusion()
+            .isValidSpawn((state, level, pos, type) -> false)
+            .isRedstoneConductor((state, level, pos) -> false)
+            .isSuffocating((state, level, pos) -> false)
+            .isViewBlocking((state, level, pos, box) -> false)) {
         });
 
     public static final RegistryEntry<Block> GRAPHENE_SLAB = ModRegistry.register(Registries.BLOCK, "graphene_slab",
