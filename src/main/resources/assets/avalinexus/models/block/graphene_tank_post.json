@@ -1,0 +1,94 @@
+{
+  "parent": "minecraft:block/block",
+  "texture_size": [
+    64,
+    64
+  ],
+  "textures": {
+    "0": {
+      "force_translucent": true,
+      "sprite": "avalinexus:block/graphene_tank/graphene_tank_base"
+    },
+    "particle": "avalinexus:block/graphene_tank/graphene_tank_base"
+  },
+  "elements": [
+    {
+      "name": "Post",
+      "from": [
+        -0.005,
+        -0.005,
+        -0.005
+      ],
+      "to": [
+        1.005,
+        16.005,
+        1.005
+      ],
+      "rotation": {
+        "angle": 0,
+        "axis": "y",
+        "origin": [
+          0.5,
+          8,
+          0.5
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            11.75,
+            7.5,
+            12,
+            11.5
+          ],
+          "texture": "#0"
+        },
+        "east": {
+          "uv": [
+            11.75,
+            7.5,
+            12,
+            11.5
+          ],
+          "texture": "#0"
+        },
+        "south": {
+          "uv": [
+            11.75,
+            7.5,
+            12,
+            11.5
+          ],
+          "texture": "#0"
+        },
+        "west": {
+          "uv": [
+            11.75,
+            7.5,
+            12,
+            11.5
+          ],
+          "texture": "#0"
+        },
+        "up": {
+          "uv": [
+            11.75,
+            7.5,
+            12,
+            7.75
+          ],
+          "texture": "#0"
+        },
+        "down": {
+          "uv": [
+            11.75,
+            7.5,
+            12,
+            7.75
+          ],
+          "texture": "#0"
+        }
+      }
+    }
+  ]
+}

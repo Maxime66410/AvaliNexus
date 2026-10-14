@@ -1,16 +1,177 @@
 {
-  "variants": {
-    "shape=single": {
-      "model": "avalinexus:block/graphene_tank"
+  "multipart": [
+    {
+      "when": {
+        "north": "false"
+      },
+      "apply": {
+        "model": "avalinexus:block/graphene_tank_wall"
+      }
     },
-    "shape=bottom": {
-      "model": "avalinexus:block/graphene_tank_bottom"
+    {
+      "when": {
+        "east": "false"
+      },
+      "apply": {
+        "model": "avalinexus:block/graphene_tank_wall",
+        "y": 90
+      }
     },
-    "shape=middle": {
-      "model": "avalinexus:block/graphene_tank_middle"
+    {
+      "when": {
+        "south": "false"
+      },
+      "apply": {
+        "model": "avalinexus:block/graphene_tank_wall",
+        "y": 180
+      }
     },
-    "shape=top": {
-      "model": "avalinexus:block/graphene_tank_top"
+    {
+      "when": {
+        "west": "false"
+      },
+      "apply": {
+        "model": "avalinexus:block/graphene_tank_wall",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "up": "false"
+      },
+      "apply": {
+        "model": "avalinexus:block/graphene_tank_lid"
+      }
+    },
+    {
+      "when": {
+        "down": "false"
+      },
+      "apply": {
+        "model": "avalinexus:block/graphene_tank_lid",
+        "x": 180
+      }
+    },
+    {
+      "when": {
+        "up": "false",
+        "north": "false"
+      },
+      "apply": {
+        "model": "avalinexus:block/graphene_tank_rim"
+      }
+    },
+    {
+      "when": {
+        "up": "false",
+        "east": "false"
+      },
+      "apply": {
+        "model": "avalinexus:block/graphene_tank_rim",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "up": "false",
+        "south": "false"
+      },
+      "apply": {
+        "model": "avalinexus:block/graphene_tank_rim",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "up": "false",
+        "west": "false"
+      },
+      "apply": {
+        "model": "avalinexus:block/graphene_tank_rim",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "down": "false",
+        "north": "false"
+      },
+      "apply": {
+        "model": "avalinexus:block/graphene_tank_rim",
+        "x": 180,
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "down": "false",
+        "east": "false"
+      },
+      "apply": {
+        "model": "avalinexus:block/graphene_tank_rim",
+        "x": 180,
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "down": "false",
+        "south": "false"
+      },
+      "apply": {
+        "model": "avalinexus:block/graphene_tank_rim",
+        "x": 180
+      }
+    },
+    {
+      "when": {
+        "down": "false",
+        "west": "false"
+      },
+      "apply": {
+        "model": "avalinexus:block/graphene_tank_rim",
+        "x": 180,
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "north": "false",
+        "west": "false"
+      },
+      "apply": {
+        "model": "avalinexus:block/graphene_tank_post"
+      }
+    },
+    {
+      "when": {
+        "north": "false",
+        "east": "false"
+      },
+      "apply": {
+        "model": "avalinexus:block/graphene_tank_post",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "south": "false",
+        "east": "false"
+      },
+      "apply": {
+        "model": "avalinexus:block/graphene_tank_post",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "south": "false",
+        "west": "false"
+      },
+      "apply": {
+        "model": "avalinexus:block/graphene_tank_post",
+        "y": 270
+      }
     }
-  }
+  ]
 }

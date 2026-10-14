@@ -52,9 +52,7 @@ public class GrapheneTankBlockEntity extends BlockEntity {
     @Override
     protected void saveAdditional(ValueOutput output) {
         super.saveAdditional(output);
-        if (!content.isEmpty()) {
-            output.store("Fluid", FluidContent.CODEC, content);
-        }
+        output.store("Fluid", FluidContent.CODEC, content);
     }
 
     @Override

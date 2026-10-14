@@ -151,8 +151,6 @@
   "block.avalinexus.graphene_vent": "Graphene Vent",
   "block.avalinexus.graphene_pipe": "Graphene Pipe",
   "block.avalinexus.graphene_tank": "Graphene Tank",
-  "message.avalinexus.tank.too_tall": "A tank column is at most 8 blocks tall",
-  "message.avalinexus.tank.mixed": "These tanks hold different liquids",
   "message.avalinexus.tank.other_fluid": "This tank holds another liquid",
   "message.avalinexus.tank.full": "The tank is full",
   "message.avalinexus.tank.not_enough": "There is not a full bucket in the tank",

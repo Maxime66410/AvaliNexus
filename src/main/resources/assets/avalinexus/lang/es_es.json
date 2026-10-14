@@ -151,8 +151,6 @@
   "block.avalinexus.graphene_vent": "Rejilla de ventilación de grafeno",
   "block.avalinexus.graphene_pipe": "Tubería de grafeno",
   "block.avalinexus.graphene_tank": "Tanque de grafeno",
-  "message.avalinexus.tank.too_tall": "Una columna de tanques mide como máximo 8 bloques",
-  "message.avalinexus.tank.mixed": "Estos tanques contienen líquidos diferentes",
   "message.avalinexus.tank.other_fluid": "Este tanque contiene otro líquido",
   "message.avalinexus.tank.full": "El tanque está lleno",
   "message.avalinexus.tank.not_enough": "No hay un cubo entero en el tanque",

@@ -151,8 +151,6 @@
   "block.avalinexus.graphene_vent": "Grille d'aération en graphène",
   "block.avalinexus.graphene_pipe": "Tuyau en graphène",
   "block.avalinexus.graphene_tank": "Réservoir en graphène",
-  "message.avalinexus.tank.too_tall": "Une colonne de réservoirs fait au maximum 8 blocs",
-  "message.avalinexus.tank.mixed": "Ces réservoirs contiennent des liquides différents",
   "message.avalinexus.tank.other_fluid": "Ce réservoir contient un autre liquide",
   "message.avalinexus.tank.full": "Le réservoir est plein",
   "message.avalinexus.tank.not_enough": "Il n'y a pas un seau entier dans le réservoir",

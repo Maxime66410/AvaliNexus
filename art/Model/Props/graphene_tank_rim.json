@@ -1,0 +1,23 @@
+{
+	"format_version": "26.3",
+	"credit": "Made with Blockbench",
+	"texture_size": [64, 64],
+	"textures": {
+		"0": "graphene_tank_base",
+		"particle": "graphene_tank_base"
+	},
+	"elements": [
+		{
+			"name": "Rim",
+			"from": [0, 15, 0],
+			"to": [16, 16, 1],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 15.5, 0.5]},
+			"faces": {
+				"north": {"uv": [11.75, 7.25, 15.75, 7.5], "texture": "#0"},
+				"south": {"uv": [11.75, 7.25, 15.75, 7.5], "texture": "#0"},
+				"up": {"uv": [11.75, 7.5, 15.75, 7.75], "texture": "#0"},
+				"down": {"uv": [11.75, 7.5, 15.75, 7.75], "texture": "#0"}
+			}
+		}
+	]
+}

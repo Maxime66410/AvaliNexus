@@ -37,12 +37,4 @@ public record FluidContent(Fluid fluid, int amount) {
     public boolean isEmpty() {
         return amount <= 0;
     }
-
-    public boolean accepts(Fluid other) {
-        return isEmpty() || fluid.isSame(other);
-    }
-
-    public FluidContent withAmount(int newAmount) {
-        return of(fluid, newAmount);
-    }
 }

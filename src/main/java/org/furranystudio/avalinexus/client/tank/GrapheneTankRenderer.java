@@ -8,6 +8,7 @@ package org.furranystudio.avalinexus.client.tank;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.core.Direction;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -21,12 +22,12 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.sprite.SpriteGetter;
 import net.minecraft.client.resources.model.sprite.SpriteId;
 import net.minecraft.resources.Identifier;
+import net.minecraft.world.level.block.PipeBlock;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
 import org.furranystudio.avalinexus.AvaliNexus;
-import org.furranystudio.avalinexus.block.tank.GrapheneTankBlock;
 import org.furranystudio.avalinexus.block.tank.GrapheneTankBlockEntity;
-import org.furranystudio.avalinexus.block.tank.TankShape;
 import org.furranystudio.avalinexus.fluid.AvaliLiquids;
 import org.furranystudio.avalinexus.fluid.FluidContent;
 
@@ -34,7 +35,7 @@ public class GrapheneTankRenderer implements BlockEntityRenderer<GrapheneTankBlo
 
     private static final SpriteId AVALI_STILL = new SpriteId(TextureAtlas.LOCATION_BLOCKS, AvaliNexus.id("block/fluid/avali_fluid_still"));
     private static final SpriteId WATER_STILL = new SpriteId(TextureAtlas.LOCATION_BLOCKS, Identifier.withDefaultNamespace("block/water_still"));
-    private static final float WALL = 1.0F / 16.0F;
+    private static final float INSET = 1.1F / 16.0F;
 
     private final SpriteGetter sprites;
 
@@ -54,7 +55,14 @@ public class GrapheneTankRenderer implements BlockEntityRenderer<GrapheneTankBlo
         state.fill = content.amount() / (float) GrapheneTankBlockEntity.CAPACITY;
         state.water = content.fluid().isSame(Fluids.WATER);
         state.color = content.isEmpty() ? 0 : AvaliLiquids.tint(content.fluid());
-        state.shape = tank.getBlockState().hasProperty(GrapheneTankBlock.SHAPE) ? tank.getBlockState().getValue(GrapheneTankBlock.SHAPE) : TankShape.SINGLE;
+        BlockState block = tank.getBlockState();
+        for (Direction direction : Direction.values()) {
+            state.connected[direction.ordinal()] = block.hasProperty(PipeBlock.PROPERTY_BY_DIRECTION.get(direction))
+                && block.getValue(PipeBlock.PROPERTY_BY_DIRECTION.get(direction));
+        }
+        state.surface = !state.joined(Direction.UP) || !(tank.getLevel() != null
+            && tank.getLevel().getBlockEntity(tank.getBlockPos().above()) instanceof GrapheneTankBlockEntity above
+            && !above.content().isEmpty());
     }
 
     @Override
@@ -63,25 +71,34 @@ public class GrapheneTankRenderer implements BlockEntityRenderer<GrapheneTankBlo
             return;
         }
         TextureAtlasSprite sprite = sprites.get(state.water ? WATER_STILL : AVALI_STILL);
-        float bottom = state.shape.bottomCap() ? WALL : 0.0F;
-        float ceiling = state.shape.topCap() ? 1.0F - WALL : 1.0F;
+        float x0 = state.joined(Direction.WEST) ? 0.0F : INSET;
+        float x1 = state.joined(Direction.EAST) ? 1.0F : 1.0F - INSET;
+        float z0 = state.joined(Direction.NORTH) ? 0.0F : INSET;
+        float z1 = state.joined(Direction.SOUTH) ? 1.0F : 1.0F - INSET;
+        float bottom = state.joined(Direction.DOWN) ? 0.0F : INSET;
+        float ceiling = state.joined(Direction.UP) ? 1.0F : 1.0F - INSET;
         float top = bottom + (ceiling - bottom) * Math.min(1.0F, state.fill);
-        boolean drawTop = state.fill < 1.0F || state.shape.topCap();
-        boolean drawBottom = state.shape.bottomCap();
+        boolean drawTop = state.fill < 1.0F || state.surface;
         int light = state.lightCoords;
         int color = state.color;
         collector.submitCustomGeometry(poseStack, RenderTypes.entityTranslucent(TextureAtlas.LOCATION_BLOCKS), (pose, buffer) -> {
-            float min = WALL;
-            float max = 1.0F - WALL;
-            side(buffer, pose, sprite, color, light, min, bottom, min, max, top, min, 0, 0, -1);
-            side(buffer, pose, sprite, color, light, max, bottom, max, min, top, max, 0, 0, 1);
-            side(buffer, pose, sprite, color, light, min, bottom, max, min, top, min, -1, 0, 0);
-            side(buffer, pose, sprite, color, light, max, bottom, min, max, top, max, 1, 0, 0);
-            if (drawTop) {
-                flat(buffer, pose, sprite, color, light, top, 1);
+            if (!state.joined(Direction.NORTH)) {
+                side(buffer, pose, sprite, color, light, x0, bottom, z0, x1, top, z0, 0, 0, -1);
             }
-            if (drawBottom) {
-                flat(buffer, pose, sprite, color, light, bottom, -1);
+            if (!state.joined(Direction.SOUTH)) {
+                side(buffer, pose, sprite, color, light, x1, bottom, z1, x0, top, z1, 0, 0, 1);
+            }
+            if (!state.joined(Direction.WEST)) {
+                side(buffer, pose, sprite, color, light, x0, bottom, z1, x0, top, z0, -1, 0, 0);
+            }
+            if (!state.joined(Direction.EAST)) {
+                side(buffer, pose, sprite, color, light, x1, bottom, z0, x1, top, z1, 1, 0, 0);
+            }
+            if (drawTop) {
+                flat(buffer, pose, sprite, color, light, x0, z0, x1, z1, top, 1);
+            }
+            if (!state.joined(Direction.DOWN)) {
+                flat(buffer, pose, sprite, color, light, x0, z0, x1, z1, bottom, -1);
             }
         });
     }
@@ -99,17 +116,16 @@ public class GrapheneTankRenderer implements BlockEntityRenderer<GrapheneTankBlo
         vertex(buffer, pose, x0, y1, z0, u0, v0, color, light, nx, ny, nz);
     }
 
-    private static void flat(VertexConsumer buffer, PoseStack.Pose pose, TextureAtlasSprite sprite, int color, int light, float y, float ny) {
-        float min = WALL;
-        float max = 1.0F - WALL;
-        float u0 = sprite.getU(min);
-        float u1 = sprite.getU(max);
-        float v0 = sprite.getV(min);
-        float v1 = sprite.getV(max);
-        vertex(buffer, pose, min, y, min, u0, v0, color, light, 0, ny, 0);
-        vertex(buffer, pose, min, y, max, u0, v1, color, light, 0, ny, 0);
-        vertex(buffer, pose, max, y, max, u1, v1, color, light, 0, ny, 0);
-        vertex(buffer, pose, max, y, min, u1, v0, color, light, 0, ny, 0);
+    private static void flat(VertexConsumer buffer, PoseStack.Pose pose, TextureAtlasSprite sprite, int color, int light,
+                             float x0, float z0, float x1, float z1, float y, float ny) {
+        float u0 = sprite.getU(x0);
+        float u1 = sprite.getU(x1);
+        float v0 = sprite.getV(z0);
+        float v1 = sprite.getV(z1);
+        vertex(buffer, pose, x0, y, z0, u0, v0, color, light, 0, ny, 0);
+        vertex(buffer, pose, x0, y, z1, u0, v1, color, light, 0, ny, 0);
+        vertex(buffer, pose, x1, y, z1, u1, v1, color, light, 0, ny, 0);
+        vertex(buffer, pose, x1, y, z0, u1, v0, color, light, 0, ny, 0);
     }
 
     private static void vertex(VertexConsumer buffer, PoseStack.Pose pose, float x, float y, float z, float u, float v,
@@ -126,6 +142,11 @@ public class GrapheneTankRenderer implements BlockEntityRenderer<GrapheneTankBlo
         public float fill;
         public boolean water;
         public int color;
-        public TankShape shape = TankShape.SINGLE;
+        public final boolean[] connected = new boolean[6];
+        public boolean surface;
+
+        boolean joined(Direction direction) {
+            return connected[direction.ordinal()];
+        }
     }
 }
