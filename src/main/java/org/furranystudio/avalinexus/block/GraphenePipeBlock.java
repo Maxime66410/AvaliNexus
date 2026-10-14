@@ -8,6 +8,7 @@ package org.furranystudio.avalinexus.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
@@ -19,25 +20,34 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.PipeBlock;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+import org.furranystudio.avalinexus.block.pipe.GraphenePipeBlockEntity;
+import org.furranystudio.avalinexus.block.pipe.PipeFluid;
+import org.furranystudio.avalinexus.fluid.FluidPortBlock;
 
-public class GraphenePipeBlock extends PipeBlock implements SimpleWaterloggedBlock {
+public class GraphenePipeBlock extends PipeBlock implements SimpleWaterloggedBlock, EntityBlock {
 
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
+    public static final EnumProperty<PipeFluid> FLUID = EnumProperty.create("fluid", PipeFluid.class);
 
     public GraphenePipeBlock(float size, Properties properties) {
         super(size, properties);
-        BlockState state = stateDefinition.any().setValue(WATERLOGGED, false);
+        BlockState state = stateDefinition.any().setValue(WATERLOGGED, false).setValue(FLUID, PipeFluid.EMPTY);
         for (BooleanProperty side : PROPERTY_BY_DIRECTION.values()) {
             state = state.setValue(side, false);
         }
@@ -48,9 +58,27 @@ public class GraphenePipeBlock extends PipeBlock implements SimpleWaterloggedBlo
         return level.getBlockState(pos.relative(direction)).is(this);
     }
 
+    private boolean canLink(BlockState state, BlockState neighbor) {
+        return neighbor.is(this) && state.getValue(FLUID).compatible(neighbor.getValue(FLUID));
+    }
+
     private boolean isSolid(BlockGetter level, BlockPos pos, Direction direction) {
         BlockPos side = pos.relative(direction);
-        return level.getBlockState(side).isFaceSturdy(level, side, direction.getOpposite());
+        return level.getBlockState(side).isFaceSturdy(level, side, direction.getOpposite()) || isPort(level, pos, direction);
+    }
+
+    private boolean isPort(BlockGetter level, BlockPos pos, Direction direction) {
+        return FluidPortBlock.linkable(level, pos.relative(direction), direction.getOpposite());
+    }
+
+    public BlockState relink(BlockGetter level, BlockPos pos, BlockState state) {
+        for (Direction direction : Direction.values()) {
+            BlockState neighbor = level.getBlockState(pos.relative(direction));
+            if (neighbor.is(this)) {
+                state = state.setValue(PROPERTY_BY_DIRECTION.get(direction), canLink(state, neighbor));
+            }
+        }
+        return state;
     }
 
     private BlockState extendEnd(BlockGetter level, BlockPos pos, BlockState state) {
@@ -71,7 +99,7 @@ public class GraphenePipeBlock extends PipeBlock implements SimpleWaterloggedBlo
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(NORTH, EAST, SOUTH, WEST, UP, DOWN, WATERLOGGED);
+        builder.add(NORTH, EAST, SOUTH, WEST, UP, DOWN, WATERLOGGED, FLUID);
     }
 
     @Override
@@ -81,7 +109,15 @@ public class GraphenePipeBlock extends PipeBlock implements SimpleWaterloggedBlo
         Direction anchor = context.getClickedFace().getOpposite();
         BlockState state = defaultBlockState().setValue(WATERLOGGED, level.getFluidState(pos).getType() == Fluids.WATER);
         for (Direction direction : Direction.values()) {
-            boolean linked = isPipe(level, pos, direction) || direction == anchor && isSolid(level, pos, direction);
+            BlockState neighbor = level.getBlockState(pos.relative(direction));
+            if (neighbor.is(this) && state.getValue(FLUID) == PipeFluid.EMPTY) {
+                state = state.setValue(FLUID, neighbor.getValue(FLUID));
+            }
+        }
+        for (Direction direction : Direction.values()) {
+            boolean linked = canLink(state, level.getBlockState(pos.relative(direction)))
+                || isPort(level, pos, direction)
+                || direction == anchor && isSolid(level, pos, direction);
             state = state.setValue(PROPERTY_BY_DIRECTION.get(direction), linked);
         }
         return extendEnd(level, pos, state);
@@ -94,7 +130,7 @@ public class GraphenePipeBlock extends PipeBlock implements SimpleWaterloggedBlo
             ticks.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
         }
         BooleanProperty side = PROPERTY_BY_DIRECTION.get(direction);
-        boolean linked = neighborState.is(this) || state.getValue(side) && isSolid(level, pos, direction);
+        boolean linked = canLink(state, neighborState) || state.getValue(side) && isSolid(level, pos, direction);
         return extendEnd(level, pos, state.setValue(side, linked));
     }
 
@@ -109,6 +145,21 @@ public class GraphenePipeBlock extends PipeBlock implements SimpleWaterloggedBlo
         level.setBlock(pos, state.cycle(side), Block.UPDATE_ALL);
         level.playSound(player, pos, SoundEvents.ITEM_FRAME_ROTATE_ITEM, SoundSource.BLOCKS, 1.0F, 1.0F);
         return InteractionResult.SUCCESS;
+    }
+
+    @Override
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return new GraphenePipeBlockEntity(pos, state);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+        if (level.isClientSide() || type != ModBlockEntities.GRAPHENE_PIPE.get()) {
+            return null;
+        }
+        return (BlockEntityTicker<T>) (BlockEntityTicker<GraphenePipeBlockEntity>) (tickLevel, pos, tickState, pipe) ->
+            pipe.serverTick((ServerLevel) tickLevel, pos);
     }
 
     @Override

@@ -24,7 +24,7 @@ import org.furranystudio.avalinexus.inventory.ModMenus;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.world.inventory.MenuType;
 import java.lang.reflect.Method;
-import org.furranystudio.avalinexus.client.block.NanocanvasTints;
+import org.furranystudio.avalinexus.client.block.ModBlockTints;
 import org.furranystudio.avalinexus.client.cushion.AvaliCushionRenderer;
 import org.furranystudio.avalinexus.client.tapestry.AvaliTapestryRenderer;
 import org.furranystudio.avalinexus.client.dialogue.ClientDialogue;
@@ -53,7 +53,7 @@ public final class AvaliNexusFabricClient implements ClientModInitializer {
         BlockEntityRendererRegistry.register(ModBlockEntities.GRAPHENE_TANK.get(), GrapheneTankRenderer::new);
         registerScreen(ModMenus.HEATER.get(), (menu, inventory, title) -> new HeaterScreen((org.furranystudio.avalinexus.block.heater.HeaterMenu) menu, inventory, title));
         registerScreen(ModMenus.AVALI_LOOM.get(), (menu, inventory, title) -> new AvaliLoomScreen((org.furranystudio.avalinexus.block.loom.AvaliLoomMenu) menu, inventory, title));
-        NanocanvasTints.register(BlockColorRegistry::register);
+        ModBlockTints.register(BlockColorRegistry::register);
         EntityRendererRegistry.register(ModEntities.AVALI_CUSHION.get(), AvaliCushionRenderer::new);
         EntityRendererRegistry.register(ModEntities.AVALI_TAPESTRY.get(), AvaliTapestryRenderer::new);
         EntityRendererRegistry.register(ModEntities.NEXITE_QUILL.get(), NexiteQuillRenderer::new);

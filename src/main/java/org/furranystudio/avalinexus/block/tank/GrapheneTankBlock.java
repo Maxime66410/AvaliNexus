@@ -34,10 +34,12 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import org.furranystudio.avalinexus.fluid.AvaliLiquids;
+import org.furranystudio.avalinexus.fluid.FluidPort;
+import org.furranystudio.avalinexus.fluid.FluidPortBlock;
 
 import java.util.Locale;
 
-public class GrapheneTankBlock extends Block implements EntityBlock {
+public class GrapheneTankBlock extends Block implements EntityBlock, FluidPortBlock {
 
     public GrapheneTankBlock(Properties properties) {
         super(properties);
@@ -160,6 +162,16 @@ public class GrapheneTankBlock extends Block implements EntityBlock {
             return 0;
         }
         return 1 + (int) (14.0F * structure.amount() / structure.capacity());
+    }
+
+    @Override
+    public boolean hasPort(BlockState state, Direction side) {
+        return true;
+    }
+
+    @Override
+    public FluidPort port(Level level, BlockPos pos, BlockState state, Direction side) {
+        return new TankFluidPort(TankStructure.at(level, pos));
     }
 
     @Override

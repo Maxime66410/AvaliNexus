@@ -2084,6 +2084,2341 @@
         "model": "avalinexus:block/graphene_pipe_side",
         "x": 90
       }
+    },
+    {
+      "when": {
+        "north": "true",
+        "east": "false",
+        "south": "true",
+        "west": "false",
+        "up": "false",
+        "down": "false",
+        "fluid": "water|ammonia|coolant|fuel"
+      },
+      "apply": {
+        "model": "avalinexus:block/graphene_pipe_fluid_straight"
+      }
+    },
+    {
+      "when": {
+        "north": "false",
+        "east": "true",
+        "south": "false",
+        "west": "true",
+        "up": "false",
+        "down": "false",
+        "fluid": "water|ammonia|coolant|fuel"
+      },
+      "apply": {
+        "model": "avalinexus:block/graphene_pipe_fluid_straight",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "north": "false",
+        "east": "false",
+        "south": "false",
+        "west": "false",
+        "up": "true",
+        "down": "true",
+        "fluid": "water|ammonia|coolant|fuel"
+      },
+      "apply": {
+        "model": "avalinexus:block/graphene_pipe_fluid_straight",
+        "x": 90
+      }
+    },
+    {
+      "when": {
+        "OR": [
+          {
+            "north": "false",
+            "east": "false",
+            "south": "false",
+            "west": "false",
+            "up": "false",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "false",
+            "south": "false",
+            "west": "false",
+            "up": "false",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "false",
+            "south": "false",
+            "west": "false",
+            "up": "true",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "false",
+            "south": "false",
+            "west": "true",
+            "up": "false",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "false",
+            "south": "false",
+            "west": "true",
+            "up": "false",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "false",
+            "south": "false",
+            "west": "true",
+            "up": "true",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "false",
+            "south": "false",
+            "west": "true",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "false",
+            "south": "true",
+            "west": "false",
+            "up": "false",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "false",
+            "south": "true",
+            "west": "false",
+            "up": "false",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "false",
+            "south": "true",
+            "west": "false",
+            "up": "true",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "false",
+            "south": "true",
+            "west": "false",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "false",
+            "south": "true",
+            "west": "true",
+            "up": "false",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "false",
+            "south": "true",
+            "west": "true",
+            "up": "false",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "false",
+            "south": "true",
+            "west": "true",
+            "up": "true",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "false",
+            "south": "true",
+            "west": "true",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "true",
+            "south": "false",
+            "west": "false",
+            "up": "false",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "true",
+            "south": "false",
+            "west": "false",
+            "up": "false",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "true",
+            "south": "false",
+            "west": "false",
+            "up": "true",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "true",
+            "south": "false",
+            "west": "false",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "true",
+            "south": "false",
+            "west": "true",
+            "up": "false",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "true",
+            "south": "false",
+            "west": "true",
+            "up": "true",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "true",
+            "south": "false",
+            "west": "true",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "true",
+            "south": "true",
+            "west": "false",
+            "up": "false",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "true",
+            "south": "true",
+            "west": "false",
+            "up": "false",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "true",
+            "south": "true",
+            "west": "false",
+            "up": "true",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "true",
+            "south": "true",
+            "west": "false",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "true",
+            "south": "true",
+            "west": "true",
+            "up": "false",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "true",
+            "south": "true",
+            "west": "true",
+            "up": "false",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "true",
+            "south": "true",
+            "west": "true",
+            "up": "true",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "true",
+            "south": "true",
+            "west": "true",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "false",
+            "south": "false",
+            "west": "false",
+            "up": "false",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "false",
+            "south": "false",
+            "west": "false",
+            "up": "false",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "false",
+            "south": "false",
+            "west": "false",
+            "up": "true",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "false",
+            "south": "false",
+            "west": "false",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "false",
+            "south": "false",
+            "west": "true",
+            "up": "false",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "false",
+            "south": "false",
+            "west": "true",
+            "up": "false",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "false",
+            "south": "false",
+            "west": "true",
+            "up": "true",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "false",
+            "south": "false",
+            "west": "true",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "false",
+            "south": "true",
+            "west": "false",
+            "up": "false",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "false",
+            "south": "true",
+            "west": "false",
+            "up": "true",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "false",
+            "south": "true",
+            "west": "false",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "false",
+            "south": "true",
+            "west": "true",
+            "up": "false",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "false",
+            "south": "true",
+            "west": "true",
+            "up": "false",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "false",
+            "south": "true",
+            "west": "true",
+            "up": "true",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "false",
+            "south": "true",
+            "west": "true",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "false",
+            "west": "false",
+            "up": "false",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "false",
+            "west": "false",
+            "up": "false",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "false",
+            "west": "false",
+            "up": "true",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "false",
+            "west": "false",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "false",
+            "west": "true",
+            "up": "false",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "false",
+            "west": "true",
+            "up": "false",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "false",
+            "west": "true",
+            "up": "true",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "false",
+            "west": "true",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "true",
+            "west": "false",
+            "up": "false",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "true",
+            "west": "false",
+            "up": "false",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "true",
+            "west": "false",
+            "up": "true",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "true",
+            "west": "false",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "true",
+            "west": "true",
+            "up": "false",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "true",
+            "west": "true",
+            "up": "false",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "true",
+            "west": "true",
+            "up": "true",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "true",
+            "west": "true",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          }
+        ]
+      },
+      "apply": {
+        "model": "avalinexus:block/graphene_pipe_fluid_core"
+      }
+    },
+    {
+      "when": {
+        "OR": [
+          {
+            "north": "true",
+            "east": "false",
+            "south": "false",
+            "west": "false",
+            "up": "false",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "false",
+            "south": "false",
+            "west": "false",
+            "up": "false",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "false",
+            "south": "false",
+            "west": "false",
+            "up": "true",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "false",
+            "south": "false",
+            "west": "false",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "false",
+            "south": "false",
+            "west": "true",
+            "up": "false",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "false",
+            "south": "false",
+            "west": "true",
+            "up": "false",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "false",
+            "south": "false",
+            "west": "true",
+            "up": "true",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "false",
+            "south": "false",
+            "west": "true",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "false",
+            "south": "true",
+            "west": "false",
+            "up": "false",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "false",
+            "south": "true",
+            "west": "false",
+            "up": "true",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "false",
+            "south": "true",
+            "west": "false",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "false",
+            "south": "true",
+            "west": "true",
+            "up": "false",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "false",
+            "south": "true",
+            "west": "true",
+            "up": "false",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "false",
+            "south": "true",
+            "west": "true",
+            "up": "true",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "false",
+            "south": "true",
+            "west": "true",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "false",
+            "west": "false",
+            "up": "false",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "false",
+            "west": "false",
+            "up": "false",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "false",
+            "west": "false",
+            "up": "true",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "false",
+            "west": "false",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "false",
+            "west": "true",
+            "up": "false",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "false",
+            "west": "true",
+            "up": "false",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "false",
+            "west": "true",
+            "up": "true",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "false",
+            "west": "true",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "true",
+            "west": "false",
+            "up": "false",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "true",
+            "west": "false",
+            "up": "false",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "true",
+            "west": "false",
+            "up": "true",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "true",
+            "west": "false",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "true",
+            "west": "true",
+            "up": "false",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "true",
+            "west": "true",
+            "up": "false",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "true",
+            "west": "true",
+            "up": "true",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "true",
+            "west": "true",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          }
+        ]
+      },
+      "apply": {
+        "model": "avalinexus:block/graphene_pipe_fluid_side"
+      }
+    },
+    {
+      "when": {
+        "OR": [
+          {
+            "north": "false",
+            "east": "true",
+            "south": "false",
+            "west": "false",
+            "up": "false",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "true",
+            "south": "false",
+            "west": "false",
+            "up": "false",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "true",
+            "south": "false",
+            "west": "false",
+            "up": "true",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "true",
+            "south": "false",
+            "west": "false",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "true",
+            "south": "false",
+            "west": "true",
+            "up": "false",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "true",
+            "south": "false",
+            "west": "true",
+            "up": "true",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "true",
+            "south": "false",
+            "west": "true",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "true",
+            "south": "true",
+            "west": "false",
+            "up": "false",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "true",
+            "south": "true",
+            "west": "false",
+            "up": "false",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "true",
+            "south": "true",
+            "west": "false",
+            "up": "true",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "true",
+            "south": "true",
+            "west": "false",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "true",
+            "south": "true",
+            "west": "true",
+            "up": "false",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "true",
+            "south": "true",
+            "west": "true",
+            "up": "false",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "true",
+            "south": "true",
+            "west": "true",
+            "up": "true",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "true",
+            "south": "true",
+            "west": "true",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "false",
+            "west": "false",
+            "up": "false",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "false",
+            "west": "false",
+            "up": "false",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "false",
+            "west": "false",
+            "up": "true",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "false",
+            "west": "false",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "false",
+            "west": "true",
+            "up": "false",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "false",
+            "west": "true",
+            "up": "false",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "false",
+            "west": "true",
+            "up": "true",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "false",
+            "west": "true",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "true",
+            "west": "false",
+            "up": "false",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "true",
+            "west": "false",
+            "up": "false",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "true",
+            "west": "false",
+            "up": "true",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "true",
+            "west": "false",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "true",
+            "west": "true",
+            "up": "false",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "true",
+            "west": "true",
+            "up": "false",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "true",
+            "west": "true",
+            "up": "true",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "true",
+            "west": "true",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          }
+        ]
+      },
+      "apply": {
+        "model": "avalinexus:block/graphene_pipe_fluid_side",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "OR": [
+          {
+            "north": "false",
+            "east": "false",
+            "south": "true",
+            "west": "false",
+            "up": "false",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "false",
+            "south": "true",
+            "west": "false",
+            "up": "false",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "false",
+            "south": "true",
+            "west": "false",
+            "up": "true",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "false",
+            "south": "true",
+            "west": "false",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "false",
+            "south": "true",
+            "west": "true",
+            "up": "false",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "false",
+            "south": "true",
+            "west": "true",
+            "up": "false",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "false",
+            "south": "true",
+            "west": "true",
+            "up": "true",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "false",
+            "south": "true",
+            "west": "true",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "true",
+            "south": "true",
+            "west": "false",
+            "up": "false",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "true",
+            "south": "true",
+            "west": "false",
+            "up": "false",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "true",
+            "south": "true",
+            "west": "false",
+            "up": "true",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "true",
+            "south": "true",
+            "west": "false",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "true",
+            "south": "true",
+            "west": "true",
+            "up": "false",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "true",
+            "south": "true",
+            "west": "true",
+            "up": "false",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "true",
+            "south": "true",
+            "west": "true",
+            "up": "true",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "true",
+            "south": "true",
+            "west": "true",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "false",
+            "south": "true",
+            "west": "false",
+            "up": "false",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "false",
+            "south": "true",
+            "west": "false",
+            "up": "true",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "false",
+            "south": "true",
+            "west": "false",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "false",
+            "south": "true",
+            "west": "true",
+            "up": "false",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "false",
+            "south": "true",
+            "west": "true",
+            "up": "false",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "false",
+            "south": "true",
+            "west": "true",
+            "up": "true",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "false",
+            "south": "true",
+            "west": "true",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "true",
+            "west": "false",
+            "up": "false",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "true",
+            "west": "false",
+            "up": "false",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "true",
+            "west": "false",
+            "up": "true",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "true",
+            "west": "false",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "true",
+            "west": "true",
+            "up": "false",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "true",
+            "west": "true",
+            "up": "false",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "true",
+            "west": "true",
+            "up": "true",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "true",
+            "west": "true",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          }
+        ]
+      },
+      "apply": {
+        "model": "avalinexus:block/graphene_pipe_fluid_side",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "OR": [
+          {
+            "north": "false",
+            "east": "false",
+            "south": "false",
+            "west": "true",
+            "up": "false",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "false",
+            "south": "false",
+            "west": "true",
+            "up": "false",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "false",
+            "south": "false",
+            "west": "true",
+            "up": "true",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "false",
+            "south": "false",
+            "west": "true",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "false",
+            "south": "true",
+            "west": "true",
+            "up": "false",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "false",
+            "south": "true",
+            "west": "true",
+            "up": "false",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "false",
+            "south": "true",
+            "west": "true",
+            "up": "true",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "false",
+            "south": "true",
+            "west": "true",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "true",
+            "south": "false",
+            "west": "true",
+            "up": "false",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "true",
+            "south": "false",
+            "west": "true",
+            "up": "true",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "true",
+            "south": "false",
+            "west": "true",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "true",
+            "south": "true",
+            "west": "true",
+            "up": "false",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "true",
+            "south": "true",
+            "west": "true",
+            "up": "false",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "true",
+            "south": "true",
+            "west": "true",
+            "up": "true",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "true",
+            "south": "true",
+            "west": "true",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "false",
+            "south": "false",
+            "west": "true",
+            "up": "false",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "false",
+            "south": "false",
+            "west": "true",
+            "up": "false",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "false",
+            "south": "false",
+            "west": "true",
+            "up": "true",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "false",
+            "south": "false",
+            "west": "true",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "false",
+            "south": "true",
+            "west": "true",
+            "up": "false",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "false",
+            "south": "true",
+            "west": "true",
+            "up": "false",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "false",
+            "south": "true",
+            "west": "true",
+            "up": "true",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "false",
+            "south": "true",
+            "west": "true",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "false",
+            "west": "true",
+            "up": "false",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "false",
+            "west": "true",
+            "up": "false",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "false",
+            "west": "true",
+            "up": "true",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "false",
+            "west": "true",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "true",
+            "west": "true",
+            "up": "false",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "true",
+            "west": "true",
+            "up": "false",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "true",
+            "west": "true",
+            "up": "true",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "true",
+            "west": "true",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          }
+        ]
+      },
+      "apply": {
+        "model": "avalinexus:block/graphene_pipe_fluid_side",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "OR": [
+          {
+            "north": "false",
+            "east": "false",
+            "south": "false",
+            "west": "false",
+            "up": "true",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "false",
+            "south": "false",
+            "west": "true",
+            "up": "true",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "false",
+            "south": "false",
+            "west": "true",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "false",
+            "south": "true",
+            "west": "false",
+            "up": "true",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "false",
+            "south": "true",
+            "west": "false",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "false",
+            "south": "true",
+            "west": "true",
+            "up": "true",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "false",
+            "south": "true",
+            "west": "true",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "true",
+            "south": "false",
+            "west": "false",
+            "up": "true",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "true",
+            "south": "false",
+            "west": "false",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "true",
+            "south": "false",
+            "west": "true",
+            "up": "true",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "true",
+            "south": "false",
+            "west": "true",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "true",
+            "south": "true",
+            "west": "false",
+            "up": "true",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "true",
+            "south": "true",
+            "west": "false",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "true",
+            "south": "true",
+            "west": "true",
+            "up": "true",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "true",
+            "south": "true",
+            "west": "true",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "false",
+            "south": "false",
+            "west": "false",
+            "up": "true",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "false",
+            "south": "false",
+            "west": "false",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "false",
+            "south": "false",
+            "west": "true",
+            "up": "true",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "false",
+            "south": "false",
+            "west": "true",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "false",
+            "south": "true",
+            "west": "false",
+            "up": "true",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "false",
+            "south": "true",
+            "west": "false",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "false",
+            "south": "true",
+            "west": "true",
+            "up": "true",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "false",
+            "south": "true",
+            "west": "true",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "false",
+            "west": "false",
+            "up": "true",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "false",
+            "west": "false",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "false",
+            "west": "true",
+            "up": "true",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "false",
+            "west": "true",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "true",
+            "west": "false",
+            "up": "true",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "true",
+            "west": "false",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "true",
+            "west": "true",
+            "up": "true",
+            "down": "false",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "true",
+            "west": "true",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          }
+        ]
+      },
+      "apply": {
+        "model": "avalinexus:block/graphene_pipe_fluid_side",
+        "x": 270
+      }
+    },
+    {
+      "when": {
+        "OR": [
+          {
+            "north": "false",
+            "east": "false",
+            "south": "false",
+            "west": "false",
+            "up": "false",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "false",
+            "south": "false",
+            "west": "true",
+            "up": "false",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "false",
+            "south": "false",
+            "west": "true",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "false",
+            "south": "true",
+            "west": "false",
+            "up": "false",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "false",
+            "south": "true",
+            "west": "false",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "false",
+            "south": "true",
+            "west": "true",
+            "up": "false",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "false",
+            "south": "true",
+            "west": "true",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "true",
+            "south": "false",
+            "west": "false",
+            "up": "false",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "true",
+            "south": "false",
+            "west": "false",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "true",
+            "south": "false",
+            "west": "true",
+            "up": "false",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "true",
+            "south": "false",
+            "west": "true",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "true",
+            "south": "true",
+            "west": "false",
+            "up": "false",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "true",
+            "south": "true",
+            "west": "false",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "true",
+            "south": "true",
+            "west": "true",
+            "up": "false",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "false",
+            "east": "true",
+            "south": "true",
+            "west": "true",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "false",
+            "south": "false",
+            "west": "false",
+            "up": "false",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "false",
+            "south": "false",
+            "west": "false",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "false",
+            "south": "false",
+            "west": "true",
+            "up": "false",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "false",
+            "south": "false",
+            "west": "true",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "false",
+            "south": "true",
+            "west": "false",
+            "up": "false",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "false",
+            "south": "true",
+            "west": "false",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "false",
+            "south": "true",
+            "west": "true",
+            "up": "false",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "false",
+            "south": "true",
+            "west": "true",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "false",
+            "west": "false",
+            "up": "false",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "false",
+            "west": "false",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "false",
+            "west": "true",
+            "up": "false",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "false",
+            "west": "true",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "true",
+            "west": "false",
+            "up": "false",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "true",
+            "west": "false",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "true",
+            "west": "true",
+            "up": "false",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "south": "true",
+            "west": "true",
+            "up": "true",
+            "down": "true",
+            "fluid": "water|ammonia|coolant|fuel"
+          }
+        ]
+      },
+      "apply": {
+        "model": "avalinexus:block/graphene_pipe_fluid_side",
+        "x": 90
+      }
     }
   ]
 }

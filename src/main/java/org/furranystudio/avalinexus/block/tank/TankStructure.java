@@ -11,6 +11,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.PipeBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
@@ -18,6 +19,7 @@ import org.furranystudio.avalinexus.fluid.FluidContent;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -73,6 +75,11 @@ public final class TankStructure {
             }
         }
         return found;
+    }
+
+    public BlockPos anchor() {
+        return layers.isEmpty() ? BlockPos.ZERO : layers.get(0).stream().map(BlockEntity::getBlockPos)
+            .min(Comparator.<BlockPos>comparingInt(pos -> pos.getX()).thenComparingInt(pos -> pos.getZ())).orElse(BlockPos.ZERO);
     }
 
     public Fluid fluid() {

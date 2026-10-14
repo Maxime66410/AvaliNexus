@@ -33,7 +33,9 @@ import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import org.furranystudio.avalinexus.block.heater.HeaterBlock;
 import org.furranystudio.avalinexus.block.loom.AvaliLoomBlock;
+import org.furranystudio.avalinexus.block.pump.FluidPumpBlock;
 import org.furranystudio.avalinexus.block.tank.GrapheneTankBlock;
+import org.furranystudio.avalinexus.block.tap.FluidTapBlock;
 import org.furranystudio.avalinexus.registry.ModRegistry;
 import org.furranystudio.avalinexus.registry.RegistryEntry;
 
@@ -205,6 +207,12 @@ public final class ModBlocks {
             .isViewBlocking((state, level, pos, box) -> false)));
     public static final RegistryEntry<Block> GRAPHENE_PIPE = ModRegistry.register(Registries.BLOCK, "graphene_pipe",
         key -> new GraphenePipeBlock(6.0F, graphene(key).noOcclusion()));
+
+    public static final RegistryEntry<Block> FLUID_PUMP = ModRegistry.register(Registries.BLOCK, "fluid_pump",
+        key -> new FluidPumpBlock(graphene(key).noOcclusion()));
+
+    public static final RegistryEntry<Block> FLUID_TAP = ModRegistry.register(Registries.BLOCK, "fluid_tap",
+        key -> new FluidTapBlock(graphene(key).noOcclusion()));
 
     public static final RegistryEntry<Block> GRAPHENE_VENT = ModRegistry.register(Registries.BLOCK, "graphene_vent",
         key -> new WaterloggedTransparentBlock(graphene(key)

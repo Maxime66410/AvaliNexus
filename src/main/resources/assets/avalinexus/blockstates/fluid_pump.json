@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=west": {
+      "model": "avalinexus:block/fluid_pump"
+    },
+    "facing=north": {
+      "model": "avalinexus:block/fluid_pump",
+      "y": 90
+    },
+    "facing=east": {
+      "model": "avalinexus:block/fluid_pump",
+      "y": 180
+    },
+    "facing=south": {
+      "model": "avalinexus:block/fluid_pump",
+      "y": 270
+    }
+  }
+}

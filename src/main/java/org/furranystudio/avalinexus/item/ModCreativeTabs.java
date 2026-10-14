@@ -61,6 +61,8 @@ public final class ModCreativeTabs {
                 output.accept(ModItems.GRAPHENE_VENT.get());
                 output.accept(ModItems.GRAPHENE_PIPE.get());
                 output.accept(ModItems.GRAPHENE_TANK.get());
+                output.accept(ModItems.FLUID_PUMP.get());
+                output.accept(ModItems.FLUID_TAP.get());
                 output.accept(ModItems.ICE_BRICKS.get());
                 output.accept(ModItems.ICE_BRICK_SLAB.get());
                 output.accept(ModItems.ICE_BRICK_STAIRS.get());

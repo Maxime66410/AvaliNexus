@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "G": "avalinexus:graphene",
+    "T": "avalinexus:graphene_pipe",
+    "B": "minecraft:bucket",
+    "I": "avalinexus:nexite_ingot"
+  },
+  "pattern": [
+    "GGG",
+    "TBT",
+    "GIG"
+  ],
+  "result": {
+    "id": "avalinexus:fluid_pump"
+  }
+}

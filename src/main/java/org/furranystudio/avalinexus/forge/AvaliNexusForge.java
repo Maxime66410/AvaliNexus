@@ -44,7 +44,7 @@ import org.furranystudio.avalinexus.client.tank.GrapheneTankRenderer;
 import org.furranystudio.avalinexus.inventory.ModMenus;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import org.furranystudio.avalinexus.client.block.NanocanvasTints;
+import org.furranystudio.avalinexus.client.block.ModBlockTints;
 import org.furranystudio.avalinexus.client.cushion.AvaliCushionRenderer;
 import org.furranystudio.avalinexus.client.tapestry.AvaliTapestryRenderer;
 import org.furranystudio.avalinexus.client.dialogue.ClientDialogue;
@@ -133,7 +133,7 @@ public class AvaliNexusForge {
             });
             net.minecraftforge.client.event.ComputeFovModifierEvent.BUS.addListener(event ->
                 event.setNewFovModifier(RailGunClient.fovModifier(event.getPlayer(), event.getNewFovModifier())));
-            RegisterColorHandlersEvent.Block.BUS.addListener(event -> NanocanvasTints.register(event::register));
+            RegisterColorHandlersEvent.Block.BUS.addListener(event -> ModBlockTints.register(event::register));
             TickEvent.ClientTickEvent.Pre.BUS.addListener(event -> ClientDialogue.tick());
             InputEvent.MouseScrollingEvent.BUS.addListener((Predicate<InputEvent.MouseScrollingEvent>) event ->
                 ClientDialogue.onScroll(event.getDeltaY()));

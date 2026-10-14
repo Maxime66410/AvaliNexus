@@ -1,0 +1,27 @@
+{
+  "variants": {
+    "facing=west": {
+      "model": "avalinexus:block/fluid_tap"
+    },
+    "facing=north": {
+      "model": "avalinexus:block/fluid_tap",
+      "y": 90
+    },
+    "facing=east": {
+      "model": "avalinexus:block/fluid_tap",
+      "y": 180
+    },
+    "facing=south": {
+      "model": "avalinexus:block/fluid_tap",
+      "y": 270
+    },
+    "facing=up": {
+      "model": "avalinexus:block/fluid_tap",
+      "z": 90
+    },
+    "facing=down": {
+      "model": "avalinexus:block/fluid_tap",
+      "z": 270
+    }
+  }
+}

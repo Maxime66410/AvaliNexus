@@ -119,6 +119,12 @@ public final class ModItems {
     public static final RegistryEntry<BlockItem> GRAPHENE_PIPE = ModRegistry.register(Registries.ITEM, "graphene_pipe",
         key -> new BlockItem(ModBlocks.GRAPHENE_PIPE.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
 
+    public static final RegistryEntry<BlockItem> FLUID_PUMP = ModRegistry.register(Registries.ITEM, "fluid_pump",
+        key -> new BlockItem(ModBlocks.FLUID_PUMP.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
+
+    public static final RegistryEntry<BlockItem> FLUID_TAP = ModRegistry.register(Registries.ITEM, "fluid_tap",
+        key -> new BlockItem(ModBlocks.FLUID_TAP.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
+
     public static final RegistryEntry<BlockItem> GRAPHENE_VENT = ModRegistry.register(Registries.ITEM, "graphene_vent",
         key -> new BlockItem(ModBlocks.GRAPHENE_VENT.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
 

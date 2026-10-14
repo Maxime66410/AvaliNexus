@@ -47,7 +47,7 @@ import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import org.furranystudio.avalinexus.client.tank.GrapheneTankRenderer;
 import org.furranystudio.avalinexus.inventory.ModMenus;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
-import org.furranystudio.avalinexus.client.block.NanocanvasTints;
+import org.furranystudio.avalinexus.client.block.ModBlockTints;
 import org.furranystudio.avalinexus.client.cushion.AvaliCushionRenderer;
 import org.furranystudio.avalinexus.client.tapestry.AvaliTapestryRenderer;
 import org.furranystudio.avalinexus.client.dialogue.ClientDialogue;
@@ -131,7 +131,7 @@ public class AvaliNexusNeoForge {
             });
             NeoForge.EVENT_BUS.addListener((net.neoforged.neoforge.client.event.ComputeFovModifierEvent event) ->
                 event.setNewFovModifier(RailGunClient.fovModifier(event.getPlayer(), event.getNewFovModifier())));
-            modEventBus.addListener((RegisterColorHandlersEvent.BlockTintSources event) -> NanocanvasTints.register(event::register));
+            modEventBus.addListener((RegisterColorHandlersEvent.BlockTintSources event) -> ModBlockTints.register(event::register));
             NeoForge.EVENT_BUS.addListener((ClientTickEvent.Pre event) -> ClientDialogue.tick());
             NeoForge.EVENT_BUS.addListener((InputEvent.MouseScrollingEvent event) -> {
                 if (ClientDialogue.onScroll(event.getScrollDeltaY())) {
