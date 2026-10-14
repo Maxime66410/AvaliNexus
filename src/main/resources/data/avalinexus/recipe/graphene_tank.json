@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "G": "avalinexus:graphene",
+    "A": "avalinexus:aerogel",
+    "B": "minecraft:bucket"
+  },
+  "pattern": [
+    "GAG",
+    "ABA",
+    "GAG"
+  ],
+  "result": {
+    "id": "avalinexus:graphene_tank"
+  }
+}

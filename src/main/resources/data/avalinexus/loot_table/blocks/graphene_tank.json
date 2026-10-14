@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:copy_components",
+              "include": [
+                "avalinexus:stored_fluid",
+                "minecraft:max_stack_size"
+              ],
+              "source": "block_entity"
+            }
+          ],
+          "name": "avalinexus:graphene_tank"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "avalinexus:blocks/graphene_tank"
+}

@@ -9,6 +9,7 @@ package org.furranystudio.avalinexus.block;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import org.furranystudio.avalinexus.block.heater.HeaterBlockEntity;
+import org.furranystudio.avalinexus.block.tank.GrapheneTankBlockEntity;
 import org.furranystudio.avalinexus.registry.ModRegistry;
 import org.furranystudio.avalinexus.registry.RegistryEntry;
 
@@ -18,6 +19,9 @@ public final class ModBlockEntities {
 
     public static final RegistryEntry<BlockEntityType<HeaterBlockEntity>> HEATER = ModRegistry.register(Registries.BLOCK_ENTITY_TYPE, "heater",
         key -> new BlockEntityType<>(HeaterBlockEntity::new, Set.of(ModBlocks.HEATER.get())));
+
+    public static final RegistryEntry<BlockEntityType<GrapheneTankBlockEntity>> GRAPHENE_TANK = ModRegistry.register(Registries.BLOCK_ENTITY_TYPE, "graphene_tank",
+        key -> new BlockEntityType<>(GrapheneTankBlockEntity::new, Set.of(ModBlocks.GRAPHENE_TANK.get())));
 
     private ModBlockEntities() {
     }

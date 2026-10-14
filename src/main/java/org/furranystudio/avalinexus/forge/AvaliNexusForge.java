@@ -34,11 +34,13 @@ import net.minecraftforge.registries.RegisterEvent;
 import org.furranystudio.avalinexus.AvaliNexus;
 import org.furranystudio.avalinexus.Config;
 import org.furranystudio.avalinexus.Platform;
+import org.furranystudio.avalinexus.block.ModBlockEntities;
 import org.furranystudio.avalinexus.client.AvaliNexusClient;
 import org.furranystudio.avalinexus.client.avali.AvaliRenderer;
 import org.furranystudio.avalinexus.client.heater.HeaterScreen;
 import org.furranystudio.avalinexus.client.loom.AvaliLoomScreen;
 import org.furranystudio.avalinexus.client.settings.AvaliSettingsScreen;
+import org.furranystudio.avalinexus.client.tank.GrapheneTankRenderer;
 import org.furranystudio.avalinexus.inventory.ModMenus;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -140,6 +142,7 @@ public class AvaliNexusForge {
                 event.registerEntityRenderer(ModEntities.AVALI_CUSHION.get(), AvaliCushionRenderer::new);
                 event.registerEntityRenderer(ModEntities.AVALI_TAPESTRY.get(), AvaliTapestryRenderer::new);
                 event.registerEntityRenderer(ModEntities.NEXITE_QUILL.get(), NexiteQuillRenderer::new);
+                event.registerBlockEntityRenderer(ModBlockEntities.GRAPHENE_TANK.get(), GrapheneTankRenderer::new);
             });
         }
 

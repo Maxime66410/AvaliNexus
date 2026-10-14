@@ -12,6 +12,7 @@ import org.furranystudio.avalinexus.block.ModBlockEntities;
 import org.furranystudio.avalinexus.block.ModBlocks;
 import org.furranystudio.avalinexus.block.AerogelBlocks;
 import org.furranystudio.avalinexus.block.NanocanvasBlocks;
+import org.furranystudio.avalinexus.fluid.AvaliLiquids;
 import org.furranystudio.avalinexus.fluid.ModFluids;
 import org.furranystudio.avalinexus.entity.ModEntities;
 import org.furranystudio.avalinexus.item.ModCreativeTabs;
@@ -38,6 +39,7 @@ public final class AvaliNexus {
         NanocanvasBlocks.init();
         AerogelBlocks.init();
         ModFluids.init();
+        AvaliLiquids.init();
         ModEntities.init();
         ModItems.init();
         NexiteGear.init();

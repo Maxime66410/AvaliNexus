@@ -1,0 +1,76 @@
+{
+  "parent": "minecraft:block/block",
+  "texture_size": [
+    64,
+    64
+  ],
+  "textures": {
+    "0": {
+      "force_translucent": true,
+      "sprite": "avalinexus:block/graphene_tank/graphene_tank_base"
+    },
+    "particle": "avalinexus:block/graphene_tank/graphene_tank_base"
+  },
+  "elements": [
+    {
+      "name": "Tank",
+      "from": [
+        0.5,
+        0,
+        0.5
+      ],
+      "to": [
+        15.5,
+        16,
+        15.5
+      ],
+      "rotation": {
+        "angle": 0,
+        "axis": "y",
+        "origin": [
+          8,
+          8,
+          8
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": "#0"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": "#0"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": "#0"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": "#0"
+        }
+      }
+    }
+  ]
+}

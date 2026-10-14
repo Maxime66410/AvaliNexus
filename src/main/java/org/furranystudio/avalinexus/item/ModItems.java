@@ -24,6 +24,7 @@ import net.minecraft.world.item.equipment.Equippable;
 import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
 import org.furranystudio.avalinexus.AvaliNexus;
 import org.furranystudio.avalinexus.block.ModBlocks;
+import org.furranystudio.avalinexus.block.tank.GrapheneTankItem;
 import org.furranystudio.avalinexus.entity.ModEntities;
 import org.furranystudio.avalinexus.registry.ModRegistry;
 import org.furranystudio.avalinexus.registry.RegistryEntry;
@@ -111,6 +112,9 @@ public final class ModItems {
 
     public static final RegistryEntry<DoubleHighBlockItem> GRAPHENE_DOOR = ModRegistry.register(Registries.ITEM, "graphene_door",
         key -> new DoubleHighBlockItem(ModBlocks.GRAPHENE_DOOR.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
+
+    public static final RegistryEntry<BlockItem> GRAPHENE_TANK = ModRegistry.register(Registries.ITEM, "graphene_tank",
+        key -> new GrapheneTankItem(ModBlocks.GRAPHENE_TANK.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
 
     public static final RegistryEntry<BlockItem> GRAPHENE_PIPE = ModRegistry.register(Registries.ITEM, "graphene_pipe",
         key -> new BlockItem(ModBlocks.GRAPHENE_PIPE.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
