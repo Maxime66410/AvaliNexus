@@ -70,7 +70,19 @@ public abstract class MachineScreen<T extends MachineMenu> extends AbstractConta
             return;
         }
         int height = Math.max(1, Math.round((float) Math.min(amount, capacity) / capacity * MachineMenu.GAUGE_HEIGHT));
-        graphics.fill(x, bottom - height, x + GAUGE_WIDTH, bottom, AvaliLiquids.tint(fluid) | 0xFF000000);
+        int color = AvaliLiquids.tint(fluid) | 0xFF000000;
+        graphics.fill(x, bottom - height, x + GAUGE_WIDTH, bottom, color);
+        graphics.fill(x, bottom - height, x + GAUGE_WIDTH, bottom - height + Math.min(2, height), lighter(color));
+    }
+
+    private static int lighter(int color) {
+        int red = (color >> 16) & 0xFF;
+        int green = (color >> 8) & 0xFF;
+        int blue = color & 0xFF;
+        red += (255 - red) * 2 / 5;
+        green += (255 - green) * 2 / 5;
+        blue += (255 - blue) * 2 / 5;
+        return 0xFF000000 | red << 16 | green << 8 | blue;
     }
 
     @Override
