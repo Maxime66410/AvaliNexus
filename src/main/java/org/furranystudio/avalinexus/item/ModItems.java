@@ -125,6 +125,9 @@ public final class ModItems {
     public static final RegistryEntry<BlockItem> FLUID_TAP = ModRegistry.register(Registries.ITEM, "fluid_tap",
         key -> new BlockItem(ModBlocks.FLUID_TAP.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
 
+    public static final RegistryEntry<BlockItem> AMMONIA_REFINERY = ModRegistry.register(Registries.ITEM, "ammonia_refinery",
+        key -> new BlockItem(ModBlocks.AMMONIA_REFINERY.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
+
     public static final RegistryEntry<BlockItem> GRAPHENE_VENT = ModRegistry.register(Registries.ITEM, "graphene_vent",
         key -> new BlockItem(ModBlocks.GRAPHENE_VENT.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
 

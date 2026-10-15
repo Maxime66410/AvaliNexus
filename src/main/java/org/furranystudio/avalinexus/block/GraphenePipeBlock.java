@@ -81,6 +81,13 @@ public class GraphenePipeBlock extends PipeBlock implements SimpleWaterloggedBlo
         return state;
     }
 
+    public static void attach(Level level, BlockPos pos, Direction toward) {
+        BlockState state = level.getBlockState(pos);
+        if (state.getBlock() instanceof GraphenePipeBlock) {
+            level.setBlock(pos, state.setValue(PROPERTY_BY_DIRECTION.get(toward), true), Block.UPDATE_ALL);
+        }
+    }
+
     private BlockState extendEnd(BlockGetter level, BlockPos pos, BlockState state) {
         Direction only = null;
         for (Direction direction : Direction.values()) {

@@ -10,6 +10,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import org.furranystudio.avalinexus.block.heater.HeaterBlockEntity;
 import org.furranystudio.avalinexus.block.pipe.GraphenePipeBlockEntity;
+import org.furranystudio.avalinexus.block.refinery.AmmoniaRefineryBlockEntity;
 import org.furranystudio.avalinexus.block.tank.GrapheneTankBlockEntity;
 import org.furranystudio.avalinexus.registry.ModRegistry;
 import org.furranystudio.avalinexus.registry.RegistryEntry;
@@ -26,6 +27,9 @@ public final class ModBlockEntities {
 
     public static final RegistryEntry<BlockEntityType<GraphenePipeBlockEntity>> GRAPHENE_PIPE = ModRegistry.register(Registries.BLOCK_ENTITY_TYPE, "graphene_pipe",
         key -> new BlockEntityType<>(GraphenePipeBlockEntity::new, Set.of(ModBlocks.GRAPHENE_PIPE.get())));
+
+    public static final RegistryEntry<BlockEntityType<AmmoniaRefineryBlockEntity>> AMMONIA_REFINERY = ModRegistry.register(Registries.BLOCK_ENTITY_TYPE, "ammonia_refinery",
+        key -> new BlockEntityType<>(AmmoniaRefineryBlockEntity::new, Set.of(ModBlocks.AMMONIA_REFINERY.get())));
 
     private ModBlockEntities() {
     }

@@ -34,6 +34,7 @@ import net.minecraft.world.level.material.PushReaction;
 import org.furranystudio.avalinexus.block.heater.HeaterBlock;
 import org.furranystudio.avalinexus.block.loom.AvaliLoomBlock;
 import org.furranystudio.avalinexus.block.pump.FluidPumpBlock;
+import org.furranystudio.avalinexus.block.refinery.AmmoniaRefineryBlock;
 import org.furranystudio.avalinexus.block.tank.GrapheneTankBlock;
 import org.furranystudio.avalinexus.block.tap.FluidTapBlock;
 import org.furranystudio.avalinexus.registry.ModRegistry;
@@ -213,6 +214,9 @@ public final class ModBlocks {
 
     public static final RegistryEntry<Block> FLUID_TAP = ModRegistry.register(Registries.BLOCK, "fluid_tap",
         key -> new FluidTapBlock(graphene(key).noOcclusion()));
+
+    public static final RegistryEntry<Block> AMMONIA_REFINERY = ModRegistry.register(Registries.BLOCK, "ammonia_refinery",
+        key -> new AmmoniaRefineryBlock(graphene(key).noOcclusion()));
 
     public static final RegistryEntry<Block> GRAPHENE_VENT = ModRegistry.register(Registries.BLOCK, "graphene_vent",
         key -> new WaterloggedTransparentBlock(graphene(key)

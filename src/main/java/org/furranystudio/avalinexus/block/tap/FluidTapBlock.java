@@ -72,11 +72,7 @@ public class FluidTapBlock extends Block implements FluidPortBlock {
             return;
         }
         Direction back = state.getValue(FACING).getOpposite();
-        BlockPos behind = pos.relative(back);
-        BlockState pipe = level.getBlockState(behind);
-        if (pipe.getBlock() instanceof GraphenePipeBlock) {
-            level.setBlock(behind, pipe.setValue(PipeBlock.PROPERTY_BY_DIRECTION.get(back.getOpposite()), true), Block.UPDATE_ALL);
-        }
+        GraphenePipeBlock.attach(level, pos.relative(back), back.getOpposite());
     }
 
     @Override

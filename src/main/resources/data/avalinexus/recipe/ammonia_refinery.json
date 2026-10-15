@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "G": "avalinexus:graphene",
+    "T": "avalinexus:graphene_pipe",
+    "F": "minecraft:furnace",
+    "I": "avalinexus:nexite_ingot"
+  },
+  "pattern": [
+    "GGG",
+    "TFT",
+    "GIG"
+  ],
+  "result": {
+    "id": "avalinexus:ammonia_refinery"
+  }
+}

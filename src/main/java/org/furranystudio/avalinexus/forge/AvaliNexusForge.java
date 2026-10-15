@@ -38,6 +38,7 @@ import org.furranystudio.avalinexus.block.ModBlockEntities;
 import org.furranystudio.avalinexus.client.AvaliNexusClient;
 import org.furranystudio.avalinexus.client.avali.AvaliRenderer;
 import org.furranystudio.avalinexus.client.heater.HeaterScreen;
+import org.furranystudio.avalinexus.client.machine.AmmoniaRefineryScreen;
 import org.furranystudio.avalinexus.client.loom.AvaliLoomScreen;
 import org.furranystudio.avalinexus.client.settings.AvaliSettingsScreen;
 import org.furranystudio.avalinexus.client.tank.GrapheneTankRenderer;
@@ -116,6 +117,7 @@ public class AvaliNexusForge {
                 event.enqueueWork(() -> {
                     MenuScreens.register(ModMenus.HEATER.get(), HeaterScreen::new);
                     MenuScreens.register(ModMenus.AVALI_LOOM.get(), AvaliLoomScreen::new);
+                    MenuScreens.register(ModMenus.AMMONIA_REFINERY.get(), AmmoniaRefineryScreen::new);
                 }));
             AddGuiOverlayLayersEvent.BUS.addListener(event -> event.getLayeredDraw().add(AvaliNexus.id("dialogue"), DialogueHud::render));
             RegisterKeyMappingsEvent.BUS.addListener(event -> {

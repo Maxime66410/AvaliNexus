@@ -14,6 +14,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import org.furranystudio.avalinexus.block.heater.HeaterMenu;
 import org.furranystudio.avalinexus.block.loom.AvaliLoomMenu;
+import org.furranystudio.avalinexus.block.refinery.AmmoniaRefineryMenu;
 import org.furranystudio.avalinexus.registry.ModRegistry;
 import org.furranystudio.avalinexus.registry.RegistryEntry;
 
@@ -27,6 +28,8 @@ public final class ModMenus {
         key -> create(HeaterMenu::new));
     public static final RegistryEntry<MenuType<AvaliLoomMenu>> AVALI_LOOM = ModRegistry.register(Registries.MENU, "avali_loom",
         key -> create(AvaliLoomMenu::new));
+    public static final RegistryEntry<MenuType<AmmoniaRefineryMenu>> AMMONIA_REFINERY = ModRegistry.register(Registries.MENU, "ammonia_refinery",
+        key -> create(AmmoniaRefineryMenu::new));
 
     private ModMenus() {
     }
