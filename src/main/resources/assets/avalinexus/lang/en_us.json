@@ -160,6 +160,8 @@
   "block.avalinexus.fluid_tap": "Fluid Tap",
   "block.avalinexus.ammonia_refinery": "Ammonia Refinery",
   "container.avalinexus.ammonia_refinery": "Ammonia Refinery",
+  "block.avalinexus.cryo_freezer": "Cryo Freezer",
+  "container.avalinexus.cryo_freezer": "Cryo Freezer",
   "gui.avalinexus.machine.gauge": "%s: %s / %s mB",
   "gui.avalinexus.machine.empty": "Empty: 0 / %s mB",
   "message.avalinexus.pump.dry": "No liquid source under the pump",

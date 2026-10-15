@@ -8,6 +8,7 @@ package org.furranystudio.avalinexus.block;
 
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import org.furranystudio.avalinexus.block.freezer.CryoFreezerBlockEntity;
 import org.furranystudio.avalinexus.block.heater.HeaterBlockEntity;
 import org.furranystudio.avalinexus.block.pipe.GraphenePipeBlockEntity;
 import org.furranystudio.avalinexus.block.refinery.AmmoniaRefineryBlockEntity;
@@ -30,6 +31,9 @@ public final class ModBlockEntities {
 
     public static final RegistryEntry<BlockEntityType<AmmoniaRefineryBlockEntity>> AMMONIA_REFINERY = ModRegistry.register(Registries.BLOCK_ENTITY_TYPE, "ammonia_refinery",
         key -> new BlockEntityType<>(AmmoniaRefineryBlockEntity::new, Set.of(ModBlocks.AMMONIA_REFINERY.get())));
+
+    public static final RegistryEntry<BlockEntityType<CryoFreezerBlockEntity>> CRYO_FREEZER = ModRegistry.register(Registries.BLOCK_ENTITY_TYPE, "cryo_freezer",
+        key -> new BlockEntityType<>(CryoFreezerBlockEntity::new, Set.of(ModBlocks.CRYO_FREEZER.get())));
 
     private ModBlockEntities() {
     }

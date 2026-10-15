@@ -160,6 +160,8 @@
   "block.avalinexus.fluid_tap": "Grifo",
   "block.avalinexus.ammonia_refinery": "Refinería de amoníaco",
   "container.avalinexus.ammonia_refinery": "Refinería de amoníaco",
+  "block.avalinexus.cryo_freezer": "Congelador criogénico",
+  "container.avalinexus.cryo_freezer": "Congelador criogénico",
   "gui.avalinexus.machine.gauge": "%s: %s / %s mB",
   "gui.avalinexus.machine.empty": "Vacío: 0 / %s mB",
   "message.avalinexus.pump.dry": "No hay fuente de líquido bajo la bomba",

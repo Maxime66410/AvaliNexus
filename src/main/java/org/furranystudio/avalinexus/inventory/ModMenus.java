@@ -12,6 +12,7 @@ import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
+import org.furranystudio.avalinexus.block.freezer.CryoFreezerMenu;
 import org.furranystudio.avalinexus.block.heater.HeaterMenu;
 import org.furranystudio.avalinexus.block.loom.AvaliLoomMenu;
 import org.furranystudio.avalinexus.block.refinery.AmmoniaRefineryMenu;
@@ -30,6 +31,8 @@ public final class ModMenus {
         key -> create(AvaliLoomMenu::new));
     public static final RegistryEntry<MenuType<AmmoniaRefineryMenu>> AMMONIA_REFINERY = ModRegistry.register(Registries.MENU, "ammonia_refinery",
         key -> create(AmmoniaRefineryMenu::new));
+    public static final RegistryEntry<MenuType<CryoFreezerMenu>> CRYO_FREEZER = ModRegistry.register(Registries.MENU, "cryo_freezer",
+        key -> create(CryoFreezerMenu::new));
 
     private ModMenus() {
     }

@@ -32,6 +32,7 @@
     "avalinexus:graphene_tank",
     "avalinexus:fluid_pump",
     "avalinexus:fluid_tap",
-    "avalinexus:ammonia_refinery"
+    "avalinexus:ammonia_refinery",
+    "avalinexus:cryo_freezer"
   ]
 }

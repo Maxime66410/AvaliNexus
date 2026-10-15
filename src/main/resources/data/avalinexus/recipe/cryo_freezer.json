@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "G": "avalinexus:graphene",
+    "A": "avalinexus:aerogel",
+    "T": "avalinexus:graphene_pipe",
+    "B": "minecraft:blue_ice",
+    "I": "avalinexus:nexite_ingot"
+  },
+  "pattern": [
+    "GAG",
+    "TBT",
+    "GIG"
+  ],
+  "result": {
+    "id": "avalinexus:cryo_freezer"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=west": {
+      "model": "avalinexus:block/cryo_freezer"
+    },
+    "facing=north": {
+      "model": "avalinexus:block/cryo_freezer",
+      "y": 90
+    },
+    "facing=east": {
+      "model": "avalinexus:block/cryo_freezer",
+      "y": 180
+    },
+    "facing=south": {
+      "model": "avalinexus:block/cryo_freezer",
+      "y": 270
+    }
+  }
+}

@@ -160,6 +160,8 @@
   "block.avalinexus.fluid_tap": "Robinet",
   "block.avalinexus.ammonia_refinery": "Raffinerie d'ammoniac",
   "container.avalinexus.ammonia_refinery": "Raffinerie d'ammoniac",
+  "block.avalinexus.cryo_freezer": "Congélateur cryogénique",
+  "container.avalinexus.cryo_freezer": "Congélateur cryogénique",
   "gui.avalinexus.machine.gauge": "%s : %s / %s mB",
   "gui.avalinexus.machine.empty": "Vide : 0 / %s mB",
   "message.avalinexus.pump.dry": "Aucune source de liquide sous la pompe",
