@@ -14,6 +14,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import org.furranystudio.avalinexus.block.freezer.CryoFreezerMenu;
 import org.furranystudio.avalinexus.block.press.GraphenePressMenu;
+import org.furranystudio.avalinexus.block.workbench.WeaponWorkbenchMenu;
 import org.furranystudio.avalinexus.block.heater.HeaterMenu;
 import org.furranystudio.avalinexus.block.loom.AvaliLoomMenu;
 import org.furranystudio.avalinexus.block.refinery.AmmoniaRefineryMenu;
@@ -36,6 +37,8 @@ public final class ModMenus {
         key -> create(CryoFreezerMenu::new));
     public static final RegistryEntry<MenuType<GraphenePressMenu>> GRAPHENE_PRESS = ModRegistry.register(Registries.MENU, "graphene_press",
         key -> create(GraphenePressMenu::new));
+    public static final RegistryEntry<MenuType<WeaponWorkbenchMenu>> WEAPON_WORKBENCH = ModRegistry.register(Registries.MENU, "weapon_workbench",
+        key -> create(WeaponWorkbenchMenu::new));
 
     private ModMenus() {
     }

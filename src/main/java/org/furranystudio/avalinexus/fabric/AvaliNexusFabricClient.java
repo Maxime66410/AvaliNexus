@@ -21,6 +21,7 @@ import org.furranystudio.avalinexus.client.heater.HeaterScreen;
 import org.furranystudio.avalinexus.client.machine.AmmoniaRefineryScreen;
 import org.furranystudio.avalinexus.client.machine.CryoFreezerScreen;
 import org.furranystudio.avalinexus.client.machine.GraphenePressScreen;
+import org.furranystudio.avalinexus.client.machine.WeaponWorkbenchScreen;
 import org.furranystudio.avalinexus.client.loom.AvaliLoomScreen;
 import org.furranystudio.avalinexus.client.tank.GrapheneTankRenderer;
 import org.furranystudio.avalinexus.inventory.ModMenus;
@@ -59,6 +60,7 @@ public final class AvaliNexusFabricClient implements ClientModInitializer {
         registerScreen(ModMenus.AMMONIA_REFINERY.get(), (menu, inventory, title) -> new AmmoniaRefineryScreen((org.furranystudio.avalinexus.block.refinery.AmmoniaRefineryMenu) menu, inventory, title));
         registerScreen(ModMenus.CRYO_FREEZER.get(), (menu, inventory, title) -> new CryoFreezerScreen((org.furranystudio.avalinexus.block.freezer.CryoFreezerMenu) menu, inventory, title));
         registerScreen(ModMenus.GRAPHENE_PRESS.get(), (menu, inventory, title) -> new GraphenePressScreen((org.furranystudio.avalinexus.block.press.GraphenePressMenu) menu, inventory, title));
+        registerScreen(ModMenus.WEAPON_WORKBENCH.get(), (menu, inventory, title) -> new WeaponWorkbenchScreen((org.furranystudio.avalinexus.block.workbench.WeaponWorkbenchMenu) menu, inventory, title));
         ModBlockTints.register(BlockColorRegistry::register);
         EntityRendererRegistry.register(ModEntities.AVALI_CUSHION.get(), AvaliCushionRenderer::new);
         EntityRendererRegistry.register(ModEntities.AVALI_TAPESTRY.get(), AvaliTapestryRenderer::new);

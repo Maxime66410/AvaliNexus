@@ -134,6 +134,9 @@ public final class ModItems {
     public static final RegistryEntry<BlockItem> GRAPHENE_PRESS = ModRegistry.register(Registries.ITEM, "graphene_press",
         key -> new BlockItem(ModBlocks.GRAPHENE_PRESS.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
 
+    public static final RegistryEntry<BlockItem> WEAPON_WORKBENCH = ModRegistry.register(Registries.ITEM, "weapon_workbench",
+        key -> new BlockItem(ModBlocks.WEAPON_WORKBENCH.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
+
     public static final RegistryEntry<BlockItem> GRAPHENE_VENT = ModRegistry.register(Registries.ITEM, "graphene_vent",
         key -> new BlockItem(ModBlocks.GRAPHENE_VENT.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
 

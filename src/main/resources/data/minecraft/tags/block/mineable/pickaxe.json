@@ -34,6 +34,7 @@
     "avalinexus:fluid_tap",
     "avalinexus:ammonia_refinery",
     "avalinexus:cryo_freezer",
-    "avalinexus:graphene_press"
+    "avalinexus:graphene_press",
+    "avalinexus:weapon_workbench"
   ]
 }

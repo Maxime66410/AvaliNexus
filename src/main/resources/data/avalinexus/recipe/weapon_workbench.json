@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "G": "avalinexus:graphene",
+    "I": "avalinexus:nexite_ingot",
+    "C": "minecraft:crafting_table",
+    "T": "avalinexus:terminal"
+  },
+  "pattern": [
+    "GGG",
+    "ICI",
+    "GTG"
+  ],
+  "result": {
+    "id": "avalinexus:weapon_workbench"
+  }
+}
