@@ -474,6 +474,8 @@
   "subtitles.avalinexus.graphene_press.extend": "Press piston extends",
   "subtitles.avalinexus.graphene_press.contract": "Press piston retracts",
   "subtitles.avalinexus.graphene_press.done": "Press crushes graphene",
+  "subtitles.avalinexus.weapon_workbench.working": "Workbench machines parts",
+  "subtitles.avalinexus.weapon_workbench.done": "Workbench finishes an item",
   "item.avalinexus.rail_pistol_magazine": "Rail Pistol Magazine",
   "item.avalinexus.rail_assault_rifle_magazine": "Rail Assault Rifle Magazine",
   "item.avalinexus.rail_carbine_magazine": "Rail Carbine Magazine",

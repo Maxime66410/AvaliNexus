@@ -474,6 +474,8 @@
   "subtitles.avalinexus.graphene_press.extend": "El pistón de la prensa baja",
   "subtitles.avalinexus.graphene_press.contract": "El pistón de la prensa sube",
   "subtitles.avalinexus.graphene_press.done": "La prensa aplasta grafeno",
+  "subtitles.avalinexus.weapon_workbench.working": "El banco mecaniza piezas",
+  "subtitles.avalinexus.weapon_workbench.done": "El banco termina un objeto",
   "item.avalinexus.rail_pistol_magazine": "Cargador de pistola de riel",
   "item.avalinexus.rail_assault_rifle_magazine": "Cargador de fusil de asalto de riel",
   "item.avalinexus.rail_carbine_magazine": "Cargador de carabina de riel",

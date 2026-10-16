@@ -474,6 +474,8 @@
   "subtitles.avalinexus.graphene_press.extend": "Le piston de la presse descend",
   "subtitles.avalinexus.graphene_press.contract": "Le piston de la presse remonte",
   "subtitles.avalinexus.graphene_press.done": "La presse écrase du graphène",
+  "subtitles.avalinexus.weapon_workbench.working": "L'établi usine",
+  "subtitles.avalinexus.weapon_workbench.done": "L'établi termine un objet",
   "item.avalinexus.rail_pistol_magazine": "Chargeur de pistolet à rail",
   "item.avalinexus.rail_assault_rifle_magazine": "Chargeur de fusil d'assaut à rail",
   "item.avalinexus.rail_carbine_magazine": "Chargeur de carabine à rail",

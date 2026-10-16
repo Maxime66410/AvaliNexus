@@ -189,5 +189,23 @@
         "type": "event"
       }
     ]
+  },
+  "block.weapon_workbench.working": {
+    "subtitle": "subtitles.avalinexus.weapon_workbench.working",
+    "sounds": [
+      {
+        "name": "minecraft:block.grindstone.use",
+        "type": "event"
+      }
+    ]
+  },
+  "block.weapon_workbench.done": {
+    "subtitle": "subtitles.avalinexus.weapon_workbench.done",
+    "sounds": [
+      {
+        "name": "minecraft:block.smithing_table.use",
+        "type": "event"
+      }
+    ]
   }
 }
