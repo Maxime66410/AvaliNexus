@@ -39,6 +39,9 @@ public final class ModSounds {
     public static final RegistryEntry<SoundEvent> REFINERY_WORKING = register("block.ammonia_refinery.working");
     public static final RegistryEntry<SoundEvent> REFINERY_DONE = register("block.ammonia_refinery.done");
     public static final RegistryEntry<SoundEvent> REFINERY_IGNITE = register("block.ammonia_refinery.ignite");
+    public static final RegistryEntry<SoundEvent> FREEZER_WORKING = register("block.cryo_freezer.working");
+    public static final RegistryEntry<SoundEvent> FREEZER_DONE = register("block.cryo_freezer.done");
+    public static final RegistryEntry<SoundEvent> FREEZER_POWDER_SNOW = register("block.cryo_freezer.powder_snow");
 
     private ModSounds() {
     }

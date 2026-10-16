@@ -135,5 +135,32 @@
         "type": "event"
       }
     ]
+  },
+  "block.cryo_freezer.working": {
+    "subtitle": "subtitles.avalinexus.cryo_freezer.working",
+    "sounds": [
+      {
+        "name": "minecraft:block.powder_snow.step",
+        "type": "event"
+      }
+    ]
+  },
+  "block.cryo_freezer.done": {
+    "subtitle": "subtitles.avalinexus.cryo_freezer.done",
+    "sounds": [
+      {
+        "name": "minecraft:block.glass.place",
+        "type": "event"
+      }
+    ]
+  },
+  "block.cryo_freezer.powder_snow": {
+    "subtitle": "subtitles.avalinexus.cryo_freezer.powder_snow",
+    "sounds": [
+      {
+        "name": "minecraft:item.bucket.fill_powder_snow",
+        "type": "event"
+      }
+    ]
   }
 }

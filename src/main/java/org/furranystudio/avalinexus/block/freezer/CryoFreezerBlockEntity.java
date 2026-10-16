@@ -10,6 +10,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
@@ -31,6 +32,7 @@ import org.furranystudio.avalinexus.fluid.AvaliLiquids;
 import org.furranystudio.avalinexus.fluid.FluidPort;
 import org.furranystudio.avalinexus.fluid.ModFluids;
 import org.furranystudio.avalinexus.item.ModItems;
+import org.furranystudio.avalinexus.sound.ModSounds;
 
 import java.util.List;
 
@@ -173,6 +175,7 @@ public class CryoFreezerBlockEntity extends MachineBlockEntity {
         } else {
             output.grow(1);
         }
+        level.playSound(null, worldPosition, result.is(Items.POWDER_SNOW_BUCKET) ? ModSounds.FREEZER_POWDER_SNOW.get() : ModSounds.FREEZER_DONE.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
     }
 
     private void bucket(int slot, MachineTank tank) {
