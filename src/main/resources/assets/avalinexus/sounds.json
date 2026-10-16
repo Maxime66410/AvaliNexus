@@ -108,5 +108,32 @@
     "sounds": [
       "avalinexus:weapon/aerotech/reforge"
     ]
+  },
+  "block.ammonia_refinery.working": {
+    "subtitle": "subtitles.avalinexus.ammonia_refinery.working",
+    "sounds": [
+      {
+        "name": "minecraft:block.brewing_stand.brew",
+        "type": "event"
+      }
+    ]
+  },
+  "block.ammonia_refinery.done": {
+    "subtitle": "subtitles.avalinexus.ammonia_refinery.done",
+    "sounds": [
+      {
+        "name": "minecraft:item.bucket.fill",
+        "type": "event"
+      }
+    ]
+  },
+  "block.ammonia_refinery.ignite": {
+    "subtitle": "subtitles.avalinexus.ammonia_refinery.ignite",
+    "sounds": [
+      {
+        "name": "minecraft:item.flintandsteel.use",
+        "type": "event"
+      }
+    ]
   }
 }

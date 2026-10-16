@@ -36,6 +36,10 @@ public final class ModSounds {
     public static final RegistryEntry<SoundEvent> AEROTECH_SHATTER = register("weapon.aerotech.shatter");
     public static final RegistryEntry<SoundEvent> AEROTECH_REFORGE = register("weapon.aerotech.reforge");
 
+    public static final RegistryEntry<SoundEvent> REFINERY_WORKING = register("block.ammonia_refinery.working");
+    public static final RegistryEntry<SoundEvent> REFINERY_DONE = register("block.ammonia_refinery.done");
+    public static final RegistryEntry<SoundEvent> REFINERY_IGNITE = register("block.ammonia_refinery.ignite");
+
     private ModSounds() {
     }
 

@@ -7,6 +7,9 @@
 package org.furranystudio.avalinexus.block.refinery;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -17,6 +20,7 @@ import org.furranystudio.avalinexus.block.ModBlockEntities;
 import org.furranystudio.avalinexus.block.machine.MachineBlock;
 import org.furranystudio.avalinexus.block.machine.MachineBlockEntity;
 import org.furranystudio.avalinexus.block.machine.MachineSide;
+import org.furranystudio.avalinexus.sound.ModSounds;
 
 import java.util.Set;
 import java.util.function.Supplier;
@@ -36,6 +40,13 @@ public class AmmoniaRefineryBlock extends MachineBlock {
 
     public AmmoniaRefineryBlock(Properties properties) {
         super(properties, Set.of(MachineSide.BACK, MachineSide.SIDE, MachineSide.TOP), SHAPE);
+    }
+
+    @Override
+    public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
+        if (state.getValue(LIT) && random.nextInt(10) == 0) {
+            level.playLocalSound(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, ModSounds.REFINERY_WORKING.get(), SoundSource.BLOCKS, 1.0F, 1.0F, false);
+        }
     }
 
     @Override

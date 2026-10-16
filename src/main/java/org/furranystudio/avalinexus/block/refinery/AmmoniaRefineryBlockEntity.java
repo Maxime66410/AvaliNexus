@@ -10,6 +10,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -30,6 +31,7 @@ import org.furranystudio.avalinexus.fluid.AvaliLiquids;
 import org.furranystudio.avalinexus.fluid.FluidPort;
 import org.furranystudio.avalinexus.fluid.ModFluids;
 import org.furranystudio.avalinexus.item.ModItems;
+import org.furranystudio.avalinexus.sound.ModSounds;
 
 import java.util.List;
 
@@ -45,7 +47,7 @@ public class AmmoniaRefineryBlockEntity extends MachineBlockEntity {
     private static final int FUEL_COST = 250;
     private static final int COAL_CHARGES = 8;
     private static final int TANK_CAPACITY = 4 * AvaliLiquids.BUCKET;
-    private static final int[] TOP_SLOTS = {INGREDIENT, COAL};
+    private static final int[] TOP_SLOTS = {INGREDIENT, COAL, OUTPUT_BUCKET};
     private static final int[] BOTTOM_SLOTS = {OUTPUT_BUCKET};
     private static final int[] NO_SLOTS = {};
 
@@ -53,6 +55,7 @@ public class AmmoniaRefineryBlockEntity extends MachineBlockEntity {
     private final MachineTank ammonia = new MachineTank("Ammonia", TANK_CAPACITY, fluid -> is(fluid, AvaliFluidKind.AMMONIA), this::setChanged);
     private final MachineTank output = new MachineTank("Output", TANK_CAPACITY, fluid -> true, this::setChanged);
     private final List<MachineTank> tanks = List.of(fuel, ammonia, output);
+    private final ItemStack[] swapped = {ItemStack.EMPTY, ItemStack.EMPTY};
     private int progress;
     private int coalCharges;
 
@@ -101,8 +104,8 @@ public class AmmoniaRefineryBlockEntity extends MachineBlockEntity {
 
     @Override
     public void serverTick(ServerLevel level, BlockPos pos, BlockState state) {
-        bucket(FUEL_BUCKET, fuel, false);
-        bucket(AMMONIA_BUCKET, ammonia, false);
+        swap(FUEL_BUCKET, fuel);
+        swap(AMMONIA_BUCKET, ammonia);
         bucket(OUTPUT_BUCKET, output, true);
         ItemStack ingredient = getItem(INGREDIENT);
         Fluid product = ingredient.is(ModItems.GRAPHENE.get()) ? ModFluids.source(AvaliFluidKind.COOLANT)
@@ -120,6 +123,7 @@ public class AmmoniaRefineryBlockEntity extends MachineBlockEntity {
                 ammonia.drain(ammonia.fluid(), AvaliLiquids.BUCKET, false);
                 ingredient.shrink(1);
                 output.fill(product, produced, false);
+                level.playSound(null, pos, ModSounds.REFINERY_DONE.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
             }
             setChanged();
         } else if (progress != 0) {
@@ -127,6 +131,18 @@ public class AmmoniaRefineryBlockEntity extends MachineBlockEntity {
             setChanged();
         }
         setLit(level, pos, state, running);
+    }
+
+    private void swap(int slot, MachineTank tank) {
+        ItemStack stack = getItem(slot);
+        if (stack == swapped[slot]) {
+            return;
+        }
+        ItemStack result = tank.useBucket(stack, stack.is(Items.BUCKET));
+        if (result != stack) {
+            setItem(slot, result);
+            swapped[slot] = result;
+        }
     }
 
     private void bucket(int slot, MachineTank tank, boolean output) {
@@ -149,6 +165,7 @@ public class AmmoniaRefineryBlockEntity extends MachineBlockEntity {
         if (coalCharges <= 0) {
             getItem(COAL).shrink(1);
             coalCharges = COAL_CHARGES;
+            level.playSound(null, worldPosition, ModSounds.REFINERY_IGNITE.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
         }
         coalCharges--;
     }
@@ -160,8 +177,8 @@ public class AmmoniaRefineryBlockEntity extends MachineBlockEntity {
 
     public static boolean accepts(int slot, ItemStack stack) {
         return switch (slot) {
-            case FUEL_BUCKET -> is(AvaliLiquids.fromBucket(stack), AvaliFluidKind.FUEL);
-            case AMMONIA_BUCKET -> is(AvaliLiquids.fromBucket(stack), AvaliFluidKind.AMMONIA);
+            case FUEL_BUCKET -> stack.is(Items.BUCKET) || is(AvaliLiquids.fromBucket(stack), AvaliFluidKind.FUEL);
+            case AMMONIA_BUCKET -> stack.is(Items.BUCKET) || is(AvaliLiquids.fromBucket(stack), AvaliFluidKind.AMMONIA);
             case OUTPUT_BUCKET -> stack.is(Items.BUCKET);
             case INGREDIENT -> isIngredient(stack);
             case COAL -> isCoal(stack);
@@ -176,7 +193,7 @@ public class AmmoniaRefineryBlockEntity extends MachineBlockEntity {
 
     @Override
     public boolean canPlaceItemThroughFace(int slot, ItemStack stack, Direction side) {
-        return side == Direction.UP && canPlaceItem(slot, stack);
+        return side == Direction.UP && canPlaceItem(slot, stack) && (slot != OUTPUT_BUCKET || getItem(slot).isEmpty());
     }
 
     @Override
