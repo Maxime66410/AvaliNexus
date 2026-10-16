@@ -47,6 +47,9 @@ public final class ModSounds {
     public static final RegistryEntry<SoundEvent> PRESS_DONE = register("block.graphene_press.done");
     public static final RegistryEntry<SoundEvent> WORKBENCH_WORKING = register("block.weapon_workbench.working");
     public static final RegistryEntry<SoundEvent> WORKBENCH_DONE = register("block.weapon_workbench.done");
+    public static final RegistryEntry<SoundEvent> HEATER_WORKING = register("block.heater.working");
+    public static final RegistryEntry<SoundEvent> HEATER_IGNITE = register("block.heater.ignite");
+    public static final RegistryEntry<SoundEvent> HEATER_EXTINGUISH = register("block.heater.extinguish");
 
     private ModSounds() {
     }

@@ -12,6 +12,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -30,6 +31,7 @@ import org.furranystudio.avalinexus.fluid.AvaliLiquids;
 import org.furranystudio.avalinexus.fluid.FluidPort;
 import org.furranystudio.avalinexus.fluid.AvaliFluidKind;
 import org.furranystudio.avalinexus.fluid.ModFluids;
+import org.furranystudio.avalinexus.sound.ModSounds;
 
 // One fuel slot, burns like a furnace but only takes new fuel when someone is around to be warmed
 public class HeaterBlockEntity extends BaseContainerBlockEntity {
@@ -93,6 +95,7 @@ public class HeaterBlockEntity extends BaseContainerBlockEntity {
         }
         if (wasLit != lit) {
             level.setBlock(pos, state.setValue(HeaterBlock.LIT, lit), 3);
+            level.playSound(null, pos, lit ? ModSounds.HEATER_IGNITE.get() : ModSounds.HEATER_EXTINGUISH.get(), SoundSource.BLOCKS, lit ? 1.0F : 0.5F, 1.0F);
             setChanged();
         }
     }

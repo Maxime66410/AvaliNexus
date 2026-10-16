@@ -10,6 +10,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -36,6 +37,7 @@ import org.furranystudio.avalinexus.block.GraphenePipeBlock;
 import org.furranystudio.avalinexus.block.ModBlockEntities;
 import org.furranystudio.avalinexus.fluid.FluidPort;
 import org.furranystudio.avalinexus.fluid.FluidPortBlock;
+import org.furranystudio.avalinexus.sound.ModSounds;
 
 import java.util.EnumMap;
 import java.util.Map;
@@ -118,6 +120,9 @@ public class HeaterBlock extends Block implements EntityBlock, FluidPortBlock {
 
     @Override
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
+        if (state.getValue(LIT) && random.nextInt(10) == 0) {
+            level.playLocalSound(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, ModSounds.HEATER_WORKING.get(), SoundSource.BLOCKS, 1.0F, 1.0F, false);
+        }
         if (!state.getValue(LIT) || random.nextInt(3) != 0) {
             return;
         }
