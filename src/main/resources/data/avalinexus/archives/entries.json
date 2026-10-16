@@ -1,7 +1,8 @@
 {
   "categories": [
     "lore",
-    "mod"
+    "mod",
+    "machines"
   ],
   "entries": [
     {
@@ -128,6 +129,46 @@
       "id": "quills_magazines",
       "category": "mod",
       "icon": "avalinexus:nexite_quill"
+    },
+    {
+      "id": "fluids",
+      "category": "machines",
+      "icon": "avalinexus:ammonia_bucket"
+    },
+    {
+      "id": "pipes_tanks",
+      "category": "machines",
+      "icon": "avalinexus:graphene_tank"
+    },
+    {
+      "id": "pump_tap",
+      "category": "machines",
+      "icon": "avalinexus:fluid_pump"
+    },
+    {
+      "id": "machines",
+      "category": "machines",
+      "icon": "avalinexus:ammonia_refinery"
+    },
+    {
+      "id": "refinery",
+      "category": "machines",
+      "icon": "avalinexus:ammonia_refinery"
+    },
+    {
+      "id": "freezer",
+      "category": "machines",
+      "icon": "avalinexus:cryo_freezer"
+    },
+    {
+      "id": "press",
+      "category": "machines",
+      "icon": "avalinexus:graphene_press"
+    },
+    {
+      "id": "workbench",
+      "category": "machines",
+      "icon": "avalinexus:weapon_workbench"
     }
   ]
 }
