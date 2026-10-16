@@ -34,6 +34,7 @@ import net.minecraft.world.level.material.PushReaction;
 import org.furranystudio.avalinexus.block.heater.HeaterBlock;
 import org.furranystudio.avalinexus.block.loom.AvaliLoomBlock;
 import org.furranystudio.avalinexus.block.freezer.CryoFreezerBlock;
+import org.furranystudio.avalinexus.block.press.GraphenePressBlock;
 import org.furranystudio.avalinexus.block.pump.FluidPumpBlock;
 import org.furranystudio.avalinexus.block.refinery.AmmoniaRefineryBlock;
 import org.furranystudio.avalinexus.block.tank.GrapheneTankBlock;
@@ -221,6 +222,9 @@ public final class ModBlocks {
 
     public static final RegistryEntry<Block> CRYO_FREEZER = ModRegistry.register(Registries.BLOCK, "cryo_freezer",
         key -> new CryoFreezerBlock(graphene(key).noOcclusion()));
+
+    public static final RegistryEntry<Block> GRAPHENE_PRESS = ModRegistry.register(Registries.BLOCK, "graphene_press",
+        key -> new GraphenePressBlock(graphene(key).noOcclusion()));
 
     public static final RegistryEntry<Block> GRAPHENE_VENT = ModRegistry.register(Registries.BLOCK, "graphene_vent",
         key -> new WaterloggedTransparentBlock(graphene(key)

@@ -65,6 +65,7 @@ public final class ModCreativeTabs {
                 output.accept(ModItems.FLUID_TAP.get());
                 output.accept(ModItems.AMMONIA_REFINERY.get());
                 output.accept(ModItems.CRYO_FREEZER.get());
+                output.accept(ModItems.GRAPHENE_PRESS.get());
                 output.accept(ModItems.ICE_BRICKS.get());
                 output.accept(ModItems.ICE_BRICK_SLAB.get());
                 output.accept(ModItems.ICE_BRICK_STAIRS.get());

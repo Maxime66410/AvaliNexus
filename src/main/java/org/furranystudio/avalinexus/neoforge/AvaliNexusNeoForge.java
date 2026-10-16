@@ -43,6 +43,7 @@ import org.furranystudio.avalinexus.client.avali.AvaliRenderer;
 import org.furranystudio.avalinexus.client.heater.HeaterScreen;
 import org.furranystudio.avalinexus.client.machine.AmmoniaRefineryScreen;
 import org.furranystudio.avalinexus.client.machine.CryoFreezerScreen;
+import org.furranystudio.avalinexus.client.machine.GraphenePressScreen;
 import org.furranystudio.avalinexus.client.loom.AvaliLoomScreen;
 import org.furranystudio.avalinexus.client.settings.AvaliSettingsScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
@@ -119,6 +120,7 @@ public class AvaliNexusNeoForge {
                 event.register(ModMenus.AVALI_LOOM.get(), AvaliLoomScreen::new);
                 event.register(ModMenus.AMMONIA_REFINERY.get(), AmmoniaRefineryScreen::new);
                 event.register(ModMenus.CRYO_FREEZER.get(), CryoFreezerScreen::new);
+                event.register(ModMenus.GRAPHENE_PRESS.get(), GraphenePressScreen::new);
             });
             modEventBus.addListener((RegisterGuiLayersEvent event) -> event.registerAboveAll(AvaliNexus.id("dialogue"), DialogueHud::render));
             modEventBus.addListener((RegisterKeyMappingsEvent event) -> {

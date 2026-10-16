@@ -162,6 +162,8 @@
   "container.avalinexus.ammonia_refinery": "Raffinerie d'ammoniac",
   "block.avalinexus.cryo_freezer": "Congélateur cryogénique",
   "container.avalinexus.cryo_freezer": "Congélateur cryogénique",
+  "block.avalinexus.graphene_press": "Presse à graphène",
+  "container.avalinexus.graphene_press": "Presse à graphène",
   "gui.avalinexus.machine.gauge": "%s : %s / %s mB",
   "gui.avalinexus.machine.empty": "Vide : 0 / %s mB",
   "message.avalinexus.pump.dry": "Aucune source de liquide sous la pompe",

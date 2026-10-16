@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "G": "avalinexus:graphene",
+    "I": "avalinexus:nexite_ingot",
+    "P": "minecraft:piston"
+  },
+  "pattern": [
+    "GGG",
+    "IPI",
+    "GGG"
+  ],
+  "result": {
+    "id": "avalinexus:graphene_press"
+  }
+}

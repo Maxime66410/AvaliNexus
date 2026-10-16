@@ -40,6 +40,7 @@ import org.furranystudio.avalinexus.client.avali.AvaliRenderer;
 import org.furranystudio.avalinexus.client.heater.HeaterScreen;
 import org.furranystudio.avalinexus.client.machine.AmmoniaRefineryScreen;
 import org.furranystudio.avalinexus.client.machine.CryoFreezerScreen;
+import org.furranystudio.avalinexus.client.machine.GraphenePressScreen;
 import org.furranystudio.avalinexus.client.loom.AvaliLoomScreen;
 import org.furranystudio.avalinexus.client.settings.AvaliSettingsScreen;
 import org.furranystudio.avalinexus.client.tank.GrapheneTankRenderer;
@@ -120,6 +121,7 @@ public class AvaliNexusForge {
                     MenuScreens.register(ModMenus.AVALI_LOOM.get(), AvaliLoomScreen::new);
                     MenuScreens.register(ModMenus.AMMONIA_REFINERY.get(), AmmoniaRefineryScreen::new);
                     MenuScreens.register(ModMenus.CRYO_FREEZER.get(), CryoFreezerScreen::new);
+                    MenuScreens.register(ModMenus.GRAPHENE_PRESS.get(), GraphenePressScreen::new);
                 }));
             AddGuiOverlayLayersEvent.BUS.addListener(event -> event.getLayeredDraw().add(AvaliNexus.id("dialogue"), DialogueHud::render));
             RegisterKeyMappingsEvent.BUS.addListener(event -> {

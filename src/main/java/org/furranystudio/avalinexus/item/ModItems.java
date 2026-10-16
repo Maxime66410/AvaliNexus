@@ -131,6 +131,9 @@ public final class ModItems {
     public static final RegistryEntry<BlockItem> CRYO_FREEZER = ModRegistry.register(Registries.ITEM, "cryo_freezer",
         key -> new BlockItem(ModBlocks.CRYO_FREEZER.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
 
+    public static final RegistryEntry<BlockItem> GRAPHENE_PRESS = ModRegistry.register(Registries.ITEM, "graphene_press",
+        key -> new BlockItem(ModBlocks.GRAPHENE_PRESS.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
+
     public static final RegistryEntry<BlockItem> GRAPHENE_VENT = ModRegistry.register(Registries.ITEM, "graphene_vent",
         key -> new BlockItem(ModBlocks.GRAPHENE_VENT.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
 
