@@ -154,7 +154,6 @@ public final class TankForming {
         }
     }
 
-    // True when a tank gained a connection, so smaller tanks just merged
     private static boolean build(Level level, Box box) {
         boolean joined = false;
         for (BlockPos pos : box.positions()) {

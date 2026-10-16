@@ -8,6 +8,7 @@ package org.furranystudio.avalinexus.client.machine;
 
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
@@ -15,6 +16,7 @@ import net.minecraft.world.item.ItemStack;
 import org.furranystudio.avalinexus.block.workbench.WeaponRecipe;
 import org.furranystudio.avalinexus.block.workbench.WeaponWorkbenchMenu;
 import org.furranystudio.avalinexus.client.ui.AvaliUi;
+import org.furranystudio.avalinexus.sound.ModSounds;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -99,7 +101,8 @@ public class WeaponWorkbenchScreen extends MachineScreen<WeaponWorkbenchMenu> {
             return true;
         }
         int index = hoveredRecipe(event.x(), event.y());
-        if (index >= 0 && menu.clickMenuButton(minecraft.player, index)) {
+        if (index >= 0 && index != menu.selected() && menu.clickMenuButton(minecraft.player, index)) {
+            minecraft.getSoundManager().play(SimpleSoundInstance.forUI(ModSounds.UI_HOVER.get(), 1.0F));
             minecraft.gameMode.handleInventoryButtonClick(menu.containerId, index);
             return true;
         }
