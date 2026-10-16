@@ -25,7 +25,7 @@ import java.util.Optional;
 
 public final class DialogueData {
 
-    private static final Identifier AVALI_DIALOGUE = AvaliNexus.id("dialogue/avali.json");
+    private static final Identifier AVALI_DIALOGUE = AvaliNexus.id("avali/dialogue/dialogue.json");
     private static final DialogueLine FALLBACK = new DialogueLine("avalinexus.dialogue.avali.fallback", null, null, null);
 
     // Reloaded when the resource manager changes, so /reload picks up edited dialogue files

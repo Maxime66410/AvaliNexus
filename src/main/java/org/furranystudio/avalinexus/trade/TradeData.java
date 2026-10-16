@@ -28,7 +28,7 @@ import java.util.Random;
 
 public final class TradeData {
 
-    private static final Identifier AVALI_TRADES = AvaliNexus.id("trades/avali.json");
+    private static final Identifier AVALI_TRADES = AvaliNexus.id("avali/trades/trades.json");
 
     private static ResourceManager loadedFrom;
     private static Pools pools = Pools.EMPTY;
