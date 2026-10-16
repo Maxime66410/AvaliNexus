@@ -42,7 +42,7 @@ public class AmmoniaRefineryBlockEntity extends MachineBlockEntity {
     public static final int COAL = 4;
 
     private static final int DURATION = 200;
-    private static final int FUEL_COST = 100;
+    private static final int FUEL_COST = 250;
     private static final int COAL_CHARGES = 8;
     private static final int TANK_CAPACITY = 4 * AvaliLiquids.BUCKET;
     private static final int[] TOP_SLOTS = {INGREDIENT, COAL};

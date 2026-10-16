@@ -42,7 +42,7 @@ public class CryoFreezerBlockEntity extends MachineBlockEntity {
     public static final int OUTPUT = 3;
 
     private static final int DURATION = 100;
-    private static final int COOLANT_COST = 50;
+    private static final int COOLANT_COST = 250;
     private static final int TANK_CAPACITY = 4 * AvaliLiquids.BUCKET;
     private static final int[] TOP_SLOTS = {INPUT};
     private static final int[] BOTTOM_SLOTS = {OUTPUT};

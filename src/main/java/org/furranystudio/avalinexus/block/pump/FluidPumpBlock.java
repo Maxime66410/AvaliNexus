@@ -26,10 +26,14 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.furranystudio.avalinexus.fluid.AvaliLiquids;
 import org.furranystudio.avalinexus.fluid.FluidPort;
 import org.furranystudio.avalinexus.fluid.FluidPortBlock;
+import org.furranystudio.avalinexus.block.pipe.PipeNetwork;
 
 public class FluidPumpBlock extends Block implements FluidPortBlock {
 
     public static final EnumProperty<Direction> FACING = HorizontalDirectionalBlock.FACING;
+
+    // 250 mB per second
+    private static final int RATE = 250 * PipeNetwork.PERIOD / 20;
 
     public FluidPumpBlock(Properties properties) {
         super(properties);
@@ -107,7 +111,7 @@ public class FluidPumpBlock extends Block implements FluidPortBlock {
         @Override
         public int drain(Fluid fluid, int amount, boolean simulate) {
             Fluid pumped = pumped(level, pos);
-            return pumped != Fluids.EMPTY && pumped.isSame(fluid) ? Math.max(0, amount) : 0;
+            return pumped != Fluids.EMPTY && pumped.isSame(fluid) ? Math.clamp(amount, 0, RATE) : 0;
         }
     }
 }

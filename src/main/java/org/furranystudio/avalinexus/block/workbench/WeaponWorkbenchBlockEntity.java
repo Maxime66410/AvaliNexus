@@ -38,7 +38,6 @@ public class WeaponWorkbenchBlockEntity extends MachineBlockEntity {
     public static final int OUTPUT = FIRST_INGREDIENT + INGREDIENTS;
     public static final int SIZE = OUTPUT + 1;
 
-    private static final int FUEL_COST = 200;
     private static final int TANK_CAPACITY = 4 * AvaliLiquids.BUCKET;
     private static final int[] TOP_SLOTS = {1, 2, 3, 4, 5, 6, 7, 8, 9};
     private static final int[] BOTTOM_SLOTS = {OUTPUT};
@@ -119,7 +118,7 @@ public class WeaponWorkbenchBlockEntity extends MachineBlockEntity {
             }
         }
         WeaponRecipe recipe = WeaponRecipe.get(selected);
-        boolean running = recipe != null && fuel.amount() >= FUEL_COST && hasCosts(recipe) && fits(recipe.output());
+        boolean running = recipe != null && fuel.amount() >= recipe.fuel() && hasCosts(recipe) && fits(recipe.output());
         if (running) {
             progress++;
             if (progress >= recipe.duration()) {
@@ -159,7 +158,7 @@ public class WeaponWorkbenchBlockEntity extends MachineBlockEntity {
     }
 
     private void finish(WeaponRecipe recipe) {
-        fuel.drain(fuel.fluid(), FUEL_COST, false);
+        fuel.drain(fuel.fluid(), recipe.fuel(), false);
         for (WeaponRecipe.Cost cost : recipe.costs()) {
             int left = cost.count();
             for (int slot = FIRST_INGREDIENT; slot < OUTPUT && left > 0; slot++) {

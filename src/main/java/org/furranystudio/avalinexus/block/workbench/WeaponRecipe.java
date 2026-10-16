@@ -57,6 +57,16 @@ public record WeaponRecipe(Supplier<? extends Item> result, int count, int durat
         return false;
     }
 
+    public int fuel() {
+        return switch (duration) {
+            case LIGHT -> 250;
+            case SMALL -> 400;
+            case SIMPLE -> 500;
+            case ADVANCED -> 750;
+            default -> 1000;
+        };
+    }
+
     public ItemStack output() {
         return new ItemStack(result.get(), count);
     }
