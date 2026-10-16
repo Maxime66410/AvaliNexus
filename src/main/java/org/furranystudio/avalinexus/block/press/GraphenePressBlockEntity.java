@@ -10,6 +10,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -29,6 +30,7 @@ import org.furranystudio.avalinexus.fluid.AvaliLiquids;
 import org.furranystudio.avalinexus.fluid.FluidPort;
 import org.furranystudio.avalinexus.fluid.ModFluids;
 import org.furranystudio.avalinexus.item.ModItems;
+import org.furranystudio.avalinexus.sound.ModSounds;
 
 import java.util.List;
 
@@ -104,6 +106,11 @@ public class GraphenePressBlockEntity extends MachineBlockEntity {
             && fits();
         if (running) {
             progress++;
+            if (progress == DURATION / 2) {
+                level.playSound(null, pos, ModSounds.PRESS_EXTEND.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
+            } else if (progress == DURATION - 10) {
+                level.playSound(null, pos, ModSounds.PRESS_CONTRACT.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
+            }
             if (progress >= DURATION) {
                 progress = 0;
                 finish();
@@ -134,6 +141,7 @@ public class GraphenePressBlockEntity extends MachineBlockEntity {
         } else {
             output.grow(GRAPHENE_COUNT);
         }
+        level.playSound(null, worldPosition, ModSounds.PRESS_DONE.get(), SoundSource.BLOCKS, 0.5F, 1.0F);
     }
 
     @Override

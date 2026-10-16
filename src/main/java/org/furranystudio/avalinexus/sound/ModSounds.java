@@ -42,6 +42,9 @@ public final class ModSounds {
     public static final RegistryEntry<SoundEvent> FREEZER_WORKING = register("block.cryo_freezer.working");
     public static final RegistryEntry<SoundEvent> FREEZER_DONE = register("block.cryo_freezer.done");
     public static final RegistryEntry<SoundEvent> FREEZER_POWDER_SNOW = register("block.cryo_freezer.powder_snow");
+    public static final RegistryEntry<SoundEvent> PRESS_EXTEND = register("block.graphene_press.extend");
+    public static final RegistryEntry<SoundEvent> PRESS_CONTRACT = register("block.graphene_press.contract");
+    public static final RegistryEntry<SoundEvent> PRESS_DONE = register("block.graphene_press.done");
 
     private ModSounds() {
     }

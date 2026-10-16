@@ -162,5 +162,32 @@
         "type": "event"
       }
     ]
+  },
+  "block.graphene_press.extend": {
+    "subtitle": "subtitles.avalinexus.graphene_press.extend",
+    "sounds": [
+      {
+        "name": "minecraft:block.piston.extend",
+        "type": "event"
+      }
+    ]
+  },
+  "block.graphene_press.contract": {
+    "subtitle": "subtitles.avalinexus.graphene_press.contract",
+    "sounds": [
+      {
+        "name": "minecraft:block.piston.contract",
+        "type": "event"
+      }
+    ]
+  },
+  "block.graphene_press.done": {
+    "subtitle": "subtitles.avalinexus.graphene_press.done",
+    "sounds": [
+      {
+        "name": "minecraft:block.anvil.land",
+        "type": "event"
+      }
+    ]
   }
 }
