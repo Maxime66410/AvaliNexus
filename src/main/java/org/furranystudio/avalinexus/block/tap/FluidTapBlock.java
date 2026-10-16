@@ -9,7 +9,6 @@ package org.furranystudio.avalinexus.block.tap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -37,6 +36,7 @@ import org.furranystudio.avalinexus.block.pipe.PipeNetwork;
 import org.furranystudio.avalinexus.fluid.AvaliLiquids;
 import org.furranystudio.avalinexus.fluid.FluidPort;
 import org.furranystudio.avalinexus.fluid.FluidPortBlock;
+import org.furranystudio.avalinexus.sound.ModSounds;
 
 import java.util.EnumMap;
 import java.util.Map;
@@ -102,10 +102,11 @@ public class FluidTapBlock extends Block implements FluidPortBlock {
         Fluid fluid = draw(level, pos.relative(back), back.getOpposite());
         if (fluid == Fluids.EMPTY) {
             player.sendOverlayMessage(Component.translatable("message.avalinexus.tap.empty"));
+            level.playSound(null, pos, ModSounds.TAP_EMPTY.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
             return InteractionResult.FAIL;
         }
         player.setItemInHand(hand, ItemUtils.createFilledResult(stack, player, AvaliLiquids.filledBucket(fluid)));
-        level.playSound(null, pos, SoundEvents.BUCKET_FILL, SoundSource.BLOCKS, 1.0F, 1.0F);
+        level.playSound(null, pos, ModSounds.TAP_FILL.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
         return InteractionResult.SUCCESS;
     }
 

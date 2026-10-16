@@ -51,6 +51,12 @@ public final class ModSounds {
     public static final RegistryEntry<SoundEvent> HEATER_IGNITE = register("block.heater.ignite");
     public static final RegistryEntry<SoundEvent> HEATER_EXTINGUISH = register("block.heater.extinguish");
     public static final RegistryEntry<SoundEvent> PUMP_WORKING = register("block.fluid_pump.working");
+    public static final RegistryEntry<SoundEvent> TANK_FILL = register("block.graphene_tank.fill");
+    public static final RegistryEntry<SoundEvent> TANK_EMPTY = register("block.graphene_tank.empty");
+    public static final RegistryEntry<SoundEvent> TANK_ASSEMBLE = register("block.graphene_tank.assemble");
+    public static final RegistryEntry<SoundEvent> TAP_FILL = register("block.fluid_tap.fill");
+    public static final RegistryEntry<SoundEvent> TAP_EMPTY = register("block.fluid_tap.empty");
+    public static final RegistryEntry<SoundEvent> PIPE_ROTATE = register("block.graphene_pipe.rotate");
 
     private ModSounds() {
     }

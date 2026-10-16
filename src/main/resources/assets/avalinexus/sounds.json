@@ -243,5 +243,59 @@
         "type": "event"
       }
     ]
+  },
+  "block.graphene_tank.fill": {
+    "subtitle": "subtitles.avalinexus.graphene_tank.fill",
+    "sounds": [
+      {
+        "name": "minecraft:item.bucket.fill",
+        "type": "event"
+      }
+    ]
+  },
+  "block.graphene_tank.empty": {
+    "subtitle": "subtitles.avalinexus.graphene_tank.empty",
+    "sounds": [
+      {
+        "name": "minecraft:item.bucket.empty",
+        "type": "event"
+      }
+    ]
+  },
+  "block.graphene_tank.assemble": {
+    "subtitle": "subtitles.avalinexus.graphene_tank.assemble",
+    "sounds": [
+      {
+        "name": "minecraft:block.metal.place",
+        "type": "event"
+      }
+    ]
+  },
+  "block.fluid_tap.fill": {
+    "subtitle": "subtitles.avalinexus.fluid_tap.fill",
+    "sounds": [
+      {
+        "name": "minecraft:item.bucket.fill",
+        "type": "event"
+      }
+    ]
+  },
+  "block.fluid_tap.empty": {
+    "subtitle": "subtitles.avalinexus.fluid_tap.empty",
+    "sounds": [
+      {
+        "name": "minecraft:block.dispenser.fail",
+        "type": "event"
+      }
+    ]
+  },
+  "block.graphene_pipe.rotate": {
+    "subtitle": "subtitles.avalinexus.graphene_pipe.rotate",
+    "sounds": [
+      {
+        "name": "minecraft:entity.item_frame.rotate_item",
+        "type": "event"
+      }
+    ]
   }
 }

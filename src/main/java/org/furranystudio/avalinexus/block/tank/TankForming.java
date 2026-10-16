@@ -8,12 +8,14 @@ package org.furranystudio.avalinexus.block.tank;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.PipeBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
+import org.furranystudio.avalinexus.sound.ModSounds;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -73,6 +75,7 @@ public final class TankForming {
             }
         }
         merge(boxes);
+        boolean joined = false;
         Map<Box, Integer> totals = new HashMap<>();
         for (Box box : boxes) {
             int total = 0;
@@ -82,7 +85,7 @@ public final class TankForming {
                 }
             }
             totals.put(box, total);
-            build(level, box);
+            joined |= build(level, box);
         }
         for (Set<BlockPos> group : brokenGroups) {
             int left = 0;
@@ -104,6 +107,9 @@ public final class TankForming {
         }
         for (Box box : boxes) {
             TankStructure.at(level, box.min()).fill(box.fluid, totals.get(box));
+        }
+        if (joined) {
+            level.playSound(null, start, ModSounds.TANK_ASSEMBLE.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
         }
     }
 
@@ -148,7 +154,9 @@ public final class TankForming {
         }
     }
 
-    private static void build(Level level, Box box) {
+    // True when a tank gained a connection, so smaller tanks just merged
+    private static boolean build(Level level, Box box) {
+        boolean joined = false;
         for (BlockPos pos : box.positions()) {
             BlockState current = level.getBlockState(pos);
             BlockState state = current
@@ -160,8 +168,14 @@ public final class TankForming {
                 .setValue(PipeBlock.UP, pos.getY() < box.y1);
             if (state != current) {
                 level.setBlock(pos, state, Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE);
+                for (Direction direction : Direction.values()) {
+                    if (state.getValue(PipeBlock.PROPERTY_BY_DIRECTION.get(direction)) && !current.getValue(PipeBlock.PROPERTY_BY_DIRECTION.get(direction))) {
+                        joined = true;
+                    }
+                }
             }
         }
+        return joined;
     }
 
     // Rectangular prism that contains a set of tank blocks

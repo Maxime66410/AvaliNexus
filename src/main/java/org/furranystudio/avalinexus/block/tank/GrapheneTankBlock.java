@@ -10,7 +10,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
@@ -36,6 +35,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.furranystudio.avalinexus.fluid.AvaliLiquids;
 import org.furranystudio.avalinexus.fluid.FluidPort;
 import org.furranystudio.avalinexus.fluid.FluidPortBlock;
+import org.furranystudio.avalinexus.sound.ModSounds;
 
 import java.util.Locale;
 
@@ -113,7 +113,7 @@ public class GrapheneTankBlock extends Block implements EntityBlock, FluidPortBl
         }
         structure.insert(fluid, AvaliLiquids.BUCKET, false);
         player.setItemInHand(hand, BucketItem.getEmptySuccessItem(stack, player));
-        level.playSound(null, pos, SoundEvents.BUCKET_EMPTY, SoundSource.BLOCKS, 1.0F, 1.0F);
+        level.playSound(null, pos, ModSounds.TANK_EMPTY.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
         return InteractionResult.SUCCESS;
     }
 
@@ -129,7 +129,7 @@ public class GrapheneTankBlock extends Block implements EntityBlock, FluidPortBl
         }
         structure.extract(AvaliLiquids.BUCKET, false);
         player.setItemInHand(hand, ItemUtils.createFilledResult(stack, player, AvaliLiquids.filledBucket(fluid)));
-        level.playSound(null, pos, SoundEvents.BUCKET_FILL, SoundSource.BLOCKS, 1.0F, 1.0F);
+        level.playSound(null, pos, ModSounds.TANK_FILL.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
         return InteractionResult.SUCCESS;
     }
 

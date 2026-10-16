@@ -9,7 +9,6 @@ package org.furranystudio.avalinexus.block;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
@@ -39,6 +38,7 @@ import net.minecraft.world.phys.Vec3;
 import org.furranystudio.avalinexus.block.pipe.GraphenePipeBlockEntity;
 import org.furranystudio.avalinexus.block.pipe.PipeFluid;
 import org.furranystudio.avalinexus.fluid.FluidPortBlock;
+import org.furranystudio.avalinexus.sound.ModSounds;
 
 public class GraphenePipeBlock extends PipeBlock implements SimpleWaterloggedBlock, EntityBlock {
 
@@ -150,7 +150,7 @@ public class GraphenePipeBlock extends PipeBlock implements SimpleWaterloggedBlo
             return InteractionResult.PASS;
         }
         level.setBlock(pos, state.cycle(side), Block.UPDATE_ALL);
-        level.playSound(player, pos, SoundEvents.ITEM_FRAME_ROTATE_ITEM, SoundSource.BLOCKS, 1.0F, 1.0F);
+        level.playSound(player, pos, ModSounds.PIPE_ROTATE.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
         return InteractionResult.SUCCESS;
     }
 
