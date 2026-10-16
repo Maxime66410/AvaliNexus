@@ -29,7 +29,7 @@ public final class PipeNetwork {
 
     public static final int PIPE_CAPACITY = 100;
     public static final int PERIOD = 10;
-    public static final int RATE = 500;
+    public static final int RATE = 1000;
     private static final int LIMIT = 1024;
     private static final int BALANCE_MIN = 50;
 
@@ -117,14 +117,8 @@ public final class PipeNetwork {
                 intake += taken;
             }
         }
-        int sent = 0;
-        for (FluidPort sink : sinks) {
-            if (fluid == Fluids.EMPTY || stored <= 0) {
-                break;
-            }
-            int given = sink.fill(fluid, Math.min(stored, RATE - sent), false);
-            stored -= given;
-            sent += given;
+        if (fluid != Fluids.EMPTY) {
+            stored -= fillSinks(Math.min(stored, RATE));
         }
         if (stored > capacity) {
             stored -= fillBuffers(stored - capacity);
@@ -239,6 +233,24 @@ public final class PipeNetwork {
                 moved += put;
             }
         }
+    }
+
+    private int fillSinks(int amount) {
+        int left = amount;
+        List<FluidPort> open = new ArrayList<>(sinks);
+        while (left > 0 && !open.isEmpty()) {
+            int share = Math.max(1, left / open.size());
+            Iterator<FluidPort> iterator = open.iterator();
+            while (iterator.hasNext() && left > 0) {
+                int wanted = Math.min(share, left);
+                int put = iterator.next().fill(fluid, wanted, false);
+                left -= put;
+                if (put < wanted) {
+                    iterator.remove();
+                }
+            }
+        }
+        return amount - left;
     }
 
     private int fillBuffers(int amount) {

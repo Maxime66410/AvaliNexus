@@ -346,7 +346,7 @@
   "avalinexus.archive.fluids.title": "Avali Fluids",
   "avalinexus.archive.fluids.text": "Three fluids power Avali technology. Liquid ammonia fills lakes in the polar taiga, on the surface and underground. The refinery turns it into coolant, which runs the freezer, and into Avali fuel, which runs the refinery, the press, the weapon workbench and the heater. They all travel in buckets, pipes and tanks.",
   "avalinexus.archive.pipes_tanks.title": "Pipes and Tanks",
-  "avalinexus.archive.pipes_tanks.text": "Connected graphene pipes form a network that carries one fluid at a time, about one bucket per second. An open pipe never spills. Right click a pipe to turn its arm toward a machine or a tank. A graphene tank holds sixteen buckets per block, and neighboring tanks merge up to a 3 × 3 base and 8 blocks high. Right click with an empty hand to see what it holds. Broken, it keeps its fluid.",
+  "avalinexus.archive.pipes_tanks.text": "Connected graphene pipes form a network that carries one fluid at a time, about two buckets per second. An open pipe never spills. Right click a pipe to turn its arm toward a machine or a tank. A graphene tank holds sixteen buckets per block, and neighboring tanks merge up to a 3 × 3 base and 8 blocks high. Right click with an empty hand to see what it holds. Broken, it keeps its fluid.",
   "avalinexus.archive.pump_tap.title": "Pump and Tap",
   "avalinexus.archive.pump_tap.text": "The fluid pump sits on top of an ammonia or water lake and pumps endlessly, with no fuel. It sends the fluid out of its back, sides and top. The tap fills an empty bucket from the pipe or tank behind it.",
   "avalinexus.archive.machines.title": "Machines",
