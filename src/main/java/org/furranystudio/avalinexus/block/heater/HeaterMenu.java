@@ -6,6 +6,7 @@
  */
 package org.furranystudio.avalinexus.block.heater;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -15,6 +16,7 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.material.Fluid;
 import org.furranystudio.avalinexus.inventory.ModMenus;
 
 public class HeaterMenu extends AbstractContainerMenu {
@@ -22,20 +24,23 @@ public class HeaterMenu extends AbstractContainerMenu {
     public static final int FUEL_X = 20;
     public static final int FUEL_Y = 36;
     public static final int INVENTORY_Y = 84;
+    public static final int GAUGE_X = 152;
+    public static final int GAUGE_Y = 18;
+    public static final int GAUGE_HEIGHT = 50;
     private static final int FUEL_SLOT = 0;
 
     private final Container container;
     private final ContainerData data;
 
-    // Client side, the real container and data come through the sync
+    // Client side
     public HeaterMenu(int id, Inventory inventory) {
-        this(id, inventory, new SimpleContainer(1), new SimpleContainerData(2));
+        this(id, inventory, new SimpleContainer(1), new SimpleContainerData(5));
     }
 
     public HeaterMenu(int id, Inventory inventory, Container container, ContainerData data) {
         super(ModMenus.HEATER.get(), id);
         checkContainerSize(container, 1);
-        checkContainerDataCount(data, 2);
+        checkContainerDataCount(data, 5);
         this.container = container;
         this.data = data;
         addSlot(new Slot(container, FUEL_SLOT, FUEL_X, FUEL_Y) {
@@ -56,6 +61,18 @@ public class HeaterMenu extends AbstractContainerMenu {
     public float litProgress() {
         int duration = data.get(1);
         return duration <= 0 ? 0.0F : Math.min(1.0F, (float) data.get(0) / duration);
+    }
+
+    public Fluid fuelFluid() {
+        return BuiltInRegistries.FLUID.byId(data.get(2));
+    }
+
+    public int fuelAmount() {
+        return data.get(3);
+    }
+
+    public int fuelCapacity() {
+        return data.get(4);
     }
 
     @Override

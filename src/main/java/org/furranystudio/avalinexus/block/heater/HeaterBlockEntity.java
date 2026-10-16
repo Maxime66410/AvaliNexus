@@ -8,6 +8,7 @@ package org.furranystudio.avalinexus.block.heater;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -24,6 +25,9 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.level.storage.loot.providers.number.ints.ResolvableInt;
 import org.furranystudio.avalinexus.block.ModBlockEntities;
+import org.furranystudio.avalinexus.block.machine.MachineTank;
+import org.furranystudio.avalinexus.fluid.AvaliLiquids;
+import org.furranystudio.avalinexus.fluid.FluidPort;
 import org.furranystudio.avalinexus.fluid.AvaliFluidKind;
 import org.furranystudio.avalinexus.fluid.ModFluids;
 
@@ -34,24 +38,35 @@ public class HeaterBlockEntity extends BaseContainerBlockEntity {
     private int litTime;
     private int litDuration;
 
+    private static final int PIPED_FUEL = 100;
+    private static final int PIPED_BURN_TIME = 3200;
+
+    private final MachineTank fuel = new MachineTank("Fuel", 4 * AvaliLiquids.BUCKET, fluid -> fluid.isSame(ModFluids.source(AvaliFluidKind.FUEL)), this::setChanged);
+
     private final ContainerData data = new ContainerData() {
         @Override
         public int get(int index) {
-            return index == 0 ? litTime : litDuration;
+            return switch (index) {
+                case 0 -> litTime;
+                case 1 -> litDuration;
+                case 2 -> BuiltInRegistries.FLUID.getId(fuel.fluid());
+                case 3 -> fuel.amount();
+                default -> fuel.capacity();
+            };
         }
 
         @Override
         public void set(int index, int value) {
             if (index == 0) {
                 litTime = value;
-            } else {
+            } else if (index == 1) {
                 litDuration = value;
             }
         }
 
         @Override
         public int getCount() {
-            return 2;
+            return 5;
         }
     };
 
@@ -82,7 +97,18 @@ public class HeaterBlockEntity extends BaseContainerBlockEntity {
         }
     }
 
+    public FluidPort fuelPort() {
+        return fuel.port(FluidPort.Role.SINK);
+    }
+
     private void burnNextFuel(ServerLevel level) {
+        if (fuel.amount() >= PIPED_FUEL) {
+            fuel.drain(fuel.fluid(), PIPED_FUEL, false);
+            litTime = PIPED_BURN_TIME;
+            litDuration = PIPED_BURN_TIME;
+            setChanged();
+            return;
+        }
         ItemStack fuel = items.get(0);
         int duration = ResolvableInt.getFromItem(fuel, DataComponents.COOKING_FUEL, CookingFuel::burnTime, getLootContext(level), 0);
         if (duration <= 0) {
@@ -139,6 +165,7 @@ public class HeaterBlockEntity extends BaseContainerBlockEntity {
         ContainerHelper.saveAllItems(output, items);
         output.putInt("LitTime", litTime);
         output.putInt("LitDuration", litDuration);
+        fuel.save(output);
     }
 
     @Override
@@ -148,5 +175,6 @@ public class HeaterBlockEntity extends BaseContainerBlockEntity {
         ContainerHelper.loadAllItems(input, items);
         litTime = input.getIntOr("LitTime", 0);
         litDuration = input.getIntOr("LitDuration", 0);
+        fuel.load(input);
     }
 }

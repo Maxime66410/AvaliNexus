@@ -12,6 +12,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 import org.furranystudio.avalinexus.block.heater.HeaterMenu;
+import org.furranystudio.avalinexus.client.machine.MachineScreen;
 import org.furranystudio.avalinexus.client.ui.AvaliUi;
 
 // Drawn with the Avali theme like the shop, no background texture needed
@@ -19,7 +20,7 @@ public class HeaterScreen extends AbstractContainerScreen<HeaterMenu> {
 
     // Fuel bar fills the rest of the row after the fuel slot
     private static final int BAR_LEFT = HeaterMenu.FUEL_X + 24;
-    private static final int BAR_RIGHT = 156;
+    private static final int BAR_RIGHT = HeaterMenu.GAUGE_X - 10;
     private static final int BAR_HEIGHT = 8;
 
     public HeaterScreen(HeaterMenu menu, Inventory inventory, Component title) {
@@ -47,6 +48,17 @@ public class HeaterScreen extends AbstractContainerScreen<HeaterMenu> {
         if (filled > 0) {
             graphics.fill(left, top, left + filled, top + BAR_HEIGHT, AvaliUi.PRIMARY_ORANGE);
             graphics.fill(left, top, left + filled, top + 2, AvaliUi.ORANGE_GLOW);
+        }
+        MachineScreen.gauge(graphics, leftPos + HeaterMenu.GAUGE_X, topPos + HeaterMenu.GAUGE_Y, HeaterMenu.GAUGE_HEIGHT, menu.fuelFluid(), menu.fuelAmount(), menu.fuelCapacity());
+    }
+
+    @Override
+    protected void extractTooltip(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
+        super.extractTooltip(graphics, mouseX, mouseY);
+        int x = leftPos + HeaterMenu.GAUGE_X;
+        int y = topPos + HeaterMenu.GAUGE_Y;
+        if (mouseX >= x && mouseX < x + MachineScreen.GAUGE_WIDTH && mouseY >= y && mouseY < y + HeaterMenu.GAUGE_HEIGHT) {
+            graphics.setTooltipForNextFrame(font, MachineScreen.tooltip(menu.fuelFluid(), menu.fuelAmount(), menu.fuelCapacity()), mouseX, mouseY);
         }
     }
 

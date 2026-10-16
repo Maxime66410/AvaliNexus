@@ -32,21 +32,22 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.furranystudio.avalinexus.block.GraphenePipeBlock;
 import org.furranystudio.avalinexus.block.ModBlockEntities;
+import org.furranystudio.avalinexus.fluid.FluidPort;
+import org.furranystudio.avalinexus.fluid.FluidPortBlock;
 
 import java.util.EnumMap;
 import java.util.Map;
 
-// Burns furnace fuel to keep the polar cold away in a radius, faces the player like a furnace
-public class HeaterBlock extends Block implements EntityBlock {
+// Burns furnace fuel to keep the polar cold away in a radius
+public class HeaterBlock extends Block implements EntityBlock, FluidPortBlock {
 
     public static final EnumProperty<Direction> FACING = HorizontalDirectionalBlock.FACING;
     public static final BooleanProperty LIT = BlockStateProperties.LIT;
 
-    // The heater leans on the wall behind it and takes a bit more than half the block
     private static final Map<Direction, VoxelShape> SHAPES = new EnumMap<>(Direction.class);
-    // How far the front of the model sits from the block center
-    private static final double FRONT_OFFSET = 0.14;
+    private static final double FRONT_OFFSET = 0.2; // Offset
 
     static {
         SHAPES.put(Direction.WEST, Block.box(6, 0, 0, 16, 16, 16));
@@ -68,6 +69,28 @@ public class HeaterBlock extends Block implements EntityBlock {
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         return defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
+    }
+
+    @Override
+    protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean movedByPiston) {
+        if (level.isClientSide() || oldState.is(this)) {
+            return;
+        }
+        Direction back = state.getValue(FACING).getOpposite();
+        GraphenePipeBlock.attach(level, pos.relative(back), back.getOpposite());
+    }
+
+    @Override
+    public boolean hasPort(BlockState state, Direction side) {
+        return side == state.getValue(FACING).getOpposite();
+    }
+
+    @Override
+    public FluidPort port(Level level, BlockPos pos, BlockState state, Direction side) {
+        if (hasPort(state, side) && level.getBlockEntity(pos) instanceof HeaterBlockEntity heater) {
+            return heater.fuelPort();
+        }
+        return null;
     }
 
     @Override

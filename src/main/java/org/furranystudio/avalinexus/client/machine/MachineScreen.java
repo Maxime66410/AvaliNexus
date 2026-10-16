@@ -21,7 +21,7 @@ import java.util.List;
 
 public abstract class MachineScreen<T extends MachineMenu> extends AbstractContainerScreen<T> {
 
-    private static final int GAUGE_WIDTH = 16;
+    public static final int GAUGE_WIDTH = 16;
     private static final int BAR_HEIGHT = 8;
 
     protected MachineScreen(T menu, Inventory inventory, Component title) {
@@ -60,16 +60,17 @@ public abstract class MachineScreen<T extends MachineMenu> extends AbstractConta
     }
 
     private void gauge(GuiGraphicsExtractor graphics, int index, int x, int y) {
-        int bottom = y + MachineMenu.GAUGE_HEIGHT;
+        gauge(graphics, x, y, MachineMenu.GAUGE_HEIGHT, menu.gaugeFluid(index), menu.gaugeAmount(index), menu.gaugeCapacity(index));
+    }
+
+    public static void gauge(GuiGraphicsExtractor graphics, int x, int y, int gaugeHeight, Fluid fluid, int amount, int capacity) {
+        int bottom = y + gaugeHeight;
         graphics.fill(x - 1, y - 1, x + GAUGE_WIDTH + 1, bottom + 1, AvaliUi.PRIMARY_BORDER);
         graphics.fill(x, y, x + GAUGE_WIDTH, bottom, AvaliUi.SECONDARY_BORDER);
-        int capacity = menu.gaugeCapacity(index);
-        int amount = menu.gaugeAmount(index);
-        Fluid fluid = menu.gaugeFluid(index);
         if (capacity <= 0 || amount <= 0 || fluid == Fluids.EMPTY) {
             return;
         }
-        int height = Math.max(1, Math.round((float) Math.min(amount, capacity) / capacity * MachineMenu.GAUGE_HEIGHT));
+        int height = Math.max(1, Math.round((float) Math.min(amount, capacity) / capacity * gaugeHeight));
         int color = AvaliLiquids.tint(fluid) | 0xFF000000;
         graphics.fill(x, bottom - height, x + GAUGE_WIDTH, bottom, color);
         graphics.fill(x, bottom - height, x + GAUGE_WIDTH, bottom - height + Math.min(2, height), lighter(color));
@@ -99,12 +100,14 @@ public abstract class MachineScreen<T extends MachineMenu> extends AbstractConta
     }
 
     private Component tooltip(int index) {
-        Fluid fluid = menu.gaugeFluid(index);
-        int amount = menu.gaugeAmount(index);
+        return tooltip(menu.gaugeFluid(index), menu.gaugeAmount(index), menu.gaugeCapacity(index));
+    }
+
+    public static Component tooltip(Fluid fluid, int amount, int capacity) {
         if (fluid == Fluids.EMPTY || amount <= 0) {
-            return Component.translatable("gui.avalinexus.machine.empty", menu.gaugeCapacity(index));
+            return Component.translatable("gui.avalinexus.machine.empty", capacity);
         }
-        return Component.translatable("gui.avalinexus.machine.gauge", AvaliLiquids.name(fluid), amount, menu.gaugeCapacity(index));
+        return Component.translatable("gui.avalinexus.machine.gauge", AvaliLiquids.name(fluid), amount, capacity);
     }
 
     @Override
