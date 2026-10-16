@@ -9,6 +9,7 @@ package org.furranystudio.avalinexus.block.pump;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -27,6 +28,7 @@ import org.furranystudio.avalinexus.fluid.AvaliLiquids;
 import org.furranystudio.avalinexus.fluid.FluidPort;
 import org.furranystudio.avalinexus.fluid.FluidPortBlock;
 import org.furranystudio.avalinexus.block.pipe.PipeNetwork;
+import org.furranystudio.avalinexus.sound.ModSounds;
 
 public class FluidPumpBlock extends Block implements FluidPortBlock {
 
@@ -111,7 +113,11 @@ public class FluidPumpBlock extends Block implements FluidPortBlock {
         @Override
         public int drain(Fluid fluid, int amount, boolean simulate) {
             Fluid pumped = pumped(level, pos);
-            return pumped != Fluids.EMPTY && pumped.isSame(fluid) ? Math.clamp(amount, 0, RATE) : 0;
+            int taken = pumped != Fluids.EMPTY && pumped.isSame(fluid) ? Math.clamp(amount, 0, RATE) : 0;
+            if (!simulate && taken > 0 && level.getRandom().nextInt(8) == 0) {
+                level.playSound(null, pos, ModSounds.PUMP_WORKING.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
+            }
+            return taken;
         }
     }
 }

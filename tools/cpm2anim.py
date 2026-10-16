@@ -13,8 +13,6 @@ import sys
 import zipfile
 
 VANILLA_PARTS = ["head", "body", "left_arm", "right_arm", "left_leg", "right_leg"]
-
-# Played on top of the vanilla bed pose, which already lays the body down, so the vanilla parts are left out
 NO_VANILLA_PARTS = {"NAP"}
 
 
@@ -38,7 +36,6 @@ def collect_part_names(node, names):
 
 
 def animation_name(file_name, data):
-    # Gestures and custom poses keep the name shown in CPM, states share names like "Tail" so they use the file name
     name = data.get("name") or ""
     if not file_name.startswith("v_") and name and name.isascii() and name.isprintable():
         return name
@@ -93,17 +90,13 @@ def convert_animation(data, names, looping, vanilla_parts=True):
         name = VANILLA_PARTS[store_id] if vanilla else names.get(store_id)
         if name is None:
             continue
-        # A part missing from a frame stays at its rest pose there
         rotations = [[0.0, 0.0, 0.0]] * len(frames)
         positions = [[0.0, 0.0, 0.0]] * len(frames)
         for index, component in by_frame.items():
-            # CPM also pushes hidden face parts inside the head, visibility is handled in code so we drop that.
-            # Vanilla parts are always "hidden" in CPM but still carry the Avali model, so they keep their motion
             if component.get("show") is False and not 0 <= store_id < len(VANILLA_PARTS):
                 continue
             rotations[index] = [component["rotation"][axis] for axis in "xyz"]
             positions[index] = [component["pos"][axis] for axis in "xyz"]
-            # Vanilla part offsets use Minecraft's Y down, GeckoLib is Y up
             if vanilla:
                 positions[index][1] = -positions[index][1]
 
@@ -138,12 +131,10 @@ def convert(path):
             data = read_json(archive, file)
             if not data.get("frames"):
                 continue
-            # States (v_) and custom poses (c_) loop for as long as they're active, gestures follow their own flag
             looping = file_name.startswith(("v_", "c_")) or bool(data.get("loop"))
             name = animation_name(file_name, data)
             animations[name] = convert_animation(data, names, looping, name not in NO_VANILLA_PARTS)
 
-    # Controllers play this when they have nothing to do, a stopped controller keeps holding its last pose
     animations["empty"] = {"loop": True, "animation_length": 1, "bones": {}}
     return {"format_version": "1.8.0", "animations": animations}
 

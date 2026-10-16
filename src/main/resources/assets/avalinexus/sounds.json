@@ -234,5 +234,14 @@
         "type": "event"
       }
     ]
+  },
+  "block.fluid_pump.working": {
+    "subtitle": "subtitles.avalinexus.fluid_pump.working",
+    "sounds": [
+      {
+        "name": "minecraft:entity.boat.paddle_water",
+        "type": "event"
+      }
+    ]
   }
 }

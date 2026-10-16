@@ -50,6 +50,7 @@ public final class ModSounds {
     public static final RegistryEntry<SoundEvent> HEATER_WORKING = register("block.heater.working");
     public static final RegistryEntry<SoundEvent> HEATER_IGNITE = register("block.heater.ignite");
     public static final RegistryEntry<SoundEvent> HEATER_EXTINGUISH = register("block.heater.extinguish");
+    public static final RegistryEntry<SoundEvent> PUMP_WORKING = register("block.fluid_pump.working");
 
     private ModSounds() {
     }
