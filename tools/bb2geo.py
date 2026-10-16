@@ -1,7 +1,7 @@
 """
 Converts a Blockbench GeckoLib project (.bbmodel) into a GeckoLib model (.geo.json).
 
-Because idk why but he Blockbench exporter is broken
+Because idk why but the Blockbench exporter is broken
 
 Usage: python tools/bb2geo.py <input.bbmodel> <output.geo.json>
 """

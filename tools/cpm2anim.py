@@ -1,8 +1,6 @@
 """
-Converts the animations of a CPM project (.cpmproject) into a GeckoLib animation file.
-
-The Blockbench export loses the CPM frame timing and the smooth loop back to the first frame,
-so we read the animations straight from the CPM project instead.
+Reads the animations straight from a CPM project (.cpmproject) into a GeckoLib animation file,
+because the Blockbench export loses the frame timing and the loop back to the first frame.
 Shitty export again :c
 
 Usage: python tools/cpm2anim.py <input.cpmproject> <output.animation.json>
@@ -43,25 +41,20 @@ def animation_name(file_name, data):
     return re.sub(r"^[vgc]_", "", base).strip("_")
 
 
-def unwrap(angles):
-    out = []
-    for angle in angles:
-        angle = (angle + 180.0) % 360.0 - 180.0
-        if out:
-            while angle - out[-1] > 180.0:
-                angle -= 360.0
-            while angle - out[-1] < -180.0:
-                angle += 360.0
-        out.append(angle)
-    return out
-
-
 def closest_turn(value, target):
     while value - target > 180.0:
         value -= 360.0
     while value - target < -180.0:
         value += 360.0
     return value
+
+
+def unwrap(angles):
+    out = []
+    for angle in angles:
+        angle = (angle + 180.0) % 360.0 - 180.0
+        out.append(closest_turn(angle, out[-1]) if out else angle)
+    return out
 
 
 def keyframes(times, vectors):
@@ -93,7 +86,7 @@ def convert_animation(data, names, looping, vanilla_parts=True):
         rotations = [[0.0, 0.0, 0.0]] * len(frames)
         positions = [[0.0, 0.0, 0.0]] * len(frames)
         for index, component in by_frame.items():
-            if component.get("show") is False and not 0 <= store_id < len(VANILLA_PARTS):
+            if component.get("show") is False and not vanilla:
                 continue
             rotations[index] = [component["rotation"][axis] for axis in "xyz"]
             positions[index] = [component["pos"][axis] for axis in "xyz"]
@@ -133,6 +126,8 @@ def convert(path):
                 continue
             looping = file_name.startswith(("v_", "c_")) or bool(data.get("loop"))
             name = animation_name(file_name, data)
+            if name in animations:
+                print(f"Warning: two animations are named {name}, keeping {file_name}")
             animations[name] = convert_animation(data, names, looping, name not in NO_VANILLA_PARTS)
 
     animations["empty"] = {"loop": True, "animation_length": 1, "bones": {}}
