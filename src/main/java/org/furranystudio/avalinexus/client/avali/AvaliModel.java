@@ -17,7 +17,8 @@ public class AvaliModel extends GeoModel<AvaliEntity> {
 
     private static final Identifier ADULT_MODEL = AvaliNexus.id("entity/avali");
     private static final Identifier CHILD_MODEL = AvaliNexus.id("entity/avali_child");
-    private static final Identifier ANIMATIONS = AvaliNexus.id("entity/avali");
+    private static final Identifier ADULT_ANIMATIONS = AvaliNexus.id("entity/avali");
+    private static final Identifier CHILD_ANIMATIONS = AvaliNexus.id("entity/avali_child");
 
     @Override
     public Identifier getModelResource(GeoRenderState state) {
@@ -31,6 +32,6 @@ public class AvaliModel extends GeoModel<AvaliEntity> {
 
     @Override
     public Identifier getAnimationResource(AvaliEntity avali) {
-        return ANIMATIONS;
+        return avali.isBaby() ? CHILD_ANIMATIONS : ADULT_ANIMATIONS;
     }
 }

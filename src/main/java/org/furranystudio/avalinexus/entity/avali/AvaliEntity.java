@@ -136,6 +136,7 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     private boolean named;
     private boolean styled;
     private boolean panicking;
+    private boolean wasBaby;
     private ServerPlayer talkingTo;
     private UUID packId;
     private List<UUID> parents = List.of();
@@ -389,6 +390,11 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         }
         swimPitchO = swimPitch;
         swimPitch += (targetSwimPitch() - swimPitch) * 0.15F;
+
+        if (level().isClientSide() && isBaby() != wasBaby) {
+            wasBaby = isBaby();
+            cache.getManagerForId(getId()).getAnimationControllers().values().forEach(AnimationController::reset);
+        }
 
         if (!level().isClientSide()) {
             if (justLoaded) {

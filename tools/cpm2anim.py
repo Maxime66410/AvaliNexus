@@ -3,7 +3,10 @@ Reads the animations straight from a CPM project (.cpmproject) into a GeckoLib a
 because the Blockbench export loses the frame timing and the loop back to the first frame.
 Shitty export again :c
 
-Usage: python tools/cpm2anim.py <input.cpmproject> <output.animation.json>
+Usage: python tools/cpm2anim.py <input.cpmproject> <output.animation.json> [--scale <factor>]
+
+--scale multiplies every position, for a smaller model that plays the same animations.
+The child Avali is the adult at half size, so it uses --scale 0.5.
 """
 import json
 import re
@@ -64,7 +67,7 @@ def keyframes(times, vectors):
     }
 
 
-def convert_animation(data, names, looping, vanilla_parts=True):
+def convert_animation(data, names, looping, scale, vanilla_parts=True):
     frames = data["frames"]
     duration = data["duration"] / 1000.0
     step = duration / len(frames)
@@ -89,7 +92,7 @@ def convert_animation(data, names, looping, vanilla_parts=True):
             if component.get("show") is False and not vanilla:
                 continue
             rotations[index] = [component["rotation"][axis] for axis in "xyz"]
-            positions[index] = [component["pos"][axis] for axis in "xyz"]
+            positions[index] = [component["pos"][axis] * scale for axis in "xyz"]
             if vanilla:
                 positions[index][1] = -positions[index][1]
 
@@ -111,7 +114,7 @@ def convert_animation(data, names, looping, vanilla_parts=True):
     return {"loop": looping, "animation_length": round(duration, 4), "bones": bones}
 
 
-def convert(path):
+def convert(path, scale=1.0):
     with zipfile.ZipFile(path) as archive:
         names = {}
         collect_part_names(read_json(archive, "config.json"), names)
@@ -128,20 +131,25 @@ def convert(path):
             name = animation_name(file_name, data)
             if name in animations:
                 print(f"Warning: two animations are named {name}, keeping {file_name}")
-            animations[name] = convert_animation(data, names, looping, name not in NO_VANILLA_PARTS)
+            animations[name] = convert_animation(data, names, looping, scale, name not in NO_VANILLA_PARTS)
 
     animations["empty"] = {"loop": True, "animation_length": 1, "bones": {}}
     return {"format_version": "1.8.0", "animations": animations}
 
 
 def main():
-    if len(sys.argv) != 3:
-        print("Usage: python tools/cpm2anim.py <input.cpmproject> <output.animation.json>")
+    args = sys.argv[1:]
+    scale = 1.0
+    if len(args) == 4 and args[2] == "--scale":
+        scale = float(args[3])
+        args = args[:2]
+    if len(args) != 2:
+        print("Usage: python tools/cpm2anim.py <input.cpmproject> <output.animation.json> [--scale <factor>]")
         sys.exit(1)
-    result = convert(sys.argv[1])
-    with open(sys.argv[2], "w", encoding="utf-8") as file:
+    result = convert(args[0], scale)
+    with open(args[1], "w", encoding="utf-8") as file:
         json.dump(result, file, indent=1, ensure_ascii=False)
-    print(f"Wrote {len(result['animations'])} animations to {sys.argv[2]}")
+    print(f"Wrote {len(result['animations'])} animations to {args[1]}")
 
 
 if __name__ == "__main__":
