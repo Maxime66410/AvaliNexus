@@ -15,6 +15,7 @@ import com.geckolib.animation.object.PlayState;
 import com.geckolib.animation.state.AnimationTest;
 import com.geckolib.util.GeckoLibUtil;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.UUIDUtil;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -37,12 +38,17 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.entity.decoration.Cushion;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BedPart;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
@@ -53,6 +59,7 @@ import org.furranystudio.avalinexus.entity.avali.expression.AvaliFace;
 import org.furranystudio.avalinexus.entity.avali.expression.AvaliGesture;
 import org.furranystudio.avalinexus.entity.avali.expression.AvaliMood;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliCushionGoal;
+import org.furranystudio.avalinexus.entity.avali.goal.AvaliPackGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliPanicGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliRestGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliSleepGoal;
@@ -64,6 +71,8 @@ import org.furranystudio.avalinexus.sound.ModSounds;
 import org.furranystudio.avalinexus.trade.AvaliShop;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
 
 public class AvaliEntity extends AgeableMob implements GeoEntity {
 
@@ -92,6 +101,9 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     private static final int GESTURE_CHANCE = 400;
     private static final int GESTURE_MIN_TICKS = 40;
     private static final int GESTURE_MAX_TICKS = 100;
+    private static final int PACK_CHECK_INTERVAL = 40;
+    private static final double PACK_JOIN_RANGE = 32.0;
+    private static final int DIRECT_WALK_DISTANCE = 24;
     private static final AvaliGesture[] IDLE_GESTURES = Arrays.stream(AvaliGesture.values())
         .filter(AvaliGesture::playsWhenIdle).toArray(AvaliGesture[]::new);
 
@@ -118,6 +130,11 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     private boolean styled;
     private boolean panicking;
     private ServerPlayer talkingTo;
+    private UUID packId;
+    private List<UUID> parents = List.of();
+    private BlockPos bed;
+    private Vec3 packCenter;
+    private int packCheck;
     private AvaliShop shop;
 
     public AvaliEntity(EntityType<? extends AvaliEntity> type, Level level) {
@@ -127,7 +144,8 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
             .add(Attributes.MAX_HEALTH, 20.0)
-            .add(Attributes.MOVEMENT_SPEED, 0.3);
+            .add(Attributes.MOVEMENT_SPEED, 0.3)
+            .add(Attributes.FOLLOW_RANGE, 32.0);
     }
 
     @Override
@@ -150,7 +168,8 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         goalSelector.addGoal(1, new AvaliTalkGoal(this));
         goalSelector.addGoal(2, new AvaliPanicGoal(this, 1.1));
         goalSelector.addGoal(3, new AvaliSleepGoal(this, 0.8));
-        goalSelector.addGoal(4, new AvaliCushionGoal(this, 0.8));
+        goalSelector.addGoal(4, new AvaliPackGoal(this));
+        goalSelector.addGoal(5, new AvaliCushionGoal(this, 0.8));
         goalSelector.addGoal(5, new AvaliRestGoal(this));
         goalSelector.addGoal(5, new AvaliStrollGoal(this, 0.8));
         goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
@@ -196,6 +215,9 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         output.putBoolean("avalinexus_female", isFemale());
         output.putInt("avalinexus_tint", getTint());
         output.putString("avalinexus_skin", getSkin());
+        output.storeNullable("avalinexus_pack_id", UUIDUtil.CODEC, packId);
+        output.store("avalinexus_parents", UUIDUtil.CODEC.listOf(), parents);
+        output.storeNullable("avalinexus_bed", BlockPos.CODEC, bed);
     }
 
     @Override
@@ -209,6 +231,9 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         entityData.set(DATA_FEMALE, input.getBooleanOr("avalinexus_female", false));
         entityData.set(DATA_TINT, input.getIntOr("avalinexus_tint", 0xFFFFFF));
         entityData.set(DATA_SKIN, input.getStringOr("avalinexus_skin", ""));
+        packId = input.read("avalinexus_pack_id", UUIDUtil.CODEC).orElse(null);
+        parents = input.read("avalinexus_parents", UUIDUtil.CODEC.listOf()).orElse(List.of());
+        bed = input.read("avalinexus_bed", BlockPos.CODEC).orElse(null);
     }
 
     @Override
@@ -251,6 +276,8 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         AvaliEntity kit = ModEntities.AVALI.get().create(level, EntitySpawnReason.BREEDING);
         if (kit != null) {
             kit.setPack(getPack());
+            kit.packId = packId;
+            kit.parents = List.of(getUUID(), partner.getUUID());
         }
         return kit;
     }
@@ -259,9 +286,10 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, EntitySpawnReason reason, SpawnGroupData data) {
         if (!(data instanceof PackData)) {
-            data = new PackData(AvaliNames.pack(level.getServer(), getRandom()));
+            data = new PackData(AvaliNames.pack(level.getServer(), getRandom()), UUID.randomUUID());
         }
         setPack(((PackData) data).pack);
+        packId = ((PackData) data).id;
         giveName(level.getServer());
         giveLooks(level.getServer());
         return super.finalizeSpawn(level, difficulty, reason, data);
@@ -315,10 +343,12 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
 
     private static final class PackData extends AgeableMob.AgeableMobGroupData {
         private final String pack;
+        private final UUID id;
 
-        private PackData(String pack) {
+        private PackData(String pack, UUID id) {
             super(true);
             this.pack = pack;
+            this.id = id;
         }
     }
 
@@ -359,6 +389,10 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
             if (!styled) {
                 giveLooks(level().getServer());
             }
+            if (--packCheck <= 0) {
+                packCheck = PACK_CHECK_INTERVAL;
+                updatePack();
+            }
             updateMood();
             updateGesture();
             if (talkingTo != null && (!talkingTo.isAlive() || talkingTo.level() != level()
@@ -366,6 +400,67 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
                 DialogueManager.close(talkingTo, true);
             }
         }
+    }
+
+    private void updatePack() {
+        AvaliBehavior.Data behavior = AvaliBehavior.get(level().getServer());
+        if (packId == null) {
+            packId = level().getEntitiesOfClass(AvaliEntity.class, getBoundingBox().inflate(PACK_JOIN_RANGE),
+                    other -> other.packId != null && other.getPack().equals(getPack()))
+                .stream().map(other -> other.packId).findFirst().orElseGet(UUID::randomUUID);
+        }
+        List<AvaliEntity> members = level().getEntitiesOfClass(AvaliEntity.class,
+            getBoundingBox().inflate(behavior.pack().maxDistance() * 2), other -> packId.equals(other.packId));
+        Vec3 sum = Vec3.ZERO;
+        for (AvaliEntity member : members) {
+            sum = sum.add(member.position());
+        }
+        packCenter = members.isEmpty() ? position() : sum.scale(1.0 / members.size());
+        if (bed != null && level().isLoaded(bed) && (!isBedHead(bed)
+                || Vec3.atCenterOf(bed).distanceTo(packCenter) > behavior.life().bedMaxPackDistance())) {
+            bed = null;
+        }
+    }
+
+    public boolean isBedHead(BlockPos pos) {
+        BlockState state = level().getBlockState(pos);
+        return state.hasProperty(BlockStateProperties.BED_PART) && state.getValue(BlockStateProperties.BED_PART) == BedPart.HEAD;
+    }
+
+    public boolean shouldRegroup() {
+        return level().isDarkOutside()
+            || level().isThundering() && level().precipitationAt(blockPosition()) == Biome.Precipitation.SNOW;
+    }
+
+    public void walkTowards(Vec3 target, double speed) {
+        Vec3 goal = target;
+        if (distanceToSqr(target) > DIRECT_WALK_DISTANCE * DIRECT_WALK_DISTANCE) {
+            Vec3 step = LandRandomPos.getPosTowards(this, 16, 7, target);
+            if (step != null) {
+                goal = step;
+            }
+        }
+        getNavigation().moveTo(goal.x, goal.y, goal.z, speed);
+    }
+
+    public Vec3 getPackCenter() {
+        return packCenter == null ? position() : packCenter;
+    }
+
+    public UUID getPackId() {
+        return packId;
+    }
+
+    public List<UUID> getParents() {
+        return parents;
+    }
+
+    public BlockPos getBed() {
+        return bed;
+    }
+
+    public void setBed(BlockPos bed) {
+        this.bed = bed;
     }
 
     private void standUpAfterLoad() {

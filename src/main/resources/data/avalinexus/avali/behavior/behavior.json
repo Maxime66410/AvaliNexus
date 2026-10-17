@@ -1,0 +1,15 @@
+{
+  "pack": {
+    "max_distance": 100,
+    "baby_distance": 6,
+    "baby_run_distance": 12,
+    "parent_distance": 16,
+    "regroup_radius": 8,
+    "heater_search_radius": 32,
+    "heater_radius": 6
+  },
+  "life": {
+    "bed_search_radius": 16,
+    "bed_max_pack_distance": 100
+  }
+}

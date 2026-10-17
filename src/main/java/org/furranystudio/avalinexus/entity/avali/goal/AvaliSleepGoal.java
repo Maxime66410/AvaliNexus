@@ -10,20 +10,21 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BedPart;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.Vec3;
+import org.furranystudio.avalinexus.entity.avali.AvaliBehavior;
 import org.furranystudio.avalinexus.entity.avali.AvaliEntity;
 
 import java.util.EnumSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class AvaliSleepGoal extends Goal {
 
     private static final int SEARCH_COOLDOWN = 100;
-    private static final int BED_RANGE = 16;
     private static final int BED_HEIGHT = 4;
     private static final double REACH_DISTANCE_SQ = 4.0;
-    private static final int MAX_WALK_TICKS = 400;
+    private static final int MAX_WALK_TICKS = 1200;
     private static final int NAP_CHANCE = 12000;
     private static final int MIN_NAP_TICKS = 600;
     private static final int MAX_NAP_TICKS = 1200;
@@ -51,7 +52,10 @@ public class AvaliSleepGoal extends Goal {
         if (!night && avali.getRandom().nextInt(NAP_CHANCE / SEARCH_COOLDOWN) != 0) {
             return false;
         }
-        bed = findFreeBed();
+        bed = ownBed();
+        if (bed == null) {
+            bed = findFreeBed();
+        }
         if (bed == null) {
             return false;
         }
@@ -61,7 +65,7 @@ public class AvaliSleepGoal extends Goal {
 
     @Override
     public boolean canContinueToUse() {
-        if (bed == null || !isBed(bed) || avali.getMood().earsDown()) {
+        if (bed == null || !avali.isBedHead(bed) || avali.getMood().earsDown()) {
             return false;
         }
         boolean wantsSleep = napTicks > 0 || avali.level().isDarkOutside();
@@ -90,6 +94,7 @@ public class AvaliSleepGoal extends Goal {
             avali.getNavigation().stop();
             avali.setNapping(avali.getRandom().nextBoolean());
             avali.startSleeping(bed);
+            avali.setBed(bed);
         } else if (avali.getNavigation().isDone()) {
             moveToBed();
         }
@@ -106,29 +111,33 @@ public class AvaliSleepGoal extends Goal {
     }
 
     private void moveToBed() {
-        avali.getNavigation().moveTo(bed.getX() + 0.5, bed.getY(), bed.getZ() + 0.5, speed);
+        avali.walkTowards(Vec3.atBottomCenterOf(bed), speed);
+    }
+
+    private BlockPos ownBed() {
+        BlockPos own = avali.getBed();
+        return own != null && avali.level().isLoaded(own) && avali.isBedHead(own) && isFree(own) ? own : null;
     }
 
     private BlockPos findFreeBed() {
+        AvaliBehavior.Life life = AvaliBehavior.get(avali.level().getServer()).life();
+        int range = life.bedSearchRadius();
+        Set<BlockPos> claimed = avali.level().getEntitiesOfClass(AvaliEntity.class,
+                avali.getBoundingBox().inflate(life.bedMaxPackDistance() + range), other -> other != avali && other.getBed() != null)
+            .stream().map(AvaliEntity::getBed).collect(Collectors.toSet());
         BlockPos center = avali.blockPosition();
         BlockPos closest = null;
         double closestDistance = Double.MAX_VALUE;
         for (BlockPos pos : BlockPos.betweenClosed(
-                center.offset(-BED_RANGE, -BED_HEIGHT, -BED_RANGE),
-                center.offset(BED_RANGE, BED_HEIGHT, BED_RANGE))) {
+                center.offset(-range, -BED_HEIGHT, -range),
+                center.offset(range, BED_HEIGHT, range))) {
             double distance = pos.distSqr(center);
-            if (distance < closestDistance && isBed(pos) && isFree(pos)) {
+            if (distance < closestDistance && avali.isBedHead(pos) && isFree(pos) && !claimed.contains(pos)) {
                 closest = pos.immutable();
                 closestDistance = distance;
             }
         }
         return closest;
-    }
-
-    private boolean isBed(BlockPos pos) {
-        BlockState state = avali.level().getBlockState(pos);
-        return state.hasProperty(BlockStateProperties.BED_PART)
-            && state.getValue(BlockStateProperties.BED_PART) == BedPart.HEAD;
     }
 
     private boolean isFree(BlockPos pos) {

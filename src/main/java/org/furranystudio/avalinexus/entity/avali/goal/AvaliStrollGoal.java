@@ -13,8 +13,16 @@ public class AvaliStrollGoal extends WaterAvoidingRandomStrollGoal {
 
     private static final float RUN_CHANCE = 0.15F;
 
+    private final AvaliEntity avali;
+
     public AvaliStrollGoal(AvaliEntity avali, double speed) {
         super(avali, speed);
+        this.avali = avali;
+    }
+
+    @Override
+    public boolean canUse() {
+        return !avali.shouldRegroup() && super.canUse();
     }
 
     @Override
