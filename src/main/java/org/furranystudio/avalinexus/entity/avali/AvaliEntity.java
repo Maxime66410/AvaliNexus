@@ -45,6 +45,7 @@ import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BedPart;
@@ -59,9 +60,12 @@ import org.furranystudio.avalinexus.entity.avali.expression.AvaliFace;
 import org.furranystudio.avalinexus.entity.avali.expression.AvaliGesture;
 import org.furranystudio.avalinexus.entity.avali.expression.AvaliMood;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliCushionGoal;
+import org.furranystudio.avalinexus.entity.avali.goal.AvaliHeatGoal;
+import org.furranystudio.avalinexus.entity.avali.goal.AvaliHotBiomeGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliPackGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliPanicGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliRestGoal;
+import org.furranystudio.avalinexus.entity.avali.goal.AvaliShelterGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliSleepGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliStrollGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliSwimGoal;
@@ -104,6 +108,9 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     private static final int PACK_CHECK_INTERVAL = 40;
     private static final double PACK_JOIN_RANGE = 32.0;
     private static final int DIRECT_WALK_DISTANCE = 24;
+    private static final float WATER_MALUS = 16.0F;
+    private static final float WATER_BORDER_MALUS = 8.0F;
+    private static final float FIRE_NEIGHBOR_MALUS = 16.0F;
     private static final AvaliGesture[] IDLE_GESTURES = Arrays.stream(AvaliGesture.values())
         .filter(AvaliGesture::playsWhenIdle).toArray(AvaliGesture[]::new);
 
@@ -139,6 +146,8 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
 
     public AvaliEntity(EntityType<? extends AvaliEntity> type, Level level) {
         super(type, level);
+        setPathfindingMalus(PathType.FIRE, -1.0F);
+        setPathfindingMalus(PathType.FIRE_IN_NEIGHBOR, FIRE_NEIGHBOR_MALUS);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -167,13 +176,16 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         goalSelector.addGoal(1, new AvaliSwimGoal(this, 1.0));
         goalSelector.addGoal(1, new AvaliTalkGoal(this));
         goalSelector.addGoal(2, new AvaliPanicGoal(this, 1.1));
-        goalSelector.addGoal(3, new AvaliSleepGoal(this, 0.8));
-        goalSelector.addGoal(4, new AvaliPackGoal(this));
-        goalSelector.addGoal(5, new AvaliCushionGoal(this, 0.8));
-        goalSelector.addGoal(5, new AvaliRestGoal(this));
-        goalSelector.addGoal(5, new AvaliStrollGoal(this, 0.8));
-        goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
-        goalSelector.addGoal(7, new RandomLookAroundGoal(this));
+        goalSelector.addGoal(2, new AvaliHeatGoal(this));
+        goalSelector.addGoal(3, new AvaliHotBiomeGoal(this));
+        goalSelector.addGoal(4, new AvaliSleepGoal(this, 0.8));
+        goalSelector.addGoal(5, new AvaliPackGoal(this));
+        goalSelector.addGoal(6, new AvaliShelterGoal(this));
+        goalSelector.addGoal(7, new AvaliCushionGoal(this, 0.8));
+        goalSelector.addGoal(7, new AvaliRestGoal(this));
+        goalSelector.addGoal(7, new AvaliStrollGoal(this, 0.8));
+        goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        goalSelector.addGoal(9, new RandomLookAroundGoal(this));
     }
 
     @Override
@@ -404,6 +416,9 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
 
     private void updatePack() {
         AvaliBehavior.Data behavior = AvaliBehavior.get(level().getServer());
+        boolean avoidWater = AvaliDangers.get(level().getServer()).avoidWater();
+        setPathfindingMalus(PathType.WATER, avoidWater ? WATER_MALUS : PathType.WATER.getMalus());
+        setPathfindingMalus(PathType.WATER_BORDER, avoidWater ? WATER_BORDER_MALUS : PathType.WATER_BORDER.getMalus());
         if (packId == null) {
             packId = level().getEntitiesOfClass(AvaliEntity.class, getBoundingBox().inflate(PACK_JOIN_RANGE),
                     other -> other.packId != null && other.getPack().equals(getPack()))
@@ -430,6 +445,20 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     public boolean shouldRegroup() {
         return level().isDarkOutside()
             || level().isThundering() && level().precipitationAt(blockPosition()) == Biome.Precipitation.SNOW;
+    }
+
+    public boolean isHotBiome(BlockPos pos) {
+        return AvaliDangers.get(level().getServer()).isHotBiome(level().getBiome(pos));
+    }
+
+    public boolean isShelter(BlockPos pos) {
+        return !level().canSeeSky(pos);
+    }
+
+    public boolean isShelteredFromRain() {
+        BlockPos pos = blockPosition();
+        return level().isRaining() && isShelter(pos)
+            && level().getBiome(pos).value().getPrecipitationAt(pos, level().getSeaLevel()) == Biome.Precipitation.RAIN;
     }
 
     public void walkTowards(Vec3 target, double speed) {

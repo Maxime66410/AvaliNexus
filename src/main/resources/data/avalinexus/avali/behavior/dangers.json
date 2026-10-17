@@ -1,0 +1,25 @@
+{
+  "water": {
+    "avoid": true
+  },
+  "heat": {
+    "blocks": [
+      "minecraft:lava",
+      "minecraft:magma_block",
+      "#minecraft:fire",
+      "#minecraft:campfires"
+    ],
+    "detect_radius": 4,
+    "flee_distance": 8
+  },
+  "hot_biomes": [
+    "minecraft:desert",
+    "#minecraft:is_savanna",
+    "#minecraft:is_badlands",
+    "#minecraft:is_nether"
+  ],
+  "rain_shelter": {
+    "enabled": true,
+    "search_radius": 16
+  }
+}

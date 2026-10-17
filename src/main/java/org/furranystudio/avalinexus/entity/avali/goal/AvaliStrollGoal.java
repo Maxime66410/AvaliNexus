@@ -7,6 +7,8 @@
 package org.furranystudio.avalinexus.entity.avali.goal;
 
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.Vec3;
 import org.furranystudio.avalinexus.entity.avali.AvaliEntity;
 
 public class AvaliStrollGoal extends WaterAvoidingRandomStrollGoal {
@@ -22,7 +24,13 @@ public class AvaliStrollGoal extends WaterAvoidingRandomStrollGoal {
 
     @Override
     public boolean canUse() {
-        return !avali.shouldRegroup() && super.canUse();
+        return !avali.shouldRegroup() && !avali.isShelteredFromRain() && super.canUse();
+    }
+
+    @Override
+    protected Vec3 getPosition() {
+        Vec3 pos = super.getPosition();
+        return pos == null || avali.isHotBiome(BlockPos.containing(pos)) ? null : pos;
     }
 
     @Override
