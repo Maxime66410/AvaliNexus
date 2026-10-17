@@ -1,0 +1,22 @@
+{
+  "hue_variation": 8,
+  "brightness_variation": 0.1,
+  "colors": {
+    "frost": "#8FD3FF",
+    "echo": "#9B6BFF",
+    "wind": "#4FD1C5",
+    "aurora": "#4CD964",
+    "glacier": "#2F7FD8",
+    "storm": "#6E7B8B",
+    "star": "#2B3A8C",
+    "crystal": "#FF8FC8",
+    "moon": "#C9CED6",
+    "tundra": "#8B6B4A",
+    "song": "#E040A0",
+    "feather": "#F2EDE4",
+    "ember": "#FF8C1A",
+    "dawn": "#FF9E80",
+    "shard": "#FFD23F",
+    "drift": "#A7C4D9"
+  }
+}

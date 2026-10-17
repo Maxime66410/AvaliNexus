@@ -100,6 +100,9 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     private static final EntityDataAccessor<Integer> DATA_POSE = SynchedEntityData.defineId(AvaliEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> DATA_NAP = SynchedEntityData.defineId(AvaliEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<String> DATA_PACK = SynchedEntityData.defineId(AvaliEntity.class, EntityDataSerializers.STRING);
+    private static final EntityDataAccessor<Boolean> DATA_FEMALE = SynchedEntityData.defineId(AvaliEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> DATA_TINT = SynchedEntityData.defineId(AvaliEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<String> DATA_SKIN = SynchedEntityData.defineId(AvaliEntity.class, EntityDataSerializers.STRING);
     private static final EntityDataAccessor<Integer> DATA_DIALOGUE_FACE = SynchedEntityData.defineId(AvaliEntity.class, EntityDataSerializers.INT);
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
@@ -112,6 +115,7 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     private int gestureTicks;
     private boolean justLoaded;
     private boolean named;
+    private boolean styled;
     private boolean panicking;
     private ServerPlayer talkingTo;
     private AvaliShop shop;
@@ -162,6 +166,9 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         builder.define(DATA_NAP, false);
         builder.define(DATA_DIALOGUE_FACE, -1);
         builder.define(DATA_PACK, "");
+        builder.define(DATA_FEMALE, false);
+        builder.define(DATA_TINT, 0xFFFFFF);
+        builder.define(DATA_SKIN, "");
     }
 
     @Override
@@ -185,6 +192,10 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         }
         output.putString("avalinexus_pack", getPack());
         output.putBoolean("avalinexus_named", named);
+        output.putBoolean("avalinexus_styled", styled);
+        output.putBoolean("avalinexus_female", isFemale());
+        output.putInt("avalinexus_tint", getTint());
+        output.putString("avalinexus_skin", getSkin());
     }
 
     @Override
@@ -194,6 +205,10 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         shop = input.read("avalinexus_shop", AvaliShop.CODEC).orElse(null);
         setPack(input.getStringOr("avalinexus_pack", ""));
         named = input.getBooleanOr("avalinexus_named", false);
+        styled = input.getBooleanOr("avalinexus_styled", false);
+        entityData.set(DATA_FEMALE, input.getBooleanOr("avalinexus_female", false));
+        entityData.set(DATA_TINT, input.getIntOr("avalinexus_tint", 0xFFFFFF));
+        entityData.set(DATA_SKIN, input.getStringOr("avalinexus_skin", ""));
     }
 
     @Override
@@ -248,6 +263,7 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         }
         setPack(((PackData) data).pack);
         giveName(level.getServer());
+        giveLooks(level.getServer());
         return super.finalizeSpawn(level, difficulty, reason, data);
     }
 
@@ -259,6 +275,25 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         if (!hasCustomName()) {
             setCustomName(Component.literal(AvaliNames.name(server, getRandom())));
         }
+    }
+
+    private void giveLooks(net.minecraft.server.MinecraftServer server) {
+        styled = true;
+        entityData.set(DATA_FEMALE, AvaliAppearance.rollFemale(server, getRandom()));
+        entityData.set(DATA_TINT, AvaliAppearance.rollColor(server, getPack(), getRandom()));
+        entityData.set(DATA_SKIN, AvaliAppearance.rollRare(server, getRandom()));
+    }
+
+    public boolean isFemale() {
+        return entityData.get(DATA_FEMALE);
+    }
+
+    public int getTint() {
+        return entityData.get(DATA_TINT);
+    }
+
+    public String getSkin() {
+        return entityData.get(DATA_SKIN);
     }
 
     public String getPack() {
@@ -320,6 +355,9 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
             }
             if (!named) {
                 giveName(level().getServer());
+            }
+            if (!styled) {
+                giveLooks(level().getServer());
             }
             updateMood();
             updateGesture();

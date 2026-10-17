@@ -16,6 +16,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
+import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Pose;
 import org.furranystudio.avalinexus.entity.avali.AvaliEntity;
@@ -44,6 +45,8 @@ public class AvaliRenderer<R extends LivingEntityRenderState & GeoRenderState> e
     public AvaliRenderer(EntityRendererProvider.Context context) {
         super(context, new AvaliModel());
         withScale(SCALE);
+        withRenderLayer(new AvaliOverlayLayer<>(this, AvaliLooks.PATTERN, AvaliLooks::pattern, true, 1));
+        withRenderLayer(new AvaliOverlayLayer<>(this, AvaliLooks.FIXED, AvaliLooks::fixed, false, 2));
     }
 
     @Override
@@ -54,6 +57,13 @@ public class AvaliRenderer<R extends LivingEntityRenderState & GeoRenderState> e
         state.addGeckolibData(SWIM_PITCH, avali.getSwimPitch(partialTick));
         state.addGeckolibData(FACE, avali.getFace());
         state.addGeckolibData(RIDING, avali.isPassenger());
+        state.addGeckolibData(AvaliLooks.TEXTURE, AvaliLooks.texture(avali));
+    }
+
+    @Override
+    public int getRenderColor(AvaliEntity avali, Void relatedObject, float partialTick) {
+        int color = super.getRenderColor(avali, relatedObject, partialTick);
+        return AvaliLooks.tinted(avali) ? ARGB.multiply(color, ARGB.opaque(avali.getTint())) : color;
     }
 
     @Override

@@ -1,0 +1,10 @@
+{
+  "female_chance": 0.5,
+  "rare": [
+    {
+      "name": "original",
+      "texture": "avalinexus:textures/entity/avali/rare/original.png",
+      "chance": 0.05
+    }
+  ]
+}

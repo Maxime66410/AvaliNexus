@@ -18,7 +18,6 @@ public class AvaliModel extends GeoModel<AvaliEntity> {
     private static final Identifier ADULT_MODEL = AvaliNexus.id("entity/avali");
     private static final Identifier CHILD_MODEL = AvaliNexus.id("entity/avali_child");
     private static final Identifier ANIMATIONS = AvaliNexus.id("entity/avali");
-    private static final Identifier TEXTURE = AvaliNexus.id("textures/entity/avali.png");
 
     @Override
     public Identifier getModelResource(GeoRenderState state) {
@@ -27,7 +26,7 @@ public class AvaliModel extends GeoModel<AvaliEntity> {
 
     @Override
     public Identifier getTextureResource(GeoRenderState state) {
-        return TEXTURE;
+        return state.getOrDefaultGeckolibData(AvaliLooks.TEXTURE, AvaliLooks.ORIGINAL);
     }
 
     @Override
