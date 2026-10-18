@@ -248,14 +248,31 @@ public class RailGunItem extends Item implements GeoItem {
         }
         triggerAnim(player, GeoItem.getOrAssignId(gun, level), "shoot", "fire");
         ModSounds.play(level, player, fireSound.get(), 0.9F, 0.08F);
-        muzzleFlash(level, player);
+        muzzleFlash(level, muzzle(player, player.getLookAngle(), isAiming(player)));
     }
 
-    private static void muzzleFlash(ServerLevel level, ServerPlayer player) {
-        Vec3 look = player.getLookAngle();
+    public void shootAt(LivingEntity shooter, ItemStack gun, LivingEntity target) {
+        if (!(shooter.level() instanceof ServerLevel level)) {
+            return;
+        }
+        double dx = target.getX() - shooter.getX();
+        double dy = target.getY(0.5) - shooter.getEyeY();
+        double dz = target.getZ() - shooter.getZ();
+        for (int i = 0; i < stats.pellets(); i++) {
+            Projectile.spawnProjectileUsingShoot((serverLevel, owner, stack) -> new NexiteQuill(serverLevel, owner, stats.damage()),
+                level, new ItemStack(RailWeapons.NEXITE_QUILL.get()), shooter, dx, dy, dz, stats.speed(), stats.hipSpread());
+        }
+        triggerAnim(shooter, GeoItem.getOrAssignId(gun, level), "shoot", "fire");
+        ModSounds.play(level, shooter, fireSound.get(), 0.9F, 0.08F);
+        muzzleFlash(level, shooter.getEyePosition().add(new Vec3(dx, dy, dz).normalize().scale(0.9)).add(0.0, -0.2, 0.0));
+    }
+
+    private static Vec3 muzzle(LivingEntity shooter, Vec3 look, boolean aiming) {
         Vec3 right = new Vec3(-look.z, 0.0, look.x).normalize();
-        boolean aiming = isAiming(player);
-        Vec3 muzzle = player.getEyePosition().add(look.scale(0.9)).add(right.scale(aiming ? 0.0 : 0.3)).add(0.0, aiming ? -0.08 : -0.2, 0.0);
+        return shooter.getEyePosition().add(look.scale(0.9)).add(right.scale(aiming ? 0.0 : 0.3)).add(0.0, aiming ? -0.08 : -0.2, 0.0);
+    }
+
+    private static void muzzleFlash(ServerLevel level, Vec3 muzzle) {
         level.sendParticles(MUZZLE_FLASH, muzzle.x, muzzle.y, muzzle.z, 4, 0.03, 0.03, 0.03, 0.0);
         level.sendParticles(ParticleTypes.ELECTRIC_SPARK, muzzle.x, muzzle.y, muzzle.z, 3, 0.02, 0.02, 0.02, 0.15);
     }

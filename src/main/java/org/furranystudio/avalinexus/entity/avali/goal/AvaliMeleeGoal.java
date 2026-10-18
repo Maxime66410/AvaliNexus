@@ -18,6 +18,8 @@ public class AvaliMeleeGoal extends MeleeAttackGoal {
 
     private static final int TICKS_PER_SECOND = 20;
     private static final int JUMP_LEAD_TICKS = 6;
+    private static final double RANGED_SWITCH_MARGIN = 1.5;
+    private static final float BACK_OFF = -1.0F;
 
     private final AvaliEntity avali;
     private int cooldown;
@@ -32,7 +34,14 @@ public class AvaliMeleeGoal extends MeleeAttackGoal {
 
     @Override
     public boolean canUse() {
-        return !avali.isBaby() && super.canUse();
+        LivingEntity target = avali.getTarget();
+        return !avali.isBaby() && !(target != null && AvaliRangedGoal.inRange(avali, target, 0.0)) && super.canUse();
+    }
+
+    @Override
+    public boolean canContinueToUse() {
+        LivingEntity target = avali.getTarget();
+        return !(target != null && AvaliRangedGoal.inRange(avali, target, RANGED_SWITCH_MARGIN)) && super.canContinueToUse();
     }
 
     @Override
@@ -62,6 +71,11 @@ public class AvaliMeleeGoal extends MeleeAttackGoal {
         updateCritJump();
         super.tick();
         avali.getNavigation().setSpeedModifier(AvaliFight.data(avali).chaseSpeed());
+        LivingEntity target = avali.getTarget();
+        if (target != null && avali.isTooCloseFor(target)) {
+            avali.getNavigation().stop();
+            avali.getMoveControl().strafe(BACK_OFF, 0.0F);
+        }
     }
 
     @Override

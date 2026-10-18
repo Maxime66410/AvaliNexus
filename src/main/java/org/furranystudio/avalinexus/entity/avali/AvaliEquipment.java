@@ -27,6 +27,8 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.equipment.Equippable;
 import org.furranystudio.avalinexus.AvaliNexus;
+import org.furranystudio.avalinexus.item.weapon.RailGunItem;
+import org.furranystudio.avalinexus.item.weapon.RailStats;
 
 import java.io.Reader;
 import java.util.ArrayList;
@@ -41,16 +43,26 @@ public final class AvaliEquipment {
     private static final Identifier FILE = AvaliNexus.id("avali/equipment/equipment.json");
     private static final double BASE_DAMAGE = 1.0;
     private static final double BASE_ATTACK_SPEED = 4.0;
+    private static final double TICKS_PER_SECOND = 20.0;
 
-    public record Spawn(float weaponChance, List<Item> weapons, float armorChance, Map<EquipmentSlot, List<Item>> armor,
+    public record Spawn(float weaponChance, List<Item> weapons, float rangedChance, List<Item> ranged, float armorChance, Map<EquipmentSlot, List<Item>> armor,
                         float shieldChance, List<Item> shields, float foodChance, int foodMin, int foodMax, List<Item> food) {
     }
 
     public record Data(Spawn spawn, Predicate<ItemStack> weapons, Predicate<ItemStack> shields, Predicate<ItemStack> armorExcluded,
-                       Predicate<ItemStack> foodExcluded, float modBonus, int weaponsKept, Predicate<ItemStack> weaponsExcluded) {
+                       Predicate<ItemStack> foodExcluded, Predicate<ItemStack> reforge, float modBonus, int weaponsKept, int rangedKept,
+                       Predicate<ItemStack> weaponsExcluded) {
 
         public boolean isWeapon(ItemStack stack) {
             return weapons.test(stack) && !weaponsExcluded.test(stack);
+        }
+
+        public boolean isRanged(ItemStack stack) {
+            return stack.getItem() instanceof RailGunItem && isWeapon(stack);
+        }
+
+        public boolean isReforge(ItemStack stack) {
+            return reforge.test(stack);
         }
 
         public boolean isShield(ItemStack stack) {
@@ -71,12 +83,26 @@ public final class AvaliEquipment {
         }
 
         public double weaponScore(ItemStack stack) {
-            ItemAttributeModifiers modifiers = stack.getOrDefault(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.EMPTY);
-            double damage = modifiers.compute(Attributes.ATTACK_DAMAGE, BASE_DAMAGE, EquipmentSlot.MAINHAND);
-            double speed = modifiers.compute(Attributes.ATTACK_SPEED, BASE_ATTACK_SPEED, EquipmentSlot.MAINHAND);
             boolean fromMod = BuiltInRegistries.ITEM.getKey(stack.getItem()).getNamespace().equals(AvaliNexus.MODID);
-            return damage * speed * (fromMod ? modBonus : 1.0);
+            return weaponDamage(stack) * attacksPerSecond(stack) * (fromMod ? modBonus : 1.0);
         }
+    }
+
+    public static double weaponDamage(ItemStack stack) {
+        if (stack.getItem() instanceof RailGunItem gun) {
+            RailStats stats = gun.stats();
+            return stats.damage() * stats.pellets();
+        }
+        return stack.getOrDefault(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.EMPTY)
+            .compute(Attributes.ATTACK_DAMAGE, BASE_DAMAGE, EquipmentSlot.MAINHAND);
+    }
+
+    public static double attacksPerSecond(ItemStack stack) {
+        if (stack.getItem() instanceof RailGunItem gun) {
+            return TICKS_PER_SECOND / gun.stats().interval();
+        }
+        return stack.getOrDefault(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.EMPTY)
+            .compute(Attributes.ATTACK_SPEED, BASE_ATTACK_SPEED, EquipmentSlot.MAINHAND);
     }
 
     public static double armorScore(ItemStack stack, EquipmentSlot slot) {
@@ -89,8 +115,8 @@ public final class AvaliEquipment {
 
     private static final Predicate<ItemStack> NONE = stack -> false;
     private static final Data FALLBACK = new Data(
-        new Spawn(0, List.of(), 0, Map.of(), 0, List.of(), 0, 0, 0, List.of()),
-        NONE, stack -> stack.is(Items.SHIELD), NONE, NONE, 1.25F, 2, NONE);
+        new Spawn(0, List.of(), 0, List.of(), 0, Map.of(), 0, List.of(), 0, 0, 0, List.of()),
+        NONE, stack -> stack.is(Items.SHIELD), NONE, NONE, NONE, 1.25F, 2, 1, NONE);
 
     private static ResourceManager loadedFrom;
     private static Data data = FALLBACK;
@@ -126,6 +152,7 @@ public final class AvaliEquipment {
             JsonObject root = JsonParser.parseReader(reader).getAsJsonObject();
             JsonObject spawn = root.getAsJsonObject("spawn");
             JsonObject weapon = spawn.getAsJsonObject("weapon");
+            JsonObject ranged = spawn.getAsJsonObject("ranged");
             JsonObject armor = spawn.getAsJsonObject("armor");
             JsonObject shield = spawn.getAsJsonObject("shield");
             JsonObject food = spawn.getAsJsonObject("food");
@@ -138,13 +165,15 @@ public final class AvaliEquipment {
             JsonObject weapons = root.getAsJsonObject("weapons");
             return new Data(
                 new Spawn(weapon.get("chance").getAsFloat(), items(weapon.getAsJsonArray("items")),
+                    ranged.get("chance").getAsFloat(), items(ranged.getAsJsonArray("items")),
                     armor.get("chance").getAsFloat(), armorItems,
                     shield.get("chance").getAsFloat(), items(shield.getAsJsonArray("items")),
                     food.get("chance").getAsFloat(), food.get("min").getAsInt(), food.get("max").getAsInt(),
                     items(food.getAsJsonArray("items"))),
                 matcher(useful.getAsJsonArray("weapons")), matcher(useful.getAsJsonArray("shields")),
                 matcher(useful.getAsJsonArray("armor_excluded")), matcher(useful.getAsJsonArray("food_excluded")),
-                weapons.get("mod_bonus").getAsFloat(), weapons.get("kept").getAsInt(), matcher(weapons.getAsJsonArray("excluded")));
+                matcher(useful.getAsJsonArray("reforge")), weapons.get("mod_bonus").getAsFloat(), weapons.get("kept").getAsInt(),
+                weapons.get("ranged_kept").getAsInt(), matcher(weapons.getAsJsonArray("excluded")));
         } catch (Exception e) {
             AvaliNexus.LOGGER.error("[AvaliNexus] Couldn't read equipment file {}", FILE, e);
             return FALLBACK;

@@ -11,6 +11,14 @@
         "avalinexus:aerotech_blade"
       ]
     },
+    "ranged": {
+      "chance": 0.05,
+      "items": [
+        "avalinexus:rail_pistol",
+        "avalinexus:rail_carbine",
+        "avalinexus:rail_assault_rifle"
+      ]
+    },
     "armor": {
       "chance": 0.1,
       "head": ["minecraft:leather_helmet", "minecraft:chainmail_helmet", "minecraft:iron_helmet"],
@@ -30,7 +38,17 @@
     }
   },
   "useful": {
-    "weapons": ["#minecraft:swords", "#minecraft:axes", "#minecraft:spears"],
+    "weapons": [
+      "#minecraft:swords",
+      "#minecraft:axes",
+      "#minecraft:spears",
+      "avalinexus:rail_pistol",
+      "avalinexus:rail_assault_rifle",
+      "avalinexus:rail_carbine",
+      "avalinexus:rail_shotgun",
+      "avalinexus:rail_sniper"
+    ],
+    "reforge": ["avalinexus:aerogel"],
     "shields": ["minecraft:shield"],
     "armor_excluded": ["minecraft:elytra"],
     "food_excluded": [
@@ -45,6 +63,7 @@
   "weapons": {
     "mod_bonus": 1.25,
     "kept": 2,
+    "ranged_kept": 1,
     "excluded": []
   }
 }

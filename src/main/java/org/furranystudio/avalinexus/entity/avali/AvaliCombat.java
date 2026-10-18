@@ -34,11 +34,14 @@ public final class AvaliCombat {
     public record Crit(double jumpDistance, int jumpCooldown, float multiplier) {
     }
 
+    public record Burst(int minShots, int maxShots, int minPause, int maxPause) {
+    }
+
     public record Data(float attackHealth, float fleeHealth, int fleeDistance, double fleeSpeed, double chaseSpeed,
                        double allyRadius, double enemyRadius, int tooManyEnemies, double outnumberRatio,
                        int grudgeSeconds, double grudgeDistance, int weaponStowSeconds, double shieldDistance,
                        double powerMargin, double enemyDefaultDamage, double enemyAttacksPerSecond, int corneredSeconds,
-                       double parentSafeDistance, Crit crit, Creeper creeper, List<Predicate<EntityType<?>>> hunted) {
+                       double parentSafeDistance, double rangedMin, double rangedMax, Burst burst, Crit crit, Creeper creeper, List<Predicate<EntityType<?>>> hunted) {
 
         public boolean hunts(EntityType<?> type) {
             return hunted.stream().anyMatch(test -> test.test(type));
@@ -46,7 +49,7 @@ public final class AvaliCombat {
     }
 
     private static final Data FALLBACK = new Data(0.5F, 0.3F, 16, 1.5, 1.2, 16, 10, 3, 2.0, 30, 32, 5, 3.5,
-        1.5, 2.0, 1.0, 3, 6, new Crit(4, 40, 1.5F), new Creeper(8, 0.2F, 8, 1.5), List.of());
+        1.5, 2.0, 1.0, 3, 6, 4, 24, new Burst(3, 5, 20, 40), new Crit(4, 40, 1.5F), new Creeper(8, 0.2F, 8, 1.5), List.of());
 
     private static ResourceManager loadedFrom;
     private static Data data = FALLBACK;
@@ -78,6 +81,7 @@ public final class AvaliCombat {
             JsonObject root = JsonParser.parseReader(reader).getAsJsonObject();
             JsonObject creeper = root.getAsJsonObject("creeper");
             JsonObject crit = root.getAsJsonObject("crit");
+            JsonObject burst = root.getAsJsonObject("burst");
             List<Predicate<EntityType<?>>> hunted = new ArrayList<>();
             for (JsonElement element : root.getAsJsonArray("hunted")) {
                 String entry = element.getAsString();
@@ -97,7 +101,10 @@ public final class AvaliCombat {
                 root.get("weapon_stow_seconds").getAsInt(), root.get("shield_distance").getAsDouble(),
                 root.get("power_margin").getAsDouble(), root.get("enemy_default_damage").getAsDouble(),
                 root.get("enemy_attacks_per_second").getAsDouble(), root.get("cornered_seconds").getAsInt(),
-                root.get("parent_safe_distance").getAsDouble(),
+                root.get("parent_safe_distance").getAsDouble(), root.get("ranged_min").getAsDouble(),
+                root.get("ranged_max").getAsDouble(),
+                new Burst(burst.get("min_shots").getAsInt(), burst.get("max_shots").getAsInt(),
+                    burst.get("min_pause").getAsInt(), burst.get("max_pause").getAsInt()),
                 new Crit(crit.get("jump_distance").getAsDouble(), crit.get("jump_cooldown").getAsInt(), crit.get("multiplier").getAsFloat()),
                 new Creeper(creeper.get("detect_radius").getAsDouble(), creeper.get("min_health").getAsFloat(),
                     creeper.get("flee_distance").getAsInt(), creeper.get("flee_speed").getAsDouble()),

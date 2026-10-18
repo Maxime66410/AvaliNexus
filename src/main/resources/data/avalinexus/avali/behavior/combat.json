@@ -17,6 +17,14 @@
   "enemy_attacks_per_second": 1.0,
   "cornered_seconds": 3,
   "parent_safe_distance": 6,
+  "ranged_min": 4,
+  "ranged_max": 24,
+  "burst": {
+    "min_shots": 3,
+    "max_shots": 5,
+    "min_pause": 20,
+    "max_pause": 40
+  },
   "crit": {
     "jump_distance": 4,
     "jump_cooldown": 40,

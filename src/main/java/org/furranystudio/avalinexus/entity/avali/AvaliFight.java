@@ -6,17 +6,15 @@
  */
 package org.furranystudio.avalinexus.entity.avali;
 
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.damagesource.CombatRules;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.component.ItemAttributeModifiers;
+import net.minecraft.world.item.ItemStack;
 
 import java.util.Comparator;
 import java.util.List;
@@ -73,10 +71,9 @@ public final class AvaliFight {
             return false;
         }
         AvaliCombat.Data data = data(avali);
-        ItemAttributeModifiers weapon = avali.getGear().bestWeapon()
-            .getOrDefault(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.EMPTY);
-        float damage = (float) weapon.compute(Attributes.ATTACK_DAMAGE, avali.getAttributeBaseValue(Attributes.ATTACK_DAMAGE), EquipmentSlot.MAINHAND);
-        double speed = weapon.compute(Attributes.ATTACK_SPEED, avali.getAttributeBaseValue(Attributes.ATTACK_SPEED), EquipmentSlot.MAINHAND);
+        ItemStack weapon = avali.getGear().strongestWeapon();
+        float damage = (float) AvaliEquipment.weaponDamage(weapon);
+        double speed = AvaliEquipment.attacksPerSecond(weapon);
         DamageSource ours = avali.damageSources().mobAttack(avali);
         double timeToWin = 0.0;
         double incoming = 0.0;
@@ -106,6 +103,9 @@ public final class AvaliFight {
         }
         AvaliCombat.Data data = data(avali);
         if (avali.getHealth() < avali.getMaxHealth() * data.fleeHealth()) {
+            return true;
+        }
+        if (avali.getGear().hasRanged() && !avali.getGear().hasMelee() && avali.distanceTo(nearest(avali, enemies)) <= data.rangedMin()) {
             return true;
         }
         if (outclasses(avali, enemies)) {

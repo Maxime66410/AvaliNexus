@@ -25,6 +25,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
 import org.furranystudio.avalinexus.entity.avali.AvaliEntity;
 import org.furranystudio.avalinexus.entity.avali.expression.AvaliFace;
+import org.furranystudio.avalinexus.item.weapon.RailGunItem;
 
 import java.util.IdentityHashMap;
 import java.util.List;
@@ -46,6 +47,8 @@ public class AvaliRenderer<R extends LivingEntityRenderState & GeoRenderState> e
     private static final DataTicket<Boolean> SWING_LEFT = DataTicket.create("avalinexus_swing_left", Boolean.class);
     private static final DataTicket<Boolean> BLOCKING = DataTicket.create("avalinexus_blocking", Boolean.class);
     private static final DataTicket<Boolean> BLOCK_LEFT = DataTicket.create("avalinexus_block_left", Boolean.class);
+    private static final DataTicket<Boolean> RAIL_HOLD = DataTicket.create("avalinexus_rail_hold", Boolean.class);
+    private static final DataTicket<Boolean> RIGHT_HANDED = DataTicket.create("avalinexus_right_handed", Boolean.class);
     private static final String[] SIDES = {"Left", "Right"};
     private static final String[] MOUTHS = {"Mouth Left 0", "Mouth Right 0", "Mouth Left 1", "Mouth Right 1", "Mouth Front"};
     private static final int BLINK_CYCLE = 300;
@@ -89,6 +92,8 @@ public class AvaliRenderer<R extends LivingEntityRenderState & GeoRenderState> e
         state.addGeckolibData(SWING_LEFT, swing != null && swing.hand().asArm(mainArm) == HumanoidArm.LEFT);
         state.addGeckolibData(BLOCKING, avali.isUsingItem() && avali.getUsedItemHand() == InteractionHand.OFF_HAND);
         state.addGeckolibData(BLOCK_LEFT, InteractionHand.OFF_HAND.asArm(mainArm) == HumanoidArm.LEFT);
+        state.addGeckolibData(RAIL_HOLD, swing == null && avali.getMainHandItem().getItem() instanceof RailGunItem);
+        state.addGeckolibData(RIGHT_HANDED, rightHanded);
     }
 
     @Override
@@ -148,6 +153,14 @@ public class AvaliRenderer<R extends LivingEntityRenderState & GeoRenderState> e
             } else {
                 rightArm = new Rotation(rightArm.x - 0.4F, -0.3F, rightArm.z);
             }
+        }
+
+        if (state.getOrDefaultGeckolibData(RAIL_HOLD, false)) {
+            boolean right = state.getOrDefaultGeckolibData(RIGHT_HANDED, true);
+            Rotation holdingArm = new Rotation(-Mth.HALF_PI + head.x + 0.1F, (right ? -0.3F : 0.3F) + head.y, 0.0F);
+            Rotation shootingArm = new Rotation(-1.5F + head.x, (right ? 0.6F : -0.6F) + head.y, 0.0F);
+            rightArm = right ? holdingArm : shootingArm;
+            leftArm = right ? shootingArm : holdingArm;
         }
 
         float swing = state.getOrDefaultGeckolibData(SWING, 0.0F);

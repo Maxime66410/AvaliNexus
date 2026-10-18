@@ -29,7 +29,7 @@ import java.util.function.Consumer;
 
 public class AerotechHiltItem extends Item {
 
-    private static final int REFORGE_SECONDS = 300;
+    public static final int REFORGE_SECONDS = 300;
     private static final int BAR_COLOR = 0xFFA640;
 
     public AerotechHiltItem(Properties properties) {
@@ -92,7 +92,7 @@ public class AerotechHiltItem extends Item {
         tooltip.accept(Component.translatable("item.avalinexus.aerotech_hilt.reforge").withStyle(style -> style.withColor(0xFFA640)));
     }
 
-    static ItemStack reforge(ItemStack hilt) {
+    public static ItemStack reforge(ItemStack hilt) {
         ItemStack blade = hilt.transmuteCopy(blade(hilt));
         blade.remove(AerotechWeapons.BLADE.get());
         blade.remove(AerotechWeapons.REFORGE.get());

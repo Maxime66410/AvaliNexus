@@ -54,7 +54,9 @@ import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.AttackRange;
 import net.minecraft.world.item.component.BlocksAttacks;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.pathfinder.PathType;
@@ -82,6 +84,7 @@ import org.furranystudio.avalinexus.entity.avali.goal.AvaliHotBiomeGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliMeleeGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliPackGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliPickupGoal;
+import org.furranystudio.avalinexus.entity.avali.goal.AvaliRangedGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliRestGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliShelterGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliSleepGoal;
@@ -112,6 +115,8 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     private static final float MAX_SWIM_PITCH = 75.0F;
     private static final int NOISE_INTERVAL = 240;
     private static final int BUSY_CHECK_INTERVAL = 5;
+    private static final int REFORGE_INTERVAL = 20;
+    private static final double MELEE_REACH = Math.sqrt(2.04F) - 0.6F;
     private static final RawAnimation LOWER_EARS = RawAnimation.begin().thenPlayAndHold("Lower Ears");
     private static final RawAnimation EMPTY = RawAnimation.begin().thenLoop("empty");
     private static final RawAnimation NAP = RawAnimation.begin().thenLoop("NAP");
@@ -213,6 +218,7 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         goalSelector.addGoal(2, new AvaliHeatGoal(this));
         goalSelector.addGoal(2, new AvaliEatGoal(this));
         goalSelector.addGoal(3, new AvaliMeleeGoal(this));
+        goalSelector.addGoal(3, new AvaliRangedGoal(this));
         goalSelector.addGoal(3, new AvaliHotBiomeGoal(this));
         goalSelector.addGoal(4, new AvaliSleepGoal(this, 0.8));
         goalSelector.addGoal(5, new AvaliPackGoal(this));
@@ -313,8 +319,26 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         }
         if (hit && target instanceof LivingEntity living) {
             weapon.postHurtEnemy(living, this);
+            gear.putAwayHilt();
         }
         return hit;
+    }
+
+    @Override
+    public boolean isWithinMeleeAttackRange(LivingEntity target) {
+        ItemStack weapon = getMainHandItem();
+        double bonus = weapon.getOrDefault(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.EMPTY)
+            .compute(Attributes.ENTITY_INTERACTION_RANGE, 0.0, EquipmentSlot.MAINHAND);
+        if (weapon.has(DataComponents.ATTACK_RANGE) || bonus <= 0.0) {
+            return super.isWithinMeleeAttackRange(target);
+        }
+        return getAttackBoundingBox(MELEE_REACH + bonus).intersects(target.getBoundingBox());
+    }
+
+    public boolean isTooCloseFor(LivingEntity target) {
+        AttackRange range = getMainHandItem().get(DataComponents.ATTACK_RANGE);
+        return range != null && range.effectiveMinRange(this) > 0.0F
+            && getAttackBoundingBox(range.effectiveMinRange(this)).intersects(target.getBoundingBox());
     }
 
     public boolean canCriticalAttack(Entity target) {
@@ -553,6 +577,9 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
             updateMood();
             updateGesture();
             updateWeapon();
+            if (tickCount % REFORGE_INTERVAL == 0) {
+                gear.tickHilts();
+            }
             if (talkingTo != null && (!talkingTo.isAlive() || talkingTo.level() != level()
                     || distanceTo(talkingTo) > DialogueManager.MAX_DISTANCE)) {
                 DialogueManager.close(talkingTo, true);

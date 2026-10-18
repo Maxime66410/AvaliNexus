@@ -18,6 +18,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import org.furranystudio.avalinexus.item.weapon.AerotechHiltItem;
+import org.furranystudio.avalinexus.item.weapon.AerotechWeapons;
+import org.furranystudio.avalinexus.sound.ModSounds;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -50,13 +53,13 @@ public class AvaliGear {
             return avali.getItemBySlot(EquipmentSlot.OFFHAND).isEmpty();
         }
         if (data.isWeapon(stack)) {
-            List<ItemStack> weapons = weapons();
-            if (weapons.size() < data.weaponsKept()) {
+            List<ItemStack> weapons = weapons(data.isRanged(stack));
+            if (weapons.size() < kept(stack)) {
                 return backpack.size() < SIZE;
             }
             return !weapons.isEmpty() && data.weaponScore(stack) > data.weaponScore(worst(weapons));
         }
-        return data.isFood(stack) && roomFor(stack) > 0;
+        return (data.isFood(stack) || data.isReforge(stack)) && roomFor(stack) > 0;
     }
 
     public ItemStack accept(ItemStack stack) {
@@ -75,8 +78,8 @@ public class AvaliGear {
             return stack;
         }
         if (data.isWeapon(stack)) {
-            List<ItemStack> weapons = weapons();
-            if (weapons.size() >= data.weaponsKept()) {
+            List<ItemStack> weapons = weapons(data.isRanged(stack));
+            if (weapons.size() >= kept(stack)) {
                 ItemStack worst = worst(weapons);
                 if (worst == avali.getMainHandItem()) {
                     avali.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
@@ -133,8 +136,17 @@ public class AvaliGear {
     }
 
     public ItemStack bestWeapon() {
-        AvaliEquipment.Data data = data();
-        return weapons().stream().max(Comparator.comparingDouble(data::weaponScore)).orElse(ItemStack.EMPTY);
+        return best(weapons(false));
+    }
+
+    public ItemStack bestRanged() {
+        return best(weapons(true));
+    }
+
+    public ItemStack strongestWeapon() {
+        List<ItemStack> all = weapons(false);
+        all.addAll(weapons(true));
+        return best(all);
     }
 
     public boolean isShield(ItemStack stack) {
@@ -142,12 +154,71 @@ public class AvaliGear {
     }
 
     public boolean hasWeapon() {
-        return !weapons().isEmpty();
+        return hasMelee() || hasRanged();
+    }
+
+    public boolean hasMelee() {
+        return !weapons(false).isEmpty();
+    }
+
+    public boolean hasRanged() {
+        return !weapons(true).isEmpty();
     }
 
     public void drawWeapon() {
+        draw(bestWeapon());
+    }
+
+    public void drawRanged() {
+        draw(bestRanged());
+    }
+
+    public void putAwayHilt() {
+        ItemStack hand = avali.getMainHandItem();
+        if (hand.getItem() instanceof AerotechHiltItem) {
+            avali.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
+            stash(hand);
+            drawWeapon();
+        }
+    }
+
+    public void tickHilts() {
+        boolean reforge = backpack.stream().anyMatch(data()::isReforge);
+        for (int i = 0; i < backpack.size(); i++) {
+            ItemStack hilt = backpack.get(i);
+            if (!(hilt.getItem() instanceof AerotechHiltItem)) {
+                continue;
+            }
+            int seconds = hilt.getOrDefault(AerotechWeapons.REFORGE.get(), 0) + 1;
+            if (!reforge && seconds < AerotechHiltItem.REFORGE_SECONDS) {
+                hilt.set(AerotechWeapons.REFORGE.get(), seconds);
+                continue;
+            }
+            backpack.set(i, AerotechHiltItem.reforge(hilt));
+            if (reforge) {
+                takeReforge();
+            }
+            if (avali.getTarget() != null && !data().isRanged(avali.getMainHandItem())) {
+                drawWeapon();
+            }
+            ModSounds.play(avali.level(), avali, ModSounds.AEROTECH_REFORGE.get(), 0.6F, 0.05F);
+            return;
+        }
+    }
+
+    private void takeReforge() {
         AvaliEquipment.Data data = data();
-        ItemStack best = bestWeapon();
+        for (ItemStack stack : backpack) {
+            if (data.isReforge(stack)) {
+                stack.shrink(1);
+                backpack.removeIf(ItemStack::isEmpty);
+                return;
+            }
+        }
+    }
+
+    private void draw(ItemStack best) {
+        AvaliEquipment.Data data = data();
         ItemStack hand = avali.getMainHandItem();
         if (best.isEmpty() || best == hand) {
             return;
@@ -202,6 +273,9 @@ public class AvaliGear {
         if (random.nextFloat() < spawn.weaponChance()) {
             add(spawn.weapons(), random, 1);
         }
+        if (random.nextFloat() < spawn.rangedChance()) {
+            add(spawn.ranged(), random, 1);
+        }
         for (Map.Entry<EquipmentSlot, List<Item>> entry : spawn.armor().entrySet()) {
             Item item = AvaliEquipment.pick(entry.getValue(), random);
             if (random.nextFloat() < spawn.armorChance() && item != Items.AIR) {
@@ -224,13 +298,25 @@ public class AvaliGear {
         }
     }
 
-    private List<ItemStack> weapons() {
+    private List<ItemStack> weapons(boolean ranged) {
         AvaliEquipment.Data data = data();
-        List<ItemStack> weapons = new ArrayList<>(backpack.stream().filter(data::isWeapon).toList());
-        if (data.isWeapon(avali.getMainHandItem())) {
-            weapons.add(avali.getMainHandItem());
+        List<ItemStack> weapons = new ArrayList<>(backpack.stream()
+            .filter(stack -> data.isWeapon(stack) && data.isRanged(stack) == ranged).toList());
+        ItemStack hand = avali.getMainHandItem();
+        if (data.isWeapon(hand) && data.isRanged(hand) == ranged) {
+            weapons.add(hand);
         }
         return weapons;
+    }
+
+    private int kept(ItemStack stack) {
+        AvaliEquipment.Data data = data();
+        return data.isRanged(stack) ? data.rangedKept() : data.weaponsKept();
+    }
+
+    private ItemStack best(List<ItemStack> weapons) {
+        AvaliEquipment.Data data = data();
+        return weapons.stream().max(Comparator.comparingDouble(data::weaponScore)).orElse(ItemStack.EMPTY);
     }
 
     private ItemStack worst(List<ItemStack> weapons) {
