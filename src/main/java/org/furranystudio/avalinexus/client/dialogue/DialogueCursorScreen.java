@@ -34,7 +34,7 @@ public class DialogueCursorScreen extends Screen {
 
     @Override
     public void tick() {
-        if (!ClientDialogue.isActive() || ClientDialogue.isClosing() || !DialogueKeys.CURSOR.isDown()) {
+        if (!ClientDialogue.isActive() || ClientDialogue.isClosing()) {
             onClose();
         }
     }
