@@ -2,7 +2,7 @@
  * File: RailGunClient.java
  * Author: Maxime66410
  * Created: 2026-09-29
- * Last Modified: 2026-09-29
+ * Last Modified: 2026-10-19
  */
 package org.furranystudio.avalinexus.client.weapon;
 
@@ -12,6 +12,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import org.furranystudio.avalinexus.client.ModKeyCategory;
 import org.furranystudio.avalinexus.item.weapon.RailGunItem;
 import org.furranystudio.avalinexus.item.weapon.RailStats;
 import org.furranystudio.avalinexus.network.ModNetworking;
@@ -21,7 +22,7 @@ import org.furranystudio.avalinexus.network.packet.RailReloadPayload;
 
 public final class RailGunClient {
 
-    public static final KeyMapping RELOAD = new KeyMapping("key.avalinexus.reload", InputConstants.KEY_R, KeyMapping.Category.GAMEPLAY);
+    public static final KeyMapping RELOAD = new KeyMapping("key.avalinexus.reload", InputConstants.KEY_R, ModKeyCategory.AVALI_NEXUS);
 
     private static final int EJECT_HOLD_TICKS = 10;
 

@@ -2,10 +2,11 @@
  * File: AvaliNexusForge.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-09-27
+ * Last Modified: 2026-10-19
  */
 package org.furranystudio.avalinexus.forge;
 
+import net.minecraft.client.KeyMapping;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.SpawnPlacementType;
@@ -31,6 +32,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.fml.loading.FMLPaths;
 import net.minecraftforge.registries.RegisterEvent;
+import org.furranystudio.avalinexus.client.ModKeyCategory;
 import org.furranystudio.avalinexus.AvaliNexus;
 import org.furranystudio.avalinexus.Config;
 import org.furranystudio.avalinexus.Platform;
@@ -129,6 +131,7 @@ public class AvaliNexusForge {
                 }));
             AddGuiOverlayLayersEvent.BUS.addListener(event -> event.getLayeredDraw().add(AvaliNexus.id("dialogue"), DialogueHud::render));
             RegisterKeyMappingsEvent.BUS.addListener(event -> {
+                KeyMapping.Category.register(ModKeyCategory.AVALI_NEXUS.id());
                 event.register(DialogueKeys.CURSOR);
                 event.register(RailGunClient.RELOAD);
             });

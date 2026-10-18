@@ -28,6 +28,7 @@
   "avalinexus.dialogue.hint": "Molette ou 1-%s, E pour choisir, Alt pour la souris",
   "avalinexus.dialogue.busy": "L'Avali est occupé.",
   "key.avalinexus.dialogue_cursor": "Dialogue : libérer la souris (maintenir)",
+  "key.category.avalinexus.main": "Avali Nexus",
   "avalinexus.dialogue.avali.fallback": "...",
   "avalinexus.dialogue.avali.greeting.1": "Oh, un visiteur ! Ne fais pas attention au froid, on s'y habitue.",
   "avalinexus.dialogue.avali.greeting.2": "Salut, voyageur. Tu as l'air un peu perdu par ici.",

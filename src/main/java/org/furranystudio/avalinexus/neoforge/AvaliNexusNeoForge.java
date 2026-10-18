@@ -2,10 +2,11 @@
  * File: AvaliNexusNeoForge.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-09-27
+ * Last Modified: 2026-10-19
  */
 package org.furranystudio.avalinexus.neoforge;
 
+import net.minecraft.client.KeyMapping;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.SpawnPlacementType;
@@ -34,6 +35,7 @@ import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.registries.RegisterEvent;
+import org.furranystudio.avalinexus.client.ModKeyCategory;
 import org.furranystudio.avalinexus.AvaliNexus;
 import org.furranystudio.avalinexus.Config;
 import org.furranystudio.avalinexus.Platform;
@@ -128,6 +130,7 @@ public class AvaliNexusNeoForge {
             });
             modEventBus.addListener((RegisterGuiLayersEvent event) -> event.registerAboveAll(AvaliNexus.id("dialogue"), DialogueHud::render));
             modEventBus.addListener((RegisterKeyMappingsEvent event) -> {
+                event.registerCategory(ModKeyCategory.AVALI_NEXUS);
                 event.register(DialogueKeys.CURSOR);
                 event.register(RailGunClient.RELOAD);
             });

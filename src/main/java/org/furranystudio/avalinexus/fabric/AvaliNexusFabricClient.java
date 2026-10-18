@@ -2,7 +2,7 @@
  * File: AvaliNexusFabricClient.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-09-27
+ * Last Modified: 2026-10-19
  */
 package org.furranystudio.avalinexus.fabric;
 
@@ -13,6 +13,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockColorRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
+import org.furranystudio.avalinexus.client.ModKeyCategory;
 import org.furranystudio.avalinexus.AvaliNexus;
 import org.furranystudio.avalinexus.block.ModBlockEntities;
 import org.furranystudio.avalinexus.client.AvaliNexusClient;
@@ -25,6 +26,7 @@ import org.furranystudio.avalinexus.client.machine.WeaponWorkbenchScreen;
 import org.furranystudio.avalinexus.client.loom.AvaliLoomScreen;
 import org.furranystudio.avalinexus.client.tank.GrapheneTankRenderer;
 import org.furranystudio.avalinexus.inventory.ModMenus;
+import net.minecraft.client.KeyMapping;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.world.inventory.MenuType;
 import java.lang.reflect.Method;
@@ -51,6 +53,7 @@ public final class AvaliNexusFabricClient implements ClientModInitializer {
                 org.furranystudio.avalinexus.client.fluid.AvaliFluidModels.model(kind));
         }
         HudElementRegistry.addLast(AvaliNexus.id("dialogue"), DialogueHud::render);
+        KeyMapping.Category.register(ModKeyCategory.AVALI_NEXUS.id());
         KeyMappingHelper.registerKeyMapping(DialogueKeys.CURSOR);
         ClientTickEvents.START_CLIENT_TICK.register(client -> ClientDialogue.tick());
         EntityRendererRegistry.register(ModEntities.AVALI.get(), AvaliRenderer::new);

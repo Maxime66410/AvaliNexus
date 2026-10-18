@@ -28,6 +28,7 @@
   "avalinexus.dialogue.hint": "Scroll or 1-%s, E to pick, hold Alt for the mouse",
   "avalinexus.dialogue.busy": "The Avali is busy.",
   "key.avalinexus.dialogue_cursor": "Dialogue: free the mouse (hold)",
+  "key.category.avalinexus.main": "Avali Nexus",
   "avalinexus.dialogue.avali.fallback": "...",
   "avalinexus.dialogue.avali.greeting.1": "Oh, a visitor! Don't mind the cold, you get used to it.",
   "avalinexus.dialogue.avali.greeting.2": "Hello, traveler. You look a little lost out here.",
