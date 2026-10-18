@@ -1,0 +1,50 @@
+{
+  "spawn": {
+    "weapon": {
+      "chance": 0.2,
+      "items": [
+        "minecraft:stone_sword",
+        "minecraft:iron_sword",
+        "minecraft:stone_axe",
+        "minecraft:iron_axe",
+        "avalinexus:aerotech_dagger",
+        "avalinexus:aerotech_blade"
+      ]
+    },
+    "armor": {
+      "chance": 0.1,
+      "head": ["minecraft:leather_helmet", "minecraft:chainmail_helmet", "minecraft:iron_helmet"],
+      "chest": ["minecraft:leather_chestplate", "minecraft:chainmail_chestplate", "minecraft:iron_chestplate"],
+      "legs": ["minecraft:leather_leggings", "minecraft:chainmail_leggings", "minecraft:iron_leggings"],
+      "feet": ["minecraft:leather_boots", "minecraft:chainmail_boots", "minecraft:iron_boots"]
+    },
+    "shield": {
+      "chance": 0.1,
+      "items": ["minecraft:shield"]
+    },
+    "food": {
+      "chance": 0.4,
+      "min": 1,
+      "max": 4,
+      "items": ["minecraft:cooked_cod", "minecraft:cooked_salmon", "minecraft:bread", "minecraft:sweet_berries"]
+    }
+  },
+  "useful": {
+    "weapons": ["#minecraft:swords", "#minecraft:axes", "#minecraft:spears"],
+    "shields": ["minecraft:shield"],
+    "armor_excluded": ["minecraft:elytra"],
+    "food_excluded": [
+      "minecraft:rotten_flesh",
+      "minecraft:spider_eye",
+      "minecraft:poisonous_potato",
+      "minecraft:pufferfish",
+      "minecraft:chorus_fruit",
+      "minecraft:suspicious_stew"
+    ]
+  },
+  "weapons": {
+    "mod_bonus": 1.25,
+    "kept": 2,
+    "excluded": []
+  }
+}

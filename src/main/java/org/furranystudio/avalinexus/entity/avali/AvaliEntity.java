@@ -2,7 +2,7 @@
  * File: AvaliEntity.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-09-27
+ * Last Modified: 2026-10-18
  */
 package org.furranystudio.avalinexus.entity.avali;
 
@@ -34,6 +34,7 @@ import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -60,10 +61,13 @@ import org.furranystudio.avalinexus.entity.avali.expression.AvaliFace;
 import org.furranystudio.avalinexus.entity.avali.expression.AvaliGesture;
 import org.furranystudio.avalinexus.entity.avali.expression.AvaliMood;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliCushionGoal;
+import org.furranystudio.avalinexus.entity.avali.goal.AvaliEatGoal;
+import org.furranystudio.avalinexus.entity.avali.goal.AvaliGiveGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliHeatGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliHotBiomeGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliPackGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliPanicGoal;
+import org.furranystudio.avalinexus.entity.avali.goal.AvaliPickupGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliRestGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliShelterGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliSleepGoal;
@@ -125,6 +129,7 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     private static final EntityDataAccessor<Integer> DATA_DIALOGUE_FACE = SynchedEntityData.defineId(AvaliEntity.class, EntityDataSerializers.INT);
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+    private final AvaliGear gear = new AvaliGear(this);
     private int swimGraceTicks;
     private float swimPitch;
     private float swimPitchO;
@@ -149,6 +154,9 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         super(type, level);
         setPathfindingMalus(PathType.FIRE, -1.0F);
         setPathfindingMalus(PathType.FIRE_IN_NEIGHBOR, FIRE_NEIGHBOR_MALUS);
+        for (EquipmentSlot slot : EquipmentSlot.VALUES) {
+            setGuaranteedDrop(slot);
+        }
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -178,10 +186,13 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         goalSelector.addGoal(1, new AvaliTalkGoal(this));
         goalSelector.addGoal(2, new AvaliPanicGoal(this, 1.1));
         goalSelector.addGoal(2, new AvaliHeatGoal(this));
+        goalSelector.addGoal(2, new AvaliEatGoal(this));
         goalSelector.addGoal(3, new AvaliHotBiomeGoal(this));
         goalSelector.addGoal(4, new AvaliSleepGoal(this, 0.8));
         goalSelector.addGoal(5, new AvaliPackGoal(this));
         goalSelector.addGoal(6, new AvaliShelterGoal(this));
+        goalSelector.addGoal(6, new AvaliGiveGoal(this));
+        goalSelector.addGoal(6, new AvaliPickupGoal(this));
         goalSelector.addGoal(7, new AvaliCushionGoal(this, 0.8));
         goalSelector.addGoal(7, new AvaliRestGoal(this));
         goalSelector.addGoal(7, new AvaliStrollGoal(this, 0.8));
@@ -231,6 +242,7 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         output.storeNullable("avalinexus_pack_id", UUIDUtil.CODEC, packId);
         output.store("avalinexus_parents", UUIDUtil.CODEC.listOf(), parents);
         output.storeNullable("avalinexus_bed", BlockPos.CODEC, bed);
+        gear.save(output);
     }
 
     @Override
@@ -247,6 +259,7 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         packId = input.read("avalinexus_pack_id", UUIDUtil.CODEC).orElse(null);
         parents = input.read("avalinexus_parents", UUIDUtil.CODEC.listOf()).orElse(List.of());
         bed = input.read("avalinexus_bed", BlockPos.CODEC).orElse(null);
+        gear.load(input);
     }
 
     @Override
@@ -305,7 +318,11 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         packId = ((PackData) data).id;
         giveName(level.getServer());
         giveLooks(level.getServer());
-        return super.finalizeSpawn(level, difficulty, reason, data);
+        SpawnGroupData result = super.finalizeSpawn(level, difficulty, reason, data);
+        if (!isBaby() && reason != EntitySpawnReason.BREEDING) {
+            gear.giveSpawnGear(getRandom());
+        }
+        return result;
     }
 
     private void giveName(net.minecraft.server.MinecraftServer server) {
@@ -451,6 +468,26 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     public boolean shouldRegroup() {
         return level().isDarkOutside()
             || level().isThundering() && level().precipitationAt(blockPosition()) == Biome.Precipitation.SNOW;
+    }
+
+    @Override
+    protected void dropCustomDeathLoot(ServerLevel level, DamageSource source, boolean killedByPlayer) {
+        super.dropCustomDeathLoot(level, source, killedByPlayer);
+        gear.dropAll(level);
+    }
+
+    @Override
+    public void hurtArmor(DamageSource source, float damage) {
+        doHurtEquipment(source, damage, EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET);
+    }
+
+    @Override
+    public void hurtHelmet(DamageSource source, float damage) {
+        doHurtEquipment(source, damage, EquipmentSlot.HEAD);
+    }
+
+    public AvaliGear getGear() {
+        return gear;
     }
 
     public boolean isHotBiome(BlockPos pos) {

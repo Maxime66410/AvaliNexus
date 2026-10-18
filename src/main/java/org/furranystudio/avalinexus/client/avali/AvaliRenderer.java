@@ -2,7 +2,7 @@
  * File: AvaliRenderer.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-09-27
+ * Last Modified: 2026-10-18
  */
 package org.furranystudio.avalinexus.client.avali;
 
@@ -39,6 +39,16 @@ public class AvaliRenderer<R extends LivingEntityRenderState & GeoRenderState> e
     private static final String[] SIDES = {"Left", "Right"};
     private static final String[] MOUTHS = {"Mouth Left 0", "Mouth Right 0", "Mouth Left 1", "Mouth Right 1", "Mouth Front"};
     private static final int BLINK_CYCLE = 300;
+    private static final Map<String, String> ARMOR_ROOTS = Map.of(
+        "armor_helmet", "head",
+        "armor_body", "body",
+        "armor_left_arm", "left_arm",
+        "armor_right_arm", "right_arm",
+        "armor_leggings_body", "body",
+        "armor_left_leg", "left_leg",
+        "armor_right_leg", "right_leg",
+        "armor_left_foot", "left_leg",
+        "armor_right_foot", "right_leg");
 
     private final Map<BakedGeoModel, List<String>> hiddenBones = new IdentityHashMap<>();
 
@@ -47,6 +57,8 @@ public class AvaliRenderer<R extends LivingEntityRenderState & GeoRenderState> e
         withScale(SCALE);
         withRenderLayer(new AvaliOverlayLayer<>(this, AvaliLooks.PATTERN, AvaliLooks::pattern, true, 1));
         withRenderLayer(new AvaliOverlayLayer<>(this, AvaliLooks.FIXED, AvaliLooks::fixed, false, 2));
+        withRenderLayer(new AvaliArmorLayer<>(this, context.getEquipmentAssets()));
+        withRenderLayer(new AvaliItemLayer<>(context, this));
     }
 
     @Override
@@ -119,6 +131,9 @@ public class AvaliRenderer<R extends LivingEntityRenderState & GeoRenderState> e
         rotateBone(snapshots, "right_arm", rightArm);
         rotateBone(snapshots, "left_leg", leftLeg);
         rotateBone(snapshots, "right_leg", rightLeg);
+        ARMOR_ROOTS.forEach((armor, part) -> snapshots.get(part).ifPresent(source -> snapshots.ifPresent(armor, target -> target
+            .setRotation(source.getRotX(), source.getRotY(), source.getRotZ())
+            .setTranslation(source.getTranslateX(), source.getTranslateY(), source.getTranslateZ()))));
 
         List<String> bones = hiddenBones.computeIfAbsent(renderPassInfo.model(), model ->
             model.boneLookup().get().keySet().stream().filter(AvaliRenderer::isHiddenByDefault).toList());

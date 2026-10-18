@@ -2,7 +2,7 @@
  * File: AvaliBehavior.java
  * Author: Maxime66410
  * Created: 2026-10-17
- * Last Modified: 2026-10-17
+ * Last Modified: 2026-10-18
  */
 package org.furranystudio.avalinexus.entity.avali;
 
@@ -25,13 +25,14 @@ public final class AvaliBehavior {
                        int heaterSearchRadius, double heaterRadius) {
     }
 
-    public record Life(int bedSearchRadius, double bedMaxPackDistance) {
+    public record Life(int bedSearchRadius, double bedMaxPackDistance, double pickupRadius, double giveRange,
+                       float eatBelowHealth, float healPerNutrition, double eatMouthForward, double eatMouthHeight) {
     }
 
     public record Data(Pack pack, Life life) {
     }
 
-    private static final Data FALLBACK = new Data(new Pack(100, 6, 12, 16, 8, 32, 6), new Life(16, 100));
+    private static final Data FALLBACK = new Data(new Pack(100, 6, 12, 16, 8, 32, 6), new Life(16, 100, 8, 16, 0.5F, 1.0F, 0.3, -0.15));
 
     private static ResourceManager loadedFrom;
     private static Data data = FALLBACK;
@@ -63,7 +64,10 @@ public final class AvaliBehavior {
                     pack.get("baby_run_distance").getAsDouble(),
                     pack.get("parent_distance").getAsDouble(), pack.get("regroup_radius").getAsDouble(),
                     pack.get("heater_search_radius").getAsInt(), pack.get("heater_radius").getAsDouble()),
-                new Life(life.get("bed_search_radius").getAsInt(), life.get("bed_max_pack_distance").getAsDouble()));
+                new Life(life.get("bed_search_radius").getAsInt(), life.get("bed_max_pack_distance").getAsDouble(),
+                    life.get("pickup_radius").getAsDouble(), life.get("give_range").getAsDouble(),
+                    life.get("eat_below_health").getAsFloat(), life.get("heal_per_nutrition").getAsFloat(),
+                    life.get("eat_mouth_forward").getAsDouble(), life.get("eat_mouth_height").getAsDouble()));
         } catch (Exception e) {
             AvaliNexus.LOGGER.error("[AvaliNexus] Couldn't read behavior file {}", FILE, e);
             return FALLBACK;
