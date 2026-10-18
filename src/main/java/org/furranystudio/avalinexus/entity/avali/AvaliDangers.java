@@ -65,6 +65,11 @@ public final class AvaliDangers {
         return data;
     }
 
+    public static void reload(MinecraftServer server) {
+        loadedFrom = null;
+        get(server);
+    }
+
     private static Data load(ResourceManager manager) {
         Optional<Resource> resource = manager.getResource(FILE);
         if (resource.isEmpty()) {

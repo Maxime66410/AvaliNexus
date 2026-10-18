@@ -59,6 +59,11 @@ public final class TradeData {
         return pools;
     }
 
+    public static void reload(MinecraftServer server) {
+        loadedFrom = null;
+        pools(server);
+    }
+
     private static Pools load(ResourceManager manager) {
         Optional<Resource> resource = manager.getResource(AVALI_TRADES);
         if (resource.isEmpty()) {

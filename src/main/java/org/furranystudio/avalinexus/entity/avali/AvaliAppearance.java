@@ -86,6 +86,11 @@ public final class AvaliAppearance {
         return data;
     }
 
+    public static void reload(MinecraftServer server) {
+        loadedFrom = null;
+        get(server);
+    }
+
     private static Data load(ResourceManager manager) {
         float femaleChance = FALLBACK.femaleChance();
         List<Rare> rares = new ArrayList<>();

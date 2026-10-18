@@ -60,6 +60,11 @@ public final class DialogueData {
         return sections.getOrDefault(section, List.of());
     }
 
+    public static void reload(MinecraftServer server) {
+        loadedFrom = null;
+        lines(server, "");
+    }
+
     private static Map<String, List<DialogueLine>> load(ResourceManager manager) {
         Optional<Resource> resource = manager.getResource(AVALI_DIALOGUE);
         if (resource.isEmpty()) {

@@ -85,6 +85,11 @@ public final class AvaliNames {
         return syllables;
     }
 
+    public static void reload(MinecraftServer server) {
+        loadedFrom = null;
+        syllables(server);
+    }
+
     private static Syllables load(ResourceManager manager) {
         Optional<Resource> resource = manager.getResource(FILE);
         if (resource.isEmpty()) {

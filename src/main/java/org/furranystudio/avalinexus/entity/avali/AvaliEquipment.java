@@ -107,6 +107,11 @@ public final class AvaliEquipment {
         return data;
     }
 
+    public static void reload(MinecraftServer server) {
+        loadedFrom = null;
+        get(server);
+    }
+
     public static Item pick(List<Item> items, RandomSource random) {
         return items.isEmpty() ? Items.AIR : items.get(random.nextInt(items.size()));
     }

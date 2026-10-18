@@ -15,11 +15,37 @@ import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.server.MinecraftServer;
+import org.furranystudio.avalinexus.archive.ArchiveData;
+import org.furranystudio.avalinexus.dialogue.DialogueData;
+import org.furranystudio.avalinexus.entity.avali.AvaliAppearance;
+import org.furranystudio.avalinexus.entity.avali.AvaliBehavior;
+import org.furranystudio.avalinexus.entity.avali.AvaliDangers;
+import org.furranystudio.avalinexus.entity.avali.AvaliEquipment;
+import org.furranystudio.avalinexus.entity.avali.AvaliNames;
 import org.furranystudio.avalinexus.network.ModNetworking;
 import org.furranystudio.avalinexus.network.packet.PingPayload;
 import org.furranystudio.avalinexus.settings.SettingsRegistry;
+import org.furranystudio.avalinexus.trade.TradeData;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.function.Consumer;
 
 public final class AvaliNexusCommand {
+
+    private static final Map<String, Consumer<MinecraftServer>> CONFIGS = new LinkedHashMap<>();
+
+    static {
+        CONFIGS.put("behavior", AvaliBehavior::reload);
+        CONFIGS.put("dangers", AvaliDangers::reload);
+        CONFIGS.put("equipment", AvaliEquipment::reload);
+        CONFIGS.put("appearance", AvaliAppearance::reload);
+        CONFIGS.put("names", AvaliNames::reload);
+        CONFIGS.put("dialogue", DialogueData::reload);
+        CONFIGS.put("trade", TradeData::reload);
+        CONFIGS.put("archive", ArchiveData::reload);
+    }
 
     private AvaliNexusCommand() {
     }
@@ -36,12 +62,36 @@ public final class AvaliNexusCommand {
                         .suggests((ctx, builder) -> SharedSuggestionProvider.suggest(SettingsRegistry.names(), builder))
                         .then(Commands.argument("value", StringArgumentType.word())
                             .executes(AvaliNexusCommand::runSettings))))
+                .then(Commands.literal("reload")
+                    .executes(AvaliNexusCommand::runReloadAll)
+                    .then(Commands.argument("config", StringArgumentType.word())
+                        .suggests((ctx, builder) -> SharedSuggestionProvider.suggest(CONFIGS.keySet(), builder))
+                        .executes(AvaliNexusCommand::runReload)))
         );
     }
 
     private static int runPing(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         ModNetworking.sendToPlayer(context.getSource().getPlayerOrException(), new PingPayload(System.currentTimeMillis()));
         context.getSource().sendSuccess(() -> Component.translatable("avalinexus.ping.sent"), false);
+        return 1;
+    }
+
+    private static int runReloadAll(CommandContext<CommandSourceStack> context) {
+        MinecraftServer server = context.getSource().getServer();
+        CONFIGS.values().forEach(reload -> reload.accept(server));
+        context.getSource().sendSuccess(() -> Component.translatable("avalinexus.reload.all"), true);
+        return CONFIGS.size();
+    }
+
+    private static int runReload(CommandContext<CommandSourceStack> context) {
+        String config = StringArgumentType.getString(context, "config");
+        Consumer<MinecraftServer> reload = CONFIGS.get(config);
+        if (reload == null) {
+            context.getSource().sendFailure(Component.translatable("avalinexus.reload.unknown", config));
+            return 0;
+        }
+        reload.accept(context.getSource().getServer());
+        context.getSource().sendSuccess(() -> Component.translatable("avalinexus.reload.file", config), true);
         return 1;
     }
 

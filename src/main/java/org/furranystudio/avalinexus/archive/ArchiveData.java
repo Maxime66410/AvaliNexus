@@ -43,6 +43,11 @@ public final class ArchiveData {
         return archives;
     }
 
+    public static void reload(MinecraftServer server) {
+        loadedFrom = null;
+        get(server);
+    }
+
     private static Archives load(ResourceManager manager) {
         Optional<Resource> resource = manager.getResource(ENTRIES);
         if (resource.isEmpty()) {
