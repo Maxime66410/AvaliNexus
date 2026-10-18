@@ -4,6 +4,7 @@
   "package": "org.furranystudio.avalinexus.mixin",
   "compatibilityLevel": "JAVA_21",
   "client": [
+    "AvatarArmPoseMixin",
     "MouseHandlerAimMixin"
   ],
   "injectors": {
