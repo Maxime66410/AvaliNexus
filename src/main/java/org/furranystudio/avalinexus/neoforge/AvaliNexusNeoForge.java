@@ -62,6 +62,7 @@ import org.furranystudio.avalinexus.client.weapon.RailGunHud;
 import org.furranystudio.avalinexus.client.weapon.NexiteQuillRenderer;
 import org.furranystudio.avalinexus.command.AvaliNexusCommand;
 import org.furranystudio.avalinexus.entity.ColdExposure;
+import org.furranystudio.avalinexus.entity.avali.AvaliMusicPlayer;
 import org.furranystudio.avalinexus.entity.ModEntities;
 import org.furranystudio.avalinexus.entity.MonsterTargeting;
 import org.furranystudio.avalinexus.item.ModCreativeTabs;
@@ -104,6 +105,7 @@ public class AvaliNexusNeoForge {
         });
 
         NeoForge.EVENT_BUS.addListener((ServerTickEvent.Post event) -> ColdExposure.tick(event.getServer()));
+        NeoForge.EVENT_BUS.addListener((ServerTickEvent.Post event) -> AvaliMusicPlayer.tick(event.getServer()));
 
         NeoForge.EVENT_BUS.addListener((RegisterCommandsEvent event) ->
             AvaliNexusCommand.register(event.getDispatcher()));

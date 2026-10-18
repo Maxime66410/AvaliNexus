@@ -6,6 +6,7 @@
  */
 package org.furranystudio.avalinexus.entity.avali;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import net.minecraft.resources.Identifier;
@@ -13,8 +14,12 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import org.furranystudio.avalinexus.AvaliNexus;
+import org.furranystudio.avalinexus.entity.avali.expression.AvaliFace;
 
 import java.io.Reader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 public final class AvaliBehavior {
@@ -29,10 +34,16 @@ public final class AvaliBehavior {
                        float eatBelowHealth, float healPerNutrition, double eatMouthForward, double eatMouthHeight) {
     }
 
-    public record Data(Pack pack, Life life) {
+    public record Music(double startChance, int eveningStart, int eveningEnd, double eveningMultiplier, double zoneRadius,
+                        int restSeconds, int silenceMinSeconds, int silenceMaxSeconds, double joinRadius, int gatherSeconds,
+                        float volume, boolean particles, List<AvaliFace> faces) {
     }
 
-    private static final Data FALLBACK = new Data(new Pack(100, 6, 12, 16, 8, 32, 6), new Life(16, 100, 8, 16, 0.5F, 1.0F, 0.3, -0.15));
+    public record Data(Pack pack, Life life, Music music) {
+    }
+
+    private static final Data FALLBACK = new Data(new Pack(100, 6, 12, 16, 8, 32, 6), new Life(16, 100, 8, 16, 0.5F, 1.0F, 0.3, -0.15),
+        new Music(0.002, 12000, 13800, 5.0, 32, 300, 120, 300, 32, 15, 1.0F, true, List.of(AvaliFace.ADORABLE, AvaliFace.EXCITED, AvaliFace.SMUG)));
 
     private static ResourceManager loadedFrom;
     private static Data data = FALLBACK;
@@ -64,6 +75,11 @@ public final class AvaliBehavior {
             JsonObject root = JsonParser.parseReader(reader).getAsJsonObject();
             JsonObject pack = root.getAsJsonObject("pack");
             JsonObject life = root.getAsJsonObject("life");
+            JsonObject music = root.getAsJsonObject("music");
+            List<AvaliFace> faces = new ArrayList<>();
+            for (JsonElement face : music.getAsJsonArray("faces")) {
+                faces.add(AvaliFace.valueOf(face.getAsString().toUpperCase(Locale.ROOT)));
+            }
             return new Data(
                 new Pack(pack.get("max_distance").getAsDouble(), pack.get("baby_distance").getAsDouble(),
                     pack.get("baby_run_distance").getAsDouble(),
@@ -72,7 +88,13 @@ public final class AvaliBehavior {
                 new Life(life.get("bed_search_radius").getAsInt(), life.get("bed_max_pack_distance").getAsDouble(),
                     life.get("pickup_radius").getAsDouble(), life.get("give_range").getAsDouble(),
                     life.get("eat_below_health").getAsFloat(), life.get("heal_per_nutrition").getAsFloat(),
-                    life.get("eat_mouth_forward").getAsDouble(), life.get("eat_mouth_height").getAsDouble()));
+                    life.get("eat_mouth_forward").getAsDouble(), life.get("eat_mouth_height").getAsDouble()),
+                new Music(music.get("start_chance").getAsDouble(), music.get("evening_start").getAsInt(),
+                    music.get("evening_end").getAsInt(), music.get("evening_multiplier").getAsDouble(),
+                    music.get("zone_radius").getAsDouble(), music.get("rest_seconds").getAsInt(),
+                    music.get("silence_min_seconds").getAsInt(), music.get("silence_max_seconds").getAsInt(),
+                    music.get("join_radius").getAsDouble(), music.get("gather_seconds").getAsInt(),
+                    music.get("volume").getAsFloat(), music.get("particles").getAsBoolean(), List.copyOf(faces)));
         } catch (Exception e) {
             AvaliNexus.LOGGER.error("[AvaliNexus] Couldn't read behavior file {}", FILE, e);
             return FALLBACK;

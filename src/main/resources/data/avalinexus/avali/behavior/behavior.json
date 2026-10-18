@@ -17,5 +17,20 @@
     "heal_per_nutrition": 1.0,
     "eat_mouth_forward": 0.3,
     "eat_mouth_height": -0.15
+  },
+  "music": {
+    "start_chance": 0.002,
+    "evening_start": 12000,
+    "evening_end": 13800,
+    "evening_multiplier": 5.0,
+    "zone_radius": 32,
+    "rest_seconds": 300,
+    "silence_min_seconds": 120,
+    "silence_max_seconds": 300,
+    "join_radius": 32,
+    "gather_seconds": 15,
+    "volume": 1.0,
+    "particles": true,
+    "faces": ["adorable", "excited", "smug"]
   }
 }

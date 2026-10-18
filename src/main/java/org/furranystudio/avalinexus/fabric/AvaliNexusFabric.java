@@ -33,6 +33,7 @@ import org.furranystudio.avalinexus.Config;
 import org.furranystudio.avalinexus.Platform;
 import org.furranystudio.avalinexus.command.AvaliNexusCommand;
 import org.furranystudio.avalinexus.entity.ColdExposure;
+import org.furranystudio.avalinexus.entity.avali.AvaliMusicPlayer;
 import org.furranystudio.avalinexus.entity.ModEntities;
 import org.furranystudio.avalinexus.entity.MonsterTargeting;
 import org.furranystudio.avalinexus.item.ModCreativeTabs;
@@ -65,6 +66,7 @@ public final class AvaliNexusFabric implements ModInitializer {
 
         ServerEntityEvents.ENTITY_LOAD.register((entity, level) -> MonsterTargeting.onEntityJoin(entity));
         ServerTickEvents.END_SERVER_TICK.register(ColdExposure::tick);
+        ServerTickEvents.END_SERVER_TICK.register(AvaliMusicPlayer::tick);
 
         CommandRegistrationCallback.EVENT.register((dispatcher, buildContext, selection) ->
             AvaliNexusCommand.register(dispatcher));

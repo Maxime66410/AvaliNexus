@@ -82,6 +82,7 @@ import org.furranystudio.avalinexus.entity.avali.goal.AvaliGiveGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliHeatGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliHotBiomeGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliMeleeGoal;
+import org.furranystudio.avalinexus.entity.avali.goal.AvaliMusicGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliPackGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliPickupGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliRangedGoal;
@@ -97,7 +98,9 @@ import org.furranystudio.avalinexus.sound.ModSounds;
 import org.furranystudio.avalinexus.trade.AvaliShop;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public class AvaliEntity extends AgeableMob implements GeoEntity {
@@ -176,6 +179,9 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     private long threatTime;
     private int lastCombatTick;
     private long corneredUntil;
+    private AvaliConcert concert;
+    private long musicRestUntil;
+    private final Map<Identifier, Long> songDays = new HashMap<>();
 
     public AvaliEntity(EntityType<? extends AvaliEntity> type, Level level) {
         super(type, level);
@@ -221,6 +227,7 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         goalSelector.addGoal(3, new AvaliRangedGoal(this));
         goalSelector.addGoal(3, new AvaliHotBiomeGoal(this));
         goalSelector.addGoal(4, new AvaliSleepGoal(this, 0.8));
+        goalSelector.addGoal(4, new AvaliMusicGoal(this));
         goalSelector.addGoal(5, new AvaliPackGoal(this));
         goalSelector.addGoal(6, new AvaliShelterGoal(this));
         goalSelector.addGoal(6, new AvaliGiveGoal(this));
@@ -577,6 +584,9 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
             updateMood();
             updateGesture();
             updateWeapon();
+            if (concert != null && concert.isEnded()) {
+                concert = null;
+            }
             if (tickCount % REFORGE_INTERVAL == 0) {
                 gear.tickHilts();
             }
@@ -773,12 +783,36 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         this.panicking = panicking;
     }
 
+    public AvaliConcert getConcert() {
+        return concert;
+    }
+
+    public void setConcert(AvaliConcert concert) {
+        this.concert = concert;
+    }
+
+    public long getMusicRestUntil() {
+        return musicRestUntil;
+    }
+
+    public void setMusicRestUntil(long musicRestUntil) {
+        this.musicRestUntil = musicRestUntil;
+    }
+
+    public boolean playedToday(Identifier song, long day) {
+        return songDays.getOrDefault(song, -1L) == day;
+    }
+
+    public void markPlayed(Identifier song, long day) {
+        songDays.put(song, day);
+    }
+
     public void setDodging(boolean dodging) {
         this.dodging = dodging;
     }
 
     public boolean isBusy() {
-        if (getTarget() != null || panicking || dodging) {
+        if (getTarget() != null || panicking || dodging || concert != null) {
             return true;
         }
         return AvaliFight.swellingCreeper(this) != null || AvaliFight.shouldFlee(this, AvaliFight.enemies(this));
