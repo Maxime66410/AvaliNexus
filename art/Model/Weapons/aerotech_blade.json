@@ -1,7 +1,6 @@
 {
 	"format_version": "26.3",
 	"credit": "Made with Blockbench",
-	"parent": "aerotech_dagger",
 	"textures": {
 		"0": "aerotech_hilt_handle",
 		"1": "aerotech_hilt_grip",
