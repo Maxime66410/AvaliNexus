@@ -127,7 +127,6 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     private static final RawAnimation SLEEP_EAR = RawAnimation.begin().thenLoop("sleeping_Ear");
     private static final RawAnimation SLEEP_FOOT = RawAnimation.begin().thenLoop("sleeping_Foot");
     private static final RawAnimation RIDING = RawAnimation.begin().thenLoop("riding");
-    private static final int ANGRY_TICKS = 30;
     private static final double HAPPY_RANGE = 6.0;
     private static final int HAPPY_TICKS = 30;
     private static final int GESTURE_CHANCE = 400;
@@ -158,7 +157,8 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     private int swimGraceTicks;
     private float swimPitch;
     private float swimPitchO;
-    private int angryTicks;
+    private int hurtTicks;
+    private AvaliMood hurtMood = AvaliMood.ANGRY;
     private int happyTicks;
     private boolean playerNearby;
     private int gestureTicks;
@@ -258,10 +258,13 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     public boolean hurtServer(ServerLevel level, DamageSource source, float amount) {
         boolean hurt = super.hurtServer(level, source, amount);
         if (hurt) {
+            boolean fightsBack = false;
             if (source.getEntity() instanceof LivingEntity attacker && AvaliFight.isValidEnemy(attacker)) {
                 alertPack(attacker);
+                fightsBack = AvaliFight.canAttack(this, AvaliFight.enemies(this), false);
             }
-            angryTicks = ANGRY_TICKS;
+            hurtMood = fightsBack ? AvaliMood.ANGRY : AvaliMood.SCARED;
+            hurtTicks = AvaliFight.data(this).hurtFaceSeconds() * 20;
             stopGesture();
             if (talkingTo != null) {
                 DialogueManager.close(talkingTo, true);
@@ -720,8 +723,8 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     }
 
     private void updateMood() {
-        if (angryTicks > 0) {
-            angryTicks--;
+        if (hurtTicks > 0) {
+            hurtTicks--;
         }
         if (happyTicks > 0) {
             happyTicks--;
@@ -733,10 +736,12 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         playerNearby = nearby;
 
         AvaliMood mood;
-        if (angryTicks > 0) {
-            mood = AvaliMood.ANGRY;
-        } else if (panicking) {
+        if (panicking || dodging) {
             mood = AvaliMood.SCARED;
+        } else if (getTarget() != null) {
+            mood = AvaliMood.ANGRY;
+        } else if (hurtTicks > 0) {
+            mood = hurtMood;
         } else if (happyTicks > 0) {
             mood = AvaliMood.HAPPY;
         } else {
@@ -874,12 +879,16 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         if (isSleeping()) {
             return AvaliFace.SLEEPING;
         }
-        AvaliGesture gesture = getGesture();
-        if (gesture != null && gesture.face() != null) {
-            return gesture.face();
+        AvaliMood mood = getMood();
+        if (mood.earsDown()) {
+            return mood.face();
         }
         int dialogueFace = entityData.get(DATA_DIALOGUE_FACE);
-        return dialogueFace >= 0 ? AvaliFace.values()[dialogueFace] : getMood().face();
+        if (dialogueFace >= 0) {
+            return AvaliFace.values()[dialogueFace];
+        }
+        AvaliGesture gesture = getGesture();
+        return gesture != null && gesture.face() != null ? gesture.face() : mood.face();
     }
 
     // Mobs can't swim like players, so we fake it

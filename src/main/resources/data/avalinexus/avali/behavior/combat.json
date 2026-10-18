@@ -19,6 +19,7 @@
   "parent_safe_distance": 6,
   "ranged_min": 4,
   "ranged_max": 24,
+  "hurt_face_seconds": 3,
   "burst": {
     "min_shots": 3,
     "max_shots": 5,
