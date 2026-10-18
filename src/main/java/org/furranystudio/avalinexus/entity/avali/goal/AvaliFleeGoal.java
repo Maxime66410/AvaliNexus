@@ -6,12 +6,16 @@
  */
 package org.furranystudio.avalinexus.entity.avali.goal;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.furranystudio.avalinexus.entity.avali.AvaliCombat;
+import org.furranystudio.avalinexus.entity.avali.AvaliDangers;
 import org.furranystudio.avalinexus.entity.avali.AvaliEntity;
 import org.furranystudio.avalinexus.entity.avali.AvaliFight;
 
@@ -27,6 +31,11 @@ public class AvaliFleeGoal extends Goal {
     private static final double PARENT_SEARCH = 32.0;
     private static final double PARENT_REACHED_SQ = 4.0;
     private static final float BACK_OFF = -1.0F;
+    private static final int WALL_TICKS = 40;
+    private static final double STEP_REACH = 0.3;
+    private static final double BACK_JUMP_SPEED = 0.25;
+    private static final double BACK_JUMP_LIFT = 0.45;
+    private static final int MAX_DROP = 2;
 
     private final AvaliEntity avali;
     private List<LivingEntity> enemies = List.of();
@@ -35,6 +44,8 @@ public class AvaliFleeGoal extends Goal {
     private int checkCooldown;
     private int repath;
     private boolean backingOff;
+    private int wallTicks;
+    private boolean backJump;
 
     public AvaliFleeGoal(AvaliEntity avali) {
         this.avali = avali;
@@ -71,6 +82,7 @@ public class AvaliFleeGoal extends Goal {
     public void start() {
         repath = 0;
         backingOff = false;
+        wallTicks = 0;
         parent = avali.isBaby() ? findParent() : null;
         avali.setTarget(null);
         avali.setSprinting(true);
@@ -103,7 +115,10 @@ public class AvaliFleeGoal extends Goal {
             }
         }
 
-        if (avali.getGear().isShield(avali.getOffhandItem()) && avali.distanceTo(danger) <= data.shieldDistance()) {
+        if (wallTicks > 0) {
+            wallTicks--;
+        }
+        if (wallTicks <= 0 && avali.getGear().isShield(avali.getOffhandItem()) && avali.distanceTo(danger) <= data.shieldDistance()) {
             backOff();
             return;
         }
@@ -142,10 +157,70 @@ public class AvaliFleeGoal extends Goal {
         }
         avali.getLookControl().setLookAt(danger, 30.0F, 30.0F);
         avali.lookAt(danger, 30.0F, 30.0F);
-        avali.getMoveControl().strafe(BACK_OFF, 0.0F);
         if (!avali.isUsingItem()) {
             avali.startUsingItem(InteractionHand.OFF_HAND);
         }
+        if (!avali.onGround()) {
+            Vec3 away = awayFromDanger();
+            if (backJump && away != null) {
+                avali.setDeltaMovement(away.x * BACK_JUMP_SPEED, avali.getDeltaMovement().y, away.z * BACK_JUMP_SPEED);
+            }
+            return;
+        }
+        backJump = false;
+        Vec3 away = awayFromDanger();
+        BlockPos behind = away == null ? null : behind(away);
+        if (behind != null && !isFree(behind)) {
+            if (canStepOn(behind)) {
+                avali.setDeltaMovement(away.x * BACK_JUMP_SPEED, BACK_JUMP_LIFT, away.z * BACK_JUMP_SPEED);
+                backJump = true;
+                return;
+            }
+            wallTicks = WALL_TICKS;
+        } else if (behind != null && isFree(behind.below())) {
+            if (canDropTo(behind)) {
+                Vec3 motion = avali.getDeltaMovement();
+                avali.setDeltaMovement(away.x * BACK_JUMP_SPEED, motion.y, away.z * BACK_JUMP_SPEED);
+                return;
+            }
+            wallTicks = WALL_TICKS;
+        }
+        avali.getMoveControl().strafe(BACK_OFF, 0.0F);
+    }
+
+    private Vec3 awayFromDanger() {
+        Vec3 away = avali.position().subtract(danger.position()).multiply(1.0, 0.0, 1.0);
+        return away.lengthSqr() < 1.0E-4 ? null : away.normalize();
+    }
+
+    private BlockPos behind(Vec3 away) {
+        Vec3 point = avali.position().add(away.scale(avali.getBbWidth() / 2 + STEP_REACH));
+        BlockPos pos = BlockPos.containing(point.x, avali.getY() + 0.5, point.z);
+        return pos.equals(avali.blockPosition()) ? null : pos;
+    }
+
+    private boolean canStepOn(BlockPos step) {
+        VoxelShape shape = avali.level().getBlockState(step).getCollisionShape(avali.level(), step);
+        return shape.max(Direction.Axis.Y) <= 1.0 && isFree(step.above()) && isFree(step.above(2))
+            && isFree(avali.blockPosition().above(2));
+    }
+
+    private boolean canDropTo(BlockPos edge) {
+        AvaliDangers.Data dangers = AvaliDangers.get(avali.level().getServer());
+        for (int depth = 0; depth <= MAX_DROP + 1; depth++) {
+            BlockPos pos = edge.below(depth);
+            if (!avali.level().getFluidState(pos).isEmpty()) {
+                return false;
+            }
+            if (!isFree(pos)) {
+                return depth >= 2 && !dangers.isHot(avali.level().getBlockState(pos));
+            }
+        }
+        return false;
+    }
+
+    private boolean isFree(BlockPos pos) {
+        return avali.level().getBlockState(pos).getCollisionShape(avali.level(), pos).isEmpty();
     }
 
     private Vec3 findSpot(int distance) {
