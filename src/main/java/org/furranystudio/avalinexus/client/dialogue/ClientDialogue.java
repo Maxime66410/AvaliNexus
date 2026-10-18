@@ -2,7 +2,7 @@
  * File: ClientDialogue.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-09-27
+ * Last Modified: 2026-10-18
  */
 package org.furranystudio.avalinexus.client.dialogue;
 
@@ -13,9 +13,12 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.Entity;
 import org.furranystudio.avalinexus.dialogue.DialogueChoice;
+import org.furranystudio.avalinexus.entity.avali.AvaliEntity;
 import org.furranystudio.avalinexus.network.ModNetworking;
 import org.furranystudio.avalinexus.network.packet.DialogueChoicePayload;
 import org.furranystudio.avalinexus.sound.ModSounds;
+
+import java.util.Arrays;
 
 public final class ClientDialogue {
 
@@ -23,9 +26,8 @@ public final class ClientDialogue {
     private static final float CHARS_PER_TICK = 1.5F;
     private static final int CLOSING_TICKS = 50;
     private static final int USE_BLOCK_TICKS = 10;
-    private static final DialogueChoice[] CHOICES = DialogueChoice.values();
-
     private static int entityId = -1;
+    private static DialogueChoice[] choices = DialogueChoice.values();
     private static String text = "";
     private static float revealed;
     private static int selected;
@@ -38,6 +40,9 @@ public final class ClientDialogue {
     public static void open(int id, String line) {
         entityId = id;
         selected = 0;
+        Minecraft minecraft = Minecraft.getInstance();
+        boolean baby = minecraft.level != null && minecraft.level.getEntity(id) instanceof AvaliEntity avali && avali.isBaby();
+        choices = Arrays.stream(DialogueChoice.values()).filter(choice -> !baby || choice != DialogueChoice.TRADE).toArray(DialogueChoice[]::new);
         closingTicks = -1;
         setLine(line);
     }
@@ -83,7 +88,7 @@ public final class ClientDialogue {
         while (options.keyInventory.consumeClick()) {
             confirm();
         }
-        for (int i = 0; i < CHOICES.length; i++) {
+        for (int i = 0; i < choices.length; i++) {
             while (options.keyHotbarSlots[i].consumeClick()) {
                 select(i);
                 confirm();
@@ -114,12 +119,12 @@ public final class ClientDialogue {
             return false;
         }
         int step = delta > 0 ? -1 : 1;
-        select(Math.floorMod(selected + step, CHOICES.length));
+        select(Math.floorMod(selected + step, choices.length));
         return true;
     }
 
     public static void select(int index) {
-        if (index != selected && index >= 0 && index < CHOICES.length) {
+        if (index != selected && index >= 0 && index < choices.length) {
             selected = index;
             playSound(ModSounds.UI_HOVER.get());
         }
@@ -135,7 +140,7 @@ public final class ClientDialogue {
             return;
         }
         playSound(ModSounds.UI_CLICK.get());
-        ModNetworking.sendToServer(new DialogueChoicePayload(entityId, selected));
+        ModNetworking.sendToServer(new DialogueChoicePayload(entityId, choices[selected].ordinal()));
     }
 
     // The Avali name and pack when it is loaded, the species name otherwise
@@ -163,7 +168,7 @@ public final class ClientDialogue {
     }
 
     public static DialogueChoice[] choices() {
-        return CHOICES;
+        return choices;
     }
 
     private static void setLine(String line) {

@@ -2,7 +2,7 @@
  * File: DialogueHud.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-09-27
+ * Last Modified: 2026-10-18
  */
 package org.furranystudio.avalinexus.client.dialogue;
 
@@ -91,8 +91,8 @@ public final class DialogueHud {
             AvaliUi.shadowedText(graphics, font, AvaliUi.styled(label), left + ICON_SIZE + 8, y + 4,
                 selected ? AvaliUi.ORANGE_GLOW : AvaliUi.TEXT_PRIMARY);
         }
-        Component hint = Component.translatable("avalinexus.dialogue.hint");
-        graphics.text(font, hint, left, top + choices.length * CHOICE_HEIGHT + 4, AvaliUi.TEXT_DISABLED, false);
+        Component hint = Component.translatable("avalinexus.dialogue.hint", choices.length);
+        AvaliUi.shadowedText(graphics, font, hint, left, top + choices.length * CHOICE_HEIGHT + 4, AvaliUi.TEXT_DISABLED);
     }
 
     private static int choicesLeft(int width) {

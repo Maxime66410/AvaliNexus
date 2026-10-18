@@ -2,7 +2,7 @@
  * File: DialogueManager.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-09-27
+ * Last Modified: 2026-10-18
  */
 package org.furranystudio.avalinexus.dialogue;
 
@@ -69,6 +69,9 @@ public final class DialogueManager {
         }
 
         DialogueChoice choice = DialogueChoice.values()[choiceIndex];
+        if (choice == DialogueChoice.TRADE && avali.isBaby()) {
+            return;
+        }
         String section = switch (choice) {
             case TALK -> "talk";
             case TRADE -> "trade";
@@ -93,7 +96,7 @@ public final class DialogueManager {
     // Trades only go through while the player is still talking to that Avali, in range
     public static void onShopTrade(ServerPlayer player, int entityId, int offer) {
         Session session = SESSIONS.get(player.getUUID());
-        if (session == null || session.avali.getId() != entityId || !session.avali.isAlive()
+        if (session == null || session.avali.getId() != entityId || !session.avali.isAlive() || session.avali.isBaby()
                 || session.avali.distanceTo(player) > MAX_DISTANCE) {
             return;
         }
