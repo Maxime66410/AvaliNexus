@@ -17,7 +17,11 @@ import com.mojang.math.Axis;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.util.ARGB;
+import net.minecraft.util.Ease;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
 import org.furranystudio.avalinexus.entity.avali.AvaliEntity;
 import org.furranystudio.avalinexus.entity.avali.expression.AvaliFace;
@@ -36,6 +40,12 @@ public class AvaliRenderer<R extends LivingEntityRenderState & GeoRenderState> e
     private static final DataTicket<Float> SWIM_PITCH = DataTicket.create("avalinexus_swim_pitch", Float.class);
     private static final DataTicket<AvaliFace> FACE = DataTicket.create("avalinexus_face", AvaliFace.class);
     private static final DataTicket<Boolean> RIDING = DataTicket.create("avalinexus_riding", Boolean.class);
+    private static final DataTicket<Boolean> RIGHT_HOLDING = DataTicket.create("avalinexus_right_holding", Boolean.class);
+    private static final DataTicket<Boolean> LEFT_HOLDING = DataTicket.create("avalinexus_left_holding", Boolean.class);
+    private static final DataTicket<Float> SWING = DataTicket.create("avalinexus_swing", Float.class);
+    private static final DataTicket<Boolean> SWING_LEFT = DataTicket.create("avalinexus_swing_left", Boolean.class);
+    private static final DataTicket<Boolean> BLOCKING = DataTicket.create("avalinexus_blocking", Boolean.class);
+    private static final DataTicket<Boolean> BLOCK_LEFT = DataTicket.create("avalinexus_block_left", Boolean.class);
     private static final String[] SIDES = {"Left", "Right"};
     private static final String[] MOUTHS = {"Mouth Left 0", "Mouth Right 0", "Mouth Left 1", "Mouth Right 1", "Mouth Front"};
     private static final int BLINK_CYCLE = 300;
@@ -70,6 +80,15 @@ public class AvaliRenderer<R extends LivingEntityRenderState & GeoRenderState> e
         state.addGeckolibData(FACE, avali.getFace());
         state.addGeckolibData(RIDING, avali.isPassenger());
         state.addGeckolibData(AvaliLooks.TEXTURE, AvaliLooks.texture(avali));
+        HumanoidArm mainArm = avali.getMainArm();
+        boolean rightHanded = mainArm == HumanoidArm.RIGHT;
+        state.addGeckolibData(RIGHT_HOLDING, !(rightHanded ? avali.getMainHandItem() : avali.getOffhandItem()).isEmpty());
+        state.addGeckolibData(LEFT_HOLDING, !(rightHanded ? avali.getOffhandItem() : avali.getMainHandItem()).isEmpty());
+        LivingEntity.SwingDescription swing = avali.getCurrentSwing();
+        state.addGeckolibData(SWING, swing == null ? 0.0F : avali.getSwingAnimation(partialTick));
+        state.addGeckolibData(SWING_LEFT, swing != null && swing.hand().asArm(mainArm) == HumanoidArm.LEFT);
+        state.addGeckolibData(BLOCKING, avali.isUsingItem() && avali.getUsedItemHand() == InteractionHand.OFF_HAND);
+        state.addGeckolibData(BLOCK_LEFT, InteractionHand.OFF_HAND.asArm(mainArm) == HumanoidArm.LEFT);
     }
 
     @Override
@@ -109,6 +128,44 @@ public class AvaliRenderer<R extends LivingEntityRenderState & GeoRenderState> e
         Rotation rightLeg = new Rotation(Mth.cos(pos * 0.6662F) * 1.4F * speed, 0.0F, 0.0F);
         Rotation leftLeg = new Rotation(Mth.cos(pos * 0.6662F + Mth.PI) * 1.4F * speed, 0.0F, 0.0F);
 
+        // Vanilla sitting pose, the CPM riding animation goes on top of it
+        if (riding) {
+            rightArm = new Rotation(rightArm.x - Mth.PI / 5.0F, rightArm.y, rightArm.z);
+            leftArm = new Rotation(leftArm.x - Mth.PI / 5.0F, leftArm.y, leftArm.z);
+            rightLeg = new Rotation(-1.4137167F, Mth.PI / 10.0F, 0.07853982F);
+            leftLeg = new Rotation(-1.4137167F, -Mth.PI / 10.0F, -0.07853982F);
+        }
+
+        if (state.getOrDefaultGeckolibData(RIGHT_HOLDING, false)) {
+            rightArm = holding(rightArm);
+        }
+        if (state.getOrDefaultGeckolibData(LEFT_HOLDING, false)) {
+            leftArm = holding(leftArm);
+        }
+        if (state.getOrDefaultGeckolibData(BLOCKING, false)) {
+            if (state.getOrDefaultGeckolibData(BLOCK_LEFT, true)) {
+                leftArm = new Rotation(leftArm.x - 0.4F, 0.3F, leftArm.z);
+            } else {
+                rightArm = new Rotation(rightArm.x - 0.4F, -0.3F, rightArm.z);
+            }
+        }
+
+        float swing = state.getOrDefaultGeckolibData(SWING, 0.0F);
+        if (swing > 0.0F) {
+            boolean swingLeft = state.getOrDefaultGeckolibData(SWING_LEFT, false);
+            float twist = Mth.sin(Mth.sqrt(swing) * Mth.PI * 2.0F) * 0.2F * (swingLeft ? -1.0F : 1.0F);
+            rightArm = new Rotation(rightArm.x, rightArm.y + twist, rightArm.z);
+            leftArm = new Rotation(leftArm.x + twist, leftArm.y + twist, leftArm.z);
+            float lift = Mth.sin(Ease.outQuart(swing) * Mth.PI) * 1.2F + Mth.sin(swing * Mth.PI) * -(head.x - 0.7F) * 0.75F;
+            float roll = Mth.sin(swing * Mth.PI) * -0.4F;
+            if (swingLeft) {
+                leftArm = new Rotation(leftArm.x - lift, leftArm.y + twist * 2.0F, leftArm.z + roll);
+            } else {
+                rightArm = new Rotation(rightArm.x - lift, rightArm.y + twist * 2.0F, rightArm.z + roll);
+            }
+            rotateBone(snapshots, "body", new Rotation(0.0F, twist, 0.0F));
+        }
+
         if (swim > 0.0F) {
             head = new Rotation(Mth.rotLerpRad(swim, head.x, -Mth.PI / 4.0F), head.y, head.z);
             Rotation[] stroke = swimStroke(pos);
@@ -116,14 +173,6 @@ public class AvaliRenderer<R extends LivingEntityRenderState & GeoRenderState> e
             rightArm = rightArm.lerpTo(stroke[1], swim);
             leftLeg = new Rotation(Mth.lerp(swim, leftLeg.x, 0.3F * Mth.cos(pos * 0.33333334F + Mth.PI)), 0.0F, 0.0F);
             rightLeg = new Rotation(Mth.lerp(swim, rightLeg.x, 0.3F * Mth.cos(pos * 0.33333334F)), 0.0F, 0.0F);
-        }
-
-        // Vanilla sitting pose, the CPM riding animation goes on top of it
-        if (riding) {
-            rightArm = new Rotation(rightArm.x - Mth.PI / 5.0F, rightArm.y, rightArm.z);
-            leftArm = new Rotation(leftArm.x - Mth.PI / 5.0F, leftArm.y, leftArm.z);
-            rightLeg = new Rotation(-1.4137167F, Mth.PI / 10.0F, 0.07853982F);
-            leftLeg = new Rotation(-1.4137167F, -Mth.PI / 10.0F, -0.07853982F);
         }
 
         rotateBone(snapshots, "head", head);
@@ -188,6 +237,10 @@ public class AvaliRenderer<R extends LivingEntityRenderState & GeoRenderState> e
         float progress = (cycle - 22.0F) / 4.0F;
         float x = Mth.HALF_PI - Mth.HALF_PI * progress;
         return new Rotation[] {new Rotation(x, Mth.PI, Mth.PI), new Rotation(x, Mth.PI, Mth.PI)};
+    }
+
+    private static Rotation holding(Rotation arm) {
+        return new Rotation(arm.x * 0.5F - Mth.PI / 10.0F, 0.0F, arm.z);
     }
 
     private static float quadraticArmUpdate(float value) {

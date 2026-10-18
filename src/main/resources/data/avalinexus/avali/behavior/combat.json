@@ -1,0 +1,49 @@
+{
+  "attack_health": 0.5,
+  "flee_health": 0.3,
+  "flee_distance": 16,
+  "flee_speed": 1.5,
+  "chase_speed": 1.2,
+  "ally_radius": 16,
+  "enemy_radius": 10,
+  "too_many_enemies": 3,
+  "outnumber_ratio": 2.0,
+  "grudge_seconds": 30,
+  "grudge_distance": 32,
+  "weapon_stow_seconds": 5,
+  "shield_distance": 3.5,
+  "power_margin": 1.5,
+  "enemy_default_damage": 2.0,
+  "enemy_attacks_per_second": 1.0,
+  "cornered_seconds": 3,
+  "parent_safe_distance": 6,
+  "crit": {
+    "jump_distance": 4,
+    "jump_cooldown": 40,
+    "multiplier": 1.5
+  },
+  "creeper": {
+    "detect_radius": 8,
+    "min_health": 0.2,
+    "flee_distance": 8,
+    "flee_speed": 1.5
+  },
+  "hunted": [
+    "minecraft:zombie",
+    "minecraft:husk",
+    "minecraft:drowned",
+    "minecraft:zombie_villager",
+    "minecraft:skeleton",
+    "minecraft:stray",
+    "minecraft:bogged",
+    "minecraft:spider",
+    "minecraft:cave_spider",
+    "minecraft:witch",
+    "minecraft:pillager",
+    "minecraft:vindicator",
+    "minecraft:evoker",
+    "minecraft:slime",
+    "minecraft:silverfish",
+    "minecraft:endermite"
+  ]
+}

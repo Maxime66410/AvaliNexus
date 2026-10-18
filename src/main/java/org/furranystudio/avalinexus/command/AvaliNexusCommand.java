@@ -2,7 +2,7 @@
  * File: AvaliNexusCommand.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-09-27
+ * Last Modified: 2026-10-18
  */
 package org.furranystudio.avalinexus.command;
 
@@ -20,6 +20,7 @@ import org.furranystudio.avalinexus.archive.ArchiveData;
 import org.furranystudio.avalinexus.dialogue.DialogueData;
 import org.furranystudio.avalinexus.entity.avali.AvaliAppearance;
 import org.furranystudio.avalinexus.entity.avali.AvaliBehavior;
+import org.furranystudio.avalinexus.entity.avali.AvaliCombat;
 import org.furranystudio.avalinexus.entity.avali.AvaliDangers;
 import org.furranystudio.avalinexus.entity.avali.AvaliEquipment;
 import org.furranystudio.avalinexus.entity.avali.AvaliNames;
@@ -39,6 +40,7 @@ public final class AvaliNexusCommand {
     static {
         CONFIGS.put("behavior", AvaliBehavior::reload);
         CONFIGS.put("dangers", AvaliDangers::reload);
+        CONFIGS.put("combat", AvaliCombat::reload);
         CONFIGS.put("equipment", AvaliEquipment::reload);
         CONFIGS.put("appearance", AvaliAppearance::reload);
         CONFIGS.put("names", AvaliNames::reload);

@@ -78,7 +78,11 @@ public class AvaliGear {
             List<ItemStack> weapons = weapons();
             if (weapons.size() >= data.weaponsKept()) {
                 ItemStack worst = worst(weapons);
-                backpack.remove(worst);
+                if (worst == avali.getMainHandItem()) {
+                    avali.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
+                } else {
+                    backpack.remove(worst);
+                }
                 give(worst);
             }
             backpack.add(stack.split(1));
@@ -131,6 +135,38 @@ public class AvaliGear {
     public ItemStack bestWeapon() {
         AvaliEquipment.Data data = data();
         return weapons().stream().max(Comparator.comparingDouble(data::weaponScore)).orElse(ItemStack.EMPTY);
+    }
+
+    public boolean isShield(ItemStack stack) {
+        return data().isShield(stack);
+    }
+
+    public boolean hasWeapon() {
+        return !weapons().isEmpty();
+    }
+
+    public void drawWeapon() {
+        AvaliEquipment.Data data = data();
+        ItemStack best = bestWeapon();
+        ItemStack hand = avali.getMainHandItem();
+        if (best.isEmpty() || best == hand) {
+            return;
+        }
+        backpack.remove(best);
+        avali.setItemSlot(EquipmentSlot.MAINHAND, best);
+        if (data.isWeapon(hand)) {
+            backpack.add(hand);
+        } else {
+            stash(hand);
+        }
+    }
+
+    public void stowWeapon() {
+        ItemStack hand = avali.getMainHandItem();
+        if (data().isWeapon(hand)) {
+            avali.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
+            stash(hand);
+        }
     }
 
     public void give(ItemStack stack) {
@@ -190,7 +226,11 @@ public class AvaliGear {
 
     private List<ItemStack> weapons() {
         AvaliEquipment.Data data = data();
-        return backpack.stream().filter(data::isWeapon).toList();
+        List<ItemStack> weapons = new ArrayList<>(backpack.stream().filter(data::isWeapon).toList());
+        if (data.isWeapon(avali.getMainHandItem())) {
+            weapons.add(avali.getMainHandItem());
+        }
+        return weapons;
     }
 
     private ItemStack worst(List<ItemStack> weapons) {

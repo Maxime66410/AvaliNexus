@@ -16,12 +16,16 @@ import com.geckolib.animation.state.AnimationTest;
 import com.geckolib.util.GeckoLibUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.UUIDUtil;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.network.protocol.game.ClientboundAnimatePacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.resources.Identifier;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -30,12 +34,17 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
@@ -44,6 +53,8 @@ import net.minecraft.world.entity.decoration.Cushion;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.BlocksAttacks;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.pathfinder.PathType;
@@ -55,18 +66,21 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
+import org.furranystudio.avalinexus.AvaliNexus;
 import org.furranystudio.avalinexus.dialogue.DialogueManager;
 import org.furranystudio.avalinexus.entity.ModEntities;
 import org.furranystudio.avalinexus.entity.avali.expression.AvaliFace;
 import org.furranystudio.avalinexus.entity.avali.expression.AvaliGesture;
 import org.furranystudio.avalinexus.entity.avali.expression.AvaliMood;
+import org.furranystudio.avalinexus.entity.avali.goal.AvaliCreeperGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliCushionGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliEatGoal;
+import org.furranystudio.avalinexus.entity.avali.goal.AvaliFleeGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliGiveGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliHeatGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliHotBiomeGoal;
+import org.furranystudio.avalinexus.entity.avali.goal.AvaliMeleeGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliPackGoal;
-import org.furranystudio.avalinexus.entity.avali.goal.AvaliPanicGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliPickupGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliRestGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliShelterGoal;
@@ -74,6 +88,7 @@ import org.furranystudio.avalinexus.entity.avali.goal.AvaliSleepGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliStrollGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliSwimGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliTalkGoal;
+import org.furranystudio.avalinexus.entity.avali.goal.AvaliTargetGoal;
 import org.furranystudio.avalinexus.entity.avali.pose.AvaliPose;
 import org.furranystudio.avalinexus.sound.ModSounds;
 import org.furranystudio.avalinexus.trade.AvaliShop;
@@ -96,6 +111,7 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     private static final int SWIM_GRACE_TICKS = 10;
     private static final float MAX_SWIM_PITCH = 75.0F;
     private static final int NOISE_INTERVAL = 240;
+    private static final int BUSY_CHECK_INTERVAL = 5;
     private static final RawAnimation LOWER_EARS = RawAnimation.begin().thenPlayAndHold("Lower Ears");
     private static final RawAnimation EMPTY = RawAnimation.begin().thenLoop("empty");
     private static final RawAnimation NAP = RawAnimation.begin().thenLoop("NAP");
@@ -115,6 +131,7 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     private static final float WATER_MALUS = 16.0F;
     private static final float WATER_BORDER_MALUS = 8.0F;
     private static final float FIRE_NEIGHBOR_MALUS = 16.0F;
+    private static final Identifier CRIT_BONUS = AvaliNexus.id("crit_bonus");
     private static final AvaliGesture[] IDLE_GESTURES = Arrays.stream(AvaliGesture.values())
         .filter(AvaliGesture::playsWhenIdle).toArray(AvaliGesture[]::new);
 
@@ -141,6 +158,7 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     private boolean named;
     private boolean styled;
     private boolean panicking;
+    private boolean dodging;
     private boolean wasBaby;
     private ServerPlayer talkingTo;
     private UUID packId;
@@ -149,6 +167,10 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     private Vec3 packCenter;
     private int packCheck;
     private AvaliShop shop;
+    private LivingEntity threat;
+    private long threatTime;
+    private int lastCombatTick;
+    private long corneredUntil;
 
     public AvaliEntity(EntityType<? extends AvaliEntity> type, Level level) {
         super(type, level);
@@ -163,7 +185,9 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         return Mob.createMobAttributes()
             .add(Attributes.MAX_HEALTH, 20.0)
             .add(Attributes.MOVEMENT_SPEED, 0.3)
-            .add(Attributes.FOLLOW_RANGE, 32.0);
+            .add(Attributes.FOLLOW_RANGE, 32.0)
+            .add(Attributes.ATTACK_DAMAGE, 1.0)
+            .add(Attributes.ATTACK_SPEED, 4.0);
     }
 
     @Override
@@ -184,9 +208,11 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         goalSelector.addGoal(0, new FloatGoal(this));
         goalSelector.addGoal(1, new AvaliSwimGoal(this, 1.0));
         goalSelector.addGoal(1, new AvaliTalkGoal(this));
-        goalSelector.addGoal(2, new AvaliPanicGoal(this, 1.1));
+        goalSelector.addGoal(1, new AvaliCreeperGoal(this));
+        goalSelector.addGoal(2, new AvaliFleeGoal(this));
         goalSelector.addGoal(2, new AvaliHeatGoal(this));
         goalSelector.addGoal(2, new AvaliEatGoal(this));
+        goalSelector.addGoal(3, new AvaliMeleeGoal(this));
         goalSelector.addGoal(3, new AvaliHotBiomeGoal(this));
         goalSelector.addGoal(4, new AvaliSleepGoal(this, 0.8));
         goalSelector.addGoal(5, new AvaliPackGoal(this));
@@ -198,6 +224,7 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         goalSelector.addGoal(7, new AvaliStrollGoal(this, 0.8));
         goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
         goalSelector.addGoal(9, new RandomLookAroundGoal(this));
+        targetSelector.addGoal(1, new AvaliTargetGoal(this));
     }
 
     @Override
@@ -218,6 +245,9 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     public boolean hurtServer(ServerLevel level, DamageSource source, float amount) {
         boolean hurt = super.hurtServer(level, source, amount);
         if (hurt) {
+            if (source.getEntity() instanceof LivingEntity attacker && AvaliFight.isValidEnemy(attacker)) {
+                alertPack(attacker);
+            }
             angryTicks = ANGRY_TICKS;
             stopGesture();
             if (talkingTo != null) {
@@ -225,6 +255,91 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
             }
         }
         return hurt;
+    }
+
+    private void alertPack(LivingEntity attacker) {
+        remember(attacker);
+        if (packId == null) {
+            return;
+        }
+        double radius = AvaliFight.data(this).allyRadius();
+        for (AvaliEntity member : level().getEntitiesOfClass(AvaliEntity.class, getBoundingBox().inflate(radius),
+                other -> other != this && packId.equals(other.packId) && distanceTo(other) <= radius)) {
+            member.remember(attacker);
+        }
+    }
+
+    public void remember(LivingEntity attacker) {
+        threat = attacker;
+        threatTime = level().getGameTime();
+    }
+
+    public void setCornered(int ticks) {
+        corneredUntil = level().getGameTime() + ticks;
+    }
+
+    public boolean isCornered() {
+        return level().getGameTime() < corneredUntil;
+    }
+
+    public LivingEntity getThreat() {
+        if (threat == null) {
+            return null;
+        }
+        AvaliCombat.Data data = AvaliFight.data(this);
+        if (!AvaliFight.isValidEnemy(threat) || threat.level() != level()
+                || level().getGameTime() - threatTime > data.grudgeSeconds() * 20L || distanceTo(threat) > data.grudgeDistance()) {
+            threat = null;
+        }
+        return threat;
+    }
+
+    @Override
+    public boolean doHurtTarget(ServerLevel level, Entity target) {
+        ItemStack weapon = getWeaponItem();
+        boolean critical = canCriticalAttack(target);
+        AttributeInstance damage = getAttribute(Attributes.ATTACK_DAMAGE);
+        if (critical && damage != null) {
+            damage.addTransientModifier(new AttributeModifier(CRIT_BONUS,
+                AvaliFight.data(this).crit().multiplier() - 1.0, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+        }
+        boolean hit = super.doHurtTarget(level, target);
+        if (damage != null) {
+            damage.removeModifier(CRIT_BONUS);
+        }
+        if (hit && critical) {
+            playSound(SoundEvents.PLAYER_ATTACK_CRIT, 1.0F, 1.0F);
+            level.getChunkSource().sendToTrackingPlayersAndSelf(target, new ClientboundAnimatePacket(target, ClientboundAnimatePacket.CRITICAL_HIT));
+        }
+        if (hit && target instanceof LivingEntity living) {
+            weapon.postHurtEnemy(living, this);
+        }
+        return hit;
+    }
+
+    public boolean canCriticalAttack(Entity target) {
+        return fallDistance > 0.0 && !onGround() && !onClimbable() && !isInWater() && !hasEffect(MobEffects.BLINDNESS)
+            && !isPassenger() && target instanceof LivingEntity && !isSprinting();
+    }
+
+    @Override
+    public ItemStack getItemBlockingWith() {
+        return isUsingItem() && getUseItem().has(DataComponents.BLOCKS_ATTACKS) ? getUseItem() : null;
+    }
+
+    @Override
+    public float applyItemBlocking(ServerLevel level, DamageSource source, float damage) {
+        ItemStack shield = getItemBlockingWith();
+        InteractionHand hand = getUsedItemHand();
+        float blocked = super.applyItemBlocking(level, source, damage);
+        BlocksAttacks blocks = shield == null ? null : shield.get(DataComponents.BLOCKS_ATTACKS);
+        if (blocked > 0.0F && blocks != null) {
+            int wear = blocks.itemDamage().apply(blocked);
+            if (wear > 0) {
+                shield.hurtAndBreak(wear, this, hand.asEquipmentSlot());
+            }
+        }
+        return blocked;
     }
 
     @Override
@@ -264,7 +379,14 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
 
     @Override
     protected InteractionResult mobInteract(Player player, InteractionHand hand) {
-        if (hand != InteractionHand.MAIN_HAND || player.isSecondaryUseActive() || isSleeping() || getMood().earsDown()) {
+        if (hand != InteractionHand.MAIN_HAND || player.isSecondaryUseActive() || isSleeping()) {
+            return super.mobInteract(player, hand);
+        }
+        if (player instanceof ServerPlayer serverPlayer && isBusy()) {
+            serverPlayer.sendSystemMessage(Component.translatable("avalinexus.dialogue.busy"), true);
+            return InteractionResult.SUCCESS;
+        }
+        if (getMood().earsDown()) {
             return super.mobInteract(player, hand);
         }
         if (player instanceof ServerPlayer serverPlayer) {
@@ -430,10 +552,24 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
             }
             updateMood();
             updateGesture();
+            updateWeapon();
             if (talkingTo != null && (!talkingTo.isAlive() || talkingTo.level() != level()
                     || distanceTo(talkingTo) > DialogueManager.MAX_DISTANCE)) {
                 DialogueManager.close(talkingTo, true);
             }
+            if (talkingTo != null && tickCount % BUSY_CHECK_INTERVAL == 0 && isBusy()) {
+                ServerPlayer player = talkingTo;
+                DialogueManager.close(player, true);
+                player.sendSystemMessage(Component.translatable("avalinexus.dialogue.busy"), true);
+            }
+        }
+    }
+
+    private void updateWeapon() {
+        if (getTarget() != null) {
+            lastCombatTick = tickCount;
+        } else if (tickCount - lastCombatTick > AvaliFight.data(this).weaponStowSeconds() * 20) {
+            gear.stowWeapon();
         }
     }
 
@@ -608,6 +744,17 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
 
     public void setPanicking(boolean panicking) {
         this.panicking = panicking;
+    }
+
+    public void setDodging(boolean dodging) {
+        this.dodging = dodging;
+    }
+
+    public boolean isBusy() {
+        if (getTarget() != null || panicking || dodging) {
+            return true;
+        }
+        return AvaliFight.swellingCreeper(this) != null || AvaliFight.shouldFlee(this, AvaliFight.enemies(this));
     }
 
     public AvaliMood getMood() {

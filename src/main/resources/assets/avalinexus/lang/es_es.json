@@ -19,7 +19,7 @@
   "avalinexus.dialogue.choice.trade": "Comerciar",
   "avalinexus.dialogue.choice.leave": "Irse",
   "avalinexus.dialogue.hint": "Rueda o 1-3, E para elegir, Alt para el ratón",
-  "avalinexus.dialogue.busy": "Este Avali ya está hablando con alguien.",
+  "avalinexus.dialogue.busy": "El Avali está ocupado.",
   "key.avalinexus.dialogue_cursor": "Diálogo: liberar el ratón (mantener)",
   "avalinexus.dialogue.avali.fallback": "...",
   "avalinexus.dialogue.avali.greeting.1": "¡Oh, un visitante! No te preocupes por el frío, uno se acostumbra.",
