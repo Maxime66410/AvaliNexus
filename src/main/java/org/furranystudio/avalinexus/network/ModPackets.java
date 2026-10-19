@@ -2,7 +2,7 @@
  * File: ModPackets.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-09-27
+ * Last Modified: 2026-10-19
  */
 package org.furranystudio.avalinexus.network;
 
@@ -22,7 +22,10 @@ import org.furranystudio.avalinexus.network.packet.RailEjectPayload;
 import org.furranystudio.avalinexus.network.packet.RailFirePayload;
 import org.furranystudio.avalinexus.network.packet.RailReloadPayload;
 import org.furranystudio.avalinexus.network.packet.ShopTradePayload;
+import org.furranystudio.avalinexus.network.packet.ReputationPayload;
+import org.furranystudio.avalinexus.network.packet.RequestReputationPayload;
 import org.furranystudio.avalinexus.network.packet.ShopUpdatePayload;
+import org.furranystudio.avalinexus.reputation.AvaliReputation;
 
 public final class ModPackets {
 
@@ -40,6 +43,9 @@ public final class ModPackets {
             (payload, player) -> DialogueManager.onChoice(player, payload.entityId(), payload.choice()));
 
         ModNetworking.clientbound(OpenShopPayload.TYPE, OpenShopPayload.STREAM_CODEC);
+        ModNetworking.clientbound(ReputationPayload.TYPE, ReputationPayload.STREAM_CODEC);
+        ModNetworking.serverbound(RequestReputationPayload.TYPE, RequestReputationPayload.STREAM_CODEC,
+            (payload, player) -> AvaliReputation.sendScreen(player));
         ModNetworking.clientbound(OpenArchivesPayload.TYPE, OpenArchivesPayload.STREAM_CODEC);
         ModNetworking.clientbound(ShopUpdatePayload.TYPE, ShopUpdatePayload.STREAM_CODEC);
         ModNetworking.serverbound(ShopTradePayload.TYPE, ShopTradePayload.STREAM_CODEC,

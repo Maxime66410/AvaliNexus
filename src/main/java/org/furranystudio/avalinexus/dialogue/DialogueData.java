@@ -2,7 +2,7 @@
  * File: DialogueData.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-09-27
+ * Last Modified: 2026-10-19
  */
 package org.furranystudio.avalinexus.dialogue;
 
@@ -15,6 +15,7 @@ import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import org.furranystudio.avalinexus.AvaliNexus;
 import org.furranystudio.avalinexus.entity.avali.AvaliEntity;
+import org.furranystudio.avalinexus.reputation.ReputationTier;
 
 import java.io.Reader;
 import java.util.ArrayList;
@@ -35,12 +36,16 @@ public final class DialogueData {
     private DialogueData() {
     }
 
-    public static DialogueLine pick(MinecraftServer server, String section, AvaliEntity avali, DialogueLine avoid) {
+    public static DialogueLine pick(MinecraftServer server, String section, AvaliEntity avali, ReputationTier tier, DialogueLine avoid) {
         List<DialogueLine> candidates = new ArrayList<>();
         for (DialogueLine line : lines(server, section)) {
-            if (line.matches(avali)) {
+            if (line.matches(avali, tier)) {
                 candidates.add(line);
             }
+        }
+        List<DialogueLine> forTier = candidates.stream().filter(line -> tier.key().equals(line.condition())).toList();
+        if (!forTier.isEmpty()) {
+            candidates = new ArrayList<>(forTier);
         }
         if (candidates.size() > 1) {
             candidates.remove(avoid);

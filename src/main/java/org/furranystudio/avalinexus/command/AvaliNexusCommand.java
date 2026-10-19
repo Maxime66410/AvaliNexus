@@ -7,6 +7,7 @@
 package org.furranystudio.avalinexus.command;
 
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
@@ -20,6 +21,7 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.furranystudio.avalinexus.archive.ArchiveData;
@@ -37,6 +39,9 @@ import org.furranystudio.avalinexus.entity.avali.AvaliMusicPlayer;
 import org.furranystudio.avalinexus.entity.avali.AvaliNames;
 import org.furranystudio.avalinexus.network.ModNetworking;
 import org.furranystudio.avalinexus.network.packet.PingPayload;
+import org.furranystudio.avalinexus.reputation.AvaliReputation;
+import org.furranystudio.avalinexus.reputation.ReputationData;
+import org.furranystudio.avalinexus.reputation.ReputationTier;
 import org.furranystudio.avalinexus.settings.SettingsRegistry;
 import org.furranystudio.avalinexus.trade.TradeData;
 
@@ -67,6 +72,7 @@ public final class AvaliNexusCommand {
         CONFIGS.put("archive", ArchiveData::reload);
         CONFIGS.put("music", AvaliMusic::reload);
         CONFIGS.put("companion", AvaliCompanions::reload);
+        CONFIGS.put("reputation", AvaliReputation::reload);
     }
 
     private AvaliNexusCommand() {
@@ -102,6 +108,14 @@ public final class AvaliNexusCommand {
                             .executes(AvaliNexusCommand::runMusicAvali)))
                     .then(Commands.literal("stop")
                         .executes(AvaliNexusCommand::runMusicStop)))
+                .then(Commands.literal("reputation")
+                    .then(Commands.literal("get")
+                        .executes(AvaliNexusCommand::runReputationGet))
+                    .then(Commands.literal("set")
+                        .then(Commands.argument("pack", StringArgumentType.word())
+                            .suggests((ctx, builder) -> SharedSuggestionProvider.suggest(AvaliNames.packs(ctx.getSource().getServer()), builder))
+                            .then(Commands.argument("value", IntegerArgumentType.integer())
+                                .executes(AvaliNexusCommand::runReputationSet)))))
         );
     }
 
@@ -193,6 +207,34 @@ public final class AvaliNexusCommand {
             context.getSource().sendFailure(Component.translatable("avalinexus.music.unknown", id.toString()));
         }
         return song;
+    }
+
+    private static int runReputationGet(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        AvaliReputation.Data config = AvaliReputation.get(player.level().getServer());
+        MutableComponent message = Component.translatable("avalinexus.reputation.list");
+        for (String pack : AvaliNames.packs(player.level().getServer())) {
+            ReputationData.Standing standing = AvaliReputation.standing(player, pack);
+            ReputationTier tier = config.tier(standing.value());
+            message.append(Component.translatable("avalinexus.reputation.entry", Component.translatable("avalinexus.pack." + pack),
+                standing.value(), tier.label().copy().withColor(tier.color())));
+        }
+        context.getSource().sendSuccess(() -> message, false);
+        return 1;
+    }
+
+    private static int runReputationSet(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        String pack = StringArgumentType.getString(context, "pack");
+        if (!AvaliNames.packs(player.level().getServer()).contains(pack)) {
+            context.getSource().sendFailure(Component.translatable("avalinexus.reputation.unknown_pack", pack));
+            return 0;
+        }
+        AvaliReputation.set(player, pack, IntegerArgumentType.getInteger(context, "value"));
+        int value = AvaliReputation.value(player, pack);
+        context.getSource().sendSuccess(() -> Component.translatable("avalinexus.reputation.set",
+            Component.translatable("avalinexus.pack." + pack), value), true);
+        return 1;
     }
 
     private static int runSettingsList(CommandContext<CommandSourceStack> context) {

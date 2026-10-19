@@ -2,7 +2,7 @@
  * File: ArchiveScreen.java
  * Author: Maxime66410
  * Created: 2026-09-28
- * Last Modified: 2026-09-28
+ * Last Modified: 2026-10-19
  */
 package org.furranystudio.avalinexus.client.archive;
 
@@ -20,6 +20,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import org.furranystudio.avalinexus.archive.ArchiveCategory;
 import org.furranystudio.avalinexus.archive.ArchiveEntry;
+import org.furranystudio.avalinexus.client.reputation.ReputationClient;
 import org.furranystudio.avalinexus.client.ui.AvaliUi;
 import org.furranystudio.avalinexus.dialogue.DialogueChoice;
 import org.furranystudio.avalinexus.sound.ModSounds;
@@ -87,6 +88,11 @@ public class ArchiveScreen extends Screen {
             graphics.setTooltipForNextFrame(Component.translatable("avalinexus.shop.close"), mouseX, mouseY);
         }
         graphics.blitSprite(RenderPipelines.GUI_TEXTURED, DialogueChoice.LEAVE.icon(), closeX(), closeY(), CLOSE_SIZE, CLOSE_SIZE);
+        Component reputation = AvaliUi.styled(Component.translatable("avalinexus.reputation.button"));
+        int buttonWidth = font.width(reputation) + 8;
+        boolean hovered = inside(mouseX, mouseY, reputationX(buttonWidth), closeY() - 2, buttonWidth, CLOSE_SIZE + 4);
+        AvaliUi.panel(graphics, reputationX(buttonWidth), closeY() - 2, buttonWidth, CLOSE_SIZE + 4, hovered ? AvaliUi.PRIMARY_BORDER : AvaliUi.BACKDROP);
+        graphics.text(font, reputation, reputationX(buttonWidth) + 4, closeY() + 1, hovered ? AvaliUi.ORANGE_GLOW : AvaliUi.TEXT_PRIMARY, false);
 
         renderTabs(graphics, mouseX, mouseY);
         if (entries.isEmpty()) {
@@ -170,6 +176,12 @@ public class ArchiveScreen extends Screen {
         if (inside(x, y, closeX(), closeY(), CLOSE_SIZE, CLOSE_SIZE)) {
             playSound(ModSounds.UI_CLICK.get());
             onClose();
+            return true;
+        }
+        int buttonWidth = font.width(AvaliUi.styled(Component.translatable("avalinexus.reputation.button"))) + 8;
+        if (inside(x, y, reputationX(buttonWidth), closeY() - 2, buttonWidth, CLOSE_SIZE + 4)) {
+            playSound(ModSounds.UI_CLICK.get());
+            ReputationClient.request();
             return true;
         }
         for (int i = 0; i < categories.size(); i++) {
@@ -320,6 +332,10 @@ public class ArchiveScreen extends Screen {
 
     private int closeY() {
         return top + 7;
+    }
+
+    private int reputationX(int buttonWidth) {
+        return closeX() - 6 - buttonWidth;
     }
 
     private static boolean inside(double x, double y, int areaX, int areaY, int width, int height) {

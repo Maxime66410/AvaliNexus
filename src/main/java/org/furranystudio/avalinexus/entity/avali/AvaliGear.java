@@ -2,12 +2,13 @@
  * File: AvaliGear.java
  * Author: Maxime66410
  * Created: 2026-10-17
- * Last Modified: 2026-10-18
+ * Last Modified: 2026-10-19
  */
 package org.furranystudio.avalinexus.entity.avali;
 
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -20,6 +21,7 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import org.furranystudio.avalinexus.item.weapon.AerotechHiltItem;
 import org.furranystudio.avalinexus.item.weapon.AerotechWeapons;
+import org.furranystudio.avalinexus.reputation.AvaliReputation;
 import org.furranystudio.avalinexus.sound.ModSounds;
 
 import java.util.ArrayList;
@@ -102,6 +104,10 @@ public class AvaliGear {
         int taken = before - left.getCount();
         if (taken <= 0) {
             return;
+        }
+        if (entity.getOwner() instanceof ServerPlayer player) {
+            AvaliReputation.meet(player, avali.getPack());
+            AvaliReputation.change(player, avali.getPack(), AvaliReputation.Change.GIFT);
         }
         avali.take(entity, taken);
         if (left.isEmpty()) {

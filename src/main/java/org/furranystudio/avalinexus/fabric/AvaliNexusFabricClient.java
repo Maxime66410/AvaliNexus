@@ -18,6 +18,7 @@ import org.furranystudio.avalinexus.AvaliNexus;
 import org.furranystudio.avalinexus.block.ModBlockEntities;
 import org.furranystudio.avalinexus.client.AvaliNexusClient;
 import org.furranystudio.avalinexus.client.avali.AvaliRenderer;
+import org.furranystudio.avalinexus.client.reputation.ReputationClient;
 import org.furranystudio.avalinexus.client.heater.HeaterScreen;
 import org.furranystudio.avalinexus.client.machine.AmmoniaRefineryScreen;
 import org.furranystudio.avalinexus.client.machine.CryoFreezerScreen;
@@ -55,6 +56,8 @@ public final class AvaliNexusFabricClient implements ClientModInitializer {
         HudElementRegistry.addLast(AvaliNexus.id("dialogue"), DialogueHud::render);
         KeyMapping.Category.register(ModKeyCategory.AVALI_NEXUS.id());
         KeyMappingHelper.registerKeyMapping(DialogueKeys.CURSOR);
+        KeyMappingHelper.registerKeyMapping(ReputationClient.OPEN);
+        ClientTickEvents.START_CLIENT_TICK.register(client -> ReputationClient.tick());
         ClientTickEvents.START_CLIENT_TICK.register(client -> ClientDialogue.tick());
         EntityRendererRegistry.register(ModEntities.AVALI.get(), AvaliRenderer::new);
         BlockEntityRendererRegistry.register(ModBlockEntities.GRAPHENE_TANK.get(), GrapheneTankRenderer::new);

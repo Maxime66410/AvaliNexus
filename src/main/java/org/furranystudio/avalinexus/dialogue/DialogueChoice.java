@@ -16,16 +16,16 @@ public enum DialogueChoice {
     TALK("talk"),
     TRADE("shop"),
     LEAVE("close"),
-    RECRUIT(null),
-    ORDERS(null),
-    ROLE(null),
-    FOLLOW(null),
-    WAIT(null),
-    DISMISS(null),
-    FIGHTER(null),
-    GATHERER(null),
-    HEALER(null),
-    BACK(null);
+    RECRUIT("recruit"),
+    ORDERS("orders"),
+    ROLE("role"),
+    FOLLOW("follow"),
+    WAIT("wait"),
+    DISMISS("dismiss"),
+    FIGHTER("fighter"),
+    GATHERER("gatherer"),
+    HEALER("healer"),
+    BACK("back");
 
     private final Identifier icon;
 

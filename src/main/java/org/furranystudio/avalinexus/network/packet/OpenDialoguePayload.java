@@ -14,7 +14,7 @@ import org.furranystudio.avalinexus.AvaliNexus;
 
 import java.util.List;
 
-public record OpenDialoguePayload(int entityId, String line, List<Integer> choices, int highlight) implements CustomPacketPayload {
+public record OpenDialoguePayload(int entityId, String line, List<Integer> choices, int highlight, int tier) implements CustomPacketPayload {
 
     public static final Type<OpenDialoguePayload> TYPE = new Type<>(AvaliNexus.id("open_dialogue"));
     public static final StreamCodec<ByteBuf, OpenDialoguePayload> STREAM_CODEC = StreamCodec.composite(
@@ -22,6 +22,7 @@ public record OpenDialoguePayload(int entityId, String line, List<Integer> choic
         ByteBufCodecs.STRING_UTF8, OpenDialoguePayload::line,
         ByteBufCodecs.VAR_INT.apply(ByteBufCodecs.list()), OpenDialoguePayload::choices,
         ByteBufCodecs.VAR_INT, OpenDialoguePayload::highlight,
+        ByteBufCodecs.VAR_INT, OpenDialoguePayload::tier,
         OpenDialoguePayload::new);
 
     @Override

@@ -1,5 +1,7 @@
 {
   "greeting": [
+    { "text": "avalinexus.dialogue.avali.greeting.wary.1", "face": "ANNOYED", "condition": "wary" },
+    { "text": "avalinexus.dialogue.avali.greeting.wary.2", "face": "ANNOYED", "condition": "wary" },
     { "text": "avalinexus.dialogue.avali.greeting.1", "face": "HAPPY", "gesture": "WAG_TAIL" },
     { "text": "avalinexus.dialogue.avali.greeting.2", "face": "HAPPY" },
     { "text": "avalinexus.dialogue.avali.greeting.3", "gesture": "ADORABLE" },
@@ -7,6 +9,8 @@
     { "text": "avalinexus.dialogue.avali.greeting.rain", "face": "ANNOYED", "condition": "rain" }
   ],
   "talk": [
+    { "text": "avalinexus.dialogue.avali.talk.wary.1", "face": "ANNOYED", "condition": "wary" },
+    { "text": "avalinexus.dialogue.avali.talk.wary.2", "face": "SAD", "condition": "wary" },
     { "text": "avalinexus.dialogue.avali.talk.1", "face": "HAPPY" },
     { "text": "avalinexus.dialogue.avali.talk.2", "gesture": "SMUG" },
     { "text": "avalinexus.dialogue.avali.talk.3", "face": "CONTENT" },
@@ -18,6 +22,7 @@
     { "text": "avalinexus.dialogue.avali.trade.soon", "gesture": "SMUG" }
   ],
   "farewell": [
+    { "text": "avalinexus.dialogue.avali.farewell.wary.1", "face": "ANNOYED", "condition": "wary" },
     { "text": "avalinexus.dialogue.avali.farewell.1", "gesture": "WAG_TAIL" },
     { "text": "avalinexus.dialogue.avali.farewell.2", "face": "HAPPY" }
   ],

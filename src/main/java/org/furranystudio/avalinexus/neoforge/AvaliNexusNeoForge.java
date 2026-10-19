@@ -42,6 +42,7 @@ import org.furranystudio.avalinexus.Platform;
 import org.furranystudio.avalinexus.block.ModBlockEntities;
 import org.furranystudio.avalinexus.client.AvaliNexusClient;
 import org.furranystudio.avalinexus.client.avali.AvaliRenderer;
+import org.furranystudio.avalinexus.client.reputation.ReputationClient;
 import org.furranystudio.avalinexus.client.heater.HeaterScreen;
 import org.furranystudio.avalinexus.client.machine.AmmoniaRefineryScreen;
 import org.furranystudio.avalinexus.client.machine.CryoFreezerScreen;
@@ -133,9 +134,11 @@ public class AvaliNexusNeoForge {
                 event.registerCategory(ModKeyCategory.AVALI_NEXUS);
                 event.register(DialogueKeys.CURSOR);
                 event.register(RailGunClient.RELOAD);
+                event.register(ReputationClient.OPEN);
             });
             modEventBus.addListener((RegisterGuiLayersEvent event) -> event.registerAboveAll(AvaliNexus.id("rail_gun"), RailGunHud::render));
             NeoForge.EVENT_BUS.addListener((ClientTickEvent.Pre event) -> RailGunClient.tick());
+            NeoForge.EVENT_BUS.addListener((ClientTickEvent.Pre event) -> ReputationClient.tick());
             NeoForge.EVENT_BUS.addListener((InputEvent.InteractionKeyMappingTriggered event) -> {
                 if (event.isAttack() && RailGunClient.blocksAttack()) {
                     event.setSwingHand(false);

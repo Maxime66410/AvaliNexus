@@ -8,6 +8,7 @@ package org.furranystudio.avalinexus.dialogue;
 
 import com.google.gson.JsonObject;
 import org.furranystudio.avalinexus.entity.avali.AvaliEntity;
+import org.furranystudio.avalinexus.reputation.ReputationTier;
 import org.furranystudio.avalinexus.entity.avali.expression.AvaliFace;
 import org.furranystudio.avalinexus.entity.avali.expression.AvaliGesture;
 
@@ -23,9 +24,14 @@ public record DialogueLine(String text, AvaliFace face, AvaliGesture gesture, St
         return new DialogueLine(text, face, gesture, condition);
     }
 
-    public boolean matches(AvaliEntity avali) {
+    public boolean matches(AvaliEntity avali, ReputationTier tier) {
         if (condition == null) {
             return true;
+        }
+        for (ReputationTier candidate : ReputationTier.values()) {
+            if (candidate.key().equals(condition)) {
+                return candidate == tier;
+            }
         }
         return switch (condition) {
             case "day" -> avali.level().isBrightOutside();

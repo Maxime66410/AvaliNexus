@@ -18,6 +18,8 @@ import org.furranystudio.avalinexus.network.ModNetworking;
 import org.furranystudio.avalinexus.network.packet.CloseDialoguePayload;
 import org.furranystudio.avalinexus.network.packet.DialogueLinePayload;
 import org.furranystudio.avalinexus.network.packet.OpenDialoguePayload;
+import org.furranystudio.avalinexus.reputation.AvaliReputation;
+import org.furranystudio.avalinexus.reputation.ReputationTier;
 import org.furranystudio.avalinexus.trade.ShopManager;
 
 import java.util.ArrayList;
@@ -57,17 +59,24 @@ public final class DialogueManager {
         if (previous != null && previous.avali == avali) {
             return;
         }
+        ReputationTier tier = AvaliReputation.tier(player, avali.getPack());
+        if (tier == ReputationTier.HOSTILE && !avali.isOwnedBy(player)) {
+            player.sendSystemMessage(Component.translatable("avalinexus.dialogue.busy"), true);
+            return;
+        }
         if (previous != null) {
             close(player, true);
         }
 
+        AvaliReputation.meet(player, avali.getPack());
         avali.startTalking(player);
-        DialogueLine line = DialogueData.pick(player.level().getServer(), "greeting", avali, null);
+        DialogueLine line = DialogueData.pick(player.level().getServer(), "greeting", avali, tier, null);
         Session session = new Session(avali, line);
         SESSIONS.put(player.getUUID(), session);
         say(avali, line);
         List<DialogueChoice> choices = choices(player, session);
-        ModNetworking.sendToPlayer(player, new OpenDialoguePayload(avali.getId(), line.text(), ordinals(choices), highlight(avali, session)));
+        ModNetworking.sendToPlayer(player, new OpenDialoguePayload(avali.getId(), line.text(), ordinals(choices), highlight(avali, session),
+            avali.isOwnedBy(player) ? -1 : tier.ordinal()));
     }
 
     public static void onChoice(ServerPlayer player, int entityId, int choiceIndex) {
@@ -113,7 +122,7 @@ public final class DialogueManager {
 
         DialogueLine line = session.lastLine;
         if (section != null) {
-            line = DialogueData.pick(player.level().getServer(), section, avali, session.lastLine);
+            line = DialogueData.pick(player.level().getServer(), section, avali, AvaliReputation.tier(player, avali.getPack()), session.lastLine);
             session.lastLine = line;
             say(avali, line);
         }
@@ -135,7 +144,8 @@ public final class DialogueManager {
     public static void onShopTrade(ServerPlayer player, int entityId, int offer) {
         Session session = SESSIONS.get(player.getUUID());
         if (session == null || session.avali.getId() != entityId || !session.avali.isAlive() || session.avali.isBaby()
-                || session.avali.isOwnedBy(player) || session.avali.distanceTo(player) > MAX_DISTANCE) {
+                || session.avali.isOwnedBy(player) || session.avali.distanceTo(player) > MAX_DISTANCE
+                || AvaliReputation.tier(player, session.avali.getPack()).ordinal() < ReputationTier.NEUTRAL.ordinal()) {
             return;
         }
         ShopManager.trade(player, session.avali, offer);
@@ -178,7 +188,7 @@ public final class DialogueManager {
             return choices;
         }
         choices.add(DialogueChoice.TALK);
-        if (!avali.isBaby()) {
+        if (!avali.isBaby() && AvaliReputation.tier(player, avali.getPack()).ordinal() >= ReputationTier.NEUTRAL.ordinal()) {
             choices.add(DialogueChoice.TRADE);
         }
         if (canRecruit(player, avali)) {
@@ -209,7 +219,7 @@ public final class DialogueManager {
 
     private static boolean canRecruit(ServerPlayer player, AvaliEntity avali) {
         AvaliCompanions.Data data = AvaliCompanions.get(player.level().getServer());
-        return !avali.isBaby() && !avali.isCompanion() && !avali.isBusy()
+        return !avali.isBaby() && !avali.isCompanion() && !avali.isBusy() && AvaliReputation.tier(player, avali.getPack()) == ReputationTier.ALLY
             && CompanionData.get(player.level().getServer()).count(player.getUUID()) < data.maxCompanions()
             && (player.hasInfiniteMaterials() || count(player.getInventory(), data) >= data.priceCount());
     }

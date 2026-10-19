@@ -38,6 +38,9 @@ public class AvaliTargetGoal extends Goal {
         }
         checkCooldown = CHECK_INTERVAL;
         candidate = avali.getThreat();
+        if (candidate == null) {
+            candidate = hostilePlayer();
+        }
         if (candidate == null && (!avali.isCompanion() || avali.isFollowingOwner() && avali.getRole() == CompanionRole.FIGHTER)) {
             candidate = huntable();
         }
@@ -78,6 +81,14 @@ public class AvaliTargetGoal extends Goal {
             foes.add(target);
         }
         return foes;
+    }
+
+    private LivingEntity hostilePlayer() {
+        AvaliCombat.Data data = AvaliFight.data(avali);
+        List<LivingEntity> players = avali.level().getEntitiesOfClass(LivingEntity.class, avali.getBoundingBox().inflate(data.enemyRadius()),
+            entity -> AvaliFight.isHostileTo(avali, entity) && avali.distanceTo(entity) <= data.enemyRadius()
+                && avali.getSensing().hasLineOfSight(entity));
+        return AvaliFight.nearest(avali, players);
     }
 
     private LivingEntity huntable() {

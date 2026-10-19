@@ -39,6 +39,7 @@ import org.furranystudio.avalinexus.Platform;
 import org.furranystudio.avalinexus.block.ModBlockEntities;
 import org.furranystudio.avalinexus.client.AvaliNexusClient;
 import org.furranystudio.avalinexus.client.avali.AvaliRenderer;
+import org.furranystudio.avalinexus.client.reputation.ReputationClient;
 import org.furranystudio.avalinexus.client.heater.HeaterScreen;
 import org.furranystudio.avalinexus.client.machine.AmmoniaRefineryScreen;
 import org.furranystudio.avalinexus.client.machine.CryoFreezerScreen;
@@ -134,9 +135,11 @@ public class AvaliNexusForge {
                 KeyMapping.Category.register(ModKeyCategory.AVALI_NEXUS.id());
                 event.register(DialogueKeys.CURSOR);
                 event.register(RailGunClient.RELOAD);
+                event.register(ReputationClient.OPEN);
             });
             AddGuiOverlayLayersEvent.BUS.addListener(event -> event.getLayeredDraw().add(AvaliNexus.id("rail_gun"), RailGunHud::render));
             TickEvent.ClientTickEvent.Pre.BUS.addListener(event -> RailGunClient.tick());
+            TickEvent.ClientTickEvent.Pre.BUS.addListener(event -> ReputationClient.tick());
             InputEvent.InteractionKeyMappingTriggered.Attack.BUS.addListener((Predicate<InputEvent.InteractionKeyMappingTriggered.Attack>) event -> {
                 if (RailGunClient.blocksAttack()) {
                     event.setSwingHand(false);

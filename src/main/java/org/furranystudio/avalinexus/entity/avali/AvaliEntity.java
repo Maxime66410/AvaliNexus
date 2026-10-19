@@ -52,6 +52,7 @@ import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.entity.decoration.Cushion;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.AttackRange;
@@ -76,6 +77,7 @@ import org.furranystudio.avalinexus.entity.avali.expression.AvaliFace;
 import org.furranystudio.avalinexus.entity.avali.expression.AvaliGesture;
 import org.furranystudio.avalinexus.entity.avali.expression.AvaliMood;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliCreeperGoal;
+import org.furranystudio.avalinexus.reputation.AvaliReputation;
 import org.furranystudio.avalinexus.entity.avali.goal.CompanionFollowGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.CompanionGatherGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.CompanionHealerGoal;
@@ -142,6 +144,7 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     private static final int GESTURE_MAX_TICKS = 100;
     private static final int PACK_CHECK_INTERVAL = 40;
     private static final int RETURN_TIMEOUT_TICKS = 2400;
+    private static final int DEFEND_MEMORY_TICKS = 1200;
     private static final double PACK_JOIN_RANGE = 32.0;
     private static final int DIRECT_WALK_DISTANCE = 24;
     private static final float WATER_MALUS = 16.0F;
@@ -196,6 +199,8 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     private long musicRestUntil;
     private BlockPos waitPos;
     private long returningSince = -1;
+    private LivingEntity attackedBy;
+    private long attackedTime;
     private final Map<Identifier, Long> songDays = new HashMap<>();
 
     public AvaliEntity(EntityType<? extends AvaliEntity> type, Level level) {
@@ -288,6 +293,12 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
                 fightsBack = AvaliFight.canAttack(this, AvaliFight.enemies(this), false);
             }
             hurtMood = fightsBack ? AvaliMood.ANGRY : AvaliMood.SCARED;
+            if (source.getEntity() instanceof ServerPlayer player && !isAlly(player)) {
+                AvaliReputation.change(player, getPack(), AvaliReputation.Change.HIT);
+            } else if (source.getEntity() instanceof Enemy && source.getEntity() instanceof LivingEntity monster) {
+                attackedBy = monster;
+                attackedTime = level.getGameTime();
+            }
             hurtTicks = AvaliFight.data(this).hurtFaceSeconds() * 20;
             stopGesture();
             if (talkingTo != null) {
@@ -635,6 +646,9 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
             if (isCompanion() && tickCount % COMPANION_CHECK_INTERVAL == 0) {
                 updateCompanion();
             }
+            if (attackedBy != null && tickCount % COMPANION_CHECK_INTERVAL == 0) {
+                updateDefenders();
+            }
             if (talkingTo != null && (!talkingTo.isAlive() || talkingTo.level() != level()
                     || distanceTo(talkingTo) > DialogueManager.MAX_DISTANCE)) {
                 DialogueManager.close(talkingTo, true);
@@ -703,6 +717,11 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     @Override
     public void die(DamageSource source) {
         super.die(source);
+        ServerPlayer killer = source.getEntity() instanceof ServerPlayer player ? player
+            : getKillCredit() instanceof ServerPlayer player ? player : null;
+        if (killer != null && !isAlly(killer)) {
+            AvaliReputation.change(killer, getPack(), isBaby() ? AvaliReputation.Change.KILL_BABY : AvaliReputation.Change.KILL_ADULT);
+        }
         if (level() instanceof ServerLevel level && isCompanion()) {
             ServerPlayer owner = getOwner();
             if (owner != null) {
@@ -815,6 +834,17 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     public Vec3 getReturnTarget() {
         BlockPos home = packId == null || level().getServer() == null ? null : PackHomeData.get(level().getServer()).home(packId);
         return home == null ? getPackCenter() : Vec3.atBottomCenterOf(home);
+    }
+
+    private void updateDefenders() {
+        if (!attackedBy.isAlive()) {
+            if (attackedBy.getKillCredit() instanceof ServerPlayer player) {
+                AvaliReputation.change(player, getPack(), AvaliReputation.Change.DEFEND);
+            }
+            attackedBy = null;
+        } else if (level().getGameTime() - attackedTime > DEFEND_MEMORY_TICKS || attackedBy.level() != level()) {
+            attackedBy = null;
+        }
     }
 
     private void updateCompanion() {

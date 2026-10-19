@@ -2,7 +2,7 @@
  * File: AvaliNames.java
  * Author: Maxime66410
  * Created: 2026-09-28
- * Last Modified: 2026-09-28
+ * Last Modified: 2026-10-19
  */
 package org.furranystudio.avalinexus.entity.avali;
 
@@ -50,6 +50,10 @@ public final class AvaliNames {
             name = build(data, random);
         }
         return name;
+    }
+
+    public static List<String> packs(MinecraftServer server) {
+        return syllables(server).packs();
     }
 
     public static String pack(MinecraftServer server, RandomSource random) {

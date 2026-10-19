@@ -2,7 +2,7 @@
  * File: AvaliAppearance.java
  * Author: Maxime66410
  * Created: 2026-10-17
- * Last Modified: 2026-10-17
+ * Last Modified: 2026-10-19
  */
 package org.furranystudio.avalinexus.entity.avali;
 
@@ -57,6 +57,10 @@ public final class AvaliAppearance {
             roll -= rare.chance();
         }
         return "";
+    }
+
+    public static int packColor(MinecraftServer server, String pack) {
+        return get(server).colors().getOrDefault(pack, WHITE);
     }
 
     public static int rollColor(MinecraftServer server, String pack, RandomSource random) {

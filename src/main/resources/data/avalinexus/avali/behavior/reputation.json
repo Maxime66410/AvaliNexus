@@ -1,0 +1,27 @@
+{
+  "min": -100,
+  "max": 100,
+  "tiers": {
+    "hostile": -50,
+    "wary": -10,
+    "friendly": 20,
+    "ally": 60
+  },
+  "changes": {
+    "trade": 1,
+    "gift": 2,
+    "defend": 3,
+    "hit": -5,
+    "kill_adult": -40,
+    "kill_baby": -100
+  },
+  "daily_cap": {
+    "trade": 10,
+    "gift": 10
+  },
+  "decay_per_day": 1,
+  "prices": {
+    "friendly": 0.1,
+    "ally": 0.2
+  }
+}

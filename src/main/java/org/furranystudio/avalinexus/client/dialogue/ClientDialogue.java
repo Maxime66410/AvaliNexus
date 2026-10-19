@@ -15,6 +15,7 @@ import net.minecraft.world.entity.Entity;
 import org.furranystudio.avalinexus.dialogue.DialogueChoice;
 import org.furranystudio.avalinexus.network.ModNetworking;
 import org.furranystudio.avalinexus.network.packet.DialogueChoicePayload;
+import org.furranystudio.avalinexus.reputation.ReputationTier;
 import org.furranystudio.avalinexus.sound.ModSounds;
 
 import java.util.List;
@@ -32,14 +33,16 @@ public final class ClientDialogue {
     private static float revealed;
     private static int selected;
     private static int highlight = -1;
+    private static ReputationTier tier;
     private static int closingTicks = -1;
     private static int useBlockTicks;
 
     private ClientDialogue() {
     }
 
-    public static void open(int id, String line, List<Integer> available, int highlighted) {
+    public static void open(int id, String line, List<Integer> available, int highlighted, int standing) {
         entityId = id;
+        tier = standing >= 0 && standing < ReputationTier.values().length ? ReputationTier.values()[standing] : null;
         selected = 0;
         setChoices(available, highlighted);
         closingTicks = -1;
@@ -155,8 +158,9 @@ public final class ClientDialogue {
     public static net.minecraft.network.chat.Component speakerTitle() {
         Minecraft minecraft = Minecraft.getInstance();
         Entity avali = minecraft.level == null ? null : minecraft.level.getEntity(entityId);
-        return avali instanceof org.furranystudio.avalinexus.entity.avali.AvaliEntity named
+        net.minecraft.network.chat.Component title = avali instanceof org.furranystudio.avalinexus.entity.avali.AvaliEntity named
             ? named.title() : net.minecraft.network.chat.Component.translatable("entity.avalinexus.avali");
+        return tier == null ? title : net.minecraft.network.chat.Component.translatable("avalinexus.reputation.title", title, tier.label());
     }
 
     public static boolean isActive() {

@@ -6,6 +6,7 @@
  */
 package org.furranystudio.avalinexus.entity.avali;
 
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.CombatRules;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -15,6 +16,8 @@ import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import org.furranystudio.avalinexus.reputation.AvaliReputation;
+import org.furranystudio.avalinexus.reputation.ReputationTier;
 
 import java.util.Comparator;
 import java.util.List;
@@ -41,7 +44,12 @@ public final class AvaliFight {
         return avali.level().getEntitiesOfClass(LivingEntity.class, avali.getBoundingBox().inflate(data.enemyRadius()),
             entity -> isValidEnemy(entity) && avali.distanceTo(entity) <= data.enemyRadius()
                 && (entity == threat || entity instanceof Mob mob && mob.getTarget() instanceof AvaliEntity
-                    || entity instanceof Enemy && data.hunts(entity.getType())));
+                    || entity instanceof Enemy && data.hunts(entity.getType()) || isHostileTo(avali, entity)));
+    }
+
+    public static boolean isHostileTo(AvaliEntity avali, LivingEntity entity) {
+        return !avali.isCompanion() && entity instanceof ServerPlayer player && isValidEnemy(player)
+            && AvaliReputation.tier(player, avali.getPack()) == ReputationTier.HOSTILE;
     }
 
     public static LivingEntity nearest(AvaliEntity avali, List<LivingEntity> entities) {

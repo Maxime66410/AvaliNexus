@@ -2,7 +2,7 @@
  * File: ShopManager.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-09-27
+ * Last Modified: 2026-10-19
  */
 package org.furranystudio.avalinexus.trade;
 
@@ -16,6 +16,9 @@ import org.furranystudio.avalinexus.item.ModItems;
 import org.furranystudio.avalinexus.network.ModNetworking;
 import org.furranystudio.avalinexus.network.packet.OpenShopPayload;
 import org.furranystudio.avalinexus.network.packet.ShopUpdatePayload;
+import org.furranystudio.avalinexus.reputation.AvaliReputation;
+
+import java.util.List;
 
 public final class ShopManager {
 
@@ -27,7 +30,9 @@ public final class ShopManager {
 
     public static void open(ServerPlayer player, AvaliEntity avali) {
         AvaliShop shop = shopOf(avali);
-        ModNetworking.sendToPlayer(player, new OpenShopPayload(avali.getId(), shop.offers()));
+        List<ShopOffer> offers = shop.offers().stream()
+            .map(offer -> new ShopOffer(offer.tab(), offer.item(), price(player, avali, offer), offer.maxUses(), offer.uses())).toList();
+        ModNetworking.sendToPlayer(player, new OpenShopPayload(avali.getId(), offers));
     }
 
     // Called from the dialogue once the player picked an offer, the dialogue already checked the session and distance
@@ -43,28 +48,39 @@ public final class ShopManager {
 
         Inventory inventory = player.getInventory();
         ItemStack nexite = new ItemStack(ModItems.NEXITE_SHARD.get());
+        int price = price(player, avali, offer);
         boolean done;
         if (offer.tab() == ShopTab.BUY) {
-            done = count(inventory, nexite) >= offer.price();
+            done = count(inventory, nexite) >= price;
             if (done) {
-                remove(inventory, nexite, offer.price());
+                remove(inventory, nexite, price);
                 give(player, offer.item().copy());
             }
         } else {
             done = count(inventory, offer.item()) >= offer.item().getCount();
             if (done) {
                 remove(inventory, offer.item(), offer.item().getCount());
-                give(player, nexite.copyWithCount(offer.price()));
+                give(player, nexite.copyWithCount(price));
             }
         }
         if (!done) {
             return;
         }
+        AvaliReputation.change(player, avali.getPack(), AvaliReputation.Change.TRADE);
 
         shop.set(index, offer.used());
         avali.playGesture(AvaliGesture.CONTENT, GESTURE_TICKS);
         avali.playNoise();
         ModNetworking.sendToPlayer(player, new ShopUpdatePayload(avali.getId(), index, shop.offers().get(index).uses()));
+    }
+
+    private static int price(ServerPlayer player, AvaliEntity avali, ShopOffer offer) {
+        AvaliReputation.Data reputation = AvaliReputation.get(player.level().getServer());
+        float bonus = reputation.priceBonus(AvaliReputation.tier(player, avali.getPack()));
+        if (offer.tab() == ShopTab.BUY) {
+            return Math.max(1, Math.round(offer.price() * (1.0F - bonus)));
+        }
+        return Math.round(offer.price() * (1.0F + bonus));
     }
 
     private static AvaliShop shopOf(AvaliEntity avali) {
