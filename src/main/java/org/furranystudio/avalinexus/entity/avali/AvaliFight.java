@@ -2,7 +2,7 @@
  * File: AvaliFight.java
  * Author: Maxime66410
  * Created: 2026-10-18
- * Last Modified: 2026-10-18
+ * Last Modified: 2026-10-19
  */
 package org.furranystudio.avalinexus.entity.avali;
 
@@ -58,7 +58,7 @@ public final class AvaliFight {
     public static int allies(AvaliEntity avali) {
         double radius = data(avali).allyRadius();
         return avali.level().getEntitiesOfClass(AvaliEntity.class, avali.getBoundingBox().inflate(radius),
-            other -> other.isAlive() && !other.isBaby() && other.getPackId() != null
+            other -> other.isAlive() && !other.isBaby() && other.getPackId() != null && (other == avali || !other.isCompanion())
                 && other.getPackId().equals(avali.getPackId()) && avali.distanceTo(other) <= radius).size();
     }
 

@@ -2,7 +2,7 @@
  * File: DialogueChoice.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-09-27
+ * Last Modified: 2026-10-19
  */
 package org.furranystudio.avalinexus.dialogue;
 
@@ -15,12 +15,22 @@ import java.util.Locale;
 public enum DialogueChoice {
     TALK("talk"),
     TRADE("shop"),
-    LEAVE("close");
+    LEAVE("close"),
+    RECRUIT(null),
+    ORDERS(null),
+    ROLE(null),
+    FOLLOW(null),
+    WAIT(null),
+    DISMISS(null),
+    FIGHTER(null),
+    GATHERER(null),
+    HEALER(null),
+    BACK(null);
 
     private final Identifier icon;
 
     DialogueChoice(String icon) {
-        this.icon = AvaliNexus.id("dialogue/" + icon);
+        this.icon = icon == null ? null : AvaliNexus.id("dialogue/" + icon);
     }
 
     public Component label() {

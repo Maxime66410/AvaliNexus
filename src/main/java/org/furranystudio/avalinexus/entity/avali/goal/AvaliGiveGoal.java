@@ -2,7 +2,7 @@
  * File: AvaliGiveGoal.java
  * Author: Maxime66410
  * Created: 2026-10-17
- * Last Modified: 2026-10-18
+ * Last Modified: 2026-10-19
  */
 package org.furranystudio.avalinexus.entity.avali.goal;
 
@@ -43,6 +43,10 @@ public class AvaliGiveGoal extends Goal {
         }
         checkCooldown = CHECK_INTERVAL;
         double range = AvaliBehavior.get(avali.level().getServer()).life().giveRange();
+        if (avali.isCompanion()) {
+            player = avali.getOwner();
+            return player != null && player.level() == avali.level() && !player.isSpectator() && avali.distanceTo(player) <= range;
+        }
         player = avali.level().getNearestPlayer(avali, range);
         if (player == null || player.isSpectator()) {
             drop(null);

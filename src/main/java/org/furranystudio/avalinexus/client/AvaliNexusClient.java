@@ -27,8 +27,8 @@ public final class AvaliNexusClient {
 
     public static void init() {
         ModNetworking.setClientHandler(PingPayload.TYPE, ping -> ModNetworking.sendToServer(new PongPayload(ping.sentAt())));
-        ModNetworking.setClientHandler(OpenDialoguePayload.TYPE, open -> ClientDialogue.open(open.entityId(), open.line()));
-        ModNetworking.setClientHandler(DialogueLinePayload.TYPE, line -> ClientDialogue.showLine(line.entityId(), line.line(), line.closing()));
+        ModNetworking.setClientHandler(OpenDialoguePayload.TYPE, open -> ClientDialogue.open(open.entityId(), open.line(), open.choices(), open.highlight()));
+        ModNetworking.setClientHandler(DialogueLinePayload.TYPE, line -> ClientDialogue.showLine(line.entityId(), line.line(), line.closing(), line.choices(), line.highlight()));
         ModNetworking.setClientHandler(CloseDialoguePayload.TYPE, close -> {
             ClientDialogue.close(close.entityId());
             if (Minecraft.getInstance().gui.screen() instanceof AvaliShopScreen shop && shop.entityId() == close.entityId()) {

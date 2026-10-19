@@ -2,7 +2,7 @@
  * File: AvaliConcert.java
  * Author: Maxime66410
  * Created: 2026-10-18
- * Last Modified: 2026-10-18
+ * Last Modified: 2026-10-19
  */
 package org.furranystudio.avalinexus.entity.avali;
 
@@ -73,7 +73,7 @@ public class AvaliConcert {
         AvaliEntity leader = leader();
         level.getEntitiesOfClass(AvaliEntity.class, leader.getBoundingBox().inflate(radius),
                 other -> other != leader && other.getPackId() != null && other.getPackId().equals(leader.getPackId())
-                    && other.getConcert() == null && AvaliMusicGoal.isCalm(other) && leader.distanceTo(other) <= radius)
+                    && other.getConcert() == null && !other.isCompanion() && AvaliMusicGoal.isCalm(other) && leader.distanceTo(other) <= radius)
             .stream().sorted(Comparator.comparingDouble(leader::distanceToSqr))
             .takeWhile(other -> !isFull())
             .forEach(this::join);

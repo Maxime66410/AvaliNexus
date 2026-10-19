@@ -2,7 +2,7 @@
  * File: AvaliCushionGoal.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-09-27
+ * Last Modified: 2026-10-19
  */
 package org.furranystudio.avalinexus.entity.avali.goal;
 
@@ -37,7 +37,7 @@ public class AvaliCushionGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        if (avali.getRandom().nextInt(SEARCH_CHANCE) != 0 || avali.isPassenger() || avali.isSleeping()
+        if (avali.getRandom().nextInt(SEARCH_CHANCE) != 0 || avali.isPassenger() || avali.isSleeping() || avali.isFollowingOwner()
                 || avali.isInWater() || avali.getMood().earsDown()) {
             return false;
         }

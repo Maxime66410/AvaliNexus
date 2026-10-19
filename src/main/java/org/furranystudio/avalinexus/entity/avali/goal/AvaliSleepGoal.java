@@ -2,7 +2,7 @@
  * File: AvaliSleepGoal.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-09-27
+ * Last Modified: 2026-10-19
  */
 package org.furranystudio.avalinexus.entity.avali.goal;
 
@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 public class AvaliSleepGoal extends Goal {
 
     private static final int SEARCH_COOLDOWN = 100;
+    private static final double WAIT_BED_RANGE = 8.0;
     private static final int BED_HEIGHT = 4;
     private static final double REACH_DISTANCE_SQ = 4.0;
     private static final int MAX_WALK_TICKS = 1200;
@@ -44,7 +45,7 @@ public class AvaliSleepGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        if (avali.isPassenger() || avali.isInWater() || avali.getMood().earsDown() || --searchCooldown > 0) {
+        if (avali.isPassenger() || avali.isInWater() || avali.getMood().earsDown() || avali.isFollowingOwner() || --searchCooldown > 0) {
             return false;
         }
         searchCooldown = SEARCH_COOLDOWN;
@@ -56,7 +57,7 @@ public class AvaliSleepGoal extends Goal {
         if (bed == null) {
             bed = findFreeBed();
         }
-        if (bed == null) {
+        if (bed == null || avali.isCompanion() && !bed.closerThan(avali.getWaitPos(), WAIT_BED_RANGE)) {
             return false;
         }
         napTicks = night ? 0 : Mth.nextInt(avali.getRandom(), MIN_NAP_TICKS, MAX_NAP_TICKS);

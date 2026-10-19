@@ -20,5 +20,21 @@
   "farewell": [
     { "text": "avalinexus.dialogue.avali.farewell.1", "gesture": "WAG_TAIL" },
     { "text": "avalinexus.dialogue.avali.farewell.2", "face": "HAPPY" }
+  ],
+  "recruit": [
+    { "text": "avalinexus.dialogue.avali.recruit.1", "gesture": "EXCITED" },
+    { "text": "avalinexus.dialogue.avali.recruit.2", "gesture": "WAG_TAIL" }
+  ],
+  "order": [
+    { "text": "avalinexus.dialogue.avali.order.1" },
+    { "text": "avalinexus.dialogue.avali.order.2", "face": "HAPPY" }
+  ],
+  "role": [
+    { "text": "avalinexus.dialogue.avali.role.1", "face": "HAPPY" },
+    { "text": "avalinexus.dialogue.avali.role.2", "gesture": "SMUG" }
+  ],
+  "dismiss": [
+    { "text": "avalinexus.dialogue.avali.dismiss.1", "face": "SAD" },
+    { "text": "avalinexus.dialogue.avali.dismiss.2", "gesture": "WAG_TAIL" }
   ]
 }

@@ -2,7 +2,7 @@
  * File: AvaliTargetGoal.java
  * Author: Maxime66410
  * Created: 2026-10-18
- * Last Modified: 2026-10-18
+ * Last Modified: 2026-10-19
  */
 package org.furranystudio.avalinexus.entity.avali.goal;
 
@@ -12,6 +12,7 @@ import net.minecraft.world.entity.monster.Enemy;
 import org.furranystudio.avalinexus.entity.avali.AvaliCombat;
 import org.furranystudio.avalinexus.entity.avali.AvaliEntity;
 import org.furranystudio.avalinexus.entity.avali.AvaliFight;
+import org.furranystudio.avalinexus.entity.avali.CompanionRole;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -37,7 +38,7 @@ public class AvaliTargetGoal extends Goal {
         }
         checkCooldown = CHECK_INTERVAL;
         candidate = avali.getThreat();
-        if (candidate == null) {
+        if (candidate == null && (!avali.isCompanion() || avali.isFollowingOwner() && avali.getRole() == CompanionRole.FIGHTER)) {
             candidate = huntable();
         }
         return candidate != null && AvaliFight.canAttack(avali, foes(candidate), false);

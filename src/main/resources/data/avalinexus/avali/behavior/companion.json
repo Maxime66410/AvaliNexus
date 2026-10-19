@@ -1,0 +1,28 @@
+{
+  "max_companions": 3,
+  "recruit_price": {
+    "item": "avalinexus:nexite_shard",
+    "count": 32
+  },
+  "follow_start_distance": 6,
+  "follow_stop_distance": 3,
+  "teleport_distance": 16,
+  "home_teleport_distance": 100,
+  "follow_speed": 1.1,
+  "wait_radius": 3,
+  "gather_radius": 8,
+  "healer": {
+    "range": 10,
+    "feed_below_food": 14,
+    "feed_items": ["minecraft:bread", "minecraft:cooked_cod", "minecraft:baked_potato"],
+    "feed_cooldown_seconds": 30,
+    "potion_below_health": 0.6,
+    "instant_below_health": 0.35,
+    "potion_cooldown_seconds": 8,
+    "special_below_health": 0.25,
+    "special_cooldown_seconds": 600,
+    "absorption_hearts": 4,
+    "absorption_seconds": 120,
+    "attack_cooldown_seconds": 12
+  }
+}

@@ -2,7 +2,7 @@
  * File: ClientDialogue.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-10-18
+ * Last Modified: 2026-10-19
  */
 package org.furranystudio.avalinexus.client.dialogue;
 
@@ -13,12 +13,11 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.Entity;
 import org.furranystudio.avalinexus.dialogue.DialogueChoice;
-import org.furranystudio.avalinexus.entity.avali.AvaliEntity;
 import org.furranystudio.avalinexus.network.ModNetworking;
 import org.furranystudio.avalinexus.network.packet.DialogueChoicePayload;
 import org.furranystudio.avalinexus.sound.ModSounds;
 
-import java.util.Arrays;
+import java.util.List;
 
 public final class ClientDialogue {
 
@@ -29,29 +28,38 @@ public final class ClientDialogue {
     private static int entityId = -1;
     private static DialogueChoice[] choices = DialogueChoice.values();
     private static String text = "";
+    private static String lineKey = "";
     private static float revealed;
     private static int selected;
+    private static int highlight = -1;
     private static int closingTicks = -1;
     private static int useBlockTicks;
 
     private ClientDialogue() {
     }
 
-    public static void open(int id, String line) {
+    public static void open(int id, String line, List<Integer> available, int highlighted) {
         entityId = id;
         selected = 0;
-        Minecraft minecraft = Minecraft.getInstance();
-        boolean baby = minecraft.level != null && minecraft.level.getEntity(id) instanceof AvaliEntity avali && avali.isBaby();
-        choices = Arrays.stream(DialogueChoice.values()).filter(choice -> !baby || choice != DialogueChoice.TRADE).toArray(DialogueChoice[]::new);
+        setChoices(available, highlighted);
         closingTicks = -1;
         setLine(line);
     }
 
-    public static void showLine(int id, String line, boolean closing) {
+    public static void showLine(int id, String line, boolean closing, List<Integer> available, int highlighted) {
         if (id != entityId) {
             return;
         }
-        setLine(line);
+        if (!closing && !sameChoices(available)) {
+            if (available.size() != choices.length) {
+                selected = 0;
+            }
+            setChoices(available, highlighted);
+        }
+        highlight = highlighted;
+        if (!line.equals(lineKey)) {
+            setLine(line);
+        }
         if (closing) {
             closingTicks = CLOSING_TICKS;
         }
@@ -171,7 +179,30 @@ public final class ClientDialogue {
         return choices;
     }
 
+    public static int highlight() {
+        return highlight;
+    }
+
+    private static void setChoices(List<Integer> available, int highlighted) {
+        choices = available.stream().filter(index -> index >= 0 && index < DialogueChoice.values().length)
+            .map(index -> DialogueChoice.values()[index]).toArray(DialogueChoice[]::new);
+        highlight = highlighted;
+    }
+
+    private static boolean sameChoices(List<Integer> available) {
+        if (available.size() != choices.length) {
+            return false;
+        }
+        for (int i = 0; i < choices.length; i++) {
+            if (choices[i].ordinal() != available.get(i)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     private static void setLine(String line) {
+        lineKey = line;
         text = Component.translatable(line).getString();
         revealed = 0;
     }
@@ -180,6 +211,7 @@ public final class ClientDialogue {
         entityId = -1;
         useBlockTicks = USE_BLOCK_TICKS;
         text = "";
+        lineKey = "";
         closingTicks = -1;
     }
 

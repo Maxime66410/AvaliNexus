@@ -2,7 +2,7 @@
  * File: NexiteQuill.java
  * Author: Maxime66410
  * Created: 2026-09-29
- * Last Modified: 2026-09-29
+ * Last Modified: 2026-10-19
  */
 package org.furranystudio.avalinexus.entity.projectile;
 
@@ -24,6 +24,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import org.furranystudio.avalinexus.AvaliNexus;
 import org.furranystudio.avalinexus.entity.ModEntities;
+import org.furranystudio.avalinexus.entity.avali.AvaliEntity;
 import org.furranystudio.avalinexus.item.weapon.RailWeapons;
 import org.furranystudio.avalinexus.sound.ModSounds;
 
@@ -45,6 +46,11 @@ public class NexiteQuill extends ThrowableItemProjectile {
         ItemStack flying = getItem().copy();
         flying.set(DataComponents.ITEM_MODEL, AvaliNexus.id("nexite_quill_projectile"));
         setItem(flying);
+    }
+
+    @Override
+    protected boolean canHitEntity(Entity target) {
+        return super.canHitEntity(target) && !(getOwner() instanceof AvaliEntity shooter && shooter.isAlly(target));
     }
 
     @Override

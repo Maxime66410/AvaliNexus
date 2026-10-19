@@ -2,7 +2,7 @@
  * File: DialogueHud.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-10-18
+ * Last Modified: 2026-10-19
  */
 package org.furranystudio.avalinexus.client.dialogue;
 
@@ -86,10 +86,13 @@ public final class DialogueHud {
                 AvaliUi.panel(graphics, left, y, CHOICE_WIDTH, CHOICE_HEIGHT - 2, AvaliUi.BACKDROP);
                 graphics.blitSprite(RenderPipelines.GUI_TEXTURED, AvaliUi.MARKER, left - 10, y + 4, 8, 8);
             }
-            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, choices[i].icon(), left + 4, y + 2, ICON_SIZE, ICON_SIZE);
+            if (choices[i].icon() != null) {
+                graphics.blitSprite(RenderPipelines.GUI_TEXTURED, choices[i].icon(), left + 4, y + 2, ICON_SIZE, ICON_SIZE);
+            }
             Component label = Component.literal((i + 1) + ". ").append(choices[i].label());
+            boolean current = choices[i].ordinal() == ClientDialogue.highlight();
             AvaliUi.shadowedText(graphics, font, AvaliUi.styled(label), left + ICON_SIZE + 8, y + 4,
-                selected ? AvaliUi.ORANGE_GLOW : AvaliUi.TEXT_PRIMARY);
+                selected || current ? AvaliUi.ORANGE_GLOW : AvaliUi.TEXT_PRIMARY);
         }
         Component hint = Component.translatable("avalinexus.dialogue.hint", choices.length);
         AvaliUi.shadowedText(graphics, font, hint, left, top + choices.length * CHOICE_HEIGHT + 4, AvaliUi.TEXT_DISABLED);

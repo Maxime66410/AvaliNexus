@@ -2,7 +2,7 @@
  * File: OpenDialoguePayload.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-09-27
+ * Last Modified: 2026-10-19
  */
 package org.furranystudio.avalinexus.network.packet;
 
@@ -12,12 +12,16 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import org.furranystudio.avalinexus.AvaliNexus;
 
-public record OpenDialoguePayload(int entityId, String line) implements CustomPacketPayload {
+import java.util.List;
+
+public record OpenDialoguePayload(int entityId, String line, List<Integer> choices, int highlight) implements CustomPacketPayload {
 
     public static final Type<OpenDialoguePayload> TYPE = new Type<>(AvaliNexus.id("open_dialogue"));
     public static final StreamCodec<ByteBuf, OpenDialoguePayload> STREAM_CODEC = StreamCodec.composite(
         ByteBufCodecs.VAR_INT, OpenDialoguePayload::entityId,
         ByteBufCodecs.STRING_UTF8, OpenDialoguePayload::line,
+        ByteBufCodecs.VAR_INT.apply(ByteBufCodecs.list()), OpenDialoguePayload::choices,
+        ByteBufCodecs.VAR_INT, OpenDialoguePayload::highlight,
         OpenDialoguePayload::new);
 
     @Override

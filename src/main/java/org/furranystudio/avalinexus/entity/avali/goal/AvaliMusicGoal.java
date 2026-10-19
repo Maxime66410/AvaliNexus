@@ -2,7 +2,7 @@
  * File: AvaliMusicGoal.java
  * Author: Maxime66410
  * Created: 2026-10-18
- * Last Modified: 2026-10-18
+ * Last Modified: 2026-10-19
  */
 package org.furranystudio.avalinexus.entity.avali.goal;
 
@@ -43,7 +43,7 @@ public class AvaliMusicGoal extends Goal {
     }
 
     public static boolean isCalm(AvaliEntity avali) {
-        return !avali.isSleeping() && !avali.isPassenger() && !avali.isInWater() && avali.getTalkingTo() == null
+        return !avali.isSleeping() && !avali.isPassenger() && !avali.isInWater() && avali.getTalkingTo() == null && !avali.isFollowingOwner()
             && avali.getTarget() == null && avali.hurtTime == 0 && !avali.getMood().earsDown();
     }
 

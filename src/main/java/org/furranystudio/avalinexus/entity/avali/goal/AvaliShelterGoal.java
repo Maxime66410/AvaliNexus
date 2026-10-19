@@ -2,7 +2,7 @@
  * File: AvaliShelterGoal.java
  * Author: Maxime66410
  * Created: 2026-10-17
- * Last Modified: 2026-10-17
+ * Last Modified: 2026-10-19
  */
 package org.furranystudio.avalinexus.entity.avali.goal;
 
@@ -35,7 +35,7 @@ public class AvaliShelterGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        if (--checkCooldown > 0 || avali.isPassenger() || avali.isSleeping()) {
+        if (--checkCooldown > 0 || avali.isPassenger() || avali.isSleeping() || avali.isFollowingOwner()) {
             return false;
         }
         checkCooldown = CHECK_INTERVAL;

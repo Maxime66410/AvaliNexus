@@ -2,7 +2,7 @@
  * File: AvaliPackGoal.java
  * Author: Maxime66410
  * Created: 2026-10-17
- * Last Modified: 2026-10-17
+ * Last Modified: 2026-10-19
  */
 package org.furranystudio.avalinexus.entity.avali.goal;
 
@@ -43,7 +43,7 @@ public class AvaliPackGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        if (--checkCooldown > 0 || avali.isPassenger() || avali.isSleeping() || avali.getPackId() == null) {
+        if (--checkCooldown > 0 || avali.isPassenger() || avali.isSleeping() || avali.getPackId() == null || avali.isCompanion()) {
             return false;
         }
         checkCooldown = CHECK_INTERVAL;
@@ -112,6 +112,11 @@ public class AvaliPackGoal extends Goal {
         }
 
         Vec3 center = avali.getPackCenter();
+        if (avali.isReturningHome()) {
+            running = true;
+            speed = RETURN_SPEED;
+            return aim(avali.getReturnTarget(), pack.regroupRadius());
+        }
         if (avali.position().distanceTo(center) > pack.maxDistance()) {
             speed = RETURN_SPEED;
             return aim(center, pack.maxDistance() / 2);

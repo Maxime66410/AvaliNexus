@@ -2,7 +2,7 @@
  * File: AvaliEntity.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-10-18
+ * Last Modified: 2026-10-19
  */
 package org.furranystudio.avalinexus.entity.avali;
 
@@ -58,6 +58,7 @@ import net.minecraft.world.item.component.AttackRange;
 import net.minecraft.world.item.component.BlocksAttacks;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.level.block.Blocks;
@@ -75,6 +76,11 @@ import org.furranystudio.avalinexus.entity.avali.expression.AvaliFace;
 import org.furranystudio.avalinexus.entity.avali.expression.AvaliGesture;
 import org.furranystudio.avalinexus.entity.avali.expression.AvaliMood;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliCreeperGoal;
+import org.furranystudio.avalinexus.entity.avali.goal.CompanionFollowGoal;
+import org.furranystudio.avalinexus.entity.avali.goal.CompanionGatherGoal;
+import org.furranystudio.avalinexus.entity.avali.goal.CompanionHealerGoal;
+import org.furranystudio.avalinexus.entity.avali.goal.CompanionTargetGoal;
+import org.furranystudio.avalinexus.entity.avali.goal.CompanionWaitGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliCushionGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliEatGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliFleeGoal;
@@ -119,6 +125,8 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     private static final int NOISE_INTERVAL = 240;
     private static final int BUSY_CHECK_INTERVAL = 5;
     private static final int REFORGE_INTERVAL = 20;
+    private static final int COMPANION_CHECK_INTERVAL = 20;
+    private static final int TELEPORT_TRIES = 10;
     private static final double MELEE_REACH = Math.sqrt(2.04F) - 0.6F;
     private static final RawAnimation LOWER_EARS = RawAnimation.begin().thenPlayAndHold("Lower Ears");
     private static final RawAnimation EMPTY = RawAnimation.begin().thenLoop("empty");
@@ -133,6 +141,7 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     private static final int GESTURE_MIN_TICKS = 40;
     private static final int GESTURE_MAX_TICKS = 100;
     private static final int PACK_CHECK_INTERVAL = 40;
+    private static final int RETURN_TIMEOUT_TICKS = 2400;
     private static final double PACK_JOIN_RANGE = 32.0;
     private static final int DIRECT_WALK_DISTANCE = 24;
     private static final float WATER_MALUS = 16.0F;
@@ -151,6 +160,10 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     private static final EntityDataAccessor<Integer> DATA_TINT = SynchedEntityData.defineId(AvaliEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<String> DATA_SKIN = SynchedEntityData.defineId(AvaliEntity.class, EntityDataSerializers.STRING);
     private static final EntityDataAccessor<Integer> DATA_DIALOGUE_FACE = SynchedEntityData.defineId(AvaliEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<String> DATA_OWNER = SynchedEntityData.defineId(AvaliEntity.class, EntityDataSerializers.STRING);
+    private static final EntityDataAccessor<String> DATA_OWNER_NAME = SynchedEntityData.defineId(AvaliEntity.class, EntityDataSerializers.STRING);
+    private static final EntityDataAccessor<Integer> DATA_ROLE = SynchedEntityData.defineId(AvaliEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> DATA_WAITING = SynchedEntityData.defineId(AvaliEntity.class, EntityDataSerializers.BOOLEAN);
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private final AvaliGear gear = new AvaliGear(this);
@@ -181,6 +194,8 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     private long corneredUntil;
     private AvaliConcert concert;
     private long musicRestUntil;
+    private BlockPos waitPos;
+    private long returningSince = -1;
     private final Map<Identifier, Long> songDays = new HashMap<>();
 
     public AvaliEntity(EntityType<? extends AvaliEntity> type, Level level) {
@@ -226,6 +241,10 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         goalSelector.addGoal(3, new AvaliMeleeGoal(this));
         goalSelector.addGoal(3, new AvaliRangedGoal(this));
         goalSelector.addGoal(3, new AvaliHotBiomeGoal(this));
+        goalSelector.addGoal(3, new CompanionHealerGoal(this));
+        goalSelector.addGoal(4, new CompanionGatherGoal(this));
+        goalSelector.addGoal(5, new CompanionFollowGoal(this));
+        goalSelector.addGoal(5, new CompanionWaitGoal(this));
         goalSelector.addGoal(4, new AvaliSleepGoal(this, 0.8));
         goalSelector.addGoal(4, new AvaliMusicGoal(this));
         goalSelector.addGoal(5, new AvaliPackGoal(this));
@@ -237,6 +256,7 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         goalSelector.addGoal(7, new AvaliStrollGoal(this, 0.8));
         goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
         goalSelector.addGoal(9, new RandomLookAroundGoal(this));
+        targetSelector.addGoal(0, new CompanionTargetGoal(this));
         targetSelector.addGoal(1, new AvaliTargetGoal(this));
     }
 
@@ -252,6 +272,10 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         builder.define(DATA_FEMALE, false);
         builder.define(DATA_TINT, 0xFFFFFF);
         builder.define(DATA_SKIN, "");
+        builder.define(DATA_OWNER, "");
+        builder.define(DATA_OWNER_NAME, "");
+        builder.define(DATA_ROLE, CompanionRole.FIGHTER.ordinal());
+        builder.define(DATA_WAITING, false);
     }
 
     @Override
@@ -259,7 +283,7 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         boolean hurt = super.hurtServer(level, source, amount);
         if (hurt) {
             boolean fightsBack = false;
-            if (source.getEntity() instanceof LivingEntity attacker && AvaliFight.isValidEnemy(attacker)) {
+            if (source.getEntity() instanceof LivingEntity attacker && AvaliFight.isValidEnemy(attacker) && !isAlly(attacker)) {
                 alertPack(attacker);
                 fightsBack = AvaliFight.canAttack(this, AvaliFight.enemies(this), false);
             }
@@ -280,7 +304,7 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         }
         double radius = AvaliFight.data(this).allyRadius();
         for (AvaliEntity member : level().getEntitiesOfClass(AvaliEntity.class, getBoundingBox().inflate(radius),
-                other -> other != this && packId.equals(other.packId) && distanceTo(other) <= radius)) {
+                other -> other != this && packId.equals(other.packId) && !other.isCompanion() && distanceTo(other) <= radius)) {
             member.remember(attacker);
         }
     }
@@ -312,6 +336,9 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
 
     @Override
     public boolean doHurtTarget(ServerLevel level, Entity target) {
+        if (isAlly(target)) {
+            return false;
+        }
         ItemStack weapon = getWeaponItem();
         boolean critical = canCriticalAttack(target);
         AttributeInstance damage = getAttribute(Attributes.ATTACK_DAMAGE);
@@ -391,6 +418,12 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         output.storeNullable("avalinexus_pack_id", UUIDUtil.CODEC, packId);
         output.store("avalinexus_parents", UUIDUtil.CODEC.listOf(), parents);
         output.storeNullable("avalinexus_bed", BlockPos.CODEC, bed);
+        output.storeNullable("avalinexus_owner", UUIDUtil.CODEC, getOwnerId());
+        output.putString("avalinexus_owner_name", entityData.get(DATA_OWNER_NAME));
+        output.putInt("avalinexus_role", getRole().ordinal());
+        output.putBoolean("avalinexus_waiting", isWaiting());
+        output.storeNullable("avalinexus_wait_pos", BlockPos.CODEC, waitPos);
+        output.putLong("avalinexus_returning_since", returningSince);
         gear.save(output);
     }
 
@@ -408,6 +441,12 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         packId = input.read("avalinexus_pack_id", UUIDUtil.CODEC).orElse(null);
         parents = input.read("avalinexus_parents", UUIDUtil.CODEC.listOf()).orElse(List.of());
         bed = input.read("avalinexus_bed", BlockPos.CODEC).orElse(null);
+        entityData.set(DATA_OWNER, input.read("avalinexus_owner", UUIDUtil.CODEC).map(UUID::toString).orElse(""));
+        entityData.set(DATA_OWNER_NAME, input.getStringOr("avalinexus_owner_name", ""));
+        entityData.set(DATA_ROLE, Math.clamp(input.getIntOr("avalinexus_role", 0), 0, CompanionRole.values().length - 1));
+        entityData.set(DATA_WAITING, input.getBooleanOr("avalinexus_waiting", false));
+        waitPos = input.read("avalinexus_wait_pos", BlockPos.CODEC).orElse(null);
+        returningSince = input.getLongOr("avalinexus_returning_since", -1L);
         gear.load(input);
     }
 
@@ -593,6 +632,9 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
             if (tickCount % REFORGE_INTERVAL == 0) {
                 gear.tickHilts();
             }
+            if (isCompanion() && tickCount % COMPANION_CHECK_INTERVAL == 0) {
+                updateCompanion();
+            }
             if (talkingTo != null && (!talkingTo.isAlive() || talkingTo.level() != level()
                     || distanceTo(talkingTo) > DialogueManager.MAX_DISTANCE)) {
                 DialogueManager.close(talkingTo, true);
@@ -624,12 +666,24 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
                 .stream().map(other -> other.packId).findFirst().orElseGet(UUID::randomUUID);
         }
         List<AvaliEntity> members = level().getEntitiesOfClass(AvaliEntity.class,
-            getBoundingBox().inflate(behavior.pack().maxDistance() * 2), other -> packId.equals(other.packId));
+            getBoundingBox().inflate(behavior.pack().maxDistance() * 2), other -> packId.equals(other.packId) && (other == this || !other.isCompanion()));
         Vec3 sum = Vec3.ZERO;
         for (AvaliEntity member : members) {
             sum = sum.add(member.position());
         }
         packCenter = members.isEmpty() ? position() : sum.scale(1.0 / members.size());
+        if (!isCompanion() && returningSince < 0) {
+            PackHomeData.get(level().getServer()).update(packId, BlockPos.containing(packCenter));
+        }
+        if (returningSince >= 0) {
+            Vec3 home = getReturnTarget();
+            if (position().distanceTo(home) <= behavior.pack().regroupRadius()) {
+                returningSince = -1;
+            } else if (level().getGameTime() - returningSince > RETURN_TIMEOUT_TICKS) {
+                returningSince = -1;
+                teleportNear(BlockPos.containing(home), true);
+            }
+        }
         if (bed != null && level().isLoaded(bed) && (!isBedHead(bed)
                 || Vec3.atCenterOf(bed).distanceTo(packCenter) > behavior.life().bedMaxPackDistance())) {
             bed = null;
@@ -647,6 +701,18 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     }
 
     @Override
+    public void die(DamageSource source) {
+        super.die(source);
+        if (level() instanceof ServerLevel level && isCompanion()) {
+            ServerPlayer owner = getOwner();
+            if (owner != null) {
+                owner.sendSystemMessage(Component.translatable("avalinexus.companion.died", getName()));
+            }
+            CompanionData.get(level.getServer()).remove(getOwnerId(), getUUID());
+        }
+    }
+
+    @Override
     protected void dropCustomDeathLoot(ServerLevel level, DamageSource source, boolean killedByPlayer) {
         super.dropCustomDeathLoot(level, source, killedByPlayer);
         gear.dropAll(level);
@@ -660,6 +726,144 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     @Override
     public void hurtHelmet(DamageSource source, float damage) {
         doHurtEquipment(source, damage, EquipmentSlot.HEAD);
+    }
+
+    public boolean isCompanion() {
+        return !entityData.get(DATA_OWNER).isEmpty();
+    }
+
+    public UUID getOwnerId() {
+        String owner = entityData.get(DATA_OWNER);
+        return owner.isEmpty() ? null : UUID.fromString(owner);
+    }
+
+    public boolean isOwnedBy(Player player) {
+        return isCompanion() && player.getUUID().equals(getOwnerId());
+    }
+
+    public ServerPlayer getOwner() {
+        UUID owner = getOwnerId();
+        return owner == null || level().getServer() == null ? null : level().getServer().getPlayerList().getPlayer(owner);
+    }
+
+    public boolean isAlly(Entity entity) {
+        if (!isCompanion() || entity == null) {
+            return false;
+        }
+        UUID owner = getOwnerId();
+        return entity.getUUID().equals(owner) || entity instanceof AvaliEntity other && owner.equals(other.getOwnerId());
+    }
+
+    public CompanionRole getRole() {
+        return CompanionRole.values()[entityData.get(DATA_ROLE)];
+    }
+
+    public void setRole(CompanionRole role) {
+        entityData.set(DATA_ROLE, role.ordinal());
+    }
+
+    public boolean isWaiting() {
+        return entityData.get(DATA_WAITING);
+    }
+
+    public boolean isFollowingOwner() {
+        return isCompanion() && !isWaiting();
+    }
+
+    public void setWaiting(boolean waiting) {
+        entityData.set(DATA_WAITING, waiting);
+        waitPos = waiting ? blockPosition() : null;
+        getNavigation().stop();
+    }
+
+    public BlockPos getWaitPos() {
+        return waitPos == null ? blockPosition() : waitPos;
+    }
+
+    public void recruit(ServerPlayer player) {
+        entityData.set(DATA_OWNER, player.getUUID().toString());
+        entityData.set(DATA_OWNER_NAME, player.getGameProfile().name());
+        setRole(CompanionRole.FIGHTER);
+        setWaiting(false);
+        setTarget(null);
+        CompanionData.get(player.level().getServer()).add(player.getUUID(), getUUID());
+    }
+
+    public void dismiss() {
+        if (level() instanceof ServerLevel level && isCompanion()) {
+            CompanionData.get(level.getServer()).remove(getOwnerId(), getUUID());
+        }
+        entityData.set(DATA_OWNER, "");
+        entityData.set(DATA_OWNER_NAME, "");
+        setRole(CompanionRole.FIGHTER);
+        setWaiting(false);
+        setTarget(null);
+        returningSince = level().getGameTime();
+        packCheck = 0;
+        Vec3 home = getReturnTarget();
+        if (position().distanceTo(home) > AvaliCompanions.get(level().getServer()).homeTeleportDistance()
+                || !level().isLoaded(BlockPos.containing(home))) {
+            returningSince = -1;
+            teleportNear(BlockPos.containing(home), true);
+        }
+    }
+
+    public boolean isReturningHome() {
+        return returningSince >= 0;
+    }
+
+    public Vec3 getReturnTarget() {
+        BlockPos home = packId == null || level().getServer() == null ? null : PackHomeData.get(level().getServer()).home(packId);
+        return home == null ? getPackCenter() : Vec3.atBottomCenterOf(home);
+    }
+
+    private void updateCompanion() {
+        if (isWaiting()) {
+            return;
+        }
+        ServerPlayer owner = getOwner();
+        if (owner == null || owner.level() != level() || owner.isDeadOrDying() || owner.isSpectator()) {
+            setWaiting(true);
+            return;
+        }
+        if (!isPassenger() && distanceTo(owner) > AvaliCompanions.get(level().getServer()).teleportDistance()) {
+            teleportNear(owner.blockPosition(), false);
+        }
+    }
+
+    private void teleportNear(BlockPos center, boolean surface) {
+        for (int i = 0; i < TELEPORT_TRIES; i++) {
+            BlockPos pos = center.offset(Mth.nextInt(random, -3, 3), Mth.nextInt(random, -1, 1), Mth.nextInt(random, -3, 3));
+            if (Math.abs(pos.getX() - center.getX()) < 2 && Math.abs(pos.getZ() - center.getZ()) < 2) {
+                continue;
+            }
+            if (level().getBlockState(pos.below()).isFaceSturdy(level(), pos.below(), net.minecraft.core.Direction.UP)
+                    && level().noCollision(this, getBoundingBox().move(Vec3.atBottomCenterOf(pos).subtract(position())))) {
+                stopRiding();
+                teleportTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
+                getNavigation().stop();
+                return;
+            }
+        }
+        for (int i = 0; surface && i < TELEPORT_TRIES; i++) {
+            int x = center.getX() + Mth.nextInt(random, -3, 3);
+            int z = center.getZ() + Mth.nextInt(random, -3, 3);
+            BlockPos pos = new BlockPos(x, level().getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, z), z);
+            if (level().getFluidState(pos.below()).isEmpty()
+                    && level().getBlockState(pos.below()).isFaceSturdy(level(), pos.below(), net.minecraft.core.Direction.UP)) {
+                stopRiding();
+                teleportTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
+                getNavigation().stop();
+                return;
+            }
+        }
+    }
+
+    @Override
+    public Component getDisplayName() {
+        Component name = super.getDisplayName();
+        String owner = entityData.get(DATA_OWNER_NAME);
+        return owner.isEmpty() ? name : Component.translatable("avalinexus.companion.name", name, owner);
     }
 
     public AvaliGear getGear() {
