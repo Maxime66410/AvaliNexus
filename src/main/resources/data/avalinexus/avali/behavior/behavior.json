@@ -6,7 +6,8 @@
     "parent_distance": 16,
     "regroup_radius": 8,
     "heater_search_radius": 32,
-    "heater_radius": 6
+    "heater_radius": 6,
+    "egg_join_radius": 64
   },
   "life": {
     "bed_search_radius": 16,

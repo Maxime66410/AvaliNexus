@@ -2,7 +2,7 @@
  * File: AvaliFleeGoal.java
  * Author: Maxime66410
  * Created: 2026-10-18
- * Last Modified: 2026-10-18
+ * Last Modified: 2026-10-20
  */
 package org.furranystudio.avalinexus.entity.avali.goal;
 
@@ -262,7 +262,7 @@ public class AvaliFleeGoal extends Goal {
 
     private AvaliEntity findParent() {
         return avali.level().getEntitiesOfClass(AvaliEntity.class, avali.getBoundingBox().inflate(PARENT_SEARCH),
-                other -> other.isAlive() && avali.getParents().contains(other.getUUID()))
+                other -> other.isAlive() && !other.isCompanion() && avali.getParents().contains(other.getUUID()))
             .stream().min((a, b) -> Double.compare(avali.distanceToSqr(a), avali.distanceToSqr(b))).orElse(null);
     }
 }

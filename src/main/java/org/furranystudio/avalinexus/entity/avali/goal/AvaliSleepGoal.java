@@ -2,7 +2,7 @@
  * File: AvaliSleepGoal.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-10-19
+ * Last Modified: 2026-10-20
  */
 package org.furranystudio.avalinexus.entity.avali.goal;
 
@@ -24,6 +24,7 @@ public class AvaliSleepGoal extends Goal {
     private static final int SEARCH_COOLDOWN = 100;
     private static final double WAIT_BED_RANGE = 8.0;
     private static final int BED_HEIGHT = 4;
+    private static final double NEIGHBOR_BED_SQ = 9.0;
     private static final double REACH_DISTANCE_SQ = 4.0;
     private static final int MAX_WALK_TICKS = 1200;
     private static final int NAP_CHANCE = 12000;
@@ -54,8 +55,15 @@ public class AvaliSleepGoal extends Goal {
             return false;
         }
         bed = ownBed();
+        BlockPos partnerBed = partnerBed();
+        if (partnerBed != null && !avali.isFemale() && (bed == null || bed.distSqr(partnerBed) > NEIGHBOR_BED_SQ)) {
+            BlockPos closer = findFreeBed(partnerBed);
+            if (closer != null && (bed == null || closer.distSqr(partnerBed) < bed.distSqr(partnerBed))) {
+                bed = closer;
+            }
+        }
         if (bed == null) {
-            bed = findFreeBed();
+            bed = findFreeBed(partnerBed != null ? partnerBed : avali.blockPosition());
         }
         if (bed == null || avali.isCompanion() && !bed.closerThan(avali.getWaitPos(), WAIT_BED_RANGE)) {
             return false;
@@ -120,7 +128,12 @@ public class AvaliSleepGoal extends Goal {
         return own != null && avali.level().isLoaded(own) && avali.isBedHead(own) && isFree(own) ? own : null;
     }
 
-    private BlockPos findFreeBed() {
+    private BlockPos partnerBed() {
+        AvaliEntity partner = avali.getPartner();
+        return partner == null || partner.isCompanion() ? null : partner.getBed();
+    }
+
+    private BlockPos findFreeBed(BlockPos near) {
         AvaliBehavior.Life life = AvaliBehavior.get(avali.level().getServer()).life();
         int range = life.bedSearchRadius();
         Set<BlockPos> claimed = avali.level().getEntitiesOfClass(AvaliEntity.class,
@@ -132,7 +145,7 @@ public class AvaliSleepGoal extends Goal {
         for (BlockPos pos : BlockPos.betweenClosed(
                 center.offset(-range, -BED_HEIGHT, -range),
                 center.offset(range, BED_HEIGHT, range))) {
-            double distance = pos.distSqr(center);
+            double distance = pos.distSqr(near);
             if (distance < closestDistance && avali.isBedHead(pos) && isFree(pos) && !claimed.contains(pos)) {
                 closest = pos.immutable();
                 closestDistance = distance;

@@ -2,7 +2,7 @@
  * File: ClientDialogue.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-10-19
+ * Last Modified: 2026-10-20
  */
 package org.furranystudio.avalinexus.client.dialogue;
 
@@ -40,16 +40,16 @@ public final class ClientDialogue {
     private ClientDialogue() {
     }
 
-    public static void open(int id, String line, List<Integer> available, int highlighted, int standing) {
+    public static void open(int id, String line, String partner, List<Integer> available, int highlighted, int standing) {
         entityId = id;
         tier = standing >= 0 && standing < ReputationTier.values().length ? ReputationTier.values()[standing] : null;
         selected = 0;
         setChoices(available, highlighted);
         closingTicks = -1;
-        setLine(line);
+        setLine(line, partner);
     }
 
-    public static void showLine(int id, String line, boolean closing, List<Integer> available, int highlighted) {
+    public static void showLine(int id, String line, String partner, boolean closing, List<Integer> available, int highlighted) {
         if (id != entityId) {
             return;
         }
@@ -61,7 +61,7 @@ public final class ClientDialogue {
         }
         highlight = highlighted;
         if (!line.equals(lineKey)) {
-            setLine(line);
+            setLine(line, partner);
         }
         if (closing) {
             closingTicks = CLOSING_TICKS;
@@ -205,9 +205,9 @@ public final class ClientDialogue {
         return true;
     }
 
-    private static void setLine(String line) {
+    private static void setLine(String line, String partner) {
         lineKey = line;
-        text = Component.translatable(line).getString();
+        text = Component.translatable(line, partner).getString();
         revealed = 0;
     }
 

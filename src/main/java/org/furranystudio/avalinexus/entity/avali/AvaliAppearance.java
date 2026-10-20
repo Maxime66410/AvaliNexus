@@ -2,7 +2,7 @@
  * File: AvaliAppearance.java
  * Author: Maxime66410
  * Created: 2026-10-17
- * Last Modified: 2026-10-19
+ * Last Modified: 2026-10-20
  */
 package org.furranystudio.avalinexus.entity.avali;
 
@@ -64,8 +64,17 @@ public final class AvaliAppearance {
     }
 
     public static int rollColor(MinecraftServer server, String pack, RandomSource random) {
-        Data loaded = get(server);
-        int base = loaded.colors().getOrDefault(pack, WHITE);
+        return vary(get(server), get(server).colors().getOrDefault(pack, WHITE), random);
+    }
+
+    public static int mixColor(MinecraftServer server, int first, int second, RandomSource random) {
+        int red = ((first >> 16 & 0xFF) + (second >> 16 & 0xFF)) / 2;
+        int green = ((first >> 8 & 0xFF) + (second >> 8 & 0xFF)) / 2;
+        int blue = ((first & 0xFF) + (second & 0xFF)) / 2;
+        return vary(get(server), red << 16 | green << 8 | blue, random);
+    }
+
+    private static int vary(Data loaded, int base, RandomSource random) {
         float red = (base >> 16 & 0xFF) / 255.0F;
         float green = (base >> 8 & 0xFF) / 255.0F;
         float blue = (base & 0xFF) / 255.0F;

@@ -1,0 +1,35 @@
+{
+  "check_seconds": 30,
+  "bond": {
+    "chance": 0.25,
+    "distance": 16,
+    "stay_distance": 8
+  },
+  "baby": {
+    "chance": 0.1,
+    "partner_distance": 8,
+    "food_per_parent": 1,
+    "cooldown_days": 2,
+    "pack_max": 8
+  },
+  "stuck": {
+    "leave_chance": 0.05,
+    "leave_distance": 128,
+    "loner_chance": 0.05,
+    "loner_min_distance": 16,
+    "loner_max_distance": 24
+  },
+  "items": {
+    "min_tier": "neutral",
+    "love_seconds": 30,
+    "tonic_reduction": 0.5,
+    "select_range": 16,
+    "baby_growth": 0.1
+  },
+  "birth": {
+    "message_radius": 32,
+    "xp_min": 1,
+    "xp_max": 7,
+    "rare_inherit_chance": 0.5
+  }
+}

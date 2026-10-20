@@ -2,7 +2,7 @@
  * File: DialogueManager.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-10-19
+ * Last Modified: 2026-10-20
  */
 package org.furranystudio.avalinexus.dialogue;
 
@@ -75,7 +75,7 @@ public final class DialogueManager {
         SESSIONS.put(player.getUUID(), session);
         say(avali, line);
         List<DialogueChoice> choices = choices(player, session);
-        ModNetworking.sendToPlayer(player, new OpenDialoguePayload(avali.getId(), line.text(), ordinals(choices), highlight(avali, session),
+        ModNetworking.sendToPlayer(player, new OpenDialoguePayload(avali.getId(), line.text(), avali.getPartnerName(), ordinals(choices), highlight(avali, session),
             avali.isOwnedBy(player) ? -1 : tier.ordinal()));
     }
 
@@ -129,7 +129,7 @@ public final class DialogueManager {
 
         boolean leaving = choice == DialogueChoice.LEAVE || choice == DialogueChoice.DISMISS;
         List<DialogueChoice> choices = leaving ? List.of() : choices(player, session);
-        ModNetworking.sendToPlayer(player, new DialogueLinePayload(entityId, line.text(), leaving, ordinals(choices), highlight(avali, session)));
+        ModNetworking.sendToPlayer(player, new DialogueLinePayload(entityId, line.text(), avali.getPartnerName(), leaving, ordinals(choices), highlight(avali, session)));
         if (choice == DialogueChoice.TRADE) {
             ShopManager.open(player, avali);
         }

@@ -2,7 +2,7 @@
  * File: AvaliGear.java
  * Author: Maxime66410
  * Created: 2026-10-17
- * Last Modified: 2026-10-19
+ * Last Modified: 2026-10-20
  */
 package org.furranystudio.avalinexus.entity.avali;
 
@@ -126,6 +126,22 @@ public class AvaliGear {
             .max(Comparator.comparingInt(AvaliGear::nutrition)).orElse(ItemStack.EMPTY);
         backpack.remove(food);
         return food;
+    }
+
+    public int foodCount() {
+        return backpack.stream().filter(data()::isFood).mapToInt(ItemStack::getCount).sum();
+    }
+
+    public void consumeFood(int count) {
+        int left = count;
+        for (ItemStack stack : backpack) {
+            if (left > 0 && data().isFood(stack)) {
+                int eaten = Math.min(left, stack.getCount());
+                stack.shrink(eaten);
+                left -= eaten;
+            }
+        }
+        backpack.removeIf(ItemStack::isEmpty);
     }
 
     public static int nutrition(ItemStack stack) {

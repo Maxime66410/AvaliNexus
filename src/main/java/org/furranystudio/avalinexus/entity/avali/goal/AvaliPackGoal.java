@@ -2,7 +2,7 @@
  * File: AvaliPackGoal.java
  * Author: Maxime66410
  * Created: 2026-10-17
- * Last Modified: 2026-10-19
+ * Last Modified: 2026-10-20
  */
 package org.furranystudio.avalinexus.entity.avali.goal;
 
@@ -14,6 +14,7 @@ import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.phys.Vec3;
 import org.furranystudio.avalinexus.block.heater.HeaterBlockEntity;
 import org.furranystudio.avalinexus.entity.avali.AvaliBehavior;
+import org.furranystudio.avalinexus.entity.avali.AvaliBreeding;
 import org.furranystudio.avalinexus.entity.avali.AvaliEntity;
 
 import java.util.Comparator;
@@ -27,6 +28,7 @@ public class AvaliPackGoal extends Goal {
     private static final int MAX_WALK_TICKS = 1200;
     private static final double WALK_SPEED = 0.8;
     private static final double RETURN_SPEED = 1.0;
+    private static final double COUPLE_REGROUP_RADIUS = 2.0;
 
     private final AvaliEntity avali;
     private Vec3 target;
@@ -91,7 +93,7 @@ public class AvaliPackGoal extends Goal {
         if (avali.isBaby()) {
             Entity parent = avali.getParents().stream()
                 .map(id -> avali.level().getEntity(id))
-                .filter(entity -> entity instanceof AvaliEntity && entity.isAlive())
+                .filter(entity -> entity instanceof AvaliEntity other && other.isAlive() && !other.isCompanion())
                 .min(Comparator.comparingDouble(avali::distanceToSqr))
                 .orElse(null);
             if (parent != null && avali.distanceTo(parent) > pack.babyDistance()) {
@@ -120,6 +122,17 @@ public class AvaliPackGoal extends Goal {
         if (avali.position().distanceTo(center) > pack.maxDistance()) {
             speed = RETURN_SPEED;
             return aim(center, pack.maxDistance() / 2);
+        }
+
+        AvaliEntity partner = avali.getPartner();
+        if (partner != null && !partner.isCompanion()) {
+            if (avali.shouldRegroup() && !avali.isFemale()) {
+                return aim(partner.position(), COUPLE_REGROUP_RADIUS);
+            }
+            double stay = AvaliBreeding.get(avali.level().getServer()).bond().stayDistance();
+            if (!avali.shouldRegroup() && avali.distanceTo(partner) > stay) {
+                return aim(partner.position(), stay / 2);
+            }
         }
 
         if (avali.shouldRegroup()) {

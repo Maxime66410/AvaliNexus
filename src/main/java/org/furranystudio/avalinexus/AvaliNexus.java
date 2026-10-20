@@ -2,7 +2,7 @@
  * File: AvaliNexus.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-09-27
+ * Last Modified: 2026-10-20
  */
 package org.furranystudio.avalinexus;
 
@@ -12,6 +12,7 @@ import org.furranystudio.avalinexus.block.ModBlockEntities;
 import org.furranystudio.avalinexus.block.ModBlocks;
 import org.furranystudio.avalinexus.block.AerogelBlocks;
 import org.furranystudio.avalinexus.block.NanocanvasBlocks;
+import org.furranystudio.avalinexus.effect.ModEffects;
 import org.furranystudio.avalinexus.fluid.AvaliLiquids;
 import org.furranystudio.avalinexus.fluid.ModFluids;
 import org.furranystudio.avalinexus.entity.ModEntities;
@@ -35,6 +36,7 @@ public final class AvaliNexus {
 
     public static void registerContent() {
         ModSounds.init();
+        ModEffects.init();
         ModBlocks.init();
         NanocanvasBlocks.init();
         AerogelBlocks.init();

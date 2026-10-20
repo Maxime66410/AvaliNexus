@@ -2,7 +2,7 @@
  * File: AvaliNexusCommand.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-10-19
+ * Last Modified: 2026-10-20
  */
 package org.furranystudio.avalinexus.command;
 
@@ -28,6 +28,7 @@ import org.furranystudio.avalinexus.archive.ArchiveData;
 import org.furranystudio.avalinexus.dialogue.DialogueData;
 import org.furranystudio.avalinexus.entity.avali.AvaliAppearance;
 import org.furranystudio.avalinexus.entity.avali.AvaliBehavior;
+import org.furranystudio.avalinexus.entity.avali.AvaliBreeding;
 import org.furranystudio.avalinexus.entity.avali.AvaliCombat;
 import org.furranystudio.avalinexus.entity.avali.AvaliCompanions;
 import org.furranystudio.avalinexus.entity.avali.AvaliConcert;
@@ -73,6 +74,7 @@ public final class AvaliNexusCommand {
         CONFIGS.put("music", AvaliMusic::reload);
         CONFIGS.put("companion", AvaliCompanions::reload);
         CONFIGS.put("reputation", AvaliReputation::reload);
+        CONFIGS.put("breeding", AvaliBreeding::reload);
     }
 
     private AvaliNexusCommand() {

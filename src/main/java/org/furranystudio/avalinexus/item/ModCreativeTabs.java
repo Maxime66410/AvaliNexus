@@ -2,7 +2,7 @@
  * File: ModCreativeTabs.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-09-27
+ * Last Modified: 2026-10-20
  */
 package org.furranystudio.avalinexus.item;
 
@@ -13,7 +13,10 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.PotionContents;
 import org.furranystudio.avalinexus.Platform;
+import org.furranystudio.avalinexus.effect.ModEffects;
 import org.furranystudio.avalinexus.block.AerogelBlocks;
 import org.furranystudio.avalinexus.block.NanocanvasBlocks;
 import org.furranystudio.avalinexus.entity.tapestry.TapestryPattern;
@@ -33,6 +36,11 @@ public final class ModCreativeTabs {
                 output.accept(ModItems.NEXITE_NUGGET.get());
                 output.accept(ModItems.GRAPHENE.get());
                 output.accept(ModItems.AVALI_FEATHER.get());
+                output.accept(ModItems.BOND_FEATHER.get());
+                output.accept(ModItems.NEST_RATION.get());
+                output.accept(PotionContents.createItemStack(Items.POTION, ModEffects.tonicPotion()));
+                output.accept(PotionContents.createItemStack(Items.SPLASH_POTION, ModEffects.tonicPotion()));
+                output.accept(PotionContents.createItemStack(Items.LINGERING_POTION, ModEffects.tonicPotion()));
                 output.accept(ModItems.NEXITE_ORE.get());
                 output.accept(ModItems.DEEPSLATE_NEXITE_ORE.get());
                 output.accept(ModItems.NEXITE_BLOCK.get());

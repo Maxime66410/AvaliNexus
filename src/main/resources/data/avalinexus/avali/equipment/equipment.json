@@ -57,7 +57,8 @@
       "minecraft:poisonous_potato",
       "minecraft:pufferfish",
       "minecraft:chorus_fruit",
-      "minecraft:suspicious_stew"
+      "minecraft:suspicious_stew",
+      "avalinexus:nest_ration"
     ]
   },
   "weapons": {

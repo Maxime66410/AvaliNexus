@@ -1,5 +1,6 @@
 {
   "greeting": [
+    { "text": "avalinexus.dialogue.avali.greeting.partner.1", "face": "HAPPY", "condition": "partner" },
     { "text": "avalinexus.dialogue.avali.greeting.wary.1", "face": "ANNOYED", "condition": "wary" },
     { "text": "avalinexus.dialogue.avali.greeting.wary.2", "face": "ANNOYED", "condition": "wary" },
     { "text": "avalinexus.dialogue.avali.greeting.1", "face": "HAPPY", "gesture": "WAG_TAIL" },
@@ -9,6 +10,8 @@
     { "text": "avalinexus.dialogue.avali.greeting.rain", "face": "ANNOYED", "condition": "rain" }
   ],
   "talk": [
+    { "text": "avalinexus.dialogue.avali.talk.partner.1", "face": "HAPPY", "condition": "partner" },
+    { "text": "avalinexus.dialogue.avali.talk.partner.2", "face": "ADORABLE", "condition": "partner" },
     { "text": "avalinexus.dialogue.avali.talk.wary.1", "face": "ANNOYED", "condition": "wary" },
     { "text": "avalinexus.dialogue.avali.talk.wary.2", "face": "SAD", "condition": "wary" },
     { "text": "avalinexus.dialogue.avali.talk.1", "face": "HAPPY" },

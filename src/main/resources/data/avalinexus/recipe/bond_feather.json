@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "avalinexus:avali_feather",
+    "avalinexus:avali_feather",
+    "minecraft:string"
+  ],
+  "result": {
+    "id": "avalinexus:bond_feather"
+  }
+}

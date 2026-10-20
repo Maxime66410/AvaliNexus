@@ -2,7 +2,7 @@
  * File: AvaliBehavior.java
  * Author: Maxime66410
  * Created: 2026-10-17
- * Last Modified: 2026-10-18
+ * Last Modified: 2026-10-20
  */
 package org.furranystudio.avalinexus.entity.avali;
 
@@ -27,7 +27,7 @@ public final class AvaliBehavior {
     private static final Identifier FILE = AvaliNexus.id("avali/behavior/behavior.json");
 
     public record Pack(double maxDistance, double babyDistance, double babyRunDistance, double parentDistance, double regroupRadius,
-                       int heaterSearchRadius, double heaterRadius) {
+                       int heaterSearchRadius, double heaterRadius, double eggJoinRadius) {
     }
 
     public record Life(int bedSearchRadius, double bedMaxPackDistance, double pickupRadius, double giveRange,
@@ -42,7 +42,7 @@ public final class AvaliBehavior {
     public record Data(Pack pack, Life life, Music music) {
     }
 
-    private static final Data FALLBACK = new Data(new Pack(100, 6, 12, 16, 8, 32, 6), new Life(16, 100, 8, 16, 0.5F, 1.0F, 0.3, -0.15),
+    private static final Data FALLBACK = new Data(new Pack(100, 6, 12, 16, 8, 32, 6, 64), new Life(16, 100, 8, 16, 0.5F, 1.0F, 0.3, -0.15),
         new Music(0.002, 12000, 13800, 5.0, 32, 300, 120, 300, 32, 15, 1.0F, true, List.of(AvaliFace.ADORABLE, AvaliFace.EXCITED, AvaliFace.SMUG)));
 
     private static ResourceManager loadedFrom;
@@ -84,7 +84,8 @@ public final class AvaliBehavior {
                 new Pack(pack.get("max_distance").getAsDouble(), pack.get("baby_distance").getAsDouble(),
                     pack.get("baby_run_distance").getAsDouble(),
                     pack.get("parent_distance").getAsDouble(), pack.get("regroup_radius").getAsDouble(),
-                    pack.get("heater_search_radius").getAsInt(), pack.get("heater_radius").getAsDouble()),
+                    pack.get("heater_search_radius").getAsInt(), pack.get("heater_radius").getAsDouble(),
+                    pack.get("egg_join_radius").getAsDouble()),
                 new Life(life.get("bed_search_radius").getAsInt(), life.get("bed_max_pack_distance").getAsDouble(),
                     life.get("pickup_radius").getAsDouble(), life.get("give_range").getAsDouble(),
                     life.get("eat_below_health").getAsFloat(), life.get("heal_per_nutrition").getAsFloat(),

@@ -2,7 +2,7 @@
  * File: DialogueLine.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-09-27
+ * Last Modified: 2026-10-20
  */
 package org.furranystudio.avalinexus.dialogue;
 
@@ -39,6 +39,7 @@ public record DialogueLine(String text, AvaliFace face, AvaliGesture gesture, St
             case "rain" -> avali.level().isRaining();
             case "baby" -> avali.isBaby();
             case "adult" -> !avali.isBaby();
+            case "partner" -> !avali.getPartnerName().isEmpty();
             default -> true;
         };
     }

@@ -2,7 +2,7 @@
  * File: ModItems.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-09-27
+ * Last Modified: 2026-10-20
  */
 package org.furranystudio.avalinexus.item;
 
@@ -14,6 +14,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DoubleHighBlockItem;
 import net.minecraft.world.item.Item;
@@ -54,7 +55,13 @@ public final class ModItems {
     public static final RegistryEntry<Item> AVALI_FEATHER = ModRegistry.register(Registries.ITEM, "avali_feather",
         key -> new Item(new Item.Properties().setId(key)));
 
-    public static final RegistryEntry<BlockItem> NEXITE_ORE = ModRegistry.register(Registries.ITEM, "nexite_ore",
+    public static final RegistryEntry<Item> BOND_FEATHER = ModRegistry.register(Registries.ITEM, "bond_feather",
+        key -> new Item(new Item.Properties().setId(key)));
+
+    public static final RegistryEntry<Item> NEST_RATION = ModRegistry.register(Registries.ITEM, "nest_ration",
+        key -> new Item(new Item.Properties().setId(key).food(new FoodProperties.Builder().nutrition(6).saturationModifier(0.6F).build())));
+
+    public static final RegistryEntry<BlockItem> NEXITE_ORE =ModRegistry.register(Registries.ITEM, "nexite_ore",
         key -> new BlockItem(ModBlocks.NEXITE_ORE.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));
 
     public static final RegistryEntry<BlockItem> DEEPSLATE_NEXITE_ORE = ModRegistry.register(Registries.ITEM, "deepslate_nexite_ore",
