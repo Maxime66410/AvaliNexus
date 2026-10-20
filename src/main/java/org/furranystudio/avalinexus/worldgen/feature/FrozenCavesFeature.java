@@ -18,6 +18,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.LegacyRandomSource;
+import net.minecraft.world.level.levelgen.RandomState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.synth.SimplexNoise;
 import org.furranystudio.avalinexus.worldgen.ModBiomes;
@@ -42,13 +43,14 @@ public record FrozenCavesFeature() implements Feature {
         SimplexNoise noise = new SimplexNoise(new LegacyRandomSource(level.getSeed() ^ 0x5F3C2A17L));
         BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
         BlockPos.MutableBlockPos side = new BlockPos.MutableBlockPos();
+        RandomState randomState = level.getLevel().getChunkSource().randomState();
         boolean placed = false;
 
         for (int dx = 0; dx < 16; dx++) {
             for (int dz = 0; dz < 16; dz++) {
                 int x = origin.getX() + dx;
                 int z = origin.getZ() + dz;
-                int surface = level.getHeight(Heightmap.Types.WORLD_SURFACE_WG, x, z);
+                int surface = generator.getBaseHeight(x, z, Heightmap.Types.WORLD_SURFACE_WG, level, randomState);
                 if (!level.getBiome(pos.set(x, surface, z)).is(ModBiomes.POLAR_TAIGA)) {
                     continue;
                 }
