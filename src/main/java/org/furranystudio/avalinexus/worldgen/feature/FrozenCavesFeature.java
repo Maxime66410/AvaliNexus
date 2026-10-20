@@ -2,7 +2,7 @@
  * File: FrozenCavesFeature.java
  * Author: Maxime66410
  * Created: 2026-10-10
- * Last Modified: 2026-10-10
+ * Last Modified: 2026-10-20
  */
 package org.furranystudio.avalinexus.worldgen.feature;
 
@@ -48,11 +48,15 @@ public record FrozenCavesFeature() implements Feature {
             for (int dz = 0; dz < 16; dz++) {
                 int x = origin.getX() + dx;
                 int z = origin.getZ() + dz;
-                int top = level.getHeight(Heightmap.Types.WORLD_SURFACE_WG, x, z) - SURFACE_MARGIN;
+                int surface = level.getHeight(Heightmap.Types.WORLD_SURFACE_WG, x, z);
+                if (!level.getBiome(pos.set(x, surface, z)).is(ModBiomes.POLAR_TAIGA)) {
+                    continue;
+                }
+                int top = surface - SURFACE_MARGIN;
                 for (int y = level.getMinY(); y < top; y++) {
                     pos.set(x, y, z);
                     BlockState state = level.getBlockState(pos);
-                    if (!isCoatable(state) || !touchesCaveAir(level, pos, side) || !level.getBiome(pos).is(ModBiomes.POLAR_TAIGA)) {
+                    if (!isCoatable(state) || !touchesCaveAir(level, pos, side)) {
                         continue;
                     }
                     level.setBlock(pos, coating(noise, random, x, y, z), 2);
