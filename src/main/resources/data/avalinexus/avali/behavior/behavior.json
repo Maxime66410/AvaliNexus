@@ -33,5 +33,12 @@
     "volume": 1.0,
     "particles": true,
     "faces": ["adorable", "excited", "smug"]
+  },
+  "camp": {
+    "anchor_radius": 32,
+    "explorers_min": 1,
+    "explorers_max": 2,
+    "explorer_radius": 96,
+    "explore_chance": 0.05
   }
 }

@@ -2,7 +2,7 @@
  * File: AvaliBreeding.java
  * Author: Maxime66410
  * Created: 2026-10-20
- * Last Modified: 2026-10-20
+ * Last Modified: 2026-10-21
  */
 package org.furranystudio.avalinexus.entity.avali;
 
@@ -122,7 +122,9 @@ public final class AvaliBreeding {
         }
         double roll = avali.getRandom().nextDouble();
         if (roll < config.stuck().leaveChance()) {
-            leavePack(avali, config);
+            if (avali.getCamp() == null) {
+                leavePack(avali, config);
+            }
         } else if (roll < config.stuck().leaveChance() + config.stuck().lonerChance() && members.size() < config.baby().packMax()) {
             avali.spawnLoner(config.stuck().lonerMinDistance(), config.stuck().lonerMaxDistance());
         }

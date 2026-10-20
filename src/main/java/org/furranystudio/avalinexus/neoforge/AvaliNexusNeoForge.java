@@ -2,7 +2,7 @@
  * File: AvaliNexusNeoForge.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-10-19
+ * Last Modified: 2026-10-21
  */
 package org.furranystudio.avalinexus.neoforge;
 

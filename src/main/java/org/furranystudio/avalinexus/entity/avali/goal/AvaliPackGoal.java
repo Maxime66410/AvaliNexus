@@ -2,7 +2,7 @@
  * File: AvaliPackGoal.java
  * Author: Maxime66410
  * Created: 2026-10-17
- * Last Modified: 2026-10-20
+ * Last Modified: 2026-10-21
  */
 package org.furranystudio.avalinexus.entity.avali.goal;
 
@@ -11,6 +11,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
 import org.furranystudio.avalinexus.block.heater.HeaterBlockEntity;
 import org.furranystudio.avalinexus.entity.avali.AvaliBehavior;
@@ -29,6 +30,7 @@ public class AvaliPackGoal extends Goal {
     private static final double WALK_SPEED = 0.8;
     private static final double RETURN_SPEED = 1.0;
     private static final double COUPLE_REGROUP_RADIUS = 2.0;
+    private static final double EXPLORE_ARRIVAL = 4.0;
 
     private final AvaliEntity avali;
     private Vec3 target;
@@ -37,6 +39,7 @@ public class AvaliPackGoal extends Goal {
     private boolean running;
     private int checkCooldown;
     private int walkTicks;
+    private Vec3 exploreTarget;
 
     public AvaliPackGoal(AvaliEntity avali) {
         this.avali = avali;
@@ -82,6 +85,7 @@ public class AvaliPackGoal extends Goal {
         avali.getNavigation().stop();
         avali.setSprinting(false);
         target = null;
+        exploreTarget = null;
     }
 
     private boolean pickTarget() {
@@ -119,9 +123,10 @@ public class AvaliPackGoal extends Goal {
             speed = RETURN_SPEED;
             return aim(avali.getReturnTarget(), pack.regroupRadius());
         }
-        if (avali.position().distanceTo(center) > pack.maxDistance()) {
+        double range = avali.packRange();
+        if (avali.position().distanceTo(center) > range) {
             speed = RETURN_SPEED;
-            return aim(center, pack.maxDistance() / 2);
+            return aim(center, range / 2);
         }
 
         AvaliEntity partner = avali.getPartner();
@@ -135,6 +140,17 @@ public class AvaliPackGoal extends Goal {
             }
         }
 
+        if (avali.isExplorer() && !avali.shouldRegroup()) {
+            AvaliBehavior.Camp camp = AvaliBehavior.get(avali.level().getServer()).camp();
+            if (exploreTarget == null && avali.getRandom().nextFloat() < camp.exploreChance()) {
+                exploreTarget = explorePoint(center, camp);
+            }
+            if (exploreTarget != null && aim(exploreTarget, EXPLORE_ARRIVAL)) {
+                return true;
+            }
+            exploreTarget = null;
+        }
+
         if (avali.shouldRegroup()) {
             BlockPos heater = findHeater(BlockPos.containing(center), pack.heaterSearchRadius());
             if (heater != null) {
@@ -143,6 +159,17 @@ public class AvaliPackGoal extends Goal {
             return aim(center, pack.regroupRadius());
         }
         return false;
+    }
+
+    private Vec3 explorePoint(Vec3 center, AvaliBehavior.Camp camp) {
+        double angle = avali.getRandom().nextDouble() * Math.PI * 2.0;
+        double distance = camp.anchorRadius() + avali.getRandom().nextDouble() * (camp.explorerRadius() - camp.anchorRadius());
+        int x = (int) Math.floor(center.x + Math.cos(angle) * distance);
+        int z = (int) Math.floor(center.z + Math.sin(angle) * distance);
+        if (!avali.level().isLoaded(BlockPos.containing(x, center.y, z))) {
+            return null;
+        }
+        return new Vec3(x + 0.5, avali.level().getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, z), z + 0.5);
     }
 
     private boolean aim(Vec3 position, double radius) {

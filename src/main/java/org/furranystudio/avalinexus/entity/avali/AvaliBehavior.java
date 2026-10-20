@@ -2,7 +2,7 @@
  * File: AvaliBehavior.java
  * Author: Maxime66410
  * Created: 2026-10-17
- * Last Modified: 2026-10-20
+ * Last Modified: 2026-10-21
  */
 package org.furranystudio.avalinexus.entity.avali;
 
@@ -39,11 +39,15 @@ public final class AvaliBehavior {
                         float volume, boolean particles, List<AvaliFace> faces) {
     }
 
-    public record Data(Pack pack, Life life, Music music) {
+    public record Camp(double anchorRadius, int explorersMin, int explorersMax, double explorerRadius, float exploreChance) {
+    }
+
+    public record Data(Pack pack, Life life, Music music, Camp camp) {
     }
 
     private static final Data FALLBACK = new Data(new Pack(100, 6, 12, 16, 8, 32, 6, 64), new Life(16, 100, 8, 16, 0.5F, 1.0F, 0.3, -0.15),
-        new Music(0.002, 12000, 13800, 5.0, 32, 300, 120, 300, 32, 15, 1.0F, true, List.of(AvaliFace.ADORABLE, AvaliFace.EXCITED, AvaliFace.SMUG)));
+        new Music(0.002, 12000, 13800, 5.0, 32, 300, 120, 300, 32, 15, 1.0F, true, List.of(AvaliFace.ADORABLE, AvaliFace.EXCITED, AvaliFace.SMUG)),
+        new Camp(32, 1, 2, 96, 0.05F));
 
     private static ResourceManager loadedFrom;
     private static Data data = FALLBACK;
@@ -76,6 +80,7 @@ public final class AvaliBehavior {
             JsonObject pack = root.getAsJsonObject("pack");
             JsonObject life = root.getAsJsonObject("life");
             JsonObject music = root.getAsJsonObject("music");
+            JsonObject camp = root.getAsJsonObject("camp");
             List<AvaliFace> faces = new ArrayList<>();
             for (JsonElement face : music.getAsJsonArray("faces")) {
                 faces.add(AvaliFace.valueOf(face.getAsString().toUpperCase(Locale.ROOT)));
@@ -95,7 +100,10 @@ public final class AvaliBehavior {
                     music.get("zone_radius").getAsDouble(), music.get("rest_seconds").getAsInt(),
                     music.get("silence_min_seconds").getAsInt(), music.get("silence_max_seconds").getAsInt(),
                     music.get("join_radius").getAsDouble(), music.get("gather_seconds").getAsInt(),
-                    music.get("volume").getAsFloat(), music.get("particles").getAsBoolean(), List.copyOf(faces)));
+                    music.get("volume").getAsFloat(), music.get("particles").getAsBoolean(), List.copyOf(faces)),
+                new Camp(camp.get("anchor_radius").getAsDouble(), camp.get("explorers_min").getAsInt(),
+                    camp.get("explorers_max").getAsInt(), camp.get("explorer_radius").getAsDouble(),
+                    camp.get("explore_chance").getAsFloat()));
         } catch (Exception e) {
             AvaliNexus.LOGGER.error("[AvaliNexus] Couldn't read behavior file {}", FILE, e);
             return FALLBACK;
