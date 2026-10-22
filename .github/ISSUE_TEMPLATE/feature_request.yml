@@ -1,0 +1,56 @@
+name: Feature request
+description: Suggest an idea for Avali Nexus
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for sharing your idea! For translations, please use [Crowdin](https://crowdin.com/project/avalinexus) instead.
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      options:
+        - Blocks
+        - Items
+        - Avalis
+        - Worldgen
+        - Weapons
+        - Machines
+        - UI
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: Your idea
+      description: Describe what you would like to see in the mod.
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why it would be useful
+      description: What would it add to the game?
+    validations:
+      required: true
+  - type: textarea
+    id: lore
+    attributes:
+      label: Link with the Avali lore
+      description: If your idea comes from the Avali lore, explain how or add a link (for example to the Official Avali Wiki).
+  - type: textarea
+    id: media
+    attributes:
+      label: Images or references
+      description: Drag and drop images here if they help explain your idea.
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: I searched the existing issues and this idea was not suggested yet.
+          required: true
+        - label: This suggestion is not AI generated.
+          required: true
