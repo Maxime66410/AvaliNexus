@@ -97,6 +97,9 @@ public final class AvaliNexusFabricClient implements ClientModInitializer {
                             default -> "AvaliScreenConstructor";
                         };
                     }
+                    if (method.isDefault()) {
+                        return java.lang.reflect.InvocationHandler.invokeDefault(proxy, method, args);
+                    }
                     return factory.create((net.minecraft.world.inventory.AbstractContainerMenu) args[0],
                         (net.minecraft.world.entity.player.Inventory) args[1], (net.minecraft.network.chat.Component) args[2]);
                 });

@@ -2,7 +2,7 @@
  * File: AvaliLooks.java
  * Author: Maxime66410
  * Created: 2026-10-17
- * Last Modified: 2026-10-17
+ * Last Modified: 2026-10-22
  */
 package org.furranystudio.avalinexus.client.avali;
 
@@ -35,7 +35,7 @@ public final class AvaliLooks {
     }
 
     public static Identifier texture(AvaliEntity avali) {
-        Identifier skin = Identifier.tryParse(avali.getSkin());
+        Identifier skin = avali.getSkin().isEmpty() ? null : Identifier.tryParse(avali.getSkin());
         if (skin != null && exists(skin)) {
             return skin;
         }
