@@ -228,6 +228,7 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         super(type, level);
         setPathfindingMalus(PathType.FIRE, -1.0F);
         setPathfindingMalus(PathType.FIRE_IN_NEIGHBOR, FIRE_NEIGHBOR_MALUS);
+        setPathfindingMalus(PathType.POWDER_SNOW, 0.0F);
         for (EquipmentSlot slot : EquipmentSlot.VALUES) {
             setGuaranteedDrop(slot);
         }
