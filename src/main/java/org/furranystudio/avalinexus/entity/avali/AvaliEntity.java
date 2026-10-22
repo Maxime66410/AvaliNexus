@@ -18,6 +18,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.protocol.game.ClientboundAnimatePacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.resources.Identifier;
@@ -145,6 +146,9 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     private static final RawAnimation RIDING = RawAnimation.begin().thenLoop("riding");
     private static final double HAPPY_RANGE = 6.0;
     private static final int HAPPY_TICKS = 30;
+    private static final int ANGRY_PARTICLES = 5;
+    private static final int ANGRY_BURST_INTERVAL = 20;
+    private static final int ANGRY_BURSTS = 3;
     private static final int GESTURE_CHANCE = 400;
     private static final int GESTURE_MIN_TICKS = 40;
     private static final int GESTURE_MAX_TICKS = 100;
@@ -180,6 +184,7 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     private float swimPitch;
     private float swimPitchO;
     private int hurtTicks;
+    private int angryTicks;
     private AvaliMood hurtMood = AvaliMood.ANGRY;
     private int happyTicks;
     private boolean playerNearby;
@@ -327,14 +332,24 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         return AvaliFight.canAttack(this, AvaliFight.enemies(this), false);
     }
 
-    public boolean witness(ServerPlayer thief) {
-        if (!AvaliFight.isValidEnemy(thief) || isAlly(thief)) {
-            return false;
-        }
-        hurtMood = reactTo(thief) ? AvaliMood.ANGRY : AvaliMood.SCARED;
+    public boolean canWitness(ServerPlayer thief) {
+        return AvaliFight.isValidEnemy(thief) && !isAlly(thief);
+    }
+
+    public void witness(ServerPlayer thief, boolean attack) {
+        hurtMood = !attack || reactTo(thief) ? AvaliMood.ANGRY : AvaliMood.SCARED;
         hurtTicks = AvaliFight.data(this).hurtFaceSeconds() * 20;
         stopGesture();
-        return true;
+        playNoise();
+        angryTicks = (ANGRY_BURSTS - 1) * ANGRY_BURST_INTERVAL;
+        showAnger();
+    }
+
+    private void showAnger() {
+        if (level() instanceof ServerLevel level) {
+            level.sendParticles(ParticleTypes.ANGRY_VILLAGER, getX(), getY() + getBbHeight() * 0.5 + 1.0, getZ(), ANGRY_PARTICLES,
+                getBbWidth() * 0.5, getBbHeight() * 0.5, getBbWidth() * 0.5, 0.0);
+        }
     }
 
     private void alertPack(LivingEntity attacker) {
@@ -724,6 +739,9 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
             if (--packCheck <= 0) {
                 packCheck = PACK_CHECK_INTERVAL;
                 updatePack();
+            }
+            if (angryTicks > 0 && --angryTicks % ANGRY_BURST_INTERVAL == 0) {
+                showAnger();
             }
             updateMood();
             updateGesture();

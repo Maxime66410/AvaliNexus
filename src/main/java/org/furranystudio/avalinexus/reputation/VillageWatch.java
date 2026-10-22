@@ -75,11 +75,15 @@ public final class VillageWatch {
             return;
         }
         double range = AvaliBehavior.get(level.getServer()).village().watchDistance();
-        level.getEntitiesOfClass(AvaliEntity.class, player.getBoundingBox().inflate(range),
+        AvaliEntity witness = level.getEntitiesOfClass(AvaliEntity.class, player.getBoundingBox().inflate(range),
                 avali -> packId.equals(avali.getPackId()) && !avali.isCompanion() && !avali.isSleeping()
-                    && avali.distanceTo(player) <= range && avali.hasLineOfSight(player))
-            .stream().filter(avali -> avali.witness(player)).findFirst()
-            .ifPresent(avali -> AvaliReputation.change(player, avali.getPack(), change));
+                    && avali.distanceTo(player) <= range && avali.hasLineOfSight(player) && avali.canWitness(player))
+            .stream().findFirst().orElse(null);
+        if (witness == null) {
+            return;
+        }
+        AvaliReputation.change(player, witness.getPack(), change);
+        witness.witness(player, AvaliReputation.tier(player, witness.getPack()).ordinal() <= ReputationTier.WARY.ordinal());
     }
 
     public static void watch(ServerPlayer player, AbstractContainerMenu menu) {
