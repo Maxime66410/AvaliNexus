@@ -2,7 +2,7 @@
  * File: DialogueData.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-10-19
+ * Last Modified: 2026-10-22
  */
 package org.furranystudio.avalinexus.dialogue;
 
@@ -44,7 +44,7 @@ public final class DialogueData {
             }
         }
         List<DialogueLine> forTier = candidates.stream().filter(line -> tier.key().equals(line.condition())).toList();
-        if (!forTier.isEmpty()) {
+        if (!forTier.isEmpty() && tier.ordinal() < ReputationTier.NEUTRAL.ordinal()) {
             candidates = new ArrayList<>(forTier);
         }
         if (candidates.size() > 1) {
