@@ -2,13 +2,12 @@
  * File: AvaliTargetGoal.java
  * Author: Maxime66410
  * Created: 2026-10-18
- * Last Modified: 2026-10-19
+ * Last Modified: 2026-10-22
  */
 package org.furranystudio.avalinexus.entity.avali.goal;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.monster.Enemy;
 import org.furranystudio.avalinexus.entity.avali.AvaliCombat;
 import org.furranystudio.avalinexus.entity.avali.AvaliEntity;
 import org.furranystudio.avalinexus.entity.avali.AvaliFight;
@@ -38,6 +37,9 @@ public class AvaliTargetGoal extends Goal {
         }
         checkCooldown = CHECK_INTERVAL;
         candidate = avali.getThreat();
+        if (candidate == null) {
+            candidate = attacker();
+        }
         if (candidate == null) {
             candidate = hostilePlayer();
         }
@@ -83,6 +85,14 @@ public class AvaliTargetGoal extends Goal {
         return foes;
     }
 
+    private LivingEntity attacker() {
+        AvaliCombat.Data data = AvaliFight.data(avali);
+        List<LivingEntity> attackers = avali.level().getEntitiesOfClass(LivingEntity.class, avali.getBoundingBox().inflate(data.grudgeDistance()),
+            entity -> AvaliFight.isValidEnemy(entity) && !avali.isAlly(entity) && AvaliFight.isAfterPack(avali, entity)
+                && avali.distanceTo(entity) <= data.grudgeDistance() && avali.getSensing().hasLineOfSight(entity));
+        return AvaliFight.nearest(avali, attackers);
+    }
+
     private LivingEntity hostilePlayer() {
         AvaliCombat.Data data = AvaliFight.data(avali);
         List<LivingEntity> players = avali.level().getEntitiesOfClass(LivingEntity.class, avali.getBoundingBox().inflate(data.enemyRadius()),
@@ -94,7 +104,7 @@ public class AvaliTargetGoal extends Goal {
     private LivingEntity huntable() {
         AvaliCombat.Data data = AvaliFight.data(avali);
         List<LivingEntity> prey = avali.level().getEntitiesOfClass(LivingEntity.class, avali.getBoundingBox().inflate(data.enemyRadius()),
-            entity -> entity instanceof Enemy && AvaliFight.isValidEnemy(entity) && data.hunts(entity.getType())
+            entity -> AvaliFight.isValidEnemy(entity) && AvaliFight.isPrey(data, entity)
                 && avali.distanceTo(entity) <= data.enemyRadius() && avali.getSensing().hasLineOfSight(entity));
         return AvaliFight.nearest(avali, prey);
     }

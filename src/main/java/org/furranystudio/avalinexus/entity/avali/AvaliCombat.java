@@ -2,7 +2,7 @@
  * File: AvaliCombat.java
  * Author: Maxime66410
  * Created: 2026-10-18
- * Last Modified: 2026-10-18
+ * Last Modified: 2026-10-22
  */
 package org.furranystudio.avalinexus.entity.avali;
 
@@ -41,15 +41,20 @@ public final class AvaliCombat {
                        double allyRadius, double enemyRadius, int tooManyEnemies, double outnumberRatio,
                        int grudgeSeconds, double grudgeDistance, int weaponStowSeconds, double shieldDistance,
                        double powerMargin, double enemyDefaultDamage, double enemyAttacksPerSecond, int corneredSeconds,
-                       double parentSafeDistance, double rangedMin, double rangedMax, int hurtFaceSeconds, Burst burst, Crit crit, Creeper creeper, List<Predicate<EntityType<?>>> hunted) {
+                       double parentSafeDistance, double rangedMin, double rangedMax, int hurtFaceSeconds, Burst burst, Crit crit, Creeper creeper, List<Predicate<EntityType<?>>> hunted,
+                       List<Predicate<EntityType<?>>> huntedWhenAngry) {
 
         public boolean hunts(EntityType<?> type) {
             return hunted.stream().anyMatch(test -> test.test(type));
         }
+
+        public boolean huntsWhenAngry(EntityType<?> type) {
+            return huntedWhenAngry.stream().anyMatch(test -> test.test(type));
+        }
     }
 
     private static final Data FALLBACK = new Data(0.5F, 0.3F, 16, 1.5, 1.2, 16, 10, 3, 2.0, 30, 32, 5, 3.5,
-        1.5, 2.0, 1.0, 3, 6, 4, 24, 3, new Burst(3, 5, 20, 40), new Crit(4, 40, 1.5F), new Creeper(8, 0.2F, 8, 1.5), List.of());
+        1.5, 2.0, 1.0, 3, 6, 4, 24, 3, new Burst(3, 5, 20, 40), new Crit(4, 40, 1.5F), new Creeper(8, 0.2F, 8, 1.5), List.of(), List.of());
 
     private static ResourceManager loadedFrom;
     private static Data data = FALLBACK;
@@ -82,17 +87,8 @@ public final class AvaliCombat {
             JsonObject creeper = root.getAsJsonObject("creeper");
             JsonObject crit = root.getAsJsonObject("crit");
             JsonObject burst = root.getAsJsonObject("burst");
-            List<Predicate<EntityType<?>>> hunted = new ArrayList<>();
-            for (JsonElement element : root.getAsJsonArray("hunted")) {
-                String entry = element.getAsString();
-                if (entry.startsWith("#")) {
-                    TagKey<EntityType<?>> tag = TagKey.create(Registries.ENTITY_TYPE, Identifier.parse(entry.substring(1)));
-                    hunted.add(type -> type.builtInRegistryHolder().is(tag));
-                } else {
-                    Identifier id = Identifier.parse(entry);
-                    hunted.add(type -> EntityType.getKey(type).equals(id));
-                }
-            }
+            List<Predicate<EntityType<?>>> hunted = types(root, "hunted");
+            List<Predicate<EntityType<?>>> huntedWhenAngry = types(root, "hunted_when_angry");
             return new Data(root.get("attack_health").getAsFloat(), root.get("flee_health").getAsFloat(),
                 root.get("flee_distance").getAsInt(), root.get("flee_speed").getAsDouble(), root.get("chase_speed").getAsDouble(),
                 root.get("ally_radius").getAsDouble(), root.get("enemy_radius").getAsDouble(),
@@ -108,10 +104,28 @@ public final class AvaliCombat {
                 new Crit(crit.get("jump_distance").getAsDouble(), crit.get("jump_cooldown").getAsInt(), crit.get("multiplier").getAsFloat()),
                 new Creeper(creeper.get("detect_radius").getAsDouble(), creeper.get("min_health").getAsFloat(),
                     creeper.get("flee_distance").getAsInt(), creeper.get("flee_speed").getAsDouble()),
-                hunted);
+                hunted, huntedWhenAngry);
         } catch (Exception e) {
             AvaliNexus.LOGGER.error("[AvaliNexus] Couldn't read combat file {}", FILE, e);
             return FALLBACK;
         }
+    }
+
+    private static List<Predicate<EntityType<?>>> types(JsonObject root, String key) {
+        List<Predicate<EntityType<?>>> types = new ArrayList<>();
+        if (!root.has(key)) {
+            return types;
+        }
+        for (JsonElement element : root.getAsJsonArray(key)) {
+            String entry = element.getAsString();
+            if (entry.startsWith("#")) {
+                TagKey<EntityType<?>> tag = TagKey.create(Registries.ENTITY_TYPE, Identifier.parse(entry.substring(1)));
+                types.add(type -> type.builtInRegistryHolder().is(tag));
+            } else {
+                Identifier id = Identifier.parse(entry);
+                types.add(type -> EntityType.getKey(type).equals(id));
+            }
+        }
+        return types;
     }
 }

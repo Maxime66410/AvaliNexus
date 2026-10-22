@@ -53,6 +53,30 @@
     "minecraft:evoker",
     "minecraft:slime",
     "minecraft:silverfish",
-    "minecraft:endermite"
+    "minecraft:endermite",
+    "minecraft:blaze",
+    "minecraft:ghast",
+    "minecraft:phantom",
+    "minecraft:magma_cube",
+    "minecraft:sulfur_cube",
+    "minecraft:guardian",
+    "minecraft:elder_guardian",
+    "minecraft:shulker",
+    "minecraft:ravager",
+    "minecraft:vex",
+    "minecraft:illusioner",
+    "minecraft:parched",
+    "minecraft:wither_skeleton",
+    "minecraft:zoglin",
+    "minecraft:hoglin",
+    "minecraft:piglin_brute",
+    "minecraft:breeze",
+    "minecraft:creaking",
+    "minecraft:giant"
+  ],
+  "hunted_when_angry": [
+    "minecraft:enderman",
+    "minecraft:zombified_piglin",
+    "minecraft:piglin"
   ]
 }

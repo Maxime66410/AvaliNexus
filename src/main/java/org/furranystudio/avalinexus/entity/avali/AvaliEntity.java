@@ -976,6 +976,13 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         return entity.getUUID().equals(owner) || entity instanceof AvaliEntity other && owner.equals(other.getOwnerId());
     }
 
+    public boolean isPackmate(AvaliEntity other) {
+        if (isCompanion()) {
+            return isAlly(other);
+        }
+        return packId != null && packId.equals(other.packId) && !other.isCompanion();
+    }
+
     public CompanionRole getRole() {
         return CompanionRole.values()[entityData.get(DATA_ROLE)];
     }

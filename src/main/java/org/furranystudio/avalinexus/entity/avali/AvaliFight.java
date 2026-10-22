@@ -2,7 +2,7 @@
  * File: AvaliFight.java
  * Author: Maxime66410
  * Created: 2026-10-18
- * Last Modified: 2026-10-19
+ * Last Modified: 2026-10-22
  */
 package org.furranystudio.avalinexus.entity.avali;
 
@@ -44,7 +44,27 @@ public final class AvaliFight {
         return avali.level().getEntitiesOfClass(LivingEntity.class, avali.getBoundingBox().inflate(data.enemyRadius()),
             entity -> isValidEnemy(entity) && avali.distanceTo(entity) <= data.enemyRadius()
                 && (entity == threat || entity instanceof Mob mob && mob.getTarget() instanceof AvaliEntity
-                    || entity instanceof Enemy && data.hunts(entity.getType()) || isHostileTo(avali, entity)));
+                    || isPrey(data, entity) || isHostileTo(avali, entity)));
+    }
+
+    public static boolean isPrey(AvaliCombat.Data data, LivingEntity entity) {
+        if (!(entity instanceof Enemy)) {
+            return false;
+        }
+        if (data.hunts(entity.getType())) {
+            return true;
+        }
+        return data.huntsWhenAngry(entity.getType()) && entity instanceof Mob mob
+            && (mob.getTarget() instanceof Player || mob.getTarget() instanceof AvaliEntity);
+    }
+
+    public static boolean isAfterPack(AvaliEntity avali, LivingEntity entity) {
+        if (!(entity instanceof Mob mob) || entity instanceof Creeper) {
+            return false;
+        }
+        LivingEntity target = mob.getTarget();
+        return target == avali || target instanceof AvaliEntity other && avali.isPackmate(other)
+            && avali.distanceTo(other) <= data(avali).allyRadius();
     }
 
     public static boolean isHostileTo(AvaliEntity avali, LivingEntity entity) {
