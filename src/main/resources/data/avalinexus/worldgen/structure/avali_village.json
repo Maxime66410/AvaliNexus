@@ -1,0 +1,56 @@
+{
+  "type": "avalinexus:avali_village",
+  "biomes": "#avalinexus:has_structure/avali_village",
+  "step": "surface_structures",
+  "spawn_overrides": {},
+  "terrain_adaptation": "beard_thin",
+  "start_pool": "avalinexus:village/plazas",
+  "max_slope": 12,
+  "slope_sample": 32,
+  "attempts": 32,
+  "layouts": [
+    {
+      "weight": 7,
+      "size": 3,
+      "max_distance_from_center": 64,
+      "min_buildings": 5,
+      "max_buildings": 8,
+      "min_workshops": 1,
+      "max_workshops": 2
+    },
+    {
+      "weight": 3,
+      "size": 6,
+      "max_distance_from_center": 96,
+      "min_buildings": 10,
+      "max_buildings": 20,
+      "min_workshops": 1,
+      "max_workshops": 4
+    }
+  ],
+  "house_prefix": "avalinexus:village/house_",
+  "min_houses": 2,
+  "warehouse": "avalinexus:village/warehouse",
+  "archives": "avalinexus:village/archives",
+  "max_archives": 1,
+  "workshops": [
+    { "template": "avalinexus:village/workshop_pump", "machine": "avalinexus:fluid_pump" },
+    { "template": "avalinexus:village/workshop_refinery", "machine": "avalinexus:ammonia_refinery" },
+    { "template": "avalinexus:village/workshop_freezer", "machine": "avalinexus:cryo_freezer" },
+    { "template": "avalinexus:village/workshop_press", "machine": "avalinexus:graphene_press" },
+    { "template": "avalinexus:village/workshop_armory", "machine": "avalinexus:weapon_workbench" },
+    { "template": "avalinexus:village/workshop_weaving", "machine": "avalinexus:avali_loom" }
+  ],
+  "loot": [
+    { "template": "avalinexus:village/plaza", "table": "avalinexus:chests/avali_village_house" },
+    { "template": "avalinexus:village/house_", "table": "avalinexus:chests/avali_village_house" },
+    { "template": "avalinexus:village/warehouse", "table": "avalinexus:chests/avali_village_warehouse" },
+    { "template": "avalinexus:village/workshop_refinery", "table": "avalinexus:chests/avali_village_refinery" },
+    { "template": "avalinexus:village/workshop_freezer", "table": "avalinexus:chests/avali_village_freezer" },
+    { "template": "avalinexus:village/workshop_press", "table": "avalinexus:chests/avali_village_press" },
+    { "template": "avalinexus:village/workshop_armory", "table": "avalinexus:chests/avali_village_armory" },
+    { "template": "avalinexus:village/workshop_weaving", "table": "avalinexus:chests/avali_village_weaving" }
+  ],
+  "tank_fill_min": 0.25,
+  "tank_fill_max": 1.0
+}

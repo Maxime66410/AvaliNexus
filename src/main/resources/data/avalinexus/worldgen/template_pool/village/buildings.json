@@ -1,0 +1,131 @@
+{
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "avalinexus:village/house_small_1",
+        "processors": "avalinexus:avali_village",
+        "projection": "rigid"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "avalinexus:village/house_small_2",
+        "processors": "avalinexus:avali_village",
+        "projection": "rigid"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "avalinexus:village/house_medium_1",
+        "processors": "avalinexus:avali_village",
+        "projection": "rigid"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "avalinexus:village/house_medium_2",
+        "processors": "avalinexus:avali_village",
+        "projection": "rigid"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "avalinexus:village/house_large_1",
+        "processors": "avalinexus:avali_village",
+        "projection": "rigid"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "avalinexus:village/house_large_2",
+        "processors": "avalinexus:avali_village",
+        "projection": "rigid"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "avalinexus:village/workshop_pump",
+        "processors": "avalinexus:avali_village",
+        "projection": "rigid"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "avalinexus:village/workshop_refinery",
+        "processors": "avalinexus:avali_village",
+        "projection": "rigid"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "avalinexus:village/workshop_freezer",
+        "processors": "avalinexus:avali_village",
+        "projection": "rigid"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "avalinexus:village/workshop_press",
+        "processors": "avalinexus:avali_village",
+        "projection": "rigid"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "avalinexus:village/workshop_armory",
+        "processors": "avalinexus:avali_village",
+        "projection": "rigid"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "avalinexus:village/workshop_weaving",
+        "processors": "avalinexus:avali_village",
+        "projection": "rigid"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "avalinexus:village/archives",
+        "processors": "avalinexus:avali_village",
+        "projection": "rigid"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "avalinexus:village/warehouse",
+        "processors": "avalinexus:avali_village",
+        "projection": "rigid"
+      }
+    }
+  ]
+}

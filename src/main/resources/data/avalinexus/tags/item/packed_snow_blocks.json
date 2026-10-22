@@ -1,0 +1,14 @@
+{
+  "replace": false,
+  "values": [
+    "avalinexus:packed_snow",
+    "avalinexus:packed_snow_slab",
+    "avalinexus:packed_snow_stairs",
+    "avalinexus:packed_snow_wall",
+    "avalinexus:cut_packed_snow",
+    "avalinexus:cut_packed_snow_slab",
+    "avalinexus:cut_packed_snow_stairs",
+    "avalinexus:cut_packed_snow_wall",
+    "avalinexus:chiseled_packed_snow"
+  ]
+}

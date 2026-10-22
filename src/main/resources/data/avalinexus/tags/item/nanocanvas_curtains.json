@@ -1,0 +1,21 @@
+{
+  "replace": false,
+  "values": [
+    "avalinexus:white_nanocanvas_curtain",
+    "avalinexus:orange_nanocanvas_curtain",
+    "avalinexus:magenta_nanocanvas_curtain",
+    "avalinexus:light_blue_nanocanvas_curtain",
+    "avalinexus:yellow_nanocanvas_curtain",
+    "avalinexus:lime_nanocanvas_curtain",
+    "avalinexus:pink_nanocanvas_curtain",
+    "avalinexus:gray_nanocanvas_curtain",
+    "avalinexus:light_gray_nanocanvas_curtain",
+    "avalinexus:cyan_nanocanvas_curtain",
+    "avalinexus:purple_nanocanvas_curtain",
+    "avalinexus:blue_nanocanvas_curtain",
+    "avalinexus:brown_nanocanvas_curtain",
+    "avalinexus:green_nanocanvas_curtain",
+    "avalinexus:red_nanocanvas_curtain",
+    "avalinexus:black_nanocanvas_curtain"
+  ]
+}

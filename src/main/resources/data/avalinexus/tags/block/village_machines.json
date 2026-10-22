@@ -1,0 +1,14 @@
+{
+  "replace": false,
+  "values": [
+    "avalinexus:fluid_pump",
+    "avalinexus:graphene_tank",
+    "avalinexus:fluid_tap",
+    "avalinexus:avali_loom",
+    "avalinexus:heater",
+    "avalinexus:ammonia_refinery",
+    "avalinexus:cryo_freezer",
+    "avalinexus:graphene_press",
+    "avalinexus:weapon_workbench"
+  ]
+}

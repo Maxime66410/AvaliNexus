@@ -3,6 +3,13 @@
   "minVersion": "0.8",
   "package": "org.furranystudio.avalinexus.mixin",
   "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "BlockExplosionMixin",
+    "CompoundContainerAccessor",
+    "ItemFrameMixin",
+    "ServerPlayerGameModeMixin",
+    "ServerPlayerMenuMixin"
+  ],
   "client": [
     "AvatarArmPoseMixin",
     "MouseHandlerAimMixin"

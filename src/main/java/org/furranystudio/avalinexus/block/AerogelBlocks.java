@@ -2,7 +2,7 @@
  * File: AerogelBlocks.java
  * Author: Maxime66410
  * Created: 2026-10-13
- * Last Modified: 2026-10-13
+ * Last Modified: 2026-10-22
  */
 package org.furranystudio.avalinexus.block;
 
@@ -77,6 +77,10 @@ public final class AerogelBlocks {
     }
 
     public static void init() {
+    }
+
+    public static Block get(Shape shape, DyeColor color) {
+        return BLOCKS.get(shape).get(color).get();
     }
 
     public static Item item(Shape shape, DyeColor color) {

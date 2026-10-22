@@ -2,7 +2,7 @@
  * File: AvaliEntity.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-10-21
+ * Last Modified: 2026-10-22
  */
 package org.furranystudio.avalinexus.entity.avali;
 
@@ -107,7 +107,7 @@ import org.furranystudio.avalinexus.entity.avali.goal.AvaliTargetGoal;
 import org.furranystudio.avalinexus.entity.avali.pose.AvaliPose;
 import org.furranystudio.avalinexus.sound.ModSounds;
 import org.furranystudio.avalinexus.trade.AvaliShop;
-import org.furranystudio.avalinexus.worldgen.structure.AvaliCampStructure;
+import org.furranystudio.avalinexus.worldgen.structure.AvaliSettlements;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -214,6 +214,8 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     private int breedCheck;
     private BlockPos camp;
     private boolean explorer;
+    private boolean village;
+    private BlockPos workshop;
 
     public AvaliEntity(EntityType<? extends AvaliEntity> type, Level level) {
         super(type, level);
@@ -241,7 +243,7 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
 
     public static boolean checkAvaliSpawnRules(EntityType<AvaliEntity> type, ServerLevelAccessor level, EntitySpawnReason reason,
                                                BlockPos pos, RandomSource random) {
-        if (level.getRawBrightness(pos, 0) <= 8 || AvaliCampStructure.isInCamp(level.getChunk(pos))) {
+        if (level.getRawBrightness(pos, 0) <= 8 || AvaliSettlements.isInSettlement(level.getChunk(pos))) {
             return false;
         }
         return level.getBlockState(pos.below()).is(Blocks.SNOW) || Mob.checkMobSpawnRules(type, level, reason, pos, random);
@@ -302,8 +304,7 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         if (hurt) {
             boolean fightsBack = false;
             if (source.getEntity() instanceof LivingEntity attacker && AvaliFight.isValidEnemy(attacker) && !isAlly(attacker)) {
-                alertPack(attacker);
-                fightsBack = AvaliFight.canAttack(this, AvaliFight.enemies(this), false);
+                fightsBack = reactTo(attacker);
             }
             hurtMood = fightsBack ? AvaliMood.ANGRY : AvaliMood.SCARED;
             if (source.getEntity() instanceof ServerPlayer player && !isAlly(player)) {
@@ -319,6 +320,21 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
             }
         }
         return hurt;
+    }
+
+    private boolean reactTo(LivingEntity attacker) {
+        alertPack(attacker);
+        return AvaliFight.canAttack(this, AvaliFight.enemies(this), false);
+    }
+
+    public boolean witness(ServerPlayer thief) {
+        if (!AvaliFight.isValidEnemy(thief) || isAlly(thief)) {
+            return false;
+        }
+        hurtMood = reactTo(thief) ? AvaliMood.ANGRY : AvaliMood.SCARED;
+        hurtTicks = AvaliFight.data(this).hurtFaceSeconds() * 20;
+        stopGesture();
+        return true;
     }
 
     private void alertPack(LivingEntity attacker) {
@@ -450,6 +466,8 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         output.putLong("avalinexus_returning_since", returningSince);
         output.storeNullable("avalinexus_kit", UUIDUtil.CODEC, kitId);
         output.storeNullable("avalinexus_camp", BlockPos.CODEC, camp);
+        output.putBoolean("avalinexus_village", village);
+        output.storeNullable("avalinexus_workshop", BlockPos.CODEC, workshop);
         gear.save(output);
     }
 
@@ -475,6 +493,8 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         returningSince = input.getLongOr("avalinexus_returning_since", -1L);
         kitId = input.read("avalinexus_kit", UUIDUtil.CODEC).orElse(null);
         camp = input.read("avalinexus_camp", BlockPos.CODEC).orElse(null);
+        village = input.getBooleanOr("avalinexus_village", false);
+        workshop = input.read("avalinexus_workshop", BlockPos.CODEC).orElse(null);
         gear.load(input);
     }
 
@@ -530,6 +550,7 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
             kit.setPack(getPack());
             kit.packId = packId;
             kit.camp = camp;
+            kit.village = village;
             kit.parents = List.of(getUUID(), partner.getUUID());
             kit.inheritLooks(this, partner instanceof AvaliEntity other ? other : this);
         }
@@ -559,6 +580,13 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     public void joinCamp(ServerLevelAccessor level, BlockPos camp, String pack, UUID packId) {
         this.camp = camp;
         finalizeSpawn(level, level.getCurrentDifficultyAt(blockPosition()), EntitySpawnReason.STRUCTURE, new PackData(pack, packId));
+    }
+
+    public void joinVillage(ServerLevelAccessor level, BlockPos plaza, String pack, UUID packId, BlockPos bed, BlockPos workshop) {
+        village = true;
+        this.bed = bed;
+        this.workshop = workshop;
+        joinCamp(level, plaza, pack, packId);
     }
 
     private AvaliEntity nearestPack(ServerLevelAccessor level) {
@@ -759,7 +787,7 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
             sum = sum.add(member.position());
         }
         packCenter = camp != null ? Vec3.atBottomCenterOf(camp) : members.isEmpty() ? position() : sum.scale(1.0 / members.size());
-        explorer = camp != null && isElectedExplorer(members, behavior.camp());
+        explorer = camp != null && workshop == null && isElectedExplorer(members, settlement());
         if (!isCompanion() && returningSince < 0) {
             PackHomeData.get(level().getServer()).update(packId, BlockPos.containing(packCenter));
         }
@@ -780,7 +808,8 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
 
     private boolean isElectedExplorer(List<AvaliEntity> members, AvaliBehavior.Camp settings) {
         int count = settings.explorersMin() + Math.floorMod(packId.hashCode(), settings.explorersMax() - settings.explorersMin() + 1);
-        List<UUID> adults = members.stream().filter(member -> !member.isBaby() && !member.isCompanion()).map(Entity::getUUID).sorted().toList();
+        List<UUID> adults = members.stream().filter(member -> !member.isBaby() && !member.isCompanion() && member.workshop == null)
+            .map(Entity::getUUID).sorted().toList();
         int rank = adults.indexOf(getUUID());
         return rank >= 0 && rank < count;
     }
@@ -793,12 +822,20 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         return explorer;
     }
 
-    public double packRange() {
+    public BlockPos getWorkshop() {
+        return workshop;
+    }
+
+    public AvaliBehavior.Camp settlement() {
         AvaliBehavior.Data behavior = AvaliBehavior.get(level().getServer());
+        return village ? behavior.village().settlement() : behavior.camp();
+    }
+
+    public double packRange() {
         if (camp == null) {
-            return behavior.pack().maxDistance();
+            return AvaliBehavior.get(level().getServer()).pack().maxDistance();
         }
-        return explorer && !shouldRegroup() ? behavior.camp().explorerRadius() : behavior.camp().anchorRadius();
+        return explorer && !shouldRegroup() ? settlement().explorerRadius() : settlement().anchorRadius();
     }
 
     public List<AvaliEntity> packMembers() {
@@ -985,6 +1022,7 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         setPack(other.getPack());
         packId = other.packId;
         camp = other.camp;
+        village = other.village;
         bed = null;
         returningSince = level().getGameTime();
         packCheck = 0;
@@ -1016,6 +1054,7 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
                 continue;
             }
             loner.camp = camp;
+            loner.village = village;
             loner.finalizeSpawn(level, level.getCurrentDifficultyAt(pos), EntitySpawnReason.EVENT, new PackData(getPack(), packId));
             loner.entityData.set(DATA_FEMALE, !isFemale());
             level.addFreshEntityWithPassengers(loner);

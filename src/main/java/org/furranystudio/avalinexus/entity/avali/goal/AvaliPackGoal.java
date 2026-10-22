@@ -2,7 +2,7 @@
  * File: AvaliPackGoal.java
  * Author: Maxime66410
  * Created: 2026-10-17
- * Last Modified: 2026-10-21
+ * Last Modified: 2026-10-22
  */
 package org.furranystudio.avalinexus.entity.avali.goal;
 
@@ -140,8 +140,12 @@ public class AvaliPackGoal extends Goal {
             }
         }
 
+        if (avali.getWorkshop() != null && !avali.shouldRegroup()) {
+            return aim(Vec3.atBottomCenterOf(avali.getWorkshop()), AvaliBehavior.get(avali.level().getServer()).village().workshopRadius());
+        }
+
         if (avali.isExplorer() && !avali.shouldRegroup()) {
-            AvaliBehavior.Camp camp = AvaliBehavior.get(avali.level().getServer()).camp();
+            AvaliBehavior.Camp camp = avali.settlement();
             if (exploreTarget == null && avali.getRandom().nextFloat() < camp.exploreChance()) {
                 exploreTarget = explorePoint(center, camp);
             }

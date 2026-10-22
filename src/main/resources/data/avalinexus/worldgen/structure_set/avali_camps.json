@@ -9,6 +9,10 @@
     "type": "minecraft:random_spread",
     "spacing": 32,
     "separation": 8,
-    "salt": 20261020
+    "salt": 20261020,
+    "exclusion_zone": {
+      "other_set": "avalinexus:avali_villages",
+      "chunk_count": 10
+    }
   }
 }

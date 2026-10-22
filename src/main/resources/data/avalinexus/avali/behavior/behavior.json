@@ -40,5 +40,14 @@
     "explorers_max": 2,
     "explorer_radius": 96,
     "explore_chance": 0.05
+  },
+  "village": {
+    "anchor_radius": 100,
+    "explorers_min": 2,
+    "explorers_max": 4,
+    "explorer_radius": 160,
+    "explore_chance": 0.05,
+    "workshop_radius": 6,
+    "watch_distance": 16
   }
 }

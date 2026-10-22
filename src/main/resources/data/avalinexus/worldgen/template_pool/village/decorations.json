@@ -1,0 +1,41 @@
+{
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "avalinexus:village/deco_lamp",
+        "processors": "avalinexus:avali_village",
+        "projection": "rigid"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "avalinexus:village/deco_bench",
+        "processors": "avalinexus:avali_village",
+        "projection": "rigid"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "avalinexus:village/deco_pot",
+        "processors": "avalinexus:avali_village",
+        "projection": "rigid"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "avalinexus:village/deco_tapestry",
+        "processors": "avalinexus:avali_village",
+        "projection": "rigid"
+      }
+    }
+  ]
+}

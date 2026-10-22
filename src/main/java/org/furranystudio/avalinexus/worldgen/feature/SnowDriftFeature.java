@@ -2,7 +2,7 @@
  * File: SnowDriftFeature.java
  * Author: Maxime66410
  * Created: 2026-09-28
- * Last Modified: 2026-10-21
+ * Last Modified: 2026-10-22
  */
 package org.furranystudio.avalinexus.worldgen.feature;
 
@@ -22,7 +22,7 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.synth.SimplexNoise;
 import org.furranystudio.avalinexus.worldgen.ModBiomes;
-import org.furranystudio.avalinexus.worldgen.structure.AvaliCampStructure;
+import org.furranystudio.avalinexus.worldgen.structure.AvaliSettlements;
 
 import java.util.List;
 
@@ -44,14 +44,14 @@ public record SnowDriftFeature() implements Feature {
     public boolean place(WorldGenLevel level, ChunkGenerator generator, RandomSource random, BlockPos origin) {
         SimplexNoise noise = new SimplexNoise(new LegacyRandomSource(level.getSeed()));
         BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
-        List<BoundingBox> camps = AvaliCampStructure.campBoxes(level, level.getChunk(origin));
+        List<BoundingBox> settlements = AvaliSettlements.settlementBoxes(level, level.getChunk(origin));
         boolean placed = false;
 
         for (int dx = 0; dx < 16; dx++) {
             for (int dz = 0; dz < 16; dz++) {
                 int x = origin.getX() + dx;
                 int z = origin.getZ() + dz;
-                if (camps.stream().anyMatch(box -> box.intersects(x, z, x, z))) {
+                if (settlements.stream().anyMatch(box -> box.intersects(x, z, x, z))) {
                     continue;
                 }
                 pos.set(x, level.getHeight(Heightmap.Types.MOTION_BLOCKING, x, z), z);

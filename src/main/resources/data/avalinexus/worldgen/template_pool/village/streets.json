@@ -1,0 +1,86 @@
+{
+  "fallback": "avalinexus:village/street_ends",
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "avalinexus:village/street_straight_1",
+        "processors": "avalinexus:avali_village",
+        "projection": "terrain_matching"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "avalinexus:village/street_straight_2",
+        "processors": "avalinexus:avali_village",
+        "projection": "terrain_matching"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "avalinexus:village/street_straight_3",
+        "processors": "avalinexus:avali_village",
+        "projection": "terrain_matching"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "avalinexus:village/street_corner_1",
+        "processors": "avalinexus:avali_village",
+        "projection": "terrain_matching"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "avalinexus:village/street_corner_2",
+        "processors": "avalinexus:avali_village",
+        "projection": "terrain_matching"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "avalinexus:village/street_cross_1",
+        "processors": "avalinexus:avali_village",
+        "projection": "terrain_matching"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "avalinexus:village/street_cross_2",
+        "processors": "avalinexus:avali_village",
+        "projection": "terrain_matching"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "avalinexus:village/street_t",
+        "processors": "avalinexus:avali_village",
+        "projection": "terrain_matching"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "avalinexus:village/street_end",
+        "processors": "avalinexus:avali_village",
+        "projection": "terrain_matching"
+      }
+    }
+  ]
+}

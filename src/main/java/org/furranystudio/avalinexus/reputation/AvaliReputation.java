@@ -2,7 +2,7 @@
  * File: AvaliReputation.java
  * Author: Maxime66410
  * Created: 2026-10-19
- * Last Modified: 2026-10-19
+ * Last Modified: 2026-10-22
  */
 package org.furranystudio.avalinexus.reputation;
 
@@ -31,11 +31,11 @@ public final class AvaliReputation {
     private static final long TICKS_PER_DAY = 24000L;
 
     public enum Change {
-        TRADE, GIFT, DEFEND, HIT, KILL_ADULT, KILL_BABY
+        TRADE, GIFT, DEFEND, HIT, KILL_ADULT, KILL_BABY, STEAL, BREAK_MACHINE
     }
 
     public record Data(int min, int max, int hostile, int wary, int friendly, int ally, int trade, int gift, int defend, int hit,
-                       int killAdult, int killBaby, int tradeCap, int giftCap, int decayPerDay, float friendlyPrice, float allyPrice) {
+                       int killAdult, int killBaby, int steal, int breakMachine, int tradeCap, int giftCap, int decayPerDay, float friendlyPrice, float allyPrice) {
 
         public ReputationTier tier(int value) {
             if (value <= hostile) {
@@ -66,11 +66,13 @@ public final class AvaliReputation {
                 case HIT -> hit;
                 case KILL_ADULT -> killAdult;
                 case KILL_BABY -> killBaby;
+                case STEAL -> steal;
+                case BREAK_MACHINE -> breakMachine;
             };
         }
     }
 
-    private static final Data FALLBACK = new Data(-100, 100, -50, -10, 20, 60, 1, 2, 3, -5, -40, -100, 10, 10, 1, 0.1F, 0.2F);
+    private static final Data FALLBACK = new Data(-100, 100, -50, -10, 20, 60, 1, 2, 3, -5, -40, -100, -2, -10, 10, 10, 1, 0.1F, 0.2F);
 
     private static ResourceManager loadedFrom;
     private static Data data = FALLBACK;
@@ -193,6 +195,7 @@ public final class AvaliReputation {
                 tiers.get("hostile").getAsInt(), tiers.get("wary").getAsInt(), tiers.get("friendly").getAsInt(), tiers.get("ally").getAsInt(),
                 changes.get("trade").getAsInt(), changes.get("gift").getAsInt(), changes.get("defend").getAsInt(),
                 changes.get("hit").getAsInt(), changes.get("kill_adult").getAsInt(), changes.get("kill_baby").getAsInt(),
+                changes.get("steal").getAsInt(), changes.get("break_machine").getAsInt(),
                 cap.get("trade").getAsInt(), cap.get("gift").getAsInt(), root.get("decay_per_day").getAsInt(),
                 prices.get("friendly").getAsFloat(), prices.get("ally").getAsFloat());
         } catch (Exception e) {
