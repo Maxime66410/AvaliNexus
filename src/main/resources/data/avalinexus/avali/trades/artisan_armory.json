@@ -1,0 +1,103 @@
+{
+  "buy_rolls": 4,
+  "sell_rolls": 3,
+  "max_uses": 8,
+  "buy": [
+    {
+      "item": "avalinexus:nexite_quill",
+      "count": 16,
+      "price": 6
+    },
+    {
+      "item": "avalinexus:rail_pistol_magazine",
+      "count": 1,
+      "price": 5
+    },
+    {
+      "item": "avalinexus:rail_carbine_magazine",
+      "count": 1,
+      "price": 6
+    },
+    {
+      "item": "avalinexus:rail_assault_rifle_magazine",
+      "count": 1,
+      "price": 8
+    },
+    {
+      "item": "avalinexus:rail_sniper_magazine",
+      "count": 1,
+      "price": 10
+    },
+    {
+      "item": "avalinexus:aerotech_dagger",
+      "count": 1,
+      "price": 12
+    },
+    {
+      "item": "avalinexus:fuel_bucket",
+      "count": 1,
+      "price": 8
+    }
+  ],
+  "sell": [
+    {
+      "item": "minecraft:iron_ingot",
+      "count": 4,
+      "price": 4
+    },
+    {
+      "item": "minecraft:copper_ingot",
+      "count": 8,
+      "price": 2
+    },
+    {
+      "item": "avalinexus:graphene",
+      "count": 8,
+      "price": 3
+    },
+    {
+      "item": "minecraft:gunpowder",
+      "count": 4,
+      "price": 3
+    },
+    {
+      "item": "minecraft:redstone",
+      "count": 6,
+      "price": 2
+    },
+    {
+      "item": "minecraft:leather",
+      "count": 6,
+      "price": 3
+    }
+  ],
+  "friendly": [
+    {
+      "item": "avalinexus:aerotech_blade",
+      "count": 1,
+      "price": 24
+    },
+    {
+      "item": "avalinexus:rail_pistol",
+      "count": 1,
+      "price": 30
+    }
+  ],
+  "ally": [
+    {
+      "item": "avalinexus:weapon_workbench",
+      "count": 1,
+      "price": 40
+    },
+    {
+      "item": "avalinexus:rail_shotgun",
+      "count": 1,
+      "price": 50
+    },
+    {
+      "item": "avalinexus:rail_assault_rifle",
+      "count": 1,
+      "price": 55
+    }
+  ]
+}

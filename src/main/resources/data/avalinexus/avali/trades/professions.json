@@ -1,0 +1,14 @@
+{
+  "rotation_days": 3,
+  "inherit_chance": 0.5,
+  "professions": [
+    "fisher",
+    "weaver",
+    "mechanic",
+    "hunter",
+    "gatherer",
+    "prospector",
+    "builder",
+    "merchant"
+  ]
+}

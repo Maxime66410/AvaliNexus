@@ -1,0 +1,115 @@
+{
+  "buy_rolls": 4,
+  "sell_rolls": 3,
+  "max_uses": 8,
+  "buy": [
+    {
+      "tag": "#avalinexus:avali_tapestries",
+      "count": 2,
+      "price": 8
+    },
+    {
+      "items": [
+        "avalinexus:white_avali_chevron_tapestry",
+        "avalinexus:orange_avali_chevron_tapestry",
+        "avalinexus:magenta_avali_chevron_tapestry",
+        "avalinexus:light_blue_avali_chevron_tapestry",
+        "avalinexus:yellow_avali_chevron_tapestry",
+        "avalinexus:lime_avali_chevron_tapestry",
+        "avalinexus:pink_avali_chevron_tapestry",
+        "avalinexus:gray_avali_chevron_tapestry",
+        "avalinexus:light_gray_avali_chevron_tapestry",
+        "avalinexus:cyan_avali_chevron_tapestry",
+        "avalinexus:purple_avali_chevron_tapestry",
+        "avalinexus:blue_avali_chevron_tapestry",
+        "avalinexus:brown_avali_chevron_tapestry",
+        "avalinexus:green_avali_chevron_tapestry",
+        "avalinexus:red_avali_chevron_tapestry",
+        "avalinexus:black_avali_chevron_tapestry"
+      ],
+      "count": 1,
+      "price": 5
+    },
+    {
+      "tag": "#avalinexus:nanocanvas",
+      "count": 8,
+      "price": 6
+    },
+    {
+      "tag": "#avalinexus:nanocanvas_curtains",
+      "count": 4,
+      "price": 7
+    },
+    {
+      "item": "avalinexus:avali_carpet",
+      "count": 4,
+      "price": 4
+    },
+    {
+      "item": "avalinexus:nanofibre",
+      "count": 4,
+      "price": 4
+    },
+    {
+      "tag": "#minecraft:dyes",
+      "count": 4,
+      "price": 3
+    }
+  ],
+  "sell": [
+    {
+      "tag": "#minecraft:wool",
+      "count": 8,
+      "price": 2
+    },
+    {
+      "item": "minecraft:string",
+      "count": 16,
+      "price": 2
+    },
+    {
+      "item": "avalinexus:avali_feather",
+      "count": 8,
+      "price": 2
+    },
+    {
+      "tag": "#minecraft:dyes",
+      "count": 4,
+      "price": 2
+    },
+    {
+      "item": "avalinexus:nanofibre",
+      "count": 6,
+      "price": 2
+    },
+    {
+      "item": "minecraft:leather",
+      "count": 6,
+      "price": 3
+    }
+  ],
+  "friendly": [
+    {
+      "tag": "#avalinexus:avali_tapestries",
+      "count": 4,
+      "price": 14
+    },
+    {
+      "item": "avalinexus:avali_cushion",
+      "count": 2,
+      "price": 14
+    }
+  ],
+  "ally": [
+    {
+      "item": "avalinexus:avali_loom",
+      "count": 1,
+      "price": 20
+    },
+    {
+      "item": "avalinexus:bond_feather",
+      "count": 1,
+      "price": 30
+    }
+  ]
+}

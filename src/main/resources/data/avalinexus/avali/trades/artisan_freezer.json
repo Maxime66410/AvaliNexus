@@ -1,0 +1,98 @@
+{
+  "buy_rolls": 4,
+  "sell_rolls": 3,
+  "max_uses": 8,
+  "buy": [
+    {
+      "item": "minecraft:ice",
+      "count": 8,
+      "price": 3
+    },
+    {
+      "item": "minecraft:packed_ice",
+      "count": 4,
+      "price": 5
+    },
+    {
+      "item": "minecraft:blue_ice",
+      "count": 2,
+      "price": 8
+    },
+    {
+      "item": "avalinexus:ammonia_ice",
+      "count": 8,
+      "price": 4
+    },
+    {
+      "item": "avalinexus:packed_ammonia_ice",
+      "count": 4,
+      "price": 6
+    },
+    {
+      "item": "avalinexus:coolant_bucket",
+      "count": 1,
+      "price": 8
+    },
+    {
+      "item": "minecraft:powder_snow_bucket",
+      "count": 1,
+      "price": 4
+    }
+  ],
+  "sell": [
+    {
+      "item": "minecraft:snowball",
+      "count": 16,
+      "price": 1
+    },
+    {
+      "item": "minecraft:snow_block",
+      "count": 8,
+      "price": 2
+    },
+    {
+      "item": "minecraft:ice",
+      "count": 8,
+      "price": 2
+    },
+    {
+      "item": "minecraft:water_bucket",
+      "count": 1,
+      "price": 1
+    },
+    {
+      "item": "minecraft:iron_ingot",
+      "count": 4,
+      "price": 4
+    },
+    {
+      "item": "avalinexus:aerogel",
+      "count": 4,
+      "price": 3
+    }
+  ],
+  "friendly": [
+    {
+      "item": "minecraft:blue_ice",
+      "count": 4,
+      "price": 14
+    },
+    {
+      "item": "avalinexus:coolant_bucket",
+      "count": 2,
+      "price": 14
+    }
+  ],
+  "ally": [
+    {
+      "item": "minecraft:blue_ice",
+      "count": 8,
+      "price": 26
+    },
+    {
+      "item": "avalinexus:cryo_freezer",
+      "count": 1,
+      "price": 40
+    }
+  ]
+}

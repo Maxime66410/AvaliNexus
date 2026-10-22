@@ -1,0 +1,98 @@
+{
+  "buy_rolls": 4,
+  "sell_rolls": 3,
+  "max_uses": 8,
+  "buy": [
+    {
+      "item": "avalinexus:graphene",
+      "count": 16,
+      "price": 10
+    },
+    {
+      "item": "avalinexus:graphene_block",
+      "count": 4,
+      "price": 6
+    },
+    {
+      "item": "avalinexus:cut_graphene_block",
+      "count": 4,
+      "price": 6
+    },
+    {
+      "item": "avalinexus:graphene_trapdoor",
+      "count": 4,
+      "price": 5
+    },
+    {
+      "item": "avalinexus:graphene_pipe",
+      "count": 4,
+      "price": 6
+    },
+    {
+      "item": "avalinexus:fuel_bucket",
+      "count": 1,
+      "price": 8
+    },
+    {
+      "item": "minecraft:coal",
+      "count": 8,
+      "price": 3
+    }
+  ],
+  "sell": [
+    {
+      "item": "minecraft:coal",
+      "count": 16,
+      "price": 3
+    },
+    {
+      "item": "minecraft:charcoal",
+      "count": 8,
+      "price": 2
+    },
+    {
+      "item": "avalinexus:graphene",
+      "count": 8,
+      "price": 3
+    },
+    {
+      "item": "minecraft:iron_ingot",
+      "count": 4,
+      "price": 4
+    },
+    {
+      "item": "minecraft:copper_ingot",
+      "count": 8,
+      "price": 2
+    },
+    {
+      "item": "minecraft:piston",
+      "count": 2,
+      "price": 3
+    }
+  ],
+  "friendly": [
+    {
+      "item": "avalinexus:graphene",
+      "count": 32,
+      "price": 18
+    },
+    {
+      "item": "avalinexus:chiseled_graphene_block",
+      "count": 8,
+      "price": 10
+    }
+  ],
+  "ally": [
+    {
+      "item": "avalinexus:graphene_block",
+      "count": 16,
+      "price": 22
+    },
+    {
+      "item": "avalinexus:graphene_press",
+      "count": 1,
+      "price": 40
+    }
+  ]
+}

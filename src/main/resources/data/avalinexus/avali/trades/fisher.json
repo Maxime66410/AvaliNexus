@@ -1,0 +1,102 @@
+{
+  "buy_rolls": 4,
+  "sell_rolls": 3,
+  "max_uses": 8,
+  "buy": [
+    {
+      "item": "minecraft:cooked_cod",
+      "count": 4,
+      "price": 4
+    },
+    {
+      "item": "minecraft:cooked_salmon",
+      "count": 4,
+      "price": 5
+    },
+    {
+      "item": "minecraft:cod",
+      "count": 6,
+      "price": 3
+    },
+    {
+      "item": "minecraft:salmon",
+      "count": 6,
+      "price": 4
+    },
+    {
+      "item": "minecraft:fishing_rod",
+      "count": 1,
+      "price": 6
+    },
+    {
+      "item": "minecraft:ice",
+      "count": 8,
+      "price": 3
+    },
+    {
+      "item": "minecraft:packed_ice",
+      "count": 4,
+      "price": 5
+    }
+  ],
+  "sell": [
+    {
+      "item": "minecraft:cod",
+      "count": 6,
+      "price": 2
+    },
+    {
+      "item": "minecraft:salmon",
+      "count": 6,
+      "price": 2
+    },
+    {
+      "item": "minecraft:tropical_fish",
+      "count": 2,
+      "price": 3
+    },
+    {
+      "item": "minecraft:pufferfish",
+      "count": 2,
+      "price": 3
+    },
+    {
+      "item": "minecraft:string",
+      "count": 8,
+      "price": 2
+    },
+    {
+      "item": "minecraft:snowball",
+      "count": 16,
+      "price": 1
+    }
+  ],
+  "friendly": [
+    {
+      "item": "minecraft:fishing_rod",
+      "count": 1,
+      "price": 20,
+      "enchant": [
+        "minecraft:luck_of_the_sea",
+        "minecraft:lure"
+      ]
+    },
+    {
+      "item": "minecraft:blue_ice",
+      "count": 2,
+      "price": 12
+    }
+  ],
+  "ally": [
+    {
+      "item": "avalinexus:nexite_nautilus_armor",
+      "count": 1,
+      "price": 40
+    },
+    {
+      "item": "minecraft:tropical_fish_bucket",
+      "count": 1,
+      "price": 15
+    }
+  ]
+}

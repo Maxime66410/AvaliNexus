@@ -1,0 +1,129 @@
+{
+  "buy_rolls": 4,
+  "sell_rolls": 3,
+  "max_uses": 8,
+  "buy": [
+    {
+      "item": "avalinexus:graphene_block",
+      "count": 8,
+      "price": 8
+    },
+    {
+      "item": "avalinexus:cut_graphene_block",
+      "count": 8,
+      "price": 8
+    },
+    {
+      "item": "avalinexus:graphene_bricks",
+      "count": 8,
+      "price": 8
+    },
+    {
+      "item": "avalinexus:graphene_pillar",
+      "count": 4,
+      "price": 5
+    },
+    {
+      "item": "avalinexus:aerogel",
+      "count": 8,
+      "price": 6
+    },
+    {
+      "items": [
+        "avalinexus:white_aerogel",
+        "avalinexus:orange_aerogel",
+        "avalinexus:magenta_aerogel",
+        "avalinexus:light_blue_aerogel",
+        "avalinexus:yellow_aerogel",
+        "avalinexus:lime_aerogel",
+        "avalinexus:pink_aerogel",
+        "avalinexus:gray_aerogel",
+        "avalinexus:light_gray_aerogel",
+        "avalinexus:cyan_aerogel",
+        "avalinexus:purple_aerogel",
+        "avalinexus:blue_aerogel",
+        "avalinexus:brown_aerogel",
+        "avalinexus:green_aerogel",
+        "avalinexus:red_aerogel",
+        "avalinexus:black_aerogel"
+      ],
+      "count": 8,
+      "price": 7
+    },
+    {
+      "items": [
+        "avalinexus:packed_snow",
+        "avalinexus:cut_packed_snow",
+        "avalinexus:chiseled_packed_snow"
+      ],
+      "count": 16,
+      "price": 4
+    },
+    {
+      "item": "avalinexus:ice_bricks",
+      "count": 16,
+      "price": 5
+    }
+  ],
+  "sell": [
+    {
+      "item": "minecraft:cobblestone",
+      "count": 16,
+      "price": 1
+    },
+    {
+      "item": "minecraft:sand",
+      "count": 16,
+      "price": 1
+    },
+    {
+      "item": "minecraft:glass",
+      "count": 8,
+      "price": 2
+    },
+    {
+      "item": "minecraft:spruce_log",
+      "count": 8,
+      "price": 2
+    },
+    {
+      "item": "minecraft:packed_ice",
+      "count": 8,
+      "price": 2
+    },
+    {
+      "item": "minecraft:clay_ball",
+      "count": 8,
+      "price": 1
+    }
+  ],
+  "friendly": [
+    {
+      "item": "avalinexus:glowing_aerogel",
+      "count": 4,
+      "price": 10
+    },
+    {
+      "item": "avalinexus:avali_lamp",
+      "count": 4,
+      "price": 8
+    },
+    {
+      "item": "avalinexus:graphene_door",
+      "count": 2,
+      "price": 6
+    }
+  ],
+  "ally": [
+    {
+      "item": "avalinexus:heater",
+      "count": 1,
+      "price": 30
+    },
+    {
+      "item": "avalinexus:avali_light_strip",
+      "count": 8,
+      "price": 12
+    }
+  ]
+}

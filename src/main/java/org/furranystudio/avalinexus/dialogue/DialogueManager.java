@@ -2,7 +2,7 @@
  * File: DialogueManager.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-10-20
+ * Last Modified: 2026-10-22
  */
 package org.furranystudio.avalinexus.dialogue;
 
@@ -143,9 +143,8 @@ public final class DialogueManager {
     // Trades only go through while the player is still talking to that Avali, in range
     public static void onShopTrade(ServerPlayer player, int entityId, int offer) {
         Session session = SESSIONS.get(player.getUUID());
-        if (session == null || session.avali.getId() != entityId || !session.avali.isAlive() || session.avali.isBaby()
-                || session.avali.isOwnedBy(player) || session.avali.distanceTo(player) > MAX_DISTANCE
-                || AvaliReputation.tier(player, session.avali.getPack()).ordinal() < ReputationTier.NEUTRAL.ordinal()) {
+        if (session == null || session.avali.getId() != entityId || !session.avali.isAlive()
+                || session.avali.distanceTo(player) > MAX_DISTANCE || !canTrade(player, session.avali)) {
             return;
         }
         ShopManager.trade(player, session.avali, offer);
@@ -182,13 +181,16 @@ public final class DialogueManager {
                 default -> {
                     choices.add(DialogueChoice.ORDERS);
                     choices.add(DialogueChoice.ROLE);
+                    if (canTrade(player, avali)) {
+                        choices.add(DialogueChoice.TRADE);
+                    }
                     choices.add(DialogueChoice.LEAVE);
                 }
             }
             return choices;
         }
         choices.add(DialogueChoice.TALK);
-        if (!avali.isBaby() && AvaliReputation.tier(player, avali.getPack()).ordinal() >= ReputationTier.NEUTRAL.ordinal()) {
+        if (canTrade(player, avali)) {
             choices.add(DialogueChoice.TRADE);
         }
         if (canRecruit(player, avali)) {
@@ -196,6 +198,10 @@ public final class DialogueManager {
         }
         choices.add(DialogueChoice.LEAVE);
         return choices;
+    }
+
+    private static boolean canTrade(ServerPlayer player, AvaliEntity avali) {
+        return !avali.isBaby() && AvaliReputation.tier(player, avali.getPack()).ordinal() >= ReputationTier.NEUTRAL.ordinal();
     }
 
     private static int highlight(AvaliEntity avali, Session session) {

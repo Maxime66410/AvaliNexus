@@ -1,0 +1,98 @@
+{
+  "buy_rolls": 4,
+  "sell_rolls": 3,
+  "max_uses": 8,
+  "buy": [
+    {
+      "item": "avalinexus:graphene_pipe",
+      "count": 4,
+      "price": 6
+    },
+    {
+      "item": "avalinexus:fluid_tap",
+      "count": 1,
+      "price": 8
+    },
+    {
+      "item": "avalinexus:graphene",
+      "count": 8,
+      "price": 6
+    },
+    {
+      "item": "minecraft:bucket",
+      "count": 1,
+      "price": 3
+    },
+    {
+      "item": "avalinexus:ammonia_bucket",
+      "count": 1,
+      "price": 5
+    },
+    {
+      "item": "avalinexus:coolant_bucket",
+      "count": 1,
+      "price": 8
+    },
+    {
+      "item": "avalinexus:fuel_bucket",
+      "count": 1,
+      "price": 8
+    }
+  ],
+  "sell": [
+    {
+      "item": "minecraft:iron_ingot",
+      "count": 4,
+      "price": 4
+    },
+    {
+      "item": "minecraft:copper_ingot",
+      "count": 8,
+      "price": 2
+    },
+    {
+      "item": "minecraft:coal",
+      "count": 8,
+      "price": 2
+    },
+    {
+      "item": "minecraft:redstone",
+      "count": 6,
+      "price": 2
+    },
+    {
+      "item": "avalinexus:graphene",
+      "count": 8,
+      "price": 3
+    },
+    {
+      "item": "minecraft:bucket",
+      "count": 2,
+      "price": 3
+    }
+  ],
+  "friendly": [
+    {
+      "item": "avalinexus:graphene_tank",
+      "count": 1,
+      "price": 20
+    },
+    {
+      "item": "avalinexus:fluid_pump",
+      "count": 1,
+      "price": 28
+    }
+  ],
+  "ally": [
+    {
+      "item": "avalinexus:ammonia_refinery",
+      "count": 1,
+      "price": 40
+    },
+    {
+      "item": "avalinexus:cryo_freezer",
+      "count": 1,
+      "price": 40
+    }
+  ]
+}

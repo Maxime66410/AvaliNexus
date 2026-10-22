@@ -1,0 +1,103 @@
+{
+  "buy_rolls": 4,
+  "sell_rolls": 3,
+  "max_uses": 8,
+  "buy": [
+    {
+      "item": "avalinexus:nexite_nugget",
+      "count": 4,
+      "price": 3
+    },
+    {
+      "item": "avalinexus:nexite_ingot",
+      "count": 1,
+      "price": 12
+    },
+    {
+      "item": "minecraft:amethyst_shard",
+      "count": 4,
+      "price": 3
+    },
+    {
+      "item": "minecraft:iron_ingot",
+      "count": 4,
+      "price": 6
+    },
+    {
+      "item": "minecraft:iron_pickaxe",
+      "count": 1,
+      "price": 8
+    },
+    {
+      "item": "minecraft:torch",
+      "count": 16,
+      "price": 2
+    },
+    {
+      "item": "minecraft:spyglass",
+      "count": 1,
+      "price": 12
+    }
+  ],
+  "sell": [
+    {
+      "item": "minecraft:raw_iron",
+      "count": 4,
+      "price": 3
+    },
+    {
+      "item": "minecraft:raw_copper",
+      "count": 6,
+      "price": 2
+    },
+    {
+      "item": "minecraft:raw_gold",
+      "count": 2,
+      "price": 3
+    },
+    {
+      "item": "minecraft:lapis_lazuli",
+      "count": 8,
+      "price": 2
+    },
+    {
+      "item": "minecraft:amethyst_shard",
+      "count": 6,
+      "price": 2
+    },
+    {
+      "item": "minecraft:emerald",
+      "count": 1,
+      "price": 4
+    },
+    {
+      "item": "minecraft:diamond",
+      "count": 1,
+      "price": 8
+    }
+  ],
+  "friendly": [
+    {
+      "item": "avalinexus:nexite_upgrade_smithing_template",
+      "count": 1,
+      "price": 25
+    },
+    {
+      "item": "avalinexus:nexite_pickaxe",
+      "count": 1,
+      "price": 30
+    }
+  ],
+  "ally": [
+    {
+      "item": "avalinexus:nexite_chestplate",
+      "count": 1,
+      "price": 45
+    },
+    {
+      "item": "minecraft:diamond",
+      "count": 2,
+      "price": 20
+    }
+  ]
+}

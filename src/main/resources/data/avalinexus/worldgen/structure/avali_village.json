@@ -34,12 +34,12 @@
   "archives": "avalinexus:village/archives",
   "max_archives": 1,
   "workshops": [
-    { "template": "avalinexus:village/workshop_pump", "machine": "avalinexus:fluid_pump" },
-    { "template": "avalinexus:village/workshop_refinery", "machine": "avalinexus:ammonia_refinery" },
-    { "template": "avalinexus:village/workshop_freezer", "machine": "avalinexus:cryo_freezer" },
-    { "template": "avalinexus:village/workshop_press", "machine": "avalinexus:graphene_press" },
-    { "template": "avalinexus:village/workshop_armory", "machine": "avalinexus:weapon_workbench" },
-    { "template": "avalinexus:village/workshop_weaving", "machine": "avalinexus:avali_loom" }
+    { "template": "avalinexus:village/workshop_pump", "machine": "avalinexus:fluid_pump", "shop": "artisan_pump" },
+    { "template": "avalinexus:village/workshop_refinery", "machine": "avalinexus:ammonia_refinery", "shop": "artisan_refinery" },
+    { "template": "avalinexus:village/workshop_freezer", "machine": "avalinexus:cryo_freezer", "shop": "artisan_freezer" },
+    { "template": "avalinexus:village/workshop_press", "machine": "avalinexus:graphene_press", "shop": "artisan_press" },
+    { "template": "avalinexus:village/workshop_armory", "machine": "avalinexus:weapon_workbench", "shop": "artisan_armory" },
+    { "template": "avalinexus:village/workshop_weaving", "machine": "avalinexus:avali_loom", "shop": "artisan_weaving" }
   ],
   "loot": [
     { "template": "avalinexus:village/plaza", "table": "avalinexus:chests/avali_village_house" },

@@ -1,0 +1,103 @@
+{
+  "buy_rolls": 4,
+  "sell_rolls": 3,
+  "max_uses": 8,
+  "buy": [
+    {
+      "item": "avalinexus:nexite_quill",
+      "count": 16,
+      "price": 6
+    },
+    {
+      "item": "avalinexus:rail_pistol_magazine",
+      "count": 1,
+      "price": 5
+    },
+    {
+      "item": "avalinexus:rail_carbine_magazine",
+      "count": 1,
+      "price": 6
+    },
+    {
+      "item": "avalinexus:aerotech_dagger",
+      "count": 1,
+      "price": 12
+    },
+    {
+      "item": "minecraft:bow",
+      "count": 1,
+      "price": 6
+    },
+    {
+      "item": "minecraft:arrow",
+      "count": 16,
+      "price": 3
+    },
+    {
+      "item": "minecraft:cooked_rabbit",
+      "count": 4,
+      "price": 4
+    }
+  ],
+  "sell": [
+    {
+      "item": "minecraft:rabbit_hide",
+      "count": 6,
+      "price": 2
+    },
+    {
+      "item": "minecraft:rabbit_foot",
+      "count": 1,
+      "price": 3
+    },
+    {
+      "item": "minecraft:bone",
+      "count": 8,
+      "price": 2
+    },
+    {
+      "item": "minecraft:leather",
+      "count": 6,
+      "price": 3
+    },
+    {
+      "item": "minecraft:feather",
+      "count": 8,
+      "price": 2
+    },
+    {
+      "item": "minecraft:gunpowder",
+      "count": 4,
+      "price": 3
+    }
+  ],
+  "friendly": [
+    {
+      "item": "avalinexus:rail_assault_rifle_magazine",
+      "count": 1,
+      "price": 8
+    },
+    {
+      "item": "avalinexus:aerotech_blade",
+      "count": 1,
+      "price": 24
+    },
+    {
+      "item": "avalinexus:rail_pistol",
+      "count": 1,
+      "price": 30
+    }
+  ],
+  "ally": [
+    {
+      "item": "avalinexus:rail_carbine",
+      "count": 1,
+      "price": 45
+    },
+    {
+      "item": "avalinexus:aerotech_longblade",
+      "count": 1,
+      "price": 40
+    }
+  ]
+}

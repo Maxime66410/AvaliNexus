@@ -1,0 +1,98 @@
+{
+  "buy_rolls": 4,
+  "sell_rolls": 3,
+  "max_uses": 8,
+  "buy": [
+    {
+      "tag": "#avalinexus:nanocanvas",
+      "count": 8,
+      "price": 6
+    },
+    {
+      "tag": "#avalinexus:nanocanvas_carpets",
+      "count": 4,
+      "price": 3
+    },
+    {
+      "tag": "#avalinexus:nanocanvas_curtains",
+      "count": 2,
+      "price": 4
+    },
+    {
+      "tag": "#avalinexus:avali_tapestries",
+      "count": 1,
+      "price": 5
+    },
+    {
+      "item": "avalinexus:nanofibre",
+      "count": 4,
+      "price": 4
+    },
+    {
+      "tag": "#minecraft:wool",
+      "count": 4,
+      "price": 2
+    },
+    {
+      "tag": "#minecraft:dyes",
+      "count": 4,
+      "price": 3
+    }
+  ],
+  "sell": [
+    {
+      "tag": "#minecraft:wool",
+      "count": 8,
+      "price": 2
+    },
+    {
+      "item": "minecraft:string",
+      "count": 16,
+      "price": 2
+    },
+    {
+      "item": "avalinexus:avali_feather",
+      "count": 8,
+      "price": 2
+    },
+    {
+      "item": "minecraft:leather",
+      "count": 6,
+      "price": 3
+    },
+    {
+      "item": "minecraft:rabbit_hide",
+      "count": 4,
+      "price": 2
+    },
+    {
+      "tag": "#minecraft:dyes",
+      "count": 4,
+      "price": 2
+    }
+  ],
+  "friendly": [
+    {
+      "item": "avalinexus:avali_cushion",
+      "count": 1,
+      "price": 8
+    },
+    {
+      "item": "avalinexus:avali_loom",
+      "count": 1,
+      "price": 24
+    }
+  ],
+  "ally": [
+    {
+      "item": "avalinexus:avali_bed",
+      "count": 1,
+      "price": 12
+    },
+    {
+      "item": "avalinexus:bond_feather",
+      "count": 1,
+      "price": 30
+    }
+  ]
+}

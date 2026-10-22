@@ -1,0 +1,99 @@
+{
+  "buy_rolls": 4,
+  "sell_rolls": 3,
+  "max_uses": 8,
+  "buy": [
+    {
+      "item": "minecraft:sweet_berries",
+      "count": 8,
+      "price": 3
+    },
+    {
+      "item": "minecraft:glow_berries",
+      "count": 4,
+      "price": 4
+    },
+    {
+      "item": "avalinexus:nest_ration",
+      "count": 2,
+      "price": 6
+    },
+    {
+      "item": "minecraft:bread",
+      "count": 6,
+      "price": 4
+    },
+    {
+      "item": "minecraft:rabbit_stew",
+      "count": 1,
+      "price": 4
+    },
+    {
+      "item": "minecraft:mushroom_stew",
+      "count": 1,
+      "price": 3
+    },
+    {
+      "item": "minecraft:beetroot_soup",
+      "count": 1,
+      "price": 3
+    }
+  ],
+  "sell": [
+    {
+      "item": "minecraft:sweet_berries",
+      "count": 8,
+      "price": 2
+    },
+    {
+      "item": "minecraft:beetroot",
+      "count": 8,
+      "price": 2
+    },
+    {
+      "item": "minecraft:wheat",
+      "count": 8,
+      "price": 2
+    },
+    {
+      "item": "minecraft:potato",
+      "count": 8,
+      "price": 2
+    },
+    {
+      "item": "minecraft:brown_mushroom",
+      "count": 6,
+      "price": 2
+    },
+    {
+      "item": "minecraft:kelp",
+      "count": 8,
+      "price": 1
+    }
+  ],
+  "friendly": [
+    {
+      "item": "minecraft:golden_carrot",
+      "count": 2,
+      "price": 10
+    },
+    {
+      "item": "minecraft:cake",
+      "count": 1,
+      "price": 10
+    }
+  ],
+  "ally": [
+    {
+      "item": "minecraft:golden_apple",
+      "count": 1,
+      "price": 20
+    },
+    {
+      "item": "minecraft:splash_potion",
+      "count": 1,
+      "price": 18,
+      "potion": "avalinexus:nexite_tonic"
+    }
+  ]
+}

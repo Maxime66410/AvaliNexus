@@ -108,6 +108,7 @@ import org.furranystudio.avalinexus.entity.avali.goal.AvaliTargetGoal;
 import org.furranystudio.avalinexus.entity.avali.pose.AvaliPose;
 import org.furranystudio.avalinexus.sound.ModSounds;
 import org.furranystudio.avalinexus.trade.AvaliShop;
+import org.furranystudio.avalinexus.trade.TradeData;
 import org.furranystudio.avalinexus.worldgen.structure.AvaliSettlements;
 
 import java.util.ArrayList;
@@ -172,6 +173,7 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     private static final EntityDataAccessor<Boolean> DATA_FEMALE = SynchedEntityData.defineId(AvaliEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> DATA_TINT = SynchedEntityData.defineId(AvaliEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<String> DATA_SKIN = SynchedEntityData.defineId(AvaliEntity.class, EntityDataSerializers.STRING);
+    private static final EntityDataAccessor<String> DATA_PROFESSION = SynchedEntityData.defineId(AvaliEntity.class, EntityDataSerializers.STRING);
     private static final EntityDataAccessor<Integer> DATA_DIALOGUE_FACE = SynchedEntityData.defineId(AvaliEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<String> DATA_OWNER = SynchedEntityData.defineId(AvaliEntity.class, EntityDataSerializers.STRING);
     private static final EntityDataAccessor<String> DATA_OWNER_NAME = SynchedEntityData.defineId(AvaliEntity.class, EntityDataSerializers.STRING);
@@ -297,6 +299,7 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         builder.define(DATA_FEMALE, false);
         builder.define(DATA_TINT, 0xFFFFFF);
         builder.define(DATA_SKIN, "");
+        builder.define(DATA_PROFESSION, "");
         builder.define(DATA_OWNER, "");
         builder.define(DATA_OWNER_NAME, "");
         builder.define(DATA_ROLE, CompanionRole.FIGHTER.ordinal());
@@ -470,6 +473,7 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         output.putBoolean("avalinexus_female", isFemale());
         output.putInt("avalinexus_tint", getTint());
         output.putString("avalinexus_skin", getSkin());
+        output.putString("avalinexus_profession", getProfession());
         output.storeNullable("avalinexus_pack_id", UUIDUtil.CODEC, packId);
         output.store("avalinexus_parents", UUIDUtil.CODEC.listOf(), parents);
         output.storeNullable("avalinexus_bed", BlockPos.CODEC, bed);
@@ -497,6 +501,7 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         entityData.set(DATA_FEMALE, input.getBooleanOr("avalinexus_female", false));
         entityData.set(DATA_TINT, input.getIntOr("avalinexus_tint", 0xFFFFFF));
         entityData.set(DATA_SKIN, input.getStringOr("avalinexus_skin", ""));
+        entityData.set(DATA_PROFESSION, input.getStringOr("avalinexus_profession", ""));
         packId = input.read("avalinexus_pack_id", UUIDUtil.CODEC).orElse(null);
         parents = input.read("avalinexus_parents", UUIDUtil.CODEC.listOf()).orElse(List.of());
         bed = input.read("avalinexus_bed", BlockPos.CODEC).orElse(null);
@@ -601,10 +606,13 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         finalizeSpawn(level, level.getCurrentDifficultyAt(blockPosition()), EntitySpawnReason.STRUCTURE, new PackData(pack, packId));
     }
 
-    public void joinVillage(ServerLevelAccessor level, BlockPos plaza, String pack, UUID packId, BlockPos bed, BlockPos workshop) {
+    public void joinVillage(ServerLevelAccessor level, BlockPos plaza, String pack, UUID packId, BlockPos bed, BlockPos workshop, String shop) {
         village = true;
         this.bed = bed;
         this.workshop = workshop;
+        if (workshop != null && shop != null) {
+            setProfession(shop);
+        }
         joinCamp(level, plaza, pack, packId);
     }
 
@@ -683,7 +691,32 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         if (getPack().isEmpty()) {
             return name;
         }
-        return Component.translatable("avalinexus.avali.title", name, Component.translatable("avalinexus.pack." + getPack()));
+        Component pack = Component.translatable("avalinexus.pack." + getPack());
+        if (isBaby() || getProfession().isEmpty()) {
+            return Component.translatable("avalinexus.avali.title", name, pack);
+        }
+        Component job = Component.translatable("avalinexus.profession." + getProfession() + (isFemale() ? ".female" : ""));
+        return Component.translatable("avalinexus.avali.title_job", name, pack, job);
+    }
+
+    public String getProfession() {
+        return entityData.get(DATA_PROFESSION);
+    }
+
+    public void setProfession(String profession) {
+        entityData.set(DATA_PROFESSION, profession);
+    }
+
+    private void assignProfession() {
+        net.minecraft.server.MinecraftServer server = level().getServer();
+        TradeData.Settings settings = TradeData.settings(server);
+        String inherited = "";
+        if (!parents.isEmpty() && random.nextFloat() < settings.inheritChance()
+                && level().getEntity(parents.get(random.nextInt(parents.size()))) instanceof AvaliEntity parent
+                && settings.professions().contains(parent.getProfession())) {
+            inherited = parent.getProfession();
+        }
+        setProfession(inherited.isEmpty() ? TradeData.randomProfession(server, random) : inherited);
     }
 
     private static final class PackData extends AgeableMob.AgeableMobGroupData {
@@ -736,6 +769,9 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
             }
             if (!named) {
                 giveName(level().getServer());
+            }
+            if (!isBaby() && getProfession().isEmpty()) {
+                assignProfession();
             }
             if (!styled) {
                 giveLooks(level().getServer());

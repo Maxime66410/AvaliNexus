@@ -2,7 +2,7 @@
  * File: AvaliShopScreen.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-09-27
+ * Last Modified: 2026-10-22
  */
 package org.furranystudio.avalinexus.client.shop;
 
@@ -14,6 +14,8 @@ import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.Mth;
+import net.minecraft.util.Util;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import org.furranystudio.avalinexus.client.dialogue.ClientDialogue;
@@ -39,6 +41,9 @@ public class AvaliShopScreen extends Screen {
     private static final int TAB_HEIGHT = 14;
     private static final int LIST_WIDTH = 142;
     private static final int ROW_HEIGHT = 20;
+    private static final int VISIBLE_ROWS = 5;
+    private static final int BAR_WIDTH = 4;
+    private static final int ROW_WIDTH = LIST_WIDTH - BAR_WIDTH - 2;
     private static final int DETAIL_WIDTH = 92;
     private static final int DETAIL_HEIGHT = 100;
     private static final int BUTTON_WIDTH = 80;
@@ -50,6 +55,8 @@ public class AvaliShopScreen extends Screen {
     private final List<ShopOffer> offers;
     private ShopTab tab = ShopTab.BUY;
     private int selected;
+    private int scroll;
+    private boolean dragging;
     private int left;
     private int top;
 
@@ -66,7 +73,7 @@ public class AvaliShopScreen extends Screen {
     public void update(int offer, int uses) {
         if (offer >= 0 && offer < offers.size()) {
             ShopOffer old = offers.get(offer);
-            offers.set(offer, new ShopOffer(old.tab(), old.item(), old.price(), old.maxUses(), uses));
+            offers.set(offer, old.withUses(uses));
         }
     }
 
@@ -113,13 +120,19 @@ public class AvaliShopScreen extends Screen {
             if (inside(x, y, tabX, top + 24, TAB_WIDTH, TAB_HEIGHT) && candidate != tab) {
                 tab = candidate;
                 selected = 0;
+                scroll = 0;
                 playSound(ModSounds.UI_HOVER.get());
                 return true;
             }
         }
         List<Integer> visible = visibleOffers();
-        for (int row = 0; row < visible.size(); row++) {
-            if (inside(x, y, left + 8, listTop() + row * ROW_HEIGHT, LIST_WIDTH, ROW_HEIGHT - 2) && row != selected) {
+        if (visible.size() > VISIBLE_ROWS && inside(x, y, scrollbarX(), listTop(), BAR_WIDTH, listHeight())) {
+            dragging = true;
+            dragTo(y, visible.size());
+            return true;
+        }
+        for (int row = scroll; row < Math.min(visible.size(), scroll + VISIBLE_ROWS); row++) {
+            if (inside(x, y, left + 8, rowY(row), ROW_WIDTH, ROW_HEIGHT - 2) && row != selected) {
                 selected = row;
                 playSound(ModSounds.UI_HOVER.get());
                 return true;
@@ -134,6 +147,32 @@ public class AvaliShopScreen extends Screen {
             return true;
         }
         return super.mouseClicked(event, doubleClick);
+    }
+
+    @Override
+    public boolean mouseDragged(MouseButtonEvent event, double dragX, double dragY) {
+        if (dragging) {
+            dragTo(event.y(), visibleOffers().size());
+            return true;
+        }
+        return super.mouseDragged(event, dragX, dragY);
+    }
+
+    @Override
+    public boolean mouseReleased(MouseButtonEvent event) {
+        dragging = false;
+        return super.mouseReleased(event);
+    }
+
+    @Override
+    public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
+        scroll = Mth.clamp(scroll - (int) Math.signum(scrollY), 0, maxScroll(visibleOffers().size()));
+        return true;
+    }
+
+    private void dragTo(double mouseY, int total) {
+        float progress = (float) (mouseY - listTop() - thumbHeight(total) / 2.0) / Math.max(1, listHeight() - thumbHeight(total));
+        scroll = Math.round(Mth.clamp(progress, 0.0F, 1.0F) * maxScroll(total));
     }
 
     private void renderHeader(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
@@ -171,25 +210,41 @@ public class AvaliShopScreen extends Screen {
             graphics.text(font, AvaliUi.reading(Component.translatable("avalinexus.shop.empty")), left + 12, listTop() + 4, AvaliUi.TEXT_DISABLED, false);
             return;
         }
-        for (int row = 0; row < visible.size(); row++) {
+        scroll = Mth.clamp(scroll, 0, maxScroll(visible.size()));
+        for (int row = scroll; row < Math.min(visible.size(), scroll + VISIBLE_ROWS); row++) {
             ShopOffer offer = offers.get(visible.get(row));
-            int y = listTop() + row * ROW_HEIGHT;
+            ItemStack shown = offer.shown(Util.getMillis());
+            int y = rowY(row);
             if (row == selected) {
-                AvaliUi.panel(graphics, left + 8, y, LIST_WIDTH, ROW_HEIGHT - 2, AvaliUi.BACKDROP);
+                AvaliUi.panel(graphics, left + 8, y, ROW_WIDTH, ROW_HEIGHT - 2, AvaliUi.BACKDROP);
             }
-            graphics.item(offer.item(), left + 10, y + 1);
-            graphics.itemDecorations(font, offer.item(), left + 10, y + 1);
+            graphics.item(shown, left + 10, y + 1);
+            graphics.itemDecorations(font, shown, left + 10, y + 1);
             int nameColor = offer.remaining() > 0 ? AvaliUi.TEXT_PRIMARY : AvaliUi.TEXT_DISABLED;
-            Component itemName = AvaliUi.reading(font.substrByWidth(AvaliUi.reading(offer.item().getHoverName()), 80).getString());
+            Component itemName = AvaliUi.reading(font.substrByWidth(AvaliUi.reading(shown.getHoverName()), 80).getString());
             graphics.text(font, itemName, left + 30, y + 5, nameColor, false);
             Component price = AvaliUi.reading(String.valueOf(offer.price()));
-            int priceX = left + 8 + LIST_WIDTH - 14 - font.width(price);
+            int priceX = left + 8 + ROW_WIDTH - 14 - font.width(price);
             graphics.text(font, price, priceX, y + 5, AvaliUi.ORANGE_GLOW, false);
-            smallNexite(graphics, left + 8 + LIST_WIDTH - 12, y + 4);
+            smallNexite(graphics, left + 8 + ROW_WIDTH - 12, y + 4);
             if (inside(mouseX, mouseY, left + 10, y + 1, 16, 16)) {
-                graphics.setTooltipForNextFrame(font, offer.item(), mouseX, mouseY);
+                graphics.setTooltipForNextFrame(font, shown, mouseX, mouseY);
             }
         }
+        renderScrollbar(graphics, visible.size(), mouseX, mouseY);
+    }
+
+    private void renderScrollbar(GuiGraphicsExtractor graphics, int total, int mouseX, int mouseY) {
+        if (total <= VISIBLE_ROWS) {
+            return;
+        }
+        int x = scrollbarX();
+        int y = listTop();
+        graphics.fill(x, y, x + BAR_WIDTH, y + listHeight(), AvaliUi.PRIMARY_BORDER);
+        int thumbHeight = thumbHeight(total);
+        int thumbY = y + Math.round((float) scroll / maxScroll(total) * (listHeight() - thumbHeight));
+        boolean hot = dragging || inside(mouseX, mouseY, x, y, BAR_WIDTH, listHeight());
+        graphics.fill(x, thumbY, x + BAR_WIDTH, thumbY + thumbHeight, hot ? AvaliUi.ORANGE_GLOW : AvaliUi.PRIMARY_ORANGE);
     }
 
     private void renderDetail(GuiGraphicsExtractor graphics, List<Integer> visible, int mouseX, int mouseY) {
@@ -200,17 +255,18 @@ public class AvaliShopScreen extends Screen {
             return;
         }
         ShopOffer offer = offers.get(visible.get(Math.min(selected, visible.size() - 1)));
+        ItemStack shown = offer.shown(Util.getMillis());
 
         graphics.pose().pushMatrix();
         graphics.pose().translate(x + DETAIL_WIDTH / 2.0F - 16, y + 6);
         graphics.pose().scale(2.0F, 2.0F);
-        graphics.item(offer.item(), 0, 0);
+        graphics.item(shown, 0, 0);
         graphics.pose().popMatrix();
         if (inside(mouseX, mouseY, x + DETAIL_WIDTH / 2 - 16, y + 6, 32, 32)) {
-            graphics.setTooltipForNextFrame(font, offer.item(), mouseX, mouseY);
+            graphics.setTooltipForNextFrame(font, shown, mouseX, mouseY);
         }
 
-        Component name = Component.literal(offer.item().getCount() + "x ").append(offer.item().getHoverName());
+        Component name = Component.literal(shown.getCount() + "x ").append(shown.getHoverName());
         Component shortName = AvaliUi.reading(font.substrByWidth(AvaliUi.reading(name), DETAIL_WIDTH - 8).getString());
         graphics.centeredText(font, shortName, x + DETAIL_WIDTH / 2, y + 42, AvaliUi.TEXT_PRIMARY);
         Component price = AvaliUi.reading(Component.translatable("avalinexus.shop.price", offer.price()));
@@ -259,7 +315,7 @@ public class AvaliShopScreen extends Screen {
         if (offer.tab() == ShopTab.BUY && nexite() < offer.price()) {
             return Component.translatable("avalinexus.shop.not_enough_nexite");
         }
-        if (offer.tab() == ShopTab.SELL && ShopManager.count(Minecraft.getInstance().player.getInventory(), offer.item()) < offer.item().getCount()) {
+        if (offer.tab() == ShopTab.SELL && ShopManager.owned(Minecraft.getInstance().player.getInventory(), offer) < offer.item().getCount()) {
             return Component.translatable("avalinexus.shop.missing_items");
         }
         return null;
@@ -304,6 +360,26 @@ public class AvaliShopScreen extends Screen {
 
     private int listTop() {
         return top + 44;
+    }
+
+    private int rowY(int row) {
+        return listTop() + (row - scroll) * ROW_HEIGHT;
+    }
+
+    private int listHeight() {
+        return VISIBLE_ROWS * ROW_HEIGHT - 2;
+    }
+
+    private int scrollbarX() {
+        return left + 8 + ROW_WIDTH + 2;
+    }
+
+    private int thumbHeight(int total) {
+        return Math.max(8, listHeight() * VISIBLE_ROWS / total);
+    }
+
+    private static int maxScroll(int total) {
+        return Math.max(0, total - VISIBLE_ROWS);
     }
 
     private int buttonX() {

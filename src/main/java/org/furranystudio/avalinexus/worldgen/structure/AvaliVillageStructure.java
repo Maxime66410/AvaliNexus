@@ -87,10 +87,11 @@ public class AvaliVillageStructure extends Structure {
         ).apply(instance, Layout::new));
     }
 
-    public record Workshop(Identifier template, Block machine) {
+    public record Workshop(Identifier template, Block machine, String shop) {
         public static final Codec<Workshop> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Identifier.CODEC.fieldOf("template").forGetter(Workshop::template),
-            BuiltInRegistries.BLOCK.byNameCodec().fieldOf("machine").forGetter(Workshop::machine)
+            BuiltInRegistries.BLOCK.byNameCodec().fieldOf("machine").forGetter(Workshop::machine),
+            Codec.STRING.fieldOf("shop").forGetter(Workshop::shop)
         ).apply(instance, Workshop::new));
     }
 
@@ -312,7 +313,8 @@ public class AvaliVillageStructure extends Structure {
         DyeColor dye = AvaliSettlements.closestDye(AvaliAppearance.packColor(server, pack));
         AvaliSettlements.recolorTapestries(level.getChunk(chunkPos.x(), chunkPos.z()), list, dye);
         markFrames(level.getChunk(chunkPos.x(), chunkPos.z()), list);
-        Map<BlockPos, BlockPos> artisans = artisans(server.getStructureTemplateManager(), list);
+        Map<BlockPos, Workshop> artisans = new HashMap<>();
+        Map<BlockPos, BlockPos> machines = artisans(server.getStructureTemplateManager(), list, artisans);
 
         for (StructurePiece piece : list) {
             BoundingBox box = piece.getBoundingBox();
@@ -334,7 +336,9 @@ public class AvaliVillageStructure extends Structure {
                     RandomizableContainer.setBlockEntityLootTable(level, random, pos, table);
                 } else if (state.getBlock() instanceof BedBlock && state.getValue(BedBlock.PART) == BedPart.HEAD) {
                     BlockPos bed = pos.immutable();
-                    AvaliSettlements.spawnAvali(level, bed, avali -> avali.joinVillage(level, anchor, pack, packId, bed, artisans.get(bed)));
+                    Workshop workshop = artisans.get(bed);
+                    AvaliSettlements.spawnAvali(level, bed, avali -> avali.joinVillage(level, anchor, pack, packId, bed, machines.get(bed),
+                        workshop == null ? null : workshop.shop()));
                 }
             }
         }
@@ -359,9 +363,9 @@ public class AvaliVillageStructure extends Structure {
         }
     }
 
-    private Map<BlockPos, BlockPos> artisans(StructureTemplateManager templates, List<StructurePiece> pieces) {
+    private Map<BlockPos, BlockPos> artisans(StructureTemplateManager templates, List<StructurePiece> pieces, Map<BlockPos, Workshop> jobs) {
         List<BlockPos> beds = new ArrayList<>();
-        List<BlockPos> machines = new ArrayList<>();
+        Map<BlockPos, Workshop> machines = new HashMap<>();
         for (StructurePiece piece : pieces) {
             Identifier template = AvaliSettlements.template(piece);
             if (template == null || !(piece instanceof PoolElementStructurePiece pool)) {
@@ -377,14 +381,16 @@ public class AvaliVillageStructure extends Structure {
             Workshop workshop = workshop(template);
             if (workshop != null) {
                 structure.filterBlocks(pool.getPosition(), settings, workshop.machine()).stream().findFirst()
-                    .ifPresent(info -> machines.add(info.pos()));
+                    .ifPresent(info -> machines.put(info.pos(), workshop));
             }
         }
         Map<BlockPos, BlockPos> artisans = new HashMap<>();
-        for (BlockPos machine : machines) {
+        machines.keySet().stream().sorted().forEach(machine ->
             beds.stream().filter(bed -> !artisans.containsKey(bed)).min(Comparator.comparingDouble(bed -> bed.distSqr(machine)))
-                .ifPresent(bed -> artisans.put(bed, machine));
-        }
+                .ifPresent(bed -> {
+                    artisans.put(bed, machine);
+                    jobs.put(bed, machines.get(machine));
+                }));
         return artisans;
     }
 
