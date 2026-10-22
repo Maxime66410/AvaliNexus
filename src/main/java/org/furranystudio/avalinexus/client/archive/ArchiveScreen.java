@@ -2,7 +2,7 @@
  * File: ArchiveScreen.java
  * Author: Maxime66410
  * Created: 2026-09-28
- * Last Modified: 2026-10-19
+ * Last Modified: 2026-10-22
  */
 package org.furranystudio.avalinexus.client.archive;
 
@@ -92,7 +92,7 @@ public class ArchiveScreen extends Screen {
         int buttonWidth = font.width(reputation) + 8;
         boolean hovered = inside(mouseX, mouseY, reputationX(buttonWidth), closeY() - 2, buttonWidth, CLOSE_SIZE + 4);
         AvaliUi.panel(graphics, reputationX(buttonWidth), closeY() - 2, buttonWidth, CLOSE_SIZE + 4, hovered ? AvaliUi.PRIMARY_BORDER : AvaliUi.BACKDROP);
-        graphics.text(font, reputation, reputationX(buttonWidth) + 4, closeY() + 1, hovered ? AvaliUi.ORANGE_GLOW : AvaliUi.TEXT_PRIMARY, false);
+        graphics.text(font, reputation, reputationX(buttonWidth) + 4, closeY() + 2, hovered ? AvaliUi.ORANGE_GLOW : AvaliUi.TEXT_PRIMARY, false);
 
         renderTabs(graphics, mouseX, mouseY);
         if (entries.isEmpty()) {
