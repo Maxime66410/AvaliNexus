@@ -536,7 +536,11 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
 
     @Override
     protected SoundEvent getAmbientSound() {
-        return ModSounds.AVALI_NOISE.get();
+        return isQuiet() ? null : ModSounds.AVALI_NOISE.get();
+    }
+
+    private boolean isQuiet() {
+        return !level().isClientSide() && (isSleeping() || isNapping() || talkingTo != null || isInWater() || isBusy());
     }
 
     @Override
