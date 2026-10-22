@@ -2,7 +2,7 @@
  * File: GrapheneTankBlock.java
  * Author: Maxime66410
  * Created: 2026-10-14
- * Last Modified: 2026-10-14
+ * Last Modified: 2026-10-22
  */
 package org.furranystudio.avalinexus.block.tank;
 
@@ -24,7 +24,9 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.PipeBlock;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -32,6 +34,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
+import org.furranystudio.avalinexus.block.GraphenePipeBlock;
 import org.furranystudio.avalinexus.fluid.AvaliLiquids;
 import org.furranystudio.avalinexus.fluid.FluidPort;
 import org.furranystudio.avalinexus.fluid.FluidPortBlock;
@@ -53,6 +56,16 @@ public class GrapheneTankBlock extends Block implements EntityBlock, FluidPortBl
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(PipeBlock.NORTH, PipeBlock.EAST, PipeBlock.SOUTH, PipeBlock.WEST, PipeBlock.UP, PipeBlock.DOWN);
+    }
+
+    @Override
+    protected BlockState rotate(BlockState state, Rotation rotation) {
+        return GraphenePipeBlock.turnSides(state, rotation::rotate);
+    }
+
+    @Override
+    protected BlockState mirror(BlockState state, Mirror mirror) {
+        return GraphenePipeBlock.turnSides(state, mirror::mirror);
     }
 
     @Override

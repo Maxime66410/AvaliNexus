@@ -2,7 +2,7 @@
  * File: GraphenePipeBlock.java
  * Author: Maxime66410
  * Created: 2026-10-13
- * Last Modified: 2026-10-13
+ * Last Modified: 2026-10-22
  */
 package org.furranystudio.avalinexus.block;
 
@@ -20,7 +20,9 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.PipeBlock;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -39,6 +41,8 @@ import org.furranystudio.avalinexus.block.pipe.GraphenePipeBlockEntity;
 import org.furranystudio.avalinexus.block.pipe.PipeFluid;
 import org.furranystudio.avalinexus.fluid.FluidPortBlock;
 import org.furranystudio.avalinexus.sound.ModSounds;
+
+import java.util.function.UnaryOperator;
 
 public class GraphenePipeBlock extends PipeBlock implements SimpleWaterloggedBlock, EntityBlock {
 
@@ -107,6 +111,24 @@ public class GraphenePipeBlock extends PipeBlock implements SimpleWaterloggedBlo
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(NORTH, EAST, SOUTH, WEST, UP, DOWN, WATERLOGGED, FLUID);
+    }
+
+    @Override
+    protected BlockState rotate(BlockState state, Rotation rotation) {
+        return turnSides(state, rotation::rotate);
+    }
+
+    @Override
+    protected BlockState mirror(BlockState state, Mirror mirror) {
+        return turnSides(state, mirror::mirror);
+    }
+
+    public static BlockState turnSides(BlockState state, UnaryOperator<Direction> turn) {
+        BlockState turned = state;
+        for (Direction direction : Direction.Plane.HORIZONTAL) {
+            turned = turned.setValue(PROPERTY_BY_DIRECTION.get(turn.apply(direction)), state.getValue(PROPERTY_BY_DIRECTION.get(direction)));
+        }
+        return turned;
     }
 
     @Override
