@@ -1,21 +1,33 @@
 # Security Policy
 
-## Supported Versions
+## Supported versions
 
-Use this section to tell people about which versions of your project are
-currently being supported with security updates.
+Only the latest published version of Avali Nexus receives security fixes. If you are on an older version, please update first and check if the issue is still there.
 
-| Version | Supported          |
-| ------- | ------------------ |
-| 5.1.x   | :white_check_mark: |
-| 5.0.x   | :x:                |
-| 4.0.x   | :white_check_mark: |
-| < 4.0   | :x:                |
+## What counts as a security issue
 
-## Reporting a Vulnerability
+| Security issue (report privately) | Regular bug (open a public issue) |
+|---|---|
+| A player can crash a server remotely, for example with the mod's network packets | A crash in singleplayer or on startup |
+| A player without OP rights can use `/avalinexus` or change the config | An item duplication |
+| A player can run code, or read or write files on the server | A gameplay or display problem |
+| An issue that affects other players on a server (data, account) | |
 
-Use this section to tell people how to report a vulnerability.
+If you are not sure, report it privately anyway.
 
-Tell them where to go, how often they can expect to get an update on a
-reported vulnerability, what to expect if the vulnerability is accepted or
-declined, etc.
+## Reporting a vulnerability
+
+Please **don't** report security issues in a public issue.
+
+- **Preferred**: use GitHub's private reporting. Go to the [Security tab](https://github.com/Maxime66410/AvaliNexus/security) of the repository and click **Report a vulnerability**. Only you and the maintainer can see the report.
+- **Fallback**: send an email to teamfurranyfr@gmail.com.
+
+Include the mod version, your loader (Forge, NeoForge or Fabric), and the steps to reproduce the issue.
+
+## What to expect
+
+- You'll get an answer within **7 days** saying the report was received.
+- The report is then checked: either it's confirmed as a security issue, or you'll get an explanation of why it isn't.
+- A fix is released in a new version as soon as possible. This is a personal project, so there is no guaranteed delay.
+- If you want, you'll be credited in the release notes.
+- Please don't make the issue public until the fix is released.
