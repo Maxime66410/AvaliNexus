@@ -2,7 +2,7 @@
  * File: ModEntities.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-09-27
+ * Last Modified: 2026-10-22
  */
 package org.furranystudio.avalinexus.entity;
 
@@ -20,6 +20,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.Heightmap;
 import org.furranystudio.avalinexus.entity.avali.AvaliEntity;
 import org.furranystudio.avalinexus.entity.cushion.AvaliCushion;
+import org.furranystudio.avalinexus.entity.projectile.AvaliEgg;
 import org.furranystudio.avalinexus.entity.projectile.NexiteQuill;
 import org.furranystudio.avalinexus.entity.tapestry.AvaliTapestry;
 import org.furranystudio.avalinexus.registry.ModRegistry;
@@ -74,6 +75,14 @@ public final class ModEntities {
             .sized(0.25F, 0.25F)
             .clientTrackingRange(4)
             .updateInterval(20)
+            .build(key));
+
+    public static final RegistryEntry<EntityType<AvaliEgg>> AVALI_EGG = ModRegistry.register(Registries.ENTITY_TYPE, "avali_egg",
+        key -> EntityType.Builder.<AvaliEgg>of(AvaliEgg::new, MobCategory.MISC)
+            .noLootTable()
+            .sized(0.25F, 0.25F)
+            .clientTrackingRange(4)
+            .updateInterval(10)
             .build(key));
 
     private ModEntities() {

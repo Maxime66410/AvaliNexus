@@ -2,7 +2,7 @@
  * File: AvaliNexusFabric.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-09-27
+ * Last Modified: 2026-10-22
  */
 package org.furranystudio.avalinexus.fabric;
 
@@ -72,6 +72,7 @@ public final class AvaliNexusFabric implements ModInitializer {
             AvaliNexusCommand.register(dispatcher));
 
         AvaliNexus.commonSetup();
+        AvaliNexus.registerDispenseBehaviors();
     }
 
     // Fabric has no RegisterEvent, registries are still open here

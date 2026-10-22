@@ -2,7 +2,7 @@
  * File: ModItems.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-10-20
+ * Last Modified: 2026-10-22
  */
 package org.furranystudio.avalinexus.item;
 
@@ -60,6 +60,9 @@ public final class ModItems {
 
     public static final RegistryEntry<Item> NEST_RATION = ModRegistry.register(Registries.ITEM, "nest_ration",
         key -> new Item(new Item.Properties().setId(key).food(new FoodProperties.Builder().nutrition(6).saturationModifier(0.6F).build())));
+
+    public static final RegistryEntry<Item> AVALI_EGG = ModRegistry.register(Registries.ITEM, "avali_egg",
+        key -> new AvaliEggItem(new Item.Properties().setId(key).stacksTo(16)));
 
     public static final RegistryEntry<BlockItem> NEXITE_ORE =ModRegistry.register(Registries.ITEM, "nexite_ore",
         key -> new BlockItem(ModBlocks.NEXITE_ORE.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));

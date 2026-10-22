@@ -2,7 +2,7 @@
  * File: AvaliNexusFabricClient.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-10-19
+ * Last Modified: 2026-10-22
  */
 package org.furranystudio.avalinexus.fabric;
 
@@ -40,6 +40,7 @@ import org.furranystudio.avalinexus.client.dialogue.DialogueKeys;
 import org.furranystudio.avalinexus.client.weapon.RailGunClient;
 import org.furranystudio.avalinexus.client.weapon.RailGunHud;
 import org.furranystudio.avalinexus.client.weapon.NexiteQuillRenderer;
+import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import org.furranystudio.avalinexus.entity.ModEntities;
 
 public final class AvaliNexusFabricClient implements ClientModInitializer {
@@ -71,6 +72,7 @@ public final class AvaliNexusFabricClient implements ClientModInitializer {
         EntityRendererRegistry.register(ModEntities.AVALI_CUSHION.get(), AvaliCushionRenderer::new);
         EntityRendererRegistry.register(ModEntities.AVALI_TAPESTRY.get(), AvaliTapestryRenderer::new);
         EntityRendererRegistry.register(ModEntities.NEXITE_QUILL.get(), NexiteQuillRenderer::new);
+        EntityRendererRegistry.register(ModEntities.AVALI_EGG.get(), ThrownItemRenderer::new);
         HudElementRegistry.addLast(AvaliNexus.id("rail_gun"), RailGunHud::render);
         KeyMappingHelper.registerKeyMapping(RailGunClient.RELOAD);
         ClientTickEvents.START_CLIENT_TICK.register(client -> RailGunClient.tick());

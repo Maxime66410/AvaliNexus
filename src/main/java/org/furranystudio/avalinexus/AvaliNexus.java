@@ -2,12 +2,13 @@
  * File: AvaliNexus.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-10-20
+ * Last Modified: 2026-10-22
  */
 package org.furranystudio.avalinexus;
 
 import com.mojang.logging.LogUtils;
 import net.minecraft.resources.Identifier;
+import net.minecraft.world.level.block.DispenserBlock;
 import org.furranystudio.avalinexus.block.ModBlockEntities;
 import org.furranystudio.avalinexus.block.ModBlocks;
 import org.furranystudio.avalinexus.block.AerogelBlocks;
@@ -60,6 +61,10 @@ public final class AvaliNexus {
     public static void commonSetup() {
         Config.load();
         LOGGER.info("[AvaliNexus] Common setup done.");
+    }
+
+    public static void registerDispenseBehaviors() {
+        DispenserBlock.registerProjectileBehavior(ModItems.AVALI_EGG.get());
     }
 
     public static Identifier id(String path) {

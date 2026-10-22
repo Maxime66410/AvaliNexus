@@ -31,5 +31,10 @@
     "xp_min": 1,
     "xp_max": 7,
     "rare_inherit_chance": 0.5
+  },
+  "egg": {
+    "min_seconds": 600,
+    "max_seconds": 1200,
+    "hatch_chance": 0.125
   }
 }

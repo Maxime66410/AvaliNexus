@@ -2,7 +2,7 @@
  * File: AvaliBreeding.java
  * Author: Maxime66410
  * Created: 2026-10-20
- * Last Modified: 2026-10-21
+ * Last Modified: 2026-10-22
  */
 package org.furranystudio.avalinexus.entity.avali;
 
@@ -65,11 +65,14 @@ public final class AvaliBreeding {
     public record Birth(double messageRadius, int xpMin, int xpMax, float rareInheritChance) {
     }
 
-    public record Data(int checkSeconds, Bond bond, Baby baby, Stuck stuck, Usage items, Birth birth) {
+    public record Egg(int minSeconds, int maxSeconds, double hatchChance) {
+    }
+
+    public record Data(int checkSeconds, Bond bond, Baby baby, Stuck stuck, Usage items, Birth birth, Egg egg) {
     }
 
     private static final Data FALLBACK = new Data(30, new Bond(0.25, 16, 8), new Baby(0.1, 8, 1, 2, 8),
-        new Stuck(0.05, 128, 0.05, 16, 24), new Usage(ReputationTier.NEUTRAL, 30, 0.5F, 16, 0.1F), new Birth(32, 1, 7, 0.5F));
+        new Stuck(0.05, 128, 0.05, 16, 24), new Usage(ReputationTier.NEUTRAL, 30, 0.5F, 16, 0.1F), new Birth(32, 1, 7, 0.5F), new Egg(600, 1200, 0.125));
 
     private static final Map<UUID, UUID> SELECTED = new HashMap<>();
 
@@ -323,6 +326,7 @@ public final class AvaliBreeding {
             JsonObject stuck = root.getAsJsonObject("stuck");
             JsonObject items = root.getAsJsonObject("items");
             JsonObject birth = root.getAsJsonObject("birth");
+            JsonObject egg = root.getAsJsonObject("egg");
             return new Data(root.get("check_seconds").getAsInt(),
                 new Bond(bond.get("chance").getAsDouble(), bond.get("distance").getAsDouble(), bond.get("stay_distance").getAsDouble()),
                 new Baby(baby.get("chance").getAsDouble(), baby.get("partner_distance").getAsDouble(), baby.get("food_per_parent").getAsInt(),
@@ -334,7 +338,9 @@ public final class AvaliBreeding {
                     items.get("love_seconds").getAsInt(), items.get("tonic_reduction").getAsFloat(), items.get("select_range").getAsDouble(),
                     items.get("baby_growth").getAsFloat()),
                 new Birth(birth.get("message_radius").getAsDouble(), birth.get("xp_min").getAsInt(), birth.get("xp_max").getAsInt(),
-                    birth.get("rare_inherit_chance").getAsFloat()));
+                    birth.get("rare_inherit_chance").getAsFloat()),
+                egg == null ? FALLBACK.egg() : new Egg(egg.get("min_seconds").getAsInt(), egg.get("max_seconds").getAsInt(),
+                    egg.get("hatch_chance").getAsDouble()));
         } catch (Exception e) {
             AvaliNexus.LOGGER.error("[AvaliNexus] Couldn't read breeding file {}", FILE, e);
             return FALLBACK;

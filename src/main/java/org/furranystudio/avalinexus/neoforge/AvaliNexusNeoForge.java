@@ -2,7 +2,7 @@
  * File: AvaliNexusNeoForge.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-10-21
+ * Last Modified: 2026-10-22
  */
 package org.furranystudio.avalinexus.neoforge;
 
@@ -63,6 +63,7 @@ import org.furranystudio.avalinexus.client.dialogue.DialogueKeys;
 import org.furranystudio.avalinexus.client.weapon.RailGunClient;
 import org.furranystudio.avalinexus.client.weapon.RailGunHud;
 import org.furranystudio.avalinexus.client.weapon.NexiteQuillRenderer;
+import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import org.furranystudio.avalinexus.command.AvaliNexusCommand;
 import org.furranystudio.avalinexus.entity.ColdExposure;
 import org.furranystudio.avalinexus.entity.avali.AvaliMusicPlayer;
@@ -159,6 +160,7 @@ public class AvaliNexusNeoForge {
                 event.registerEntityRenderer(ModEntities.AVALI_CUSHION.get(), AvaliCushionRenderer::new);
                 event.registerEntityRenderer(ModEntities.AVALI_TAPESTRY.get(), AvaliTapestryRenderer::new);
                 event.registerEntityRenderer(ModEntities.NEXITE_QUILL.get(), NexiteQuillRenderer::new);
+                event.registerEntityRenderer(ModEntities.AVALI_EGG.get(), ThrownItemRenderer::new);
                 event.registerBlockEntityRenderer(ModBlockEntities.GRAPHENE_TANK.get(), GrapheneTankRenderer::new);
             });
         }
@@ -166,6 +168,7 @@ public class AvaliNexusNeoForge {
         modEventBus.addListener((FMLCommonSetupEvent event) -> {
             AvaliNexus.commonSetup();
             event.enqueueWork(ModBiomes::registerRegions);
+            event.enqueueWork(AvaliNexus::registerDispenseBehaviors);
         });
     }
 }

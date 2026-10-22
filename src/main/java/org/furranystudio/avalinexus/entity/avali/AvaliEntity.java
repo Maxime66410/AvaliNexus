@@ -70,6 +70,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BedPart;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
@@ -77,6 +78,7 @@ import org.furranystudio.avalinexus.AvaliNexus;
 import org.furranystudio.avalinexus.dialogue.DialogueManager;
 import org.furranystudio.avalinexus.effect.ModEffects;
 import org.furranystudio.avalinexus.entity.ModEntities;
+import org.furranystudio.avalinexus.item.ModItems;
 import org.furranystudio.avalinexus.entity.avali.expression.AvaliFace;
 import org.furranystudio.avalinexus.entity.avali.expression.AvaliGesture;
 import org.furranystudio.avalinexus.entity.avali.expression.AvaliMood;
@@ -114,8 +116,10 @@ import org.furranystudio.avalinexus.worldgen.structure.AvaliSettlements;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 public class AvaliEntity extends AgeableMob implements GeoEntity {
@@ -223,6 +227,7 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     private boolean explorer;
     private boolean village;
     private BlockPos workshop;
+    private int eggTime = -1;
 
     public AvaliEntity(EntityType<? extends AvaliEntity> type, Level level) {
         super(type, level);
@@ -310,7 +315,7 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     @Override
     public boolean hurtServer(ServerLevel level, DamageSource source, float amount) {
         boolean hurt = super.hurtServer(level, source, amount);
-        if (hurt) {
+        if (hurt && amount > 0.0F) {
             boolean fightsBack = false;
             if (source.getEntity() instanceof LivingEntity attacker && AvaliFight.isValidEnemy(attacker) && !isAlly(attacker)) {
                 fightsBack = reactTo(attacker);
@@ -488,6 +493,7 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         output.storeNullable("avalinexus_camp", BlockPos.CODEC, camp);
         output.putBoolean("avalinexus_village", village);
         output.storeNullable("avalinexus_workshop", BlockPos.CODEC, workshop);
+        output.putInt("avalinexus_egg_time", eggTime);
         gear.save(output);
     }
 
@@ -516,6 +522,7 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         camp = input.read("avalinexus_camp", BlockPos.CODEC).orElse(null);
         village = input.getBooleanOr("avalinexus_village", false);
         workshop = input.read("avalinexus_workshop", BlockPos.CODEC).orElse(null);
+        eggTime = input.getIntOr("avalinexus_egg_time", -1);
         gear.load(input);
     }
 
@@ -615,6 +622,52 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
             setProfession(shop);
         }
         joinCamp(level, plaza, pack, packId);
+    }
+
+    private void tickEgg() {
+        AvaliBreeding.Egg config = AvaliBreeding.get(level().getServer()).egg();
+        if (eggTime < 0) {
+            eggTime = Mth.nextInt(random, config.minSeconds(), config.maxSeconds()) * 20;
+        }
+        if (--eggTime <= 0) {
+            spawnAtLocation((ServerLevel) level(), new ItemStack(ModItems.AVALI_EGG.get()));
+            playSound(SoundEvents.CHICKEN_EGG, 1.0F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
+            gameEvent(GameEvent.ENTITY_PLACE);
+            eggTime = -1;
+        }
+    }
+
+    public static void hatch(ServerLevel level, Vec3 pos, float yRot) {
+        AvaliEntity kit = ModEntities.AVALI.get().create(level, EntitySpawnReason.TRIGGERED);
+        if (kit == null) {
+            return;
+        }
+        kit.setBaby(true);
+        kit.snapTo(pos.x, pos.y, pos.z, yRot, 0.0F);
+        AvaliEntity member = kit.openPack(level);
+        PackData data = member != null ? new PackData(member.getPack(), member.packId)
+            : new PackData(AvaliNames.pack(level.getServer(), kit.getRandom()), UUID.randomUUID());
+        if (member != null) {
+            kit.camp = member.camp;
+            kit.village = member.village;
+        }
+        kit.finalizeSpawn(level, level.getCurrentDifficultyAt(kit.blockPosition()), EntitySpawnReason.TRIGGERED, data);
+        level.addFreshEntityWithPassengers(kit);
+    }
+
+    private AvaliEntity openPack(ServerLevel level) {
+        double radius = AvaliBehavior.get(level.getServer()).pack().eggJoinRadius();
+        int max = AvaliBreeding.get(level.getServer()).baby().packMax();
+        List<AvaliEntity> nearby = new ArrayList<>(level.getEntitiesOfClass(AvaliEntity.class, getBoundingBox().inflate(radius),
+            other -> other.packId != null && !other.isCompanion() && distanceTo(other) <= radius));
+        nearby.sort((first, second) -> Double.compare(distanceToSqr(first), distanceToSqr(second)));
+        Set<UUID> checked = new HashSet<>();
+        for (AvaliEntity other : nearby) {
+            if (checked.add(other.packId) && other.packMembers().size() < max) {
+                return other;
+            }
+        }
+        return null;
     }
 
     private AvaliEntity nearestPack(ServerLevelAccessor level) {
@@ -802,6 +855,9 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
             if (!isBaby() && !isCompanion() && --breedCheck <= 0) {
                 breedCheck = AvaliBreeding.get(level().getServer()).checkSeconds() * 20;
                 AvaliBreeding.tick(this);
+            }
+            if (isFemale() && !isBaby() && !isCompanion()) {
+                tickEgg();
             }
             if (isInLove() && tickCount % LOVE_INTERVAL == 0) {
                 if (level().getGameTime() >= loveUntil) {
