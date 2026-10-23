@@ -2,7 +2,7 @@
  * File: ModBlocks.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-09-27
+ * Last Modified: 2026-10-23
  */
 package org.furranystudio.avalinexus.block;
 
@@ -31,7 +31,10 @@ import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
+import org.furranystudio.avalinexus.AvaliNexus;
 import org.furranystudio.avalinexus.block.heater.HeaterBlock;
+import org.furranystudio.avalinexus.block.plant.AvalonPlantBlock;
+import org.furranystudio.avalinexus.item.ModItems;
 import org.furranystudio.avalinexus.block.loom.AvaliLoomBlock;
 import org.furranystudio.avalinexus.block.freezer.CryoFreezerBlock;
 import org.furranystudio.avalinexus.block.press.GraphenePressBlock;
@@ -90,6 +93,19 @@ public final class ModBlocks {
             .sound(SoundType.GLASS)
             .lightLevel(state -> 10)
             .pushReaction(PushReaction.POPPED)));
+
+    private static final int[] NAKATI_LIGHT = {3, 6, 8, 10};
+
+    public static final RegistryEntry<Block> PIRU = ModRegistry.register(Registries.BLOCK, "piru",
+        key -> new AvalonPlantBlock(plant(key, MapColor.COLOR_LIGHT_GRAY), () -> ModItems.PIRU_SPORE.get(), null));
+
+    public static final RegistryEntry<Block> NAKATI = ModRegistry.register(Registries.BLOCK, "nakati",
+        key -> new AvalonPlantBlock(plant(key, MapColor.COLOR_CYAN).lightLevel(state -> NAKATI_LIGHT[state.getValue(AvalonPlantBlock.AGE)]),
+            () -> ModItems.NAKATI_CYST.get(), null));
+
+    public static final RegistryEntry<Block> KIRI = ModRegistry.register(Registries.BLOCK, "kiri",
+        key -> new AvalonPlantBlock(plant(key, MapColor.COLOR_PINK), () -> ModItems.KIRI_FRUIT.get(),
+            ResourceKey.create(Registries.LOOT_TABLE, AvaliNexus.id("harvest/kiri"))));
 
     public static final RegistryEntry<Block> CRYSTAL_POT = ModRegistry.register(Registries.BLOCK, "crystal_pot",
         key -> new CrystalPotBlock(BlockBehaviour.Properties.of()
@@ -345,6 +361,17 @@ public final class ModBlocks {
             .friction(0.98F)
             .strength(0.5F)
             .sound(SoundType.GLASS)));
+
+    private static BlockBehaviour.Properties plant(ResourceKey<Block> key, MapColor color) {
+        return BlockBehaviour.Properties.of()
+            .setId(key)
+            .mapColor(color)
+            .noCollision()
+            .randomTicks()
+            .instabreak()
+            .sound(SoundType.CROP)
+            .pushReaction(PushReaction.POPPED);
+    }
 
     private static BlockBehaviour.Properties iceBricks(ResourceKey<Block> key) {
         return BlockBehaviour.Properties.of()

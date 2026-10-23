@@ -2,7 +2,7 @@
  * File: AvaliBehavior.java
  * Author: Maxime66410
  * Created: 2026-10-17
- * Last Modified: 2026-10-22
+ * Last Modified: 2026-10-23
  */
 package org.furranystudio.avalinexus.entity.avali;
 
@@ -42,7 +42,7 @@ public final class AvaliBehavior {
     public record Camp(double anchorRadius, int explorersMin, int explorersMax, double explorerRadius, float exploreChance) {
     }
 
-    public record Village(Camp settlement, double workshopRadius, double watchDistance) {
+    public record Village(Camp settlement, double workshopRadius, double watchDistance, int fieldCheckSeconds, double fieldRadius) {
     }
 
     public record Data(Pack pack, Life life, Music music, Camp camp, Village village) {
@@ -50,7 +50,7 @@ public final class AvaliBehavior {
 
     private static final Data FALLBACK = new Data(new Pack(100, 6, 12, 16, 8, 32, 6, 64), new Life(16, 100, 8, 16, 0.5F, 1.0F, 0.3, -0.15),
         new Music(0.002, 12000, 13800, 5.0, 32, 300, 120, 300, 32, 15, 1.0F, true, List.of(AvaliFace.ADORABLE, AvaliFace.EXCITED, AvaliFace.SMUG)),
-        new Camp(32, 1, 2, 96, 0.05F), new Village(new Camp(100, 2, 4, 160, 0.05F), 6, 16));
+        new Camp(32, 1, 2, 96, 0.05F), new Village(new Camp(100, 2, 4, 160, 0.05F), 6, 16, 30, 48));
 
     private static ResourceManager loadedFrom;
     private static Data data = FALLBACK;
@@ -106,7 +106,9 @@ public final class AvaliBehavior {
                     music.get("join_radius").getAsDouble(), music.get("gather_seconds").getAsInt(),
                     music.get("volume").getAsFloat(), music.get("particles").getAsBoolean(), List.copyOf(faces)),
                 settlement(camp),
-                new Village(settlement(village), village.get("workshop_radius").getAsDouble(), village.get("watch_distance").getAsDouble()));
+                new Village(settlement(village), village.get("workshop_radius").getAsDouble(), village.get("watch_distance").getAsDouble(),
+                    village.has("field_check_seconds") ? village.get("field_check_seconds").getAsInt() : 30,
+                    village.has("field_radius") ? village.get("field_radius").getAsDouble() : 48));
         } catch (Exception e) {
             AvaliNexus.LOGGER.error("[AvaliNexus] Couldn't read behavior file {}", FILE, e);
             return FALLBACK;

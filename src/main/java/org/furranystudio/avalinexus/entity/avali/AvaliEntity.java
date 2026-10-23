@@ -2,7 +2,7 @@
  * File: AvaliEntity.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-10-22
+ * Last Modified: 2026-10-23
  */
 package org.furranystudio.avalinexus.entity.avali;
 
@@ -84,6 +84,7 @@ import org.furranystudio.avalinexus.entity.avali.expression.AvaliGesture;
 import org.furranystudio.avalinexus.entity.avali.expression.AvaliMood;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliCreeperGoal;
 import org.furranystudio.avalinexus.reputation.AvaliReputation;
+import org.furranystudio.avalinexus.reputation.VillageFields;
 import org.furranystudio.avalinexus.entity.avali.goal.CompanionFollowGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.CompanionGatherGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.CompanionHealerGoal;
@@ -92,6 +93,7 @@ import org.furranystudio.avalinexus.entity.avali.goal.CompanionWaitGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliCushionGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliEatGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliFleeGoal;
+import org.furranystudio.avalinexus.entity.avali.goal.AvaliFieldGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliGiveGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliHeatGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliHotBiomeGoal;
@@ -283,6 +285,7 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         goalSelector.addGoal(5, new AvaliPackGoal(this));
         goalSelector.addGoal(6, new AvaliShelterGoal(this));
         goalSelector.addGoal(6, new AvaliGiveGoal(this));
+        goalSelector.addGoal(6, new AvaliFieldGoal(this));
         goalSelector.addGoal(6, new AvaliPickupGoal(this));
         goalSelector.addGoal(7, new AvaliCushionGoal(this, 0.8));
         goalSelector.addGoal(7, new AvaliRestGoal(this));
@@ -618,7 +621,7 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         village = true;
         this.bed = bed;
         this.workshop = workshop;
-        if (workshop != null && shop != null) {
+        if (shop != null) {
             setProfession(shop);
         }
         joinCamp(level, plaza, pack, packId);
@@ -769,6 +772,11 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
                 && level().getEntity(parents.get(random.nextInt(parents.size()))) instanceof AvaliEntity parent
                 && settings.professions().contains(parent.getProfession())) {
             inherited = parent.getProfession();
+        }
+        String fieldJob = !parents.isEmpty() && village && camp != null ? VillageFields.job((ServerLevel) level(), camp) : null;
+        if (fieldJob != null && packMembers().stream().noneMatch(member -> member != this && !member.isBaby() && fieldJob.equals(member.getProfession()))) {
+            setProfession(fieldJob);
+            return;
         }
         setProfession(inherited.isEmpty() ? TradeData.randomProfession(server, random) : inherited);
     }
@@ -931,6 +939,10 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
 
     public BlockPos getCamp() {
         return camp;
+    }
+
+    public boolean isVillager() {
+        return village;
     }
 
     public boolean isExplorer() {

@@ -15,7 +15,8 @@
     "kill_adult": -40,
     "kill_baby": -100,
     "steal": -2,
-    "break_machine": -10
+    "break_machine": -10,
+    "steal_crop": -1
   },
   "daily_cap": {
     "trade": 10,

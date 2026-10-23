@@ -2,7 +2,7 @@
  * File: ModCreativeTabs.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-10-22
+ * Last Modified: 2026-10-23
  */
 package org.furranystudio.avalinexus.item;
 
@@ -39,6 +39,15 @@ public final class ModCreativeTabs {
                 output.accept(ModItems.BOND_FEATHER.get());
                 output.accept(ModItems.NEST_RATION.get());
                 output.accept(ModItems.AVALI_EGG.get());
+                output.accept(ModItems.PIRU_SPORE.get());
+                output.accept(ModItems.PIRU_FROND.get());
+                output.accept(ModItems.PIRU_FLOUR.get());
+                output.accept(ModItems.PIRU_BREAD.get());
+                output.accept(ModItems.NAKATI_CYST.get());
+                output.accept(ModItems.NAKATI_BARK.get());
+                output.accept(ModItems.KIRI_FRUIT.get());
+                output.accept(ModItems.KIRI_DESSERT.get());
+                output.accept(ModItems.SPICED_STEW.get());
                 output.accept(PotionContents.createItemStack(Items.POTION, ModEffects.tonicPotion()));
                 output.accept(PotionContents.createItemStack(Items.SPLASH_POTION, ModEffects.tonicPotion()));
                 output.accept(PotionContents.createItemStack(Items.LINGERING_POTION, ModEffects.tonicPotion()));

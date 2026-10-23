@@ -37,6 +37,16 @@
       "item": "minecraft:beetroot_soup",
       "count": 1,
       "price": 3
+    },
+    {
+      "item": "avalinexus:kiri_fruit",
+      "count": 6,
+      "price": 3
+    },
+    {
+      "item": "avalinexus:piru_bread",
+      "count": 4,
+      "price": 4
     }
   ],
   "sell": [
@@ -69,6 +79,16 @@
       "item": "minecraft:kelp",
       "count": 8,
       "price": 1
+    },
+    {
+      "item": "avalinexus:piru_frond",
+      "count": 8,
+      "price": 2
+    },
+    {
+      "item": "avalinexus:nakati_bark",
+      "count": 4,
+      "price": 2
     }
   ],
   "friendly": [
