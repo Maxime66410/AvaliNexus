@@ -2,7 +2,7 @@
  * File: AvaliNexusNeoForgeClient.java
  * Author: Maxime66410
  * Created: 2026-10-23
- * Last Modified: 2026-10-23
+ * Last Modified: 2026-10-24
  */
 package org.furranystudio.avalinexus.neoforge;
 
@@ -18,6 +18,7 @@ import net.neoforged.neoforge.client.event.RegisterFluidModelsEvent;
 import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
+import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.common.NeoForge;
 import org.furranystudio.avalinexus.AvaliNexus;
@@ -31,6 +32,7 @@ import org.furranystudio.avalinexus.client.dialogue.ClientDialogue;
 import org.furranystudio.avalinexus.client.dialogue.DialogueHud;
 import org.furranystudio.avalinexus.client.dialogue.DialogueKeys;
 import org.furranystudio.avalinexus.client.fluid.AvaliFluidModels;
+import org.furranystudio.avalinexus.client.fluid.FluidParticleProvider;
 import org.furranystudio.avalinexus.client.heater.HeaterScreen;
 import org.furranystudio.avalinexus.client.loom.AvaliLoomScreen;
 import org.furranystudio.avalinexus.client.machine.AmmoniaRefineryScreen;
@@ -46,6 +48,7 @@ import org.furranystudio.avalinexus.client.weapon.RailGunClient;
 import org.furranystudio.avalinexus.client.weapon.RailGunHud;
 import org.furranystudio.avalinexus.entity.ModEntities;
 import org.furranystudio.avalinexus.fluid.AvaliFluidKind;
+import org.furranystudio.avalinexus.fluid.FluidParticles;
 import org.furranystudio.avalinexus.fluid.ModFluids;
 import org.furranystudio.avalinexus.inventory.ModMenus;
 
@@ -94,6 +97,10 @@ public final class AvaliNexusNeoForgeClient {
             if (ClientDialogue.onScroll(event.getScrollDeltaY())) {
                 event.setCanceled(true);
             }
+        });
+        modEventBus.addListener((RegisterParticleProvidersEvent event) -> {
+            event.registerSpriteSet(FluidParticles.SPLASH.get(), FluidParticleProvider::splash);
+            event.registerSpriteSet(FluidParticles.BUBBLE.get(), FluidParticleProvider::bubble);
         });
         modEventBus.addListener((EntityRenderersEvent.RegisterRenderers event) -> {
             event.registerEntityRenderer(ModEntities.AVALI.get(), AvaliRenderer::new);

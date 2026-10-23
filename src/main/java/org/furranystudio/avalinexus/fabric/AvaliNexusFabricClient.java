@@ -2,13 +2,14 @@
  * File: AvaliNexusFabricClient.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-10-22
+ * Last Modified: 2026-10-24
  */
 package org.furranystudio.avalinexus.fabric;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
+import net.fabricmc.fabric.api.client.particle.v1.ParticleProviderRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockColorRegistry;
@@ -17,6 +18,8 @@ import org.furranystudio.avalinexus.client.ModKeyCategory;
 import org.furranystudio.avalinexus.AvaliNexus;
 import org.furranystudio.avalinexus.block.ModBlockEntities;
 import org.furranystudio.avalinexus.client.AvaliNexusClient;
+import org.furranystudio.avalinexus.client.fluid.FluidParticleProvider;
+import org.furranystudio.avalinexus.fluid.FluidParticles;
 import org.furranystudio.avalinexus.client.avali.AvaliRenderer;
 import org.furranystudio.avalinexus.client.reputation.ReputationClient;
 import org.furranystudio.avalinexus.client.heater.HeaterScreen;
@@ -73,6 +76,8 @@ public final class AvaliNexusFabricClient implements ClientModInitializer {
         EntityRendererRegistry.register(ModEntities.AVALI_TAPESTRY.get(), AvaliTapestryRenderer::new);
         EntityRendererRegistry.register(ModEntities.NEXITE_QUILL.get(), NexiteQuillRenderer::new);
         EntityRendererRegistry.register(ModEntities.AVALI_EGG.get(), ThrownItemRenderer::new);
+        ParticleProviderRegistry.getInstance().register(FluidParticles.SPLASH.get(), FluidParticleProvider::splash);
+        ParticleProviderRegistry.getInstance().register(FluidParticles.BUBBLE.get(), FluidParticleProvider::bubble);
         HudElementRegistry.addLast(AvaliNexus.id("rail_gun"), RailGunHud::render);
         KeyMappingHelper.registerKeyMapping(RailGunClient.RELOAD);
         ClientTickEvents.START_CLIENT_TICK.register(client -> RailGunClient.tick());

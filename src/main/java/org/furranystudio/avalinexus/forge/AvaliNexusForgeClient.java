@@ -2,7 +2,7 @@
  * File: AvaliNexusForgeClient.java
  * Author: Maxime66410
  * Created: 2026-10-23
- * Last Modified: 2026-10-23
+ * Last Modified: 2026-10-24
  */
 package org.furranystudio.avalinexus.forge;
 
@@ -17,6 +17,7 @@ import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
+import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -31,6 +32,7 @@ import org.furranystudio.avalinexus.client.dialogue.ClientDialogue;
 import org.furranystudio.avalinexus.client.dialogue.DialogueHud;
 import org.furranystudio.avalinexus.client.dialogue.DialogueKeys;
 import org.furranystudio.avalinexus.client.fluid.AvaliFluidModels;
+import org.furranystudio.avalinexus.client.fluid.FluidParticleProvider;
 import org.furranystudio.avalinexus.client.heater.HeaterScreen;
 import org.furranystudio.avalinexus.client.loom.AvaliLoomScreen;
 import org.furranystudio.avalinexus.client.machine.AmmoniaRefineryScreen;
@@ -46,6 +48,7 @@ import org.furranystudio.avalinexus.client.weapon.RailGunClient;
 import org.furranystudio.avalinexus.client.weapon.RailGunHud;
 import org.furranystudio.avalinexus.entity.ModEntities;
 import org.furranystudio.avalinexus.fluid.AvaliFluidKind;
+import org.furranystudio.avalinexus.fluid.FluidParticles;
 import org.furranystudio.avalinexus.fluid.ModFluids;
 import org.furranystudio.avalinexus.inventory.ModMenus;
 
@@ -99,6 +102,10 @@ public final class AvaliNexusForgeClient {
         TickEvent.ClientTickEvent.Pre.BUS.addListener(event -> ClientDialogue.tick());
         InputEvent.MouseScrollingEvent.BUS.addListener((Predicate<InputEvent.MouseScrollingEvent>) event ->
             ClientDialogue.onScroll(event.getDeltaY()));
+        RegisterParticleProvidersEvent.BUS.addListener(event -> {
+            event.registerSpriteSet(FluidParticles.SPLASH.get(), FluidParticleProvider::splash);
+            event.registerSpriteSet(FluidParticles.BUBBLE.get(), FluidParticleProvider::bubble);
+        });
         EntityRenderersEvent.RegisterRenderers.BUS.addListener(event -> {
             event.registerEntityRenderer(ModEntities.AVALI.get(), AvaliRenderer::new);
             event.registerEntityRenderer(ModEntities.AVALI_CUSHION.get(), AvaliCushionRenderer::new);

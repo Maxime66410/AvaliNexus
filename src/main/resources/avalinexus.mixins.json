@@ -6,7 +6,9 @@
   "mixins": [
     "BlockExplosionMixin",
     "CompoundContainerAccessor",
+    "EntitySplashMixin",
     "ItemFrameMixin",
+    "LivingEntityDrownMixin",
     "ServerPlayerGameModeMixin",
     "ServerPlayerMenuMixin"
   ],
