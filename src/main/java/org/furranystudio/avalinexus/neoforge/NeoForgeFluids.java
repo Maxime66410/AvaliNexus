@@ -2,7 +2,7 @@
  * File: NeoForgeFluids.java
  * Author: Maxime66410
  * Created: 2026-09-28
- * Last Modified: 2026-09-28
+ * Last Modified: 2026-10-24
  */
 package org.furranystudio.avalinexus.neoforge;
 
@@ -38,6 +38,7 @@ final class NeoForgeFluids {
     private static FluidType type(AvaliFluidKind kind) {
         return TYPES.computeIfAbsent(kind, it -> new FluidType(FluidType.Properties.create()
             .descriptionId("block.avalinexus." + it.fluidName())
+            .isWaterLike(true)
             .canSwim(true)
             .canDrown(true)
             .canPushEntity(true)
