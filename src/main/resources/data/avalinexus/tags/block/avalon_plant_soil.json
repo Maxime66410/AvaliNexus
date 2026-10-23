@@ -1,0 +1,10 @@
+{
+  "values": [
+    "minecraft:snow_block",
+    "minecraft:ice",
+    "minecraft:packed_ice",
+    "minecraft:blue_ice",
+    "avalinexus:ammonia_ice",
+    "avalinexus:packed_ammonia_ice"
+  ]
+}

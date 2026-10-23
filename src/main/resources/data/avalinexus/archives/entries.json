@@ -16,6 +16,11 @@
       "icon": "minecraft:blue_ice"
     },
     {
+      "id": "avalon_flora",
+      "category": "lore",
+      "icon": "avalinexus:kiri_fruit"
+    },
+    {
       "id": "biology",
       "category": "lore",
       "icon": "avalinexus:avali_feather"
@@ -129,6 +134,11 @@
       "id": "quills_magazines",
       "category": "mod",
       "icon": "avalinexus:nexite_quill"
+    },
+    {
+      "id": "avalon_plants",
+      "category": "mod",
+      "icon": "avalinexus:piru_spore"
     },
     {
       "id": "fluids",

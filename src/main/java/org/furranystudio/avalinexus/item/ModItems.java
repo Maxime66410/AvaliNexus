@@ -2,7 +2,7 @@
  * File: ModItems.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-10-22
+ * Last Modified: 2026-10-23
  */
 package org.furranystudio.avalinexus.item;
 
@@ -14,7 +14,12 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.food.FoodProperties;
+import net.minecraft.world.food.Foods;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.Consumables;
+import net.minecraft.world.item.consume_effects.ApplyStatusEffectsConsumeEffect;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DoubleHighBlockItem;
 import net.minecraft.world.item.Item;
@@ -25,6 +30,7 @@ import net.minecraft.world.item.equipment.Equippable;
 import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
 import org.furranystudio.avalinexus.AvaliNexus;
 import org.furranystudio.avalinexus.block.ModBlocks;
+import org.furranystudio.avalinexus.effect.ModEffects;
 import org.furranystudio.avalinexus.block.tank.GrapheneTankItem;
 import org.furranystudio.avalinexus.entity.ModEntities;
 import org.furranystudio.avalinexus.registry.ModRegistry;
@@ -63,6 +69,39 @@ public final class ModItems {
 
     public static final RegistryEntry<Item> AVALI_EGG = ModRegistry.register(Registries.ITEM, "avali_egg",
         key -> new AvaliEggItem(new Item.Properties().setId(key).stacksTo(16)));
+
+    public static final RegistryEntry<BlockItem> PIRU_SPORE = ModRegistry.register(Registries.ITEM, "piru_spore",
+        key -> new BlockItem(ModBlocks.PIRU.get(), new Item.Properties().setId(key).useItemDescriptionPrefix()
+            .compostable(ContextIntProviders.COMPOSTABLE_LOW)));
+
+    public static final RegistryEntry<Item> PIRU_FROND = ModRegistry.register(Registries.ITEM, "piru_frond",
+        key -> new Item(new Item.Properties().setId(key).compostable(ContextIntProviders.COMPOSTABLE_MEDIUM)));
+
+    public static final RegistryEntry<Item> PIRU_FLOUR = ModRegistry.register(Registries.ITEM, "piru_flour",
+        key -> new Item(new Item.Properties().setId(key)));
+
+    public static final RegistryEntry<Item> PIRU_BREAD = ModRegistry.register(Registries.ITEM, "piru_bread",
+        key -> new Item(new Item.Properties().setId(key).food(Foods.BREAD)));
+
+    public static final RegistryEntry<BlockItem> NAKATI_CYST = ModRegistry.register(Registries.ITEM, "nakati_cyst",
+        key -> new BlockItem(ModBlocks.NAKATI.get(), new Item.Properties().setId(key).useItemDescriptionPrefix()
+            .compostable(ContextIntProviders.COMPOSTABLE_LOW)));
+
+    public static final RegistryEntry<Item> NAKATI_BARK = ModRegistry.register(Registries.ITEM, "nakati_bark",
+        key -> new Item(new Item.Properties().setId(key).compostable(ContextIntProviders.COMPOSTABLE_LOW_MEDIUM)));
+
+    public static final RegistryEntry<BlockItem> KIRI_FRUIT = ModRegistry.register(Registries.ITEM, "kiri_fruit",
+        key -> new BlockItem(ModBlocks.KIRI.get(), new Item.Properties().setId(key).useItemDescriptionPrefix()
+            .food(Foods.SWEET_BERRIES).compostable(ContextIntProviders.COMPOSTABLE_LOW)));
+
+    public static final RegistryEntry<Item> KIRI_DESSERT = ModRegistry.register(Registries.ITEM, "kiri_dessert",
+        key -> new Item(new Item.Properties().setId(key).stacksTo(1).usingConvertsTo(Items.BOWL)
+            .food(new FoodProperties.Builder().nutrition(7).saturationModifier(0.6F).build())));
+
+    public static final RegistryEntry<Item> SPICED_STEW = ModRegistry.register(Registries.ITEM, "spiced_stew",
+        key -> new Item(new Item.Properties().setId(key).stacksTo(1).usingConvertsTo(Items.BOWL)
+            .food(new FoodProperties.Builder().nutrition(8).saturationModifier(0.8F).build(), Consumables.defaultFood()
+                .onConsume(new ApplyStatusEffectsConsumeEffect(new MobEffectInstance(ModEffects.warmth(), 3600))).build())));
 
     public static final RegistryEntry<BlockItem> NEXITE_ORE =ModRegistry.register(Registries.ITEM, "nexite_ore",
         key -> new BlockItem(ModBlocks.NEXITE_ORE.get(), new Item.Properties().setId(key).useBlockDescriptionPrefix()));

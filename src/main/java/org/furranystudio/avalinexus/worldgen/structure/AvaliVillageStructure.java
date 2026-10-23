@@ -2,7 +2,7 @@
  * File: AvaliVillageStructure.java
  * Author: Maxime66410
  * Created: 2026-10-22
- * Last Modified: 2026-10-22
+ * Last Modified: 2026-10-23
  */
 package org.furranystudio.avalinexus.worldgen.structure;
 
@@ -95,6 +95,14 @@ public class AvaliVillageStructure extends Structure {
         ).apply(instance, Workshop::new));
     }
 
+    public record Fields(Identifier template, int max, String job) {
+        public static final Codec<Fields> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+            Identifier.CODEC.fieldOf("template").forGetter(Fields::template),
+            Codec.intRange(0, 16).fieldOf("max").forGetter(Fields::max),
+            Codec.STRING.fieldOf("job").forGetter(Fields::job)
+        ).apply(instance, Fields::new));
+    }
+
     public record Loot(Identifier template, ResourceKey<LootTable> table) {
         public static final Codec<Loot> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Identifier.CODEC.fieldOf("template").forGetter(Loot::template),
@@ -115,6 +123,7 @@ public class AvaliVillageStructure extends Structure {
         Identifier.CODEC.fieldOf("archives").forGetter(village -> village.archives),
         Codec.intRange(0, 16).fieldOf("max_archives").forGetter(village -> village.maxArchives),
         Workshop.CODEC.listOf().fieldOf("workshops").forGetter(village -> village.workshops),
+        Fields.CODEC.fieldOf("fields").forGetter(village -> village.fields),
         Loot.CODEC.listOf().fieldOf("loot").forGetter(village -> village.loot),
         Codec.floatRange(0.0F, 1.0F).fieldOf("tank_fill_min").forGetter(village -> village.tankFillMin),
         Codec.floatRange(0.0F, 1.0F).fieldOf("tank_fill_max").forGetter(village -> village.tankFillMax)
@@ -135,13 +144,14 @@ public class AvaliVillageStructure extends Structure {
     private final Identifier archives;
     private final int maxArchives;
     private final List<Workshop> workshops;
+    private final Fields fields;
     private final List<Loot> loot;
     private final float tankFillMin;
     private final float tankFillMax;
 
     public AvaliVillageStructure(StructureSettings settings, Holder<StructureTemplatePool> startPool, int maxSlope, int slopeSample, int attempts,
                                  List<Layout> layouts, String housePrefix, int minHouses, Identifier warehouse, Identifier archives,
-                                 int maxArchives, List<Workshop> workshops, List<Loot> loot, float tankFillMin, float tankFillMax) {
+                                 int maxArchives, List<Workshop> workshops, Fields fields, List<Loot> loot, float tankFillMin, float tankFillMax) {
         super(settings);
         this.startPool = startPool;
         this.maxSlope = maxSlope;
@@ -154,6 +164,7 @@ public class AvaliVillageStructure extends Structure {
         this.archives = archives;
         this.maxArchives = maxArchives;
         this.workshops = workshops;
+        this.fields = fields;
         this.loot = loot;
         this.tankFillMin = tankFillMin;
         this.tankFillMax = Math.max(tankFillMin, tankFillMax);
@@ -231,6 +242,7 @@ public class AvaliVillageStructure extends Structure {
         List<StructurePiece> houses = new ArrayList<>();
         int archived = 0;
         int warehouses = 0;
+        int planted = 0;
         for (StructurePiece piece : pieces) {
             Identifier template = AvaliSettlements.template(piece);
             if (template == null || piece == pieces.getFirst()) {
@@ -244,6 +256,10 @@ public class AvaliVillageStructure extends Structure {
                     built.remove(workshop);
                     dropped.add(piece);
                 }
+            } else if (isField(template)) {
+                if (++planted > fields.max()) {
+                    dropped.add(piece);
+                }
             } else if (matches(template, archives)) {
                 if (++archived > maxArchives) {
                     dropped.add(piece);
@@ -252,7 +268,7 @@ public class AvaliVillageStructure extends Structure {
                 dropped.add(piece);
             }
         }
-        int others = built.size() + Math.min(archived, maxArchives) + Math.min(warehouses, 1);
+        int others = built.size() + Math.min(archived, maxArchives) + Math.min(warehouses, 1) + Math.min(planted, fields.max());
         int allowedHouses = Math.max(minHouses, layout.maxBuildings() - others);
         for (int index = allowedHouses; index < houses.size(); index++) {
             dropped.add(houses.get(index));
@@ -268,6 +284,14 @@ public class AvaliVillageStructure extends Structure {
 
     private static boolean matches(Identifier template, Identifier prefix) {
         return template.toString().startsWith(prefix.toString());
+    }
+
+    public boolean isField(Identifier template) {
+        return template != null && matches(template, fields.template());
+    }
+
+    public String fieldJob() {
+        return fields.job();
     }
 
     private Workshop workshop(Identifier template) {
@@ -313,8 +337,8 @@ public class AvaliVillageStructure extends Structure {
         DyeColor dye = AvaliSettlements.closestDye(AvaliAppearance.packColor(server, pack));
         AvaliSettlements.recolorTapestries(level.getChunk(chunkPos.x(), chunkPos.z()), list, dye);
         markFrames(level.getChunk(chunkPos.x(), chunkPos.z()), list);
-        Map<BlockPos, Workshop> artisans = new HashMap<>();
-        Map<BlockPos, BlockPos> machines = artisans(server.getStructureTemplateManager(), list, artisans);
+        Map<BlockPos, String> jobs = new HashMap<>();
+        Map<BlockPos, BlockPos> machines = artisans(server.getStructureTemplateManager(), list, jobs);
 
         for (StructurePiece piece : list) {
             BoundingBox box = piece.getBoundingBox();
@@ -336,9 +360,8 @@ public class AvaliVillageStructure extends Structure {
                     RandomizableContainer.setBlockEntityLootTable(level, random, pos, table);
                 } else if (state.getBlock() instanceof BedBlock && state.getValue(BedBlock.PART) == BedPart.HEAD) {
                     BlockPos bed = pos.immutable();
-                    Workshop workshop = artisans.get(bed);
                     AvaliSettlements.spawnAvali(level, bed, avali -> avali.joinVillage(level, anchor, pack, packId, bed, machines.get(bed),
-                        workshop == null ? null : workshop.shop()));
+                        jobs.get(bed)));
                 }
             }
         }
@@ -363,8 +386,9 @@ public class AvaliVillageStructure extends Structure {
         }
     }
 
-    private Map<BlockPos, BlockPos> artisans(StructureTemplateManager templates, List<StructurePiece> pieces, Map<BlockPos, Workshop> jobs) {
+    private Map<BlockPos, BlockPos> artisans(StructureTemplateManager templates, List<StructurePiece> pieces, Map<BlockPos, String> jobs) {
         List<BlockPos> beds = new ArrayList<>();
+        List<BlockPos> fieldCenters = new ArrayList<>();
         Map<BlockPos, Workshop> machines = new HashMap<>();
         for (StructurePiece piece : pieces) {
             Identifier template = AvaliSettlements.template(piece);
@@ -378,6 +402,9 @@ public class AvaliVillageStructure extends Structure {
                     beds.add(info.pos());
                 }
             }
+            if (isField(template)) {
+                fieldCenters.add(piece.getBoundingBox().getCenter());
+            }
             Workshop workshop = workshop(template);
             if (workshop != null) {
                 structure.filterBlocks(pool.getPosition(), settings, workshop.machine()).stream().findFirst()
@@ -389,8 +416,11 @@ public class AvaliVillageStructure extends Structure {
             beds.stream().filter(bed -> !artisans.containsKey(bed)).min(Comparator.comparingDouble(bed -> bed.distSqr(machine)))
                 .ifPresent(bed -> {
                     artisans.put(bed, machine);
-                    jobs.put(bed, machines.get(machine));
+                    jobs.put(bed, machines.get(machine).shop());
                 }));
+        fieldCenters.stream().sorted().findFirst().flatMap(field -> beds.stream().filter(bed -> !jobs.containsKey(bed))
+                .min(Comparator.<BlockPos>comparingDouble(bed -> bed.distSqr(field)).thenComparing(Comparator.naturalOrder())))
+            .ifPresent(bed -> jobs.put(bed, fields.job()));
         return artisans;
     }
 

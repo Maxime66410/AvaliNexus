@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    [
+      "minecraft:cod",
+      "minecraft:salmon"
+    ],
+    "avalinexus:kiri_fruit",
+    "avalinexus:piru_flour"
+  ],
+  "result": {
+    "id": "avalinexus:nest_ration"
+  }
+}

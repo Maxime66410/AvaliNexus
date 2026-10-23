@@ -2,7 +2,7 @@
  * File: VillageData.java
  * Author: Maxime66410
  * Created: 2026-10-22
- * Last Modified: 2026-10-22
+ * Last Modified: 2026-10-23
  */
 package org.furranystudio.avalinexus.reputation;
 
@@ -30,20 +30,23 @@ public class VillageData extends SavedData {
     private static final Codec<VillageData> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Codec.LONG.listOf().optionalFieldOf("broken", List.of()).forGetter(data -> List.copyOf(data.broken)),
         Codec.unboundedMap(Codec.STRING, Codec.unboundedMap(Identifier.CODEC, Codec.INT)).optionalFieldOf("shares", Map.of())
-            .forGetter(data -> data.shares)
+            .forGetter(data -> data.shares),
+        Codec.LONG.listOf().optionalFieldOf("planted", List.of()).forGetter(data -> List.copyOf(data.planted))
     ).apply(instance, VillageData::new));
     private static final SavedDataType<VillageData> TYPE = new SavedDataType<>(AvaliNexus.id("village_watch"), VillageData::new,
         CODEC, DataFixTypes.SAVED_DATA_COMMAND_STORAGE);
 
     private final Set<Long> broken = new HashSet<>();
     private final Map<String, Map<Identifier, Integer>> shares = new HashMap<>();
+    private final Set<Long> planted = new HashSet<>();
 
     public VillageData() {
     }
 
-    private VillageData(List<Long> broken, Map<String, Map<Identifier, Integer>> shares) {
+    private VillageData(List<Long> broken, Map<String, Map<Identifier, Integer>> shares, List<Long> planted) {
         this.broken.addAll(broken);
         shares.forEach((pos, share) -> this.shares.put(pos, new HashMap<>(share)));
+        this.planted.addAll(planted);
     }
 
     public static VillageData get(MinecraftServer server) {
@@ -56,6 +59,16 @@ public class VillageData extends SavedData {
 
     public void markBroken(BlockPos pos) {
         if (broken.add(pos.asLong()) | shares.remove(key(pos)) != null) {
+            setDirty();
+        }
+    }
+
+    public boolean isPlanted(BlockPos pos) {
+        return planted.contains(pos.asLong());
+    }
+
+    public void setPlanted(BlockPos pos, boolean byPlayer) {
+        if (byPlayer ? planted.add(pos.asLong()) : planted.remove(pos.asLong())) {
             setDirty();
         }
     }

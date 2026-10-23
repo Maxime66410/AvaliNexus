@@ -2,7 +2,7 @@
  * File: ColdExposure.java
  * Author: Maxime66410
  * Created: 2026-09-28
- * Last Modified: 2026-09-28
+ * Last Modified: 2026-10-23
  */
 package org.furranystudio.avalinexus.entity;
 
@@ -10,6 +10,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import org.furranystudio.avalinexus.block.heater.HeaterZones;
+import org.furranystudio.avalinexus.effect.ModEffects;
 import org.furranystudio.avalinexus.worldgen.ModBiomes;
 
 // Players out in the polar taiga slowly freeze like in powder snow, leather armor keeps them warm
@@ -27,7 +28,7 @@ public final class ColdExposure {
     public static void tick(MinecraftServer server) {
         int step = server.getTickCount() % 2 == 0 ? FREEZE_EVEN_TICK : FREEZE_ODD_TICK;
         for (ServerPlayer player : server.getPlayerList().getPlayers()) {
-            if (HeaterZones.isWarm(player.level(), player.blockPosition())) {
+            if (HeaterZones.isWarm(player.level(), player.blockPosition()) || player.hasEffect(ModEffects.warmth())) {
                 // On top of the vanilla thaw, so a frozen player warms up twice as fast
                 player.setTicksFrozen(Math.max(0, player.getTicksFrozen() - FREEZE_EVEN_TICK));
             } else if (isExposed(player)) {

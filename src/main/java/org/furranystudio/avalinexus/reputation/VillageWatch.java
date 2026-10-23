@@ -2,7 +2,7 @@
  * File: VillageWatch.java
  * Author: Maxime66410
  * Created: 2026-10-22
- * Last Modified: 2026-10-22
+ * Last Modified: 2026-10-23
  */
 package org.furranystudio.avalinexus.reputation;
 
@@ -27,6 +27,7 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import org.furranystudio.avalinexus.AvaliNexus;
+import org.furranystudio.avalinexus.block.plant.AvalonPlantBlock;
 import org.furranystudio.avalinexus.entity.avali.AvaliBehavior;
 import org.furranystudio.avalinexus.entity.avali.AvaliEntity;
 import org.furranystudio.avalinexus.mixin.CompoundContainerAccessor;
@@ -65,6 +66,25 @@ public final class VillageWatch {
     public static void broke(ServerPlayer player, BlockPos pos) {
         forget(player.level(), pos);
         crime(player, pos, AvaliReputation.Change.BREAK_MACHINE);
+    }
+
+    public static boolean isFieldCrop(ServerLevel level, BlockPos pos) {
+        return level.getBlockState(pos).getBlock() instanceof AvalonPlantBlock && VillageFields.plantAt(level, pos) != null;
+    }
+
+    public static void planted(ServerPlayer player, BlockPos pos) {
+        if (VillageFields.plantAt(player.level(), pos) != null) {
+            VillageData.get(player.level().getServer()).setPlanted(pos, true);
+        }
+    }
+
+    public static void tookCrop(ServerPlayer player, BlockPos pos) {
+        VillageData data = VillageData.get(player.level().getServer());
+        if (data.isPlanted(pos)) {
+            data.setPlanted(pos, false);
+        } else {
+            crime(player, pos, AvaliReputation.Change.STEAL_CROP);
+        }
     }
 
     public static void crime(ServerPlayer player, BlockPos pos, AvaliReputation.Change change) {

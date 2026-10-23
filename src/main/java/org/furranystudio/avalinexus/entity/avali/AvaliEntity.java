@@ -2,7 +2,7 @@
  * File: AvaliEntity.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-10-22
+ * Last Modified: 2026-10-23
  */
 package org.furranystudio.avalinexus.entity.avali;
 
@@ -51,6 +51,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.OpenDoorGoal;
 import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.entity.decoration.Cushion;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
@@ -84,6 +85,7 @@ import org.furranystudio.avalinexus.entity.avali.expression.AvaliGesture;
 import org.furranystudio.avalinexus.entity.avali.expression.AvaliMood;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliCreeperGoal;
 import org.furranystudio.avalinexus.reputation.AvaliReputation;
+import org.furranystudio.avalinexus.reputation.VillageFields;
 import org.furranystudio.avalinexus.entity.avali.goal.CompanionFollowGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.CompanionGatherGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.CompanionHealerGoal;
@@ -92,6 +94,7 @@ import org.furranystudio.avalinexus.entity.avali.goal.CompanionWaitGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliCushionGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliEatGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliFleeGoal;
+import org.furranystudio.avalinexus.entity.avali.goal.AvaliFieldGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliGiveGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliHeatGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliHotBiomeGoal;
@@ -165,6 +168,8 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     private static final float WATER_MALUS = 16.0F;
     private static final float WATER_BORDER_MALUS = 8.0F;
     private static final float FIRE_NEIGHBOR_MALUS = 16.0F;
+    private static final float LEASH_HEIGHT = 24.0F / 31.0F;
+    private static final float LEASH_FORWARD = 0.15F;
     private static final Identifier CRIT_BONUS = AvaliNexus.id("crit_bonus");
     private static final AvaliGesture[] IDLE_GESTURES = Arrays.stream(AvaliGesture.values())
         .filter(AvaliGesture::playsWhenIdle).toArray(AvaliGesture[]::new);
@@ -234,6 +239,7 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         setPathfindingMalus(PathType.FIRE, -1.0F);
         setPathfindingMalus(PathType.FIRE_IN_NEIGHBOR, FIRE_NEIGHBOR_MALUS);
         setPathfindingMalus(PathType.POWDER_SNOW, 0.0F);
+        getNavigation().setCanOpenDoors(true);
         for (EquipmentSlot slot : EquipmentSlot.VALUES) {
             setGuaranteedDrop(slot);
         }
@@ -266,6 +272,7 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     protected void registerGoals() {
         goalSelector.addGoal(0, new FloatGoal(this));
         goalSelector.addGoal(1, new AvaliSwimGoal(this, 1.0));
+        goalSelector.addGoal(1, new OpenDoorGoal(this, true));
         goalSelector.addGoal(1, new AvaliTalkGoal(this));
         goalSelector.addGoal(1, new AvaliCreeperGoal(this));
         goalSelector.addGoal(2, new AvaliFleeGoal(this));
@@ -283,6 +290,7 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         goalSelector.addGoal(5, new AvaliPackGoal(this));
         goalSelector.addGoal(6, new AvaliShelterGoal(this));
         goalSelector.addGoal(6, new AvaliGiveGoal(this));
+        goalSelector.addGoal(6, new AvaliFieldGoal(this));
         goalSelector.addGoal(6, new AvaliPickupGoal(this));
         goalSelector.addGoal(7, new AvaliCushionGoal(this, 0.8));
         goalSelector.addGoal(7, new AvaliRestGoal(this));
@@ -618,7 +626,7 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         village = true;
         this.bed = bed;
         this.workshop = workshop;
-        if (workshop != null && shop != null) {
+        if (shop != null) {
             setProfession(shop);
         }
         joinCamp(level, plaza, pack, packId);
@@ -769,6 +777,11 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
                 && level().getEntity(parents.get(random.nextInt(parents.size()))) instanceof AvaliEntity parent
                 && settings.professions().contains(parent.getProfession())) {
             inherited = parent.getProfession();
+        }
+        String fieldJob = !parents.isEmpty() && village && camp != null ? VillageFields.job((ServerLevel) level(), camp) : null;
+        if (fieldJob != null && packMembers().stream().noneMatch(member -> member != this && !member.isBaby() && fieldJob.equals(member.getProfession()))) {
+            setProfession(fieldJob);
+            return;
         }
         setProfession(inherited.isEmpty() ? TradeData.randomProfession(server, random) : inherited);
     }
@@ -929,8 +942,17 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         return rank >= 0 && rank < count;
     }
 
+    @Override
+    public Vec3 getLeashOffset() {
+        return new Vec3(0.0, getBbHeight() * LEASH_HEIGHT, getBbWidth() * LEASH_FORWARD);
+    }
+
     public BlockPos getCamp() {
         return camp;
+    }
+
+    public boolean isVillager() {
+        return village;
     }
 
     public boolean isExplorer() {

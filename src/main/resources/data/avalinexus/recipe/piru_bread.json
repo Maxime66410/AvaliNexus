@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "FFF"
+  ],
+  "key": {
+    "F": "avalinexus:piru_flour"
+  },
+  "result": {
+    "id": "avalinexus:piru_bread"
+  }
+}

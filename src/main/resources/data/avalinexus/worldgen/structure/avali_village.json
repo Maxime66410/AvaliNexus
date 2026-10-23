@@ -41,6 +41,7 @@
     { "template": "avalinexus:village/workshop_armory", "machine": "avalinexus:weapon_workbench", "shop": "artisan_armory" },
     { "template": "avalinexus:village/workshop_weaving", "machine": "avalinexus:avali_loom", "shop": "artisan_weaving" }
   ],
+  "fields": { "template": "avalinexus:village/field_", "max": 2, "job": "gatherer" },
   "loot": [
     { "template": "avalinexus:village/plaza", "table": "avalinexus:chests/avali_village_house" },
     { "template": "avalinexus:village/house_", "table": "avalinexus:chests/avali_village_house" },

@@ -2,7 +2,7 @@
  * File: ServerPlayerGameModeMixin.java
  * Author: Maxime66410
  * Created: 2026-10-22
- * Last Modified: 2026-10-22
+ * Last Modified: 2026-10-23
  */
 package org.furranystudio.avalinexus.mixin;
 
@@ -32,9 +32,13 @@ public class ServerPlayerGameModeMixin {
     @Unique
     private boolean avalinexus$watched;
 
+    @Unique
+    private boolean avalinexus$crop;
+
     @Inject(method = "destroyBlock", at = @At("HEAD"))
     private void avalinexus$checkVillage(BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
         avalinexus$watched = VillageWatch.isVillageBlock(level, pos);
+        avalinexus$crop = VillageWatch.isFieldCrop(level, pos);
     }
 
     @Inject(method = "destroyBlock", at = @At("RETURN"))
@@ -42,6 +46,10 @@ public class ServerPlayerGameModeMixin {
         if (avalinexus$watched && cir.getReturnValueZ()) {
             VillageWatch.broke(player, pos);
         }
+        if (avalinexus$crop && cir.getReturnValueZ()) {
+            VillageWatch.tookCrop(player, pos);
+        }
         avalinexus$watched = false;
+        avalinexus$crop = false;
     }
 }
