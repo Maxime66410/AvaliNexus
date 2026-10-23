@@ -111,7 +111,7 @@ You need Gradle 9.7+ running on JDK 25.
 
 ## Contributing
 
-Want to help? Check [CONTRIBUTING.md](CONTRIBUTING.md) first. Translations are done on [Crowdin](https://crowdin.com/project/avalinexus). If you find a security issue, please follow [SECURITY.md](SECURITY.md) instead of opening a public issue. Everyone is expected to follow the [Code of Conduct](CODE_OF_CONDUCT.md).
+Want to help? Check [CONTRIBUTING.md](CONTRIBUTING.md) first. Translations are done on [Crowdin](https://crowdin.com/project/avalinexus). [![Crowdin](https://badges.crowdin.net/avalinexus/localized.svg)](https://crowdin.com/project/avalinexus) If you find a security issue, please follow [SECURITY.md](SECURITY.md) instead of opening a public issue. Everyone is expected to follow the [Code of Conduct](CODE_OF_CONDUCT.md).
 
 ## Credits
 
