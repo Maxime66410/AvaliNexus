@@ -51,6 +51,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.OpenDoorGoal;
 import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.entity.decoration.Cushion;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
@@ -236,6 +237,7 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         setPathfindingMalus(PathType.FIRE, -1.0F);
         setPathfindingMalus(PathType.FIRE_IN_NEIGHBOR, FIRE_NEIGHBOR_MALUS);
         setPathfindingMalus(PathType.POWDER_SNOW, 0.0F);
+        getNavigation().setCanOpenDoors(true);
         for (EquipmentSlot slot : EquipmentSlot.VALUES) {
             setGuaranteedDrop(slot);
         }
@@ -268,6 +270,7 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     protected void registerGoals() {
         goalSelector.addGoal(0, new FloatGoal(this));
         goalSelector.addGoal(1, new AvaliSwimGoal(this, 1.0));
+        goalSelector.addGoal(1, new OpenDoorGoal(this, true));
         goalSelector.addGoal(1, new AvaliTalkGoal(this));
         goalSelector.addGoal(1, new AvaliCreeperGoal(this));
         goalSelector.addGoal(2, new AvaliFleeGoal(this));
