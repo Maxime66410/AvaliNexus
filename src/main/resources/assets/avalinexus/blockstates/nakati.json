@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "age=0": {
+      "model": "avalinexus:block/nakati_stage0"
+    },
+    "age=1": {
+      "model": "avalinexus:block/nakati_stage1"
+    },
+    "age=2": {
+      "model": "avalinexus:block/nakati_stage2"
+    },
+    "age=3": {
+      "model": "avalinexus:block/nakati_stage3"
+    }
+  }
+}

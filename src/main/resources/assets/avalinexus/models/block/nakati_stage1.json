@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "avalinexus:block/nakati/nakati_stage1"
+  }
+}

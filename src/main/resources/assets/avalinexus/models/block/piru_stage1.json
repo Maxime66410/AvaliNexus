@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "avalinexus:block/piru/piru_stage1"
+  }
+}
