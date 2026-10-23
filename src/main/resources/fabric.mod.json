@@ -7,11 +7,19 @@
   "authors": [
     "${mod_authors}"
   ],
+  "contributors": [
+    "AikaDee (Avali Latin font)",
+    "RyuujinZERO (creator of the Avali)",
+    "The Official Avali Wiki (lore)",
+    "Cynadyde (CPM Avali Model)"
+  ],
   "contact": {
-    "homepage": "https://furranystudio.fr"
+    "homepage": "https://furranystudio.fr",
+    "sources": "https://github.com/Maxime66410/AvaliNexus",
+    "issues": "https://github.com/Maxime66410/AvaliNexus/issues"
   },
   "license": "${mod_license}",
-  "icon": "assets/avalinexus/img/AN-Icon.png",
+  "icon": "assets/avalinexus/img/an-icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [
