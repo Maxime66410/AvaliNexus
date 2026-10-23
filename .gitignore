@@ -55,6 +55,7 @@ hs_err_pid*
 
 # Icon must end with two \r
 Icon
+!art/Textures/Sprite/Icon/
 
 # Thumbnails
 ._*

@@ -1,0 +1,111 @@
+/**
+ * File: AvaliNexusForgeClient.java
+ * Author: Maxime66410
+ * Created: 2026-10-23
+ * Last Modified: 2026-10-23
+ */
+package org.furranystudio.avalinexus.forge;
+
+import net.minecraft.client.KeyMapping;
+import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.client.renderer.entity.ThrownItemRenderer;
+import net.minecraftforge.client.ConfigScreenHandler;
+import net.minecraftforge.client.event.AddGuiOverlayLayersEvent;
+import net.minecraftforge.client.event.ComputeFovModifierEvent;
+import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.client.event.InputEvent;
+import net.minecraftforge.client.event.ModelEvent;
+import net.minecraftforge.client.event.RegisterColorHandlersEvent;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import org.furranystudio.avalinexus.AvaliNexus;
+import org.furranystudio.avalinexus.block.ModBlockEntities;
+import org.furranystudio.avalinexus.client.AvaliNexusClient;
+import org.furranystudio.avalinexus.client.ModKeyCategory;
+import org.furranystudio.avalinexus.client.avali.AvaliRenderer;
+import org.furranystudio.avalinexus.client.block.ModBlockTints;
+import org.furranystudio.avalinexus.client.cushion.AvaliCushionRenderer;
+import org.furranystudio.avalinexus.client.dialogue.ClientDialogue;
+import org.furranystudio.avalinexus.client.dialogue.DialogueHud;
+import org.furranystudio.avalinexus.client.dialogue.DialogueKeys;
+import org.furranystudio.avalinexus.client.fluid.AvaliFluidModels;
+import org.furranystudio.avalinexus.client.heater.HeaterScreen;
+import org.furranystudio.avalinexus.client.loom.AvaliLoomScreen;
+import org.furranystudio.avalinexus.client.machine.AmmoniaRefineryScreen;
+import org.furranystudio.avalinexus.client.machine.CryoFreezerScreen;
+import org.furranystudio.avalinexus.client.machine.GraphenePressScreen;
+import org.furranystudio.avalinexus.client.machine.WeaponWorkbenchScreen;
+import org.furranystudio.avalinexus.client.reputation.ReputationClient;
+import org.furranystudio.avalinexus.client.settings.AvaliSettingsScreen;
+import org.furranystudio.avalinexus.client.tank.GrapheneTankRenderer;
+import org.furranystudio.avalinexus.client.tapestry.AvaliTapestryRenderer;
+import org.furranystudio.avalinexus.client.weapon.NexiteQuillRenderer;
+import org.furranystudio.avalinexus.client.weapon.RailGunClient;
+import org.furranystudio.avalinexus.client.weapon.RailGunHud;
+import org.furranystudio.avalinexus.entity.ModEntities;
+import org.furranystudio.avalinexus.fluid.AvaliFluidKind;
+import org.furranystudio.avalinexus.fluid.ModFluids;
+import org.furranystudio.avalinexus.inventory.ModMenus;
+
+import java.util.function.Predicate;
+
+public final class AvaliNexusForgeClient {
+
+    private AvaliNexusForgeClient() {
+    }
+
+    public static void init(FMLJavaModLoadingContext context) {
+        AvaliNexusClient.init();
+        ModelEvent.BakeFluidModels.BUS.addListener(event -> {
+            for (AvaliFluidKind kind : AvaliFluidKind.values()) {
+                var model = AvaliFluidModels.model(kind).bake(event.materials(), () -> AvaliNexus.id(kind.fluidName()).toString());
+                event.register(ModFluids.source(kind), model);
+                event.register(ModFluids.flowing(kind), model);
+            }
+        });
+        context.registerExtensionPoint(ConfigScreenHandler.ConfigScreenFactory.class,
+            () -> new ConfigScreenHandler.ConfigScreenFactory(AvaliSettingsScreen::new));
+        FMLClientSetupEvent.getBus(context.getModBusGroup()).addListener(event ->
+            event.enqueueWork(() -> {
+                MenuScreens.register(ModMenus.HEATER.get(), HeaterScreen::new);
+                MenuScreens.register(ModMenus.AVALI_LOOM.get(), AvaliLoomScreen::new);
+                MenuScreens.register(ModMenus.AMMONIA_REFINERY.get(), AmmoniaRefineryScreen::new);
+                MenuScreens.register(ModMenus.CRYO_FREEZER.get(), CryoFreezerScreen::new);
+                MenuScreens.register(ModMenus.GRAPHENE_PRESS.get(), GraphenePressScreen::new);
+                MenuScreens.register(ModMenus.WEAPON_WORKBENCH.get(), WeaponWorkbenchScreen::new);
+            }));
+        AddGuiOverlayLayersEvent.BUS.addListener(event -> event.getLayeredDraw().add(AvaliNexus.id("dialogue"), DialogueHud::render));
+        RegisterKeyMappingsEvent.BUS.addListener(event -> {
+            KeyMapping.Category.register(ModKeyCategory.AVALI_NEXUS.id());
+            event.register(DialogueKeys.CURSOR);
+            event.register(RailGunClient.RELOAD);
+            event.register(ReputationClient.OPEN);
+        });
+        AddGuiOverlayLayersEvent.BUS.addListener(event -> event.getLayeredDraw().add(AvaliNexus.id("rail_gun"), RailGunHud::render));
+        TickEvent.ClientTickEvent.Pre.BUS.addListener(event -> RailGunClient.tick());
+        TickEvent.ClientTickEvent.Pre.BUS.addListener(event -> ReputationClient.tick());
+        InputEvent.InteractionKeyMappingTriggered.Attack.BUS.addListener((Predicate<InputEvent.InteractionKeyMappingTriggered.Attack>) event -> {
+            if (RailGunClient.blocksAttack()) {
+                event.setSwingHand(false);
+                return true;
+            }
+            return false;
+        });
+        ComputeFovModifierEvent.BUS.addListener(event ->
+            event.setNewFovModifier(RailGunClient.fovModifier(event.getPlayer(), event.getNewFovModifier())));
+        RegisterColorHandlersEvent.Block.BUS.addListener(event -> ModBlockTints.register(event::register));
+        TickEvent.ClientTickEvent.Pre.BUS.addListener(event -> ClientDialogue.tick());
+        InputEvent.MouseScrollingEvent.BUS.addListener((Predicate<InputEvent.MouseScrollingEvent>) event ->
+            ClientDialogue.onScroll(event.getDeltaY()));
+        EntityRenderersEvent.RegisterRenderers.BUS.addListener(event -> {
+            event.registerEntityRenderer(ModEntities.AVALI.get(), AvaliRenderer::new);
+            event.registerEntityRenderer(ModEntities.AVALI_CUSHION.get(), AvaliCushionRenderer::new);
+            event.registerEntityRenderer(ModEntities.AVALI_TAPESTRY.get(), AvaliTapestryRenderer::new);
+            event.registerEntityRenderer(ModEntities.NEXITE_QUILL.get(), NexiteQuillRenderer::new);
+            event.registerEntityRenderer(ModEntities.AVALI_EGG.get(), ThrownItemRenderer::new);
+            event.registerBlockEntityRenderer(ModBlockEntities.GRAPHENE_TANK.get(), GrapheneTankRenderer::new);
+        });
+    }
+}

@@ -71,7 +71,7 @@ Saved in `config/avalinexus.json`.
 - Minecraft 26.3
 - Forge 66.1.0
 - NeoForge 26.3.0.95
-- Fabric Loader 0.19.5 / Fabric API 0.164.0+26.3
+- Fabric Loader 0.20.1 / Fabric API 0.165.0+26.3
 - GeckoLib 5.5.7 (models and animations), needs to be installed with the mod
 - TerraBlender 26.3.0.0.9 (adds the polar biome to the overworld), needs to be installed with the mod too
 - Mod Menu 21.0.0 on Fabric is optional, it just adds the config button to the mod list
@@ -111,7 +111,7 @@ You need Gradle 9.7+ running on JDK 25.
 
 ## Contributing
 
-Want to help? Check [CONTRIBUTING.md](CONTRIBUTING.md) first. Translations are done on [Crowdin](https://crowdin.com/project/avalinexus). If you find a security issue, please follow [SECURITY.md](SECURITY.md) instead of opening a public issue. Everyone is expected to follow the [Code of Conduct](CODE_OF_CONDUCT.md).
+Want to help? Check [CONTRIBUTING.md](CONTRIBUTING.md) first. Translations are done on [Crowdin](https://crowdin.com/project/avalinexus). [![Crowdin](https://badges.crowdin.net/avalinexus/localized.svg)](https://crowdin.com/project/avalinexus) If you find a security issue, please follow [SECURITY.md](SECURITY.md) instead of opening a public issue. Everyone is expected to follow the [Code of Conduct](CODE_OF_CONDUCT.md).
 
 ## Credits
 
