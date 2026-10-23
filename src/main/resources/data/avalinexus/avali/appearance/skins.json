@@ -5,6 +5,11 @@
       "name": "original",
       "texture": "avalinexus:textures/entity/avali/rare/original.png",
       "chance": 0.05
+    },
+	{
+      "name": "eitami",
+      "texture": "avalinexus:textures/entity/avali/rare/eitami.png",
+      "chance": 0.05
     }
   ]
 }
