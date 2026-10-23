@@ -27,12 +27,14 @@ Nomad camps with tents out in the snow, and bigger Avali villages with houses, w
 **Trading**
 Each Avali has a shop based on its job (fisher, hunter, mechanic...) or its workshop. The offers change over time, and the better your reputation the more you unlock.
 
+**Avalon plants**
+Piru, Nakati and Kiri, the plants from the Avali lore. You find them in the wild on snow and ice (the Nakati even glows in frozen caves), grow them without any light, and cook Avali food with them, like the spiced stew that keeps you warm for a while. Villages have their own fields, looked after by their gatherers, so don't go picking from them while they're watching.
+
 **Lore**
 The terminal opens the Avali archives, with entries about their history, biology and the stuff in the mod.
 
 ## What's planned
 
-- **Avalon plants**: Piru, Nakati and Kiri, the plants from the Avali lore. You'll find them in the wild, grow them on snow and ice, and cook Avali food with them. Avali villages will get their own fields too.
 - **Quests**: FTB Quests support, but that's for way later.
 
 ## Customization
@@ -114,7 +116,7 @@ Want to help? Check [CONTRIBUTING.md](CONTRIBUTING.md) first. Translations are d
 ## Credits
 
 - The **Avali Latin** font used in the dialogue UI is made by **AikaDee** on [FontStruct](https://fontstruct.com/fontstructions/show/2855105/avali-scratch-28), under the [Creative Commons Attribution Share Alike 3.0](http://creativecommons.org/licenses/by-sa/3.0/) license.
-- The lore entries of the terminal archives are rewritten from [The Official Avali Wiki](https://avali.fandom.com/wiki/The_Official_Avali_Wiki), whose content is under the [Creative Commons Attribution Share Alike](https://www.fandom.com/licensing) license. The Avali were created by **RyuujinZERO**.
+- The lore entries of the terminal archives are based on [The Official Avali Wiki](https://avali.fandom.com/wiki/The_Official_Avali_Wiki), whose content is under the [Creative Commons Attribution Share Alike](https://www.fandom.com/licensing) license. The Avali were created by **RyuujinZERO**.
 - The Avali player model used for the Avali NPCs comes from the [CPM Avali Model](https://github.com/Cynadyde/CpmAvaliModel) made by [**Cynadyde**](https://github.com/Cynadyde).
 
 ## License
