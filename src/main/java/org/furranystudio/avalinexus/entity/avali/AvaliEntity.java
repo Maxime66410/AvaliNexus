@@ -168,6 +168,8 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     private static final float WATER_MALUS = 16.0F;
     private static final float WATER_BORDER_MALUS = 8.0F;
     private static final float FIRE_NEIGHBOR_MALUS = 16.0F;
+    private static final float LEASH_HEIGHT = 24.0F / 31.0F;
+    private static final float LEASH_FORWARD = 0.15F;
     private static final Identifier CRIT_BONUS = AvaliNexus.id("crit_bonus");
     private static final AvaliGesture[] IDLE_GESTURES = Arrays.stream(AvaliGesture.values())
         .filter(AvaliGesture::playsWhenIdle).toArray(AvaliGesture[]::new);
@@ -938,6 +940,11 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
             .map(Entity::getUUID).sorted().toList();
         int rank = adults.indexOf(getUUID());
         return rank >= 0 && rank < count;
+    }
+
+    @Override
+    public Vec3 getLeashOffset() {
+        return new Vec3(0.0, getBbHeight() * LEASH_HEIGHT, getBbWidth() * LEASH_FORWARD);
     }
 
     public BlockPos getCamp() {
