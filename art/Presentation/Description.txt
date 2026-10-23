@@ -1,0 +1,53 @@
+![Avali Nexus Logo Mod Title](https://cdn.modrinth.com/data/cached_images/1518d5f0c12649c317d6e8e56601f291aa74b68e.png)
+
+Avali Nexus adds the **Avali** to **Minecraft**, the nomadic space **chickens** with all there tech. You'll explore their frozen biome, find their **camps and villages**, and get your hands on some of their gear to survive the cold.
+
+> ⚠️ **Heads up birds !** the mod is still in active dev, things can change or break between versions. Backup your worlds.
+
+## The Avali
+
+Avalis live in **packs**, each one has its own name, look and mood. When you talk to one you get a small **dialogue overlay** _(Like CP77)_ on the side of the screen, not a big menu covering everything.
+
+They fight, run away when it goes bad, sleep, play music together, and even form couples and have babies. You can recruit some of them as **companions** too _(fighter, gatherer or healer)_.
+
+Each pack remembers what you did to them. Trade with them and help them out and they'll like you more, hit them or steal from them and it's the opposite, they can even end up **attacking you on sight**.
+
+## Camps and villages
+
+**Nomad camps** are small, just a few tents in the snow. **Villages** are way bigger with houses, workshops, fields and archives. Every Avali has a **job** and sells different stuff depending on it, and you unlock **better trades** with more 
+reputation. Stealing from their chests or fields when one of them is looking is a bad idea.
+
+## The polar taiga
+
+A really cold **biome**, kind of like a snowy taiga but way more extreme, with alot of snow and **blizzards**. Without **warm gear** you slowly freeze out there. The caves under it are frozen too and there's lakes of **ammonia**.
+
+The **Avalon plants** grow there as well _(Piru, Nakati and Kiri)_. They don't need any light to grow and you can cook Avali food with them, the **spiced stew** keeps you warm for 3 minutes.
+
+## Gear, blocks and machines
+
+- **Nexite** tools and armor, between diamond and netherite _(there's even horse armor)_
+- **Aerotech blades** and **rail guns** _(pistol, carbine, assault rifle, shotgun, sniper)_ that shoot **Nexite quills** from magazines
+- Lots of **building blocks**: graphene, aerogel glass in every color, nanocanvas, ice bricks, lamps, curtains, tapestries...
+- **Ammonia, coolant and fuel** that you move with **graphene pipes and pumps**, plus the machines that use them _(refinery, cryo freezer, graphene press, weapon workbench)_ and a heater
+
+There's also a terminal with the Avali archives if you want to read about their lore.
+
+## Requirements
+
+| Loader | Needs |
+|---|---|
+| Forge | GeckoLib, TerraBlender |
+| NeoForge | GeckoLib, TerraBlender |
+| Fabric | Fabric API, GeckoLib, TerraBlender, _Mod Menu is optional_ |
+
+Most of the **Avali behavior** is in **JSON files** so you can change it with a **datapack**, then use `/avalinexus reload`.
+
+## Links
+
+Translations are on [Crowdin](https://crowdin.com/project/avalinexus), bugs and ideas go on [GitHub](https://github.com/Maxime66410/AvaliNexus/issues).
+
+## Credits
+
+- The Avali were created by **RyuujinZERO**, the lore in the mod is based on [The Official Avali Wiki](https://avali.fandom.com/wiki/The_Official_Avali_Wiki) (CC BY-SA)
+- Avali model from the [CPM Avali Model](https://github.com/Cynadyde/CpmAvaliModel) by **Cynadyde**
+- **Avali Latin** font by **AikaDee** on [FontStruct](https://fontstruct.com/fontstructions/show/2855105/avali-scratch-28) (CC BY-SA 3.0)
