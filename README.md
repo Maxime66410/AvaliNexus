@@ -35,7 +35,19 @@ The terminal opens the Avali archives, with entries about their history, biology
 
 ## What's planned
 
+### v1.1.0
+
+- **Avali colors**: Avalis get 3 colors instead of one (body, patterns and feathers).
+- **JEI, REI and Jade**: see the machine recipes in JEI or REI Supports, and info on blocks and Avalis with Jade (NeoForge and Fabric only).
+- **Cold settings**: a setting to make the cold freeze you faster or slower.
+- **New logo**: a new pixel art logo that fits better with Minecraft.
+- **New rare skins**: more rare skins for the Avalis.
+- **Optimization**: a general pass on the code to make the mod lighter and smoother.
+
+### Later
+
 - **Quests**: FTB Quests support, but that's for way later.
+- **EMI**: EMI support, once it's out for 26.3.
 
 ## Customization
 
