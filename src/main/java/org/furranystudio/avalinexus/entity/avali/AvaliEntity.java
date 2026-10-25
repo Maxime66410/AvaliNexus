@@ -2,7 +2,7 @@
  * File: AvaliEntity.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-10-23
+ * Last Modified: 2026-10-25
  */
 package org.furranystudio.avalinexus.entity.avali;
 
@@ -180,7 +180,9 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     private static final EntityDataAccessor<Boolean> DATA_NAP = SynchedEntityData.defineId(AvaliEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<String> DATA_PACK = SynchedEntityData.defineId(AvaliEntity.class, EntityDataSerializers.STRING);
     private static final EntityDataAccessor<Boolean> DATA_FEMALE = SynchedEntityData.defineId(AvaliEntity.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Integer> DATA_TINT = SynchedEntityData.defineId(AvaliEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> DATA_BASE_COLOR = SynchedEntityData.defineId(AvaliEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> DATA_PATTERN_COLOR = SynchedEntityData.defineId(AvaliEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> DATA_FEATHERS_COLOR = SynchedEntityData.defineId(AvaliEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<String> DATA_SKIN = SynchedEntityData.defineId(AvaliEntity.class, EntityDataSerializers.STRING);
     private static final EntityDataAccessor<String> DATA_PROFESSION = SynchedEntityData.defineId(AvaliEntity.class, EntityDataSerializers.STRING);
     private static final EntityDataAccessor<Integer> DATA_DIALOGUE_FACE = SynchedEntityData.defineId(AvaliEntity.class, EntityDataSerializers.INT);
@@ -203,6 +205,7 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     private boolean justLoaded;
     private boolean named;
     private boolean styled;
+    private boolean layered;
     private boolean panicking;
     private boolean dodging;
     private boolean wasBaby;
@@ -311,7 +314,9 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         builder.define(DATA_DIALOGUE_FACE, -1);
         builder.define(DATA_PACK, "");
         builder.define(DATA_FEMALE, false);
-        builder.define(DATA_TINT, 0xFFFFFF);
+        builder.define(DATA_BASE_COLOR, 0xFFFFFF);
+        builder.define(DATA_PATTERN_COLOR, 0xFFFFFF);
+        builder.define(DATA_FEATHERS_COLOR, 0xFFFFFF);
         builder.define(DATA_SKIN, "");
         builder.define(DATA_PROFESSION, "");
         builder.define(DATA_OWNER, "");
@@ -484,8 +489,11 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         output.putString("avalinexus_pack", getPack());
         output.putBoolean("avalinexus_named", named);
         output.putBoolean("avalinexus_styled", styled);
+        output.putBoolean("avalinexus_layers", layered);
         output.putBoolean("avalinexus_female", isFemale());
-        output.putInt("avalinexus_tint", getTint());
+        output.putInt("avalinexus_tint", entityData.get(DATA_BASE_COLOR));
+        output.putInt("avalinexus_pattern_color", entityData.get(DATA_PATTERN_COLOR));
+        output.putInt("avalinexus_feathers_color", entityData.get(DATA_FEATHERS_COLOR));
         output.putString("avalinexus_skin", getSkin());
         output.putString("avalinexus_profession", getProfession());
         output.storeNullable("avalinexus_pack_id", UUIDUtil.CODEC, packId);
@@ -513,8 +521,11 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         setPack(input.getStringOr("avalinexus_pack", ""));
         named = input.getBooleanOr("avalinexus_named", false);
         styled = input.getBooleanOr("avalinexus_styled", false);
+        layered = input.getBooleanOr("avalinexus_layers", false);
         entityData.set(DATA_FEMALE, input.getBooleanOr("avalinexus_female", false));
-        entityData.set(DATA_TINT, input.getIntOr("avalinexus_tint", 0xFFFFFF));
+        entityData.set(DATA_BASE_COLOR, input.getIntOr("avalinexus_tint", 0xFFFFFF));
+        entityData.set(DATA_PATTERN_COLOR, input.getIntOr("avalinexus_pattern_color", 0xFFFFFF));
+        entityData.set(DATA_FEATHERS_COLOR, input.getIntOr("avalinexus_feathers_color", 0xFFFFFF));
         entityData.set(DATA_SKIN, input.getStringOr("avalinexus_skin", ""));
         entityData.set(DATA_PROFESSION, input.getStringOr("avalinexus_profession", ""));
         packId = input.read("avalinexus_pack_id", UUIDUtil.CODEC).orElse(null);
@@ -708,15 +719,27 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     private void giveLooks(net.minecraft.server.MinecraftServer server) {
         styled = true;
         entityData.set(DATA_FEMALE, AvaliAppearance.rollFemale(server, getRandom()));
-        entityData.set(DATA_TINT, AvaliAppearance.rollColor(server, getPack(), getRandom()));
+        setColors(AvaliAppearance.rollColors(server, getPack(), getRandom()));
         entityData.set(DATA_SKIN, AvaliAppearance.rollRare(server, getRandom()));
+    }
+
+    private void giveLayers(net.minecraft.server.MinecraftServer server) {
+        AvaliAppearance.Colors rolled = AvaliAppearance.rollColors(server, getPack(), getRandom());
+        setColors(new AvaliAppearance.Colors(getColors().base(), rolled.pattern(), rolled.feathers()));
+    }
+
+    private void setColors(AvaliAppearance.Colors colors) {
+        layered = true;
+        entityData.set(DATA_BASE_COLOR, colors.base());
+        entityData.set(DATA_PATTERN_COLOR, colors.pattern());
+        entityData.set(DATA_FEATHERS_COLOR, colors.feathers());
     }
 
     private void inheritLooks(AvaliEntity mother, AvaliEntity father) {
         net.minecraft.server.MinecraftServer server = level().getServer();
         styled = true;
         entityData.set(DATA_FEMALE, AvaliAppearance.rollFemale(server, getRandom()));
-        entityData.set(DATA_TINT, AvaliAppearance.mixColor(server, mother.getTint(), father.getTint(), getRandom()));
+        setColors(AvaliAppearance.mixColors(server, mother.getColors(), father.getColors(), getRandom()));
         List<String> rares = new ArrayList<>();
         for (AvaliEntity parent : List.of(mother, father)) {
             if (!parent.getSkin().isEmpty()) {
@@ -731,8 +754,8 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         return entityData.get(DATA_FEMALE);
     }
 
-    public int getTint() {
-        return entityData.get(DATA_TINT);
+    public AvaliAppearance.Colors getColors() {
+        return new AvaliAppearance.Colors(entityData.get(DATA_BASE_COLOR), entityData.get(DATA_PATTERN_COLOR), entityData.get(DATA_FEATHERS_COLOR));
     }
 
     public String getSkin() {
@@ -842,6 +865,8 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
             }
             if (!styled) {
                 giveLooks(level().getServer());
+            } else if (!layered) {
+                giveLayers(level().getServer());
             }
             if (--packCheck <= 0) {
                 packCheck = PACK_CHECK_INTERVAL;

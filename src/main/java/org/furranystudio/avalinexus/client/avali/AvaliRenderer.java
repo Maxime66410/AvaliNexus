@@ -2,7 +2,7 @@
  * File: AvaliRenderer.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-10-18
+ * Last Modified: 2026-10-25
  */
 package org.furranystudio.avalinexus.client.avali;
 
@@ -68,8 +68,10 @@ public class AvaliRenderer<R extends LivingEntityRenderState & GeoRenderState> e
     public AvaliRenderer(EntityRendererProvider.Context context) {
         super(context, new AvaliModel());
         withScale(SCALE);
-        withRenderLayer(new AvaliOverlayLayer<>(this, AvaliLooks.PATTERN, AvaliLooks::pattern, true, 1));
-        withRenderLayer(new AvaliOverlayLayer<>(this, AvaliLooks.FIXED, AvaliLooks::fixed, false, 2));
+        withRenderLayer(new AvaliOverlayLayer<>(this, AvaliLooks.COMMON_PATTERN, AvaliLooks::commonPattern, 1));
+        withRenderLayer(new AvaliOverlayLayer<>(this, AvaliLooks.PATTERN, AvaliLooks::pattern, 2));
+        withRenderLayer(new AvaliOverlayLayer<>(this, AvaliLooks.FEATHERS, AvaliLooks::feathers, 3));
+        withRenderLayer(new AvaliOverlayLayer<>(this, AvaliLooks.FIXED, AvaliLooks::fixed, 4));
         withRenderLayer(new AvaliArmorLayer<>(this, context.getEquipmentAssets()));
         withRenderLayer(new AvaliItemLayer<>(context, this));
     }
@@ -99,7 +101,7 @@ public class AvaliRenderer<R extends LivingEntityRenderState & GeoRenderState> e
     @Override
     public int getRenderColor(AvaliEntity avali, Void relatedObject, float partialTick) {
         int color = super.getRenderColor(avali, relatedObject, partialTick);
-        return AvaliLooks.tinted(avali) ? ARGB.multiply(color, ARGB.opaque(avali.getTint())) : color;
+        return AvaliLooks.tinted(avali) ? ARGB.multiply(color, ARGB.opaque(avali.getColors().base())) : color;
     }
 
     @Override
