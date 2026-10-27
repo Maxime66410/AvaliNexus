@@ -2,7 +2,7 @@
  * File: CryoFreezerBlockEntity.java
  * Author: Maxime66410
  * Created: 2026-10-15
- * Last Modified: 2026-10-15
+ * Last Modified: 2026-10-27
  */
 package org.furranystudio.avalinexus.block.freezer;
 
@@ -127,13 +127,15 @@ public class CryoFreezerBlockEntity extends MachineBlockEntity {
             if (progress >= DURATION) {
                 progress = 0;
                 finish(result);
+                logFinished(pos, state);
             }
             setChanged();
         } else if (progress != 0) {
             progress = 0;
             setChanged();
         }
-        setLit(level, pos, state, running);
+        setLit(level, pos, state, running, () -> result.isEmpty() ? "nothing to freeze"
+            : coolant.amount() < COOLANT_COST ? "not enough coolant" : "output full");
     }
 
     private ItemStack result() {

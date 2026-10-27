@@ -2,7 +2,7 @@
  * File: AvaliCompanions.java
  * Author: Maxime66410
  * Created: 2026-10-19
- * Last Modified: 2026-10-19
+ * Last Modified: 2026-10-27
  */
 package org.furranystudio.avalinexus.entity.avali;
 
@@ -50,6 +50,7 @@ public final class AvaliCompanions {
         if (manager != loadedFrom) {
             loadedFrom = manager;
             data = load(manager);
+            AvaliNexus.debug("Loaded the Avali companion settings");
         }
         return data;
     }

@@ -2,7 +2,7 @@
  * File: BondData.java
  * Author: Maxime66410
  * Created: 2026-10-20
- * Last Modified: 2026-10-20
+ * Last Modified: 2026-10-27
  */
 package org.furranystudio.avalinexus.entity.avali;
 
@@ -55,6 +55,7 @@ public class BondData extends SavedData {
         bonds.put(first.getUUID(), new Bond(second.getUUID(), second.getName().getString()));
         bonds.put(second.getUUID(), new Bond(first.getUUID(), first.getName().getString()));
         setDirty();
+        AvaliNexus.debug("{}: forms a couple with {}", first.debugName(), second.getName().getString());
     }
 
     public void remove(UUID avali) {

@@ -2,7 +2,7 @@
  * File: AmmoniaRefineryBlockEntity.java
  * Author: Maxime66410
  * Created: 2026-10-15
- * Last Modified: 2026-10-15
+ * Last Modified: 2026-10-27
  */
 package org.furranystudio.avalinexus.block.refinery;
 
@@ -124,13 +124,16 @@ public class AmmoniaRefineryBlockEntity extends MachineBlockEntity {
                 ingredient.shrink(1);
                 output.fill(product, produced, false);
                 level.playSound(null, pos, ModSounds.REFINERY_DONE.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
+                logFinished(pos, state);
             }
             setChanged();
         } else if (progress != 0) {
             progress = 0;
             setChanged();
         }
-        setLit(level, pos, state, running);
+        setLit(level, pos, state, running, () -> product == null ? "no ingredient"
+            : ammonia.amount() < AvaliLiquids.BUCKET ? "not enough ammonia"
+            : !hasHeat() ? "no heat" : "output full");
     }
 
     private void swap(int slot, MachineTank tank) {

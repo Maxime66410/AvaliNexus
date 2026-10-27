@@ -2,7 +2,7 @@
  * File: WeaponWorkbenchBlockEntity.java
  * Author: Maxime66410
  * Created: 2026-10-16
- * Last Modified: 2026-10-16
+ * Last Modified: 2026-10-27
  */
 package org.furranystudio.avalinexus.block.workbench;
 
@@ -126,13 +126,15 @@ public class WeaponWorkbenchBlockEntity extends MachineBlockEntity {
             if (progress >= recipe.duration()) {
                 progress = 0;
                 finish(recipe);
+                logFinished(pos, state);
             }
             setChanged();
         } else if (progress != 0) {
             progress = 0;
             setChanged();
         }
-        setLit(level, pos, state, running);
+        setLit(level, pos, state, running, () -> recipe == null ? "no weapon selected"
+            : fuel.amount() < recipe.fuel() ? "not enough fuel" : !hasCosts(recipe) ? "missing materials" : "output full");
     }
 
     private boolean hasCosts(WeaponRecipe recipe) {

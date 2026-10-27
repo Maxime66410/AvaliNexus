@@ -2,7 +2,7 @@
  * File: AvaliCampStructure.java
  * Author: Maxime66410
  * Created: 2026-10-20
- * Last Modified: 2026-10-22
+ * Last Modified: 2026-10-27
  */
 package org.furranystudio.avalinexus.worldgen.structure;
 
@@ -38,6 +38,7 @@ import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import net.minecraft.world.level.levelgen.structure.pools.alias.PoolAliasLookup;
 import net.minecraft.world.level.levelgen.structure.structures.JigsawStructure;
 import net.minecraft.world.level.storage.loot.LootTable;
+import org.furranystudio.avalinexus.AvaliNexus;
 import org.furranystudio.avalinexus.entity.avali.AvaliAppearance;
 import org.furranystudio.avalinexus.entity.avali.AvaliNames;
 import org.furranystudio.avalinexus.worldgen.ModStructures;
@@ -185,6 +186,9 @@ public class AvaliCampStructure extends Structure {
         MinecraftServer server = level.getServer();
         String pack = AvaliNames.pack(server, RandomSource.create(level.getSeed() ^ anchor.asLong()));
         UUID packId = new UUID(level.getSeed() ^ CAMP_SALT, anchor.asLong());
+        if (chunkBox.isInside(anchor)) {
+            AvaliNexus.debug("Generated an Avali camp of the {} pack at {}", pack, anchor.toShortString());
+        }
         DyeColor dye = AvaliSettlements.closestDye(AvaliAppearance.packColor(server, pack));
         AvaliSettlements.recolorTapestries(level.getChunk(chunkPos.x(), chunkPos.z()), list, dye);
 

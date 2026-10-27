@@ -2,7 +2,7 @@
  * File: AvaliReputation.java
  * Author: Maxime66410
  * Created: 2026-10-19
- * Last Modified: 2026-10-23
+ * Last Modified: 2026-10-27
  */
 package org.furranystudio.avalinexus.reputation;
 
@@ -86,6 +86,7 @@ public final class AvaliReputation {
         if (manager != loadedFrom) {
             loadedFrom = manager;
             data = load(manager);
+            AvaliNexus.debug("Loaded the reputation settings");
         }
         return data;
     }
@@ -142,15 +143,15 @@ public final class AvaliReputation {
             amount = Math.min(amount, Math.max(0, config.tradeCap() - trade));
             trade += amount;
         }
-        apply(player, pack, standing.value() + amount, day, gift, trade);
+        apply(player, pack, standing.value() + amount, day, gift, trade, change.name().toLowerCase());
     }
 
     public static void set(ServerPlayer player, String pack, int value) {
         ReputationData.Standing standing = standing(player, pack);
-        apply(player, pack, value, standing.capDay(), standing.giftGained(), standing.tradeGained());
+        apply(player, pack, value, standing.capDay(), standing.giftGained(), standing.tradeGained(), "command");
     }
 
-    private static void apply(ServerPlayer player, String pack, int value, long capDay, int gift, int trade) {
+    private static void apply(ServerPlayer player, String pack, int value, long capDay, int gift, int trade, String cause) {
         Data config = get(player.level().getServer());
         ReputationData.Standing standing = standing(player, pack);
         int clamped = Mth.clamp(value, config.min(), config.max());
@@ -158,6 +159,7 @@ public final class AvaliReputation {
         ReputationData.get(player.level().getServer()).set(player.getUUID(), pack,
             new ReputationData.Standing(clamped, true, Math.max(standing.decayDay(), day(player)), capDay, gift, trade));
         ReputationTier after = config.tier(clamped);
+        AvaliNexus.debug("Reputation of {} with {}: {} -> {} ({})", player.getName().getString(), pack, standing.value(), clamped, cause);
         if (before != after) {
             player.sendSystemMessage(Component.translatable("avalinexus.reputation.changed",
                 Component.translatable("avalinexus.pack." + pack), after.label().copy().withColor(after.color())), true);

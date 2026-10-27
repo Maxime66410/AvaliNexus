@@ -2,7 +2,7 @@
  * File: AvaliNames.java
  * Author: Maxime66410
  * Created: 2026-09-28
- * Last Modified: 2026-10-19
+ * Last Modified: 2026-10-27
  */
 package org.furranystudio.avalinexus.entity.avali;
 
@@ -85,6 +85,7 @@ public final class AvaliNames {
         if (manager != loadedFrom) {
             loadedFrom = manager;
             syllables = load(manager);
+            AvaliNexus.debug("Loaded the Avali names");
         }
         return syllables;
     }

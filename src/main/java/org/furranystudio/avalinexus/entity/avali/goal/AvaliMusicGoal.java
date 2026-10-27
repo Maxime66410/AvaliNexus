@@ -2,7 +2,7 @@
  * File: AvaliMusicGoal.java
  * Author: Maxime66410
  * Created: 2026-10-18
- * Last Modified: 2026-10-19
+ * Last Modified: 2026-10-27
  */
 package org.furranystudio.avalinexus.entity.avali.goal;
 
@@ -11,6 +11,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
+import org.furranystudio.avalinexus.AvaliNexus;
 import org.furranystudio.avalinexus.entity.avali.AvaliBehavior;
 import org.furranystudio.avalinexus.entity.avali.AvaliConcert;
 import org.furranystudio.avalinexus.entity.avali.AvaliEntity;
@@ -79,6 +80,7 @@ public class AvaliMusicGoal extends Goal {
             return false;
         }
         AvaliConcert started = AvaliConcert.start(level, avali, song, center, music.gatherSeconds() * TICKS_PER_SECOND);
+        AvaliNexus.debug("{}: starts the song {}{}", avali.debugName(), song.id(), song.isGroup() ? " with its pack" : "");
         if (song.isGroup()) {
             started.recruit(level, music.joinRadius());
         }

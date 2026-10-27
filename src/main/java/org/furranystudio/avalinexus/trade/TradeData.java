@@ -2,7 +2,7 @@
  * File: TradeData.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-10-22
+ * Last Modified: 2026-10-27
  */
 package org.furranystudio.avalinexus.trade;
 
@@ -179,12 +179,17 @@ public final class TradeData {
             loadedFrom = manager;
             POOLS.clear();
             settings = loadSettings(manager);
+            AvaliNexus.debug("Loaded the trade settings");
         }
     }
 
     private static Pool pool(MinecraftServer server, String profession) {
         refresh(server);
-        return POOLS.computeIfAbsent(profession, id -> loadPool(loadedFrom, id));
+        return POOLS.computeIfAbsent(profession, id -> {
+            Pool pool = loadPool(loadedFrom, id);
+            AvaliNexus.debug("Loaded the {} shop with {} offers", id, pool.templates().values().stream().mapToInt(List::size).sum());
+            return pool;
+        });
     }
 
     private static Settings loadSettings(ResourceManager manager) {

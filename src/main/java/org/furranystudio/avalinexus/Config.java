@@ -30,7 +30,7 @@ public final class Config {
     public static final ConfigValue<Integer> COLD_SPEED = new ConfigValue<>("coldSpeed", 100); // Speed biome cold
     public static final ConfigValue<Integer> LIQUID_COLD_SPEED = new ConfigValue<>("liquidColdSpeed", 100);// Speed liquid cold
 
-    public static final List<String> SERVER_SETTINGS = List.of("coldSpeed", "liquidColdSpeed");
+    public static final List<String> SERVER_SETTINGS = List.of("debugLogging", "coldSpeed", "liquidColdSpeed");
 
     private static final ConfigValue<?>[] VALUES = {
         DEBUG_LOGGING,
@@ -59,6 +59,9 @@ public final class Config {
                 JsonObject root = JsonParser.parseString(json).getAsJsonObject();
                 for (ConfigValue<?> value : VALUES) {
                     applyIfPresent(value, root);
+                }
+                for (ConfigValue<?> value : VALUES) {
+                    AvaliNexus.debug("Config {} = {}", value.key(), value.get());
                 }
             } catch (IOException | RuntimeException e) {
                 AvaliNexus.LOGGER.error("[AvaliNexus] Failed to read {}, using defaults.", path, e);

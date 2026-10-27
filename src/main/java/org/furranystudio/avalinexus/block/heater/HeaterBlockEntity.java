@@ -2,7 +2,7 @@
  * File: HeaterBlockEntity.java
  * Author: Maxime66410
  * Created: 2026-09-28
- * Last Modified: 2026-09-28
+ * Last Modified: 2026-10-27
  */
 package org.furranystudio.avalinexus.block.heater;
 
@@ -25,6 +25,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.level.storage.loot.providers.number.ints.ResolvableInt;
+import org.furranystudio.avalinexus.AvaliNexus;
 import org.furranystudio.avalinexus.block.ModBlockEntities;
 import org.furranystudio.avalinexus.block.machine.MachineTank;
 import org.furranystudio.avalinexus.fluid.AvaliLiquids;
@@ -94,6 +95,7 @@ public class HeaterBlockEntity extends BaseContainerBlockEntity {
             HeaterZones.mark(level, pos);
         }
         if (wasLit != lit) {
+            AvaliNexus.debug("Heater at {}: {}", pos.toShortString(), lit ? "starts burning" : "goes out");
             level.setBlock(pos, state.setValue(HeaterBlock.LIT, lit), 3);
             level.playSound(null, pos, lit ? ModSounds.HEATER_IGNITE.get() : ModSounds.HEATER_EXTINGUISH.get(), SoundSource.BLOCKS, lit ? 1.0F : 0.5F, 1.0F);
             setChanged();

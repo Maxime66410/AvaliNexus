@@ -2,7 +2,7 @@
  * File: AvaliBreeding.java
  * Author: Maxime66410
  * Created: 2026-10-20
- * Last Modified: 2026-10-22
+ * Last Modified: 2026-10-27
  */
 package org.furranystudio.avalinexus.entity.avali;
 
@@ -87,6 +87,7 @@ public final class AvaliBreeding {
         if (manager != loadedFrom) {
             loadedFrom = manager;
             data = load(manager);
+            AvaliNexus.debug("Loaded the Avali breeding settings");
         }
         return data;
     }

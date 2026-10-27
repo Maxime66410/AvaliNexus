@@ -2,7 +2,7 @@
  * File: AvaliNexusCommand.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-10-20
+ * Last Modified: 2026-10-27
  */
 package org.furranystudio.avalinexus.command;
 
@@ -22,8 +22,12 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import org.furranystudio.avalinexus.AvaliNexus;
 import org.furranystudio.avalinexus.archive.ArchiveData;
 import org.furranystudio.avalinexus.dialogue.DialogueData;
 import org.furranystudio.avalinexus.entity.avali.AvaliAppearance;
@@ -57,6 +61,7 @@ public final class AvaliNexusCommand {
 
     private static final Map<String, Consumer<MinecraftServer>> CONFIGS = new LinkedHashMap<>();
     private static final double MUSIC_RANGE = 32.0;
+    private static final double DEBUG_REACH = 20.0;
     private static final int TICKS_PER_SECOND = 20;
     private static final SuggestionProvider<CommandSourceStack> SONGS = (context, builder) ->
         SharedSuggestionProvider.suggestResource(AvaliMusic.get(context.getSource().getServer()).stream().map(AvaliMusic.Song::id), builder);
@@ -110,6 +115,9 @@ public final class AvaliNexusCommand {
                             .executes(AvaliNexusCommand::runMusicAvali)))
                     .then(Commands.literal("stop")
                         .executes(AvaliNexusCommand::runMusicStop)))
+                .then(Commands.literal("debug")
+                    .then(Commands.literal("avali")
+                        .executes(AvaliNexusCommand::runDebugAvali)))
                 .then(Commands.literal("reputation")
                     .then(Commands.literal("get")
                         .executes(AvaliNexusCommand::runReputationGet))
@@ -124,6 +132,28 @@ public final class AvaliNexusCommand {
     private static int runPing(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         ModNetworking.sendToPlayer(context.getSource().getPlayerOrException(), new PingPayload(System.currentTimeMillis()));
         context.getSource().sendSuccess(() -> Component.translatable("avalinexus.ping.sent"), false);
+        return 1;
+    }
+
+    private static int runDebugAvali(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        Vec3 eye = player.getEyePosition();
+        Vec3 reach = player.getViewVector(1.0F).scale(DEBUG_REACH);
+        HitResult block = player.pick(DEBUG_REACH, 1.0F, false);
+        double maxDistance = block.getType() == HitResult.Type.MISS ? DEBUG_REACH * DEBUG_REACH : block.getLocation().distanceToSqr(eye);
+        EntityHitResult hit = ProjectileUtil.getEntityHitResult(player, eye, eye.add(reach), player.getBoundingBox().expandTowards(reach).inflate(1.0),
+            entity -> entity instanceof AvaliEntity, maxDistance);
+        if (hit == null || !(hit.getEntity() instanceof AvaliEntity avali)) {
+            context.getSource().sendFailure(Component.translatable("avalinexus.debug.no_avali"));
+            return 0;
+        }
+        List<String> lines = avali.debugReport();
+        MutableComponent message = Component.translatable("avalinexus.debug.avali");
+        for (String line : lines) {
+            message.append("\n" + line);
+            AvaliNexus.LOGGER.info("[AvaliNexus] [Debug] {}", line);
+        }
+        context.getSource().sendSuccess(() -> message, false);
         return 1;
     }
 

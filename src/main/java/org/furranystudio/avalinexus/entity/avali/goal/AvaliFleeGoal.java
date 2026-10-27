@@ -2,7 +2,7 @@
  * File: AvaliFleeGoal.java
  * Author: Maxime66410
  * Created: 2026-10-18
- * Last Modified: 2026-10-20
+ * Last Modified: 2026-10-27
  */
 package org.furranystudio.avalinexus.entity.avali.goal;
 
@@ -14,6 +14,7 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.furranystudio.avalinexus.AvaliNexus;
 import org.furranystudio.avalinexus.entity.avali.AvaliCombat;
 import org.furranystudio.avalinexus.entity.avali.AvaliDangers;
 import org.furranystudio.avalinexus.entity.avali.AvaliEntity;
@@ -87,6 +88,7 @@ public class AvaliFleeGoal extends Goal {
         avali.setTarget(null);
         avali.setSprinting(true);
         avali.setPanicking(true);
+        AvaliNexus.debug("{}: flees with {}/{} health", avali.debugName(), Math.round(avali.getHealth()), Math.round(avali.getMaxHealth()));
         if (avali.isSleeping()) {
             avali.stopSleeping();
         }
@@ -94,6 +96,7 @@ public class AvaliFleeGoal extends Goal {
 
     @Override
     public void stop() {
+        AvaliNexus.debug("{}: stops fleeing", avali.debugName());
         lowerShield();
         avali.setSprinting(false);
         avali.setPanicking(false);

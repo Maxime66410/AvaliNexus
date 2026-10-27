@@ -2,7 +2,7 @@
  * File: AvaliNexus.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-10-24
+ * Last Modified: 2026-10-27
  */
 package org.furranystudio.avalinexus;
 
@@ -60,8 +60,13 @@ public final class AvaliNexus {
         ModPackets.init();
     }
 
+    public static void debug(String message, Object... args) {
+        if (Config.DEBUG_LOGGING.get()) {
+            LOGGER.info("[AvaliNexus] [Debug] " + message, args);
+        }
+    }
+
     public static void commonSetup() {
-        Config.load();
         LOGGER.info("[AvaliNexus] Common setup done.");
     }
 

@@ -2,7 +2,7 @@
  * File: AvaliDangers.java
  * Author: Maxime66410
  * Created: 2026-10-17
- * Last Modified: 2026-10-17
+ * Last Modified: 2026-10-27
  */
 package org.furranystudio.avalinexus.entity.avali;
 
@@ -61,6 +61,7 @@ public final class AvaliDangers {
         if (manager != loadedFrom) {
             loadedFrom = manager;
             data = load(manager);
+            AvaliNexus.debug("Loaded the Avali danger settings");
         }
         return data;
     }

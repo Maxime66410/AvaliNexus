@@ -2,7 +2,7 @@
  * File: AvaliBehavior.java
  * Author: Maxime66410
  * Created: 2026-10-17
- * Last Modified: 2026-10-23
+ * Last Modified: 2026-10-27
  */
 package org.furranystudio.avalinexus.entity.avali;
 
@@ -63,6 +63,7 @@ public final class AvaliBehavior {
         if (manager != loadedFrom) {
             loadedFrom = manager;
             data = load(manager);
+            AvaliNexus.debug("Loaded the Avali behavior settings");
         }
         return data;
     }

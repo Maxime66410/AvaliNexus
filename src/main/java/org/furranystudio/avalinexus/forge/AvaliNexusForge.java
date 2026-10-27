@@ -2,7 +2,7 @@
  * File: AvaliNexusForge.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-10-23
+ * Last Modified: 2026-10-27
  */
 package org.furranystudio.avalinexus.forge;
 
@@ -43,6 +43,7 @@ public class AvaliNexusForge {
     public AvaliNexusForge(FMLJavaModLoadingContext context) {
         Platform.init(FMLPaths.GAMEDIR.get(), CreativeModeTab::builder);
         Config.registerSettings();
+        Config.load();
 
         ForgeFluids.init();
         AvaliNexus.registerContent();

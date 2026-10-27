@@ -2,12 +2,13 @@
  * File: MachineBlockEntity.java
  * Author: Maxime66410
  * Created: 2026-10-15
- * Last Modified: 2026-10-15
+ * Last Modified: 2026-10-27
  */
 package org.furranystudio.avalinexus.block.machine;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Container;
@@ -24,9 +25,11 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import org.furranystudio.avalinexus.AvaliNexus;
 import org.furranystudio.avalinexus.fluid.FluidPort;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 public abstract class MachineBlockEntity extends BlockEntity implements WorldlyContainer, MenuProvider {
 
@@ -47,10 +50,16 @@ public abstract class MachineBlockEntity extends BlockEntity implements WorldlyC
 
     protected abstract AbstractContainerMenu createMenu(int id, Inventory inventory);
 
-    protected void setLit(ServerLevel level, BlockPos pos, BlockState state, boolean lit) {
+    protected void setLit(ServerLevel level, BlockPos pos, BlockState state, boolean lit, Supplier<String> stopReason) {
         if (state.getValue(MachineBlock.LIT) != lit) {
             level.setBlock(pos, state.setValue(MachineBlock.LIT, lit), 3);
+            AvaliNexus.debug("{} at {}: {}", BuiltInRegistries.BLOCK.getKey(state.getBlock()), pos.toShortString(),
+                lit ? "starts" : "stops, " + stopReason.get());
         }
+    }
+
+    protected void logFinished(BlockPos pos, BlockState state) {
+        AvaliNexus.debug("{} at {}: finishes a recipe", BuiltInRegistries.BLOCK.getKey(state.getBlock()), pos.toShortString());
     }
 
     @Override

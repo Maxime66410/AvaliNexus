@@ -2,7 +2,7 @@
  * File: GraphenePressBlockEntity.java
  * Author: Maxime66410
  * Created: 2026-10-16
- * Last Modified: 2026-10-16
+ * Last Modified: 2026-10-27
  */
 package org.furranystudio.avalinexus.block.press;
 
@@ -114,13 +114,15 @@ public class GraphenePressBlockEntity extends MachineBlockEntity {
             if (progress >= DURATION) {
                 progress = 0;
                 finish();
+                logFinished(pos, state);
             }
             setChanged();
         } else if (progress != 0) {
             progress = 0;
             setChanged();
         }
-        setLit(level, pos, state, running);
+        setLit(level, pos, state, running, () -> getItem(COAL).getCount() < COAL_COST ? "not enough coal"
+            : getItem(SHARD).isEmpty() ? "no shard" : fuel.amount() < FUEL_COST ? "not enough fuel" : "output full");
     }
 
     private boolean fits() {

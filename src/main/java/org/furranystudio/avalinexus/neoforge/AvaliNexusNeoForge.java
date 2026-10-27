@@ -2,7 +2,7 @@
  * File: AvaliNexusNeoForge.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-10-23
+ * Last Modified: 2026-10-27
  */
 package org.furranystudio.avalinexus.neoforge;
 
@@ -46,6 +46,7 @@ public class AvaliNexusNeoForge {
     public AvaliNexusNeoForge(IEventBus modEventBus, ModContainer modContainer) {
         Platform.init(FMLPaths.GAMEDIR.get(), CreativeModeTab::builder);
         Config.registerSettings();
+        Config.load();
 
         NeoForgeFluids.init();
         AvaliNexus.registerContent();
