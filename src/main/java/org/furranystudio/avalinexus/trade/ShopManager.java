@@ -2,7 +2,7 @@
  * File: ShopManager.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-10-22
+ * Last Modified: 2026-10-27
  */
 package org.furranystudio.avalinexus.trade;
 
@@ -10,6 +10,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
+import org.furranystudio.avalinexus.AvaliNexus;
 import org.furranystudio.avalinexus.entity.avali.AvaliEntity;
 import org.furranystudio.avalinexus.entity.avali.expression.AvaliGesture;
 import org.furranystudio.avalinexus.item.ModItems;
@@ -104,10 +105,13 @@ public final class ShopManager {
             shop.pause(day);
             return shop;
         }
-        shop.restockIfNewDay(day);
+        if (shop.restockIfNewDay(day)) {
+            AvaliNexus.debug("{}: restocks its {} shop", avali.debugName(), shop.profession());
+        }
         if (shop.shouldRotate(day, TradeData.settings(level.getServer()).rotationDays())) {
             TradeData.rotate(level.getServer(), avali.getRandom(), shop);
             shop.rotated(day);
+            AvaliNexus.debug("{}: rotates the offers of its {} shop", avali.debugName(), shop.profession());
         }
         return shop;
     }

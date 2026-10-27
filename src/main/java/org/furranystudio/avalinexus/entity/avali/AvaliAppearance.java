@@ -2,7 +2,7 @@
  * File: AvaliAppearance.java
  * Author: Maxime66410
  * Created: 2026-10-17
- * Last Modified: 2026-10-25
+ * Last Modified: 2026-10-27
  */
 package org.furranystudio.avalinexus.entity.avali;
 
@@ -129,6 +129,7 @@ public final class AvaliAppearance {
         if (manager != loadedFrom) {
             loadedFrom = manager;
             data = load(manager);
+            AvaliNexus.debug("Loaded {} pack colors and {} rare skins", data.colors().size(), data.rares().size());
         }
         return data;
     }

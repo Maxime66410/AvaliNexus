@@ -2,7 +2,7 @@
  * File: ModRegistry.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-09-27
+ * Last Modified: 2026-10-27
  */
 package org.furranystudio.avalinexus.registry;
 
@@ -54,7 +54,7 @@ public final class ModRegistry {
             sink.register(registry, key.identifier(), () -> {
                 R value = factory.apply(key);
                 holder.bind(value);
-                AvaliNexus.LOGGER.info("[AvaliNexus] Registered {} in {}", key.identifier(), registry.identifier());
+                AvaliNexus.debug("Registered {} in {}", key.identifier(), registry.identifier());
                 return value;
             });
         }

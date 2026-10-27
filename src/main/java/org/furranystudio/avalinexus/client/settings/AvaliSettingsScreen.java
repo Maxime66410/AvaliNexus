@@ -31,10 +31,13 @@ import java.util.Map;
 // Client options save to the local config, server options go through the server when connected to one
 public class AvaliSettingsScreen extends Screen {
 
-    private sealed interface Entry permits Toggle, Slider {
+    private sealed interface Entry permits Toggle, ServerToggle, Slider {
     }
 
     private record Toggle(String key, ConfigValue<Boolean> value) implements Entry {
+    }
+
+    private record ServerToggle(String key) implements Entry {
     }
 
     private record Slider(String key, int min, int max, int step) implements Entry {
@@ -45,6 +48,7 @@ public class AvaliSettingsScreen extends Screen {
         new Toggle("avaliFontReading", Config.AVALI_FONT_READING));
 
     private static final List<Entry> SERVER = List.of(
+        new ServerToggle("debugLogging"),
         new Slider("coldSpeed", 0, 500, 5),
         new Slider("liquidColdSpeed", 0, 500, 5));
 
@@ -124,7 +128,12 @@ public class AvaliSettingsScreen extends Screen {
         int y = listTop() - scroll;
         for (Entry entry : entries()) {
             switch (entry) {
-                case Toggle toggle -> renderToggle(graphics, toggle, y, overList, mouseX, mouseY);
+                case Toggle toggle -> renderToggle(graphics, toggle.key(), toggle.value().get(), true, y, overList, mouseX, mouseY);
+                case ServerToggle toggle -> {
+                    String value = serverValue(toggle.key());
+                    renderToggle(graphics, toggle.key(), value == null ? null : Boolean.valueOf(value), serverEditable && value != null, y, overList,
+                        mouseX, mouseY);
+                }
                 case Slider slider -> renderSlider(graphics, slider, y, overList, mouseX, mouseY);
             }
             y += ROW_HEIGHT;
@@ -172,16 +181,21 @@ public class AvaliSettingsScreen extends Screen {
         }
     }
 
-    private void renderToggle(GuiGraphicsExtractor graphics, Toggle toggle, int y, boolean overList, int mouseX, int mouseY) {
-        renderRow(graphics, toggle.key(), y, CONTROL_WIDTH, true);
-        boolean on = toggle.value().get();
+    private void renderToggle(GuiGraphicsExtractor graphics, String key, Boolean on, boolean enabled, int y, boolean overList, int mouseX, int mouseY) {
+        renderRow(graphics, key, y, CONTROL_WIDTH, enabled);
         int x = controlX(CONTROL_WIDTH);
         int controlY = controlY(y);
-        boolean hovered = overList && inside(mouseX, mouseY, x, controlY, CONTROL_WIDTH, CONTROL_HEIGHT);
+        boolean hovered = enabled && overList && inside(mouseX, mouseY, x, controlY, CONTROL_WIDTH, CONTROL_HEIGHT);
         graphics.fill(x - 1, controlY - 1, x + CONTROL_WIDTH + 1, controlY + CONTROL_HEIGHT + 1, hovered ? AvaliUi.ORANGE_GLOW : AvaliUi.PRIMARY_BORDER);
-        graphics.fill(x, controlY, x + CONTROL_WIDTH, controlY + CONTROL_HEIGHT, on ? AvaliUi.SUCCESS : AvaliUi.SECONDARY_BORDER);
+        if (on == null) {
+            graphics.fill(x, controlY, x + CONTROL_WIDTH, controlY + CONTROL_HEIGHT, AvaliUi.SECONDARY_BORDER);
+            graphics.centeredText(font, "...", x + CONTROL_WIDTH / 2, controlY + 4, AvaliUi.TEXT_DISABLED);
+            return;
+        }
+        int fill = !on ? AvaliUi.SECONDARY_BORDER : enabled ? AvaliUi.SUCCESS : AvaliUi.TEXT_DISABLED;
+        graphics.fill(x, controlY, x + CONTROL_WIDTH, controlY + CONTROL_HEIGHT, fill);
         Component state = AvaliUi.styled(Component.translatable(on ? "avalinexus.settings.on" : "avalinexus.settings.off"));
-        graphics.centeredText(font, state, x + CONTROL_WIDTH / 2, controlY + 4, on ? AvaliUi.TEXT_PRIMARY : AvaliUi.TEXT_DISABLED);
+        graphics.centeredText(font, state, x + CONTROL_WIDTH / 2, controlY + 4, on && enabled ? AvaliUi.TEXT_PRIMARY : AvaliUi.TEXT_DISABLED);
     }
 
     private void renderSlider(GuiGraphicsExtractor graphics, Slider slider, int y, boolean overList, int mouseX, int mouseY) {
@@ -215,8 +229,12 @@ public class AvaliSettingsScreen extends Screen {
         graphics.fill(x, thumbY, x + BAR_WIDTH, thumbY + thumbHeight, hot ? AvaliUi.ORANGE_GLOW : AvaliUi.PRIMARY_ORANGE);
     }
 
+    private String serverValue(String key) {
+        return local ? SettingsRegistry.get(key).get() : serverValues == null ? null : serverValues.get(key);
+    }
+
     private Integer sliderValue(Slider slider) {
-        String value = local ? SettingsRegistry.get(slider.key()).get() : serverValues == null ? null : serverValues.get(slider.key());
+        String value = serverValue(slider.key());
         if (value == null) {
             return null;
         }
@@ -253,6 +271,12 @@ public class AvaliSettingsScreen extends Screen {
                     playClick();
                     return true;
                 }
+                if (entry instanceof ServerToggle toggle && serverEditable && serverValue(toggle.key()) != null
+                    && inside(mouseX, mouseY, controlX(CONTROL_WIDTH), controlY(y), CONTROL_WIDTH, CONTROL_HEIGHT)) {
+                    commit(toggle.key(), String.valueOf(!Boolean.parseBoolean(serverValue(toggle.key()))));
+                    playClick();
+                    return true;
+                }
                 if (entry instanceof Slider slider && serverEditable && sliderValue(slider) != null
                     && inside(mouseX, mouseY, controlX(SLIDER_WIDTH), controlY(y), SLIDER_WIDTH, CONTROL_HEIGHT)) {
                     sliding = slider;
@@ -286,7 +310,7 @@ public class AvaliSettingsScreen extends Screen {
     @Override
     public boolean mouseReleased(MouseButtonEvent event) {
         if (sliding != null) {
-            commit(sliding, slideValue);
+            commit(sliding.key(), String.valueOf(slideValue));
             sliding = null;
             playClick();
         }
@@ -306,14 +330,13 @@ public class AvaliSettingsScreen extends Screen {
         slideValue = Mth.clamp(raw, sliding.min(), sliding.max());
     }
 
-    private void commit(Slider slider, int value) {
-        String text = String.valueOf(value);
+    private void commit(String key, String value) {
         if (local) {
-            SettingsRegistry.get(slider.key()).trySet(text);
+            SettingsRegistry.get(key).trySet(value);
             return;
         }
-        serverValues.put(slider.key(), text);
-        ModNetworking.sendToServer(new ChangeSettingPayload(slider.key(), text));
+        serverValues.put(key, value);
+        ModNetworking.sendToServer(new ChangeSettingPayload(key, value));
     }
 
     private void dragBarTo(double mouseY) {

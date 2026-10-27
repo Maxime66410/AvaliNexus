@@ -2,7 +2,7 @@
  * File: AvaliMusic.java
  * Author: Maxime66410
  * Created: 2026-10-18
- * Last Modified: 2026-10-18
+ * Last Modified: 2026-10-27
  */
 package org.furranystudio.avalinexus.entity.avali;
 
@@ -60,6 +60,7 @@ public final class AvaliMusic {
         if (manager != loadedFrom) {
             loadedFrom = manager;
             songs = load(manager);
+            AvaliNexus.debug("Loaded {} Avali songs", songs.size());
         }
         return songs;
     }

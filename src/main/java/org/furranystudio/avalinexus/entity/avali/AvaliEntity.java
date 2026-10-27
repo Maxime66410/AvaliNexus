@@ -2,7 +2,7 @@
  * File: AvaliEntity.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-10-25
+ * Last Modified: 2026-10-27
  */
 package org.furranystudio.avalinexus.entity.avali;
 
@@ -52,6 +52,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.OpenDoorGoal;
+import net.minecraft.world.entity.ai.goal.WrappedGoal;
 import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.entity.decoration.Cushion;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
@@ -620,6 +621,9 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         packId = ((PackData) data).id;
         giveName(level.getServer());
         giveLooks(level.getServer());
+        AvaliNexus.debug("{}: spawned ({}), {}, colors {}, skin {}, {}", debugName(), reason.name().toLowerCase(), isFemale() ? "female" : "male",
+            debugColors(), getSkin().isEmpty() ? "none" : getSkin(), village && camp != null ? "village at " + camp.toShortString()
+                : camp != null ? "camp at " + camp.toShortString() : "no camp");
         SpawnGroupData result = super.finalizeSpawn(level, difficulty, reason, data);
         if (!isBaby() && reason != EntitySpawnReason.BREEDING) {
             gear.giveSpawnGear(getRandom());
@@ -653,6 +657,7 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
             playSound(SoundEvents.CHICKEN_EGG, 1.0F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
             gameEvent(GameEvent.ENTITY_PLACE);
             eggTime = -1;
+            AvaliNexus.debug("{}: lays an egg", debugName());
         }
     }
 
@@ -672,6 +677,7 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         }
         kit.finalizeSpawn(level, level.getCurrentDifficultyAt(kit.blockPosition()), EntitySpawnReason.TRIGGERED, data);
         level.addFreshEntityWithPassengers(kit);
+        AvaliNexus.debug("{}: hatched, joins {}", kit.debugName(), member != null ? "the pack of " + member.getName().getString() : "a new pack");
     }
 
     private AvaliEntity openPack(ServerLevel level) {
@@ -740,6 +746,7 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         styled = true;
         entityData.set(DATA_FEMALE, AvaliAppearance.rollFemale(server, getRandom()));
         setColors(AvaliAppearance.mixColors(server, mother.getColors(), father.getColors(), getRandom()));
+        AvaliNexus.debug("{}: born from {} and {}", debugName(), mother.getName().getString(), father.getName().getString());
         List<String> rares = new ArrayList<>();
         for (AvaliEntity parent : List.of(mother, father)) {
             if (!parent.getSkin().isEmpty()) {
@@ -1092,6 +1099,9 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     }
 
     public void setRole(CompanionRole role) {
+        if (!level().isClientSide() && role != getRole()) {
+            AvaliNexus.debug("{}: role {} -> {}", debugName(), getRole().name().toLowerCase(), role.name().toLowerCase());
+        }
         entityData.set(DATA_ROLE, role.ordinal());
     }
 
@@ -1104,6 +1114,9 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     }
 
     public void setWaiting(boolean waiting) {
+        if (!level().isClientSide() && waiting != isWaiting()) {
+            AvaliNexus.debug("{}: {}", debugName(), waiting ? "waits here" : "follows its owner again");
+        }
         entityData.set(DATA_WAITING, waiting);
         waitPos = waiting ? blockPosition() : null;
         getNavigation().stop();
@@ -1114,6 +1127,7 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     }
 
     public void recruit(ServerPlayer player) {
+        AvaliNexus.debug("{}: recruited by {}", debugName(), player.getName().getString());
         entityData.set(DATA_OWNER, player.getUUID().toString());
         entityData.set(DATA_OWNER_NAME, player.getGameProfile().name());
         setRole(CompanionRole.FIGHTER);
@@ -1123,6 +1137,7 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     }
 
     public void dismiss() {
+        AvaliNexus.debug("{}: dismissed, goes back home", debugName());
         if (level() instanceof ServerLevel level && isCompanion()) {
             CompanionData.get(level.getServer()).remove(getOwnerId(), getUUID());
         }
@@ -1179,6 +1194,46 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         loveUntil = 0;
     }
 
+    @Override
+    public void setTarget(LivingEntity target) {
+        if (!level().isClientSide() && target != getTarget()) {
+            AvaliNexus.debug("{}: {}", debugName(), target == null ? "stops fighting" : "targets " + target.getName().getString());
+        }
+        super.setTarget(target);
+    }
+
+    public String debugName() {
+        return getName().getString() + " (" + getPack() + ") at " + blockPosition().toShortString();
+    }
+
+    public List<String> debugReport() {
+        List<String> goals = goalSelector.getAvailableGoals().stream().filter(WrappedGoal::isRunning)
+            .map(goal -> goal.getGoal().getClass().getSimpleName()).toList();
+        String owner = entityData.get(DATA_OWNER_NAME);
+        String partner = getPartnerName();
+        return List.of(
+            debugName(),
+            "Identity: " + (isFemale() ? "female" : "male") + ", " + (isBaby() ? "baby" : "adult") + ", profession "
+                + (getProfession().isEmpty() ? "none" : getProfession()),
+            "Looks: colors " + debugColors() + ", skin " + (getSkin().isEmpty() ? "none" : getSkin()),
+            "Doing: " + (goals.isEmpty() ? "nothing" : String.join(", ", goals)) + ", target "
+                + (getTarget() == null ? "none" : getTarget().getName().getString()),
+            "Places: bed " + shortPos(bed) + ", " + (village ? "village " : "camp ") + shortPos(camp) + ", workshop " + shortPos(workshop),
+            "Links: partner " + (partner.isEmpty() ? "none" : partner) + ", owner " + (owner.isEmpty() ? "none" : owner)
+                + (isCompanion() ? ", role " + getRole().name().toLowerCase() + (isWaiting() ? ", waiting" : ", following") : ""),
+            "State: health " + Math.round(getHealth()) + "/" + Math.round(getMaxHealth()) + ", mood " + getMood().name().toLowerCase()
+                + ", face " + getFace().name().toLowerCase());
+    }
+
+    private static String shortPos(BlockPos pos) {
+        return pos == null ? "none" : pos.toShortString();
+    }
+
+    public String debugColors() {
+        AvaliAppearance.Colors colors = getColors();
+        return String.format("#%06X #%06X #%06X", colors.base(), colors.pattern(), colors.feathers());
+    }
+
     public boolean isInLove() {
         return loveUntil > 0;
     }
@@ -1188,6 +1243,7 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     }
 
     public void joinPackOf(AvaliEntity other) {
+        AvaliNexus.debug("{}: leaves its pack to join {} ({})", debugName(), other.getName().getString(), other.getPack());
         setPack(other.getPack());
         packId = other.packId;
         camp = other.camp;

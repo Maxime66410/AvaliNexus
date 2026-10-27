@@ -2,7 +2,7 @@
  * File: AvaliShop.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-10-22
+ * Last Modified: 2026-10-27
  */
 package org.furranystudio.avalinexus.trade;
 
@@ -61,12 +61,13 @@ public final class AvaliShop {
         return count;
     }
 
-    public void restockIfNewDay(long day) {
+    public boolean restockIfNewDay(long day) {
         if (day <= lastRestockDay) {
-            return;
+            return false;
         }
         lastRestockDay = day;
         offers.replaceAll(ShopOffer::restocked);
+        return true;
     }
 
     public boolean shouldRotate(long day, int interval) {

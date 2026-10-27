@@ -2,7 +2,7 @@
  * File: DialogueData.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-10-22
+ * Last Modified: 2026-10-27
  */
 package org.furranystudio.avalinexus.dialogue;
 
@@ -61,6 +61,7 @@ public final class DialogueData {
         if (manager != loadedFrom) {
             loadedFrom = manager;
             sections = load(manager);
+            AvaliNexus.debug("Loaded {} dialogue sections", sections.size());
         }
         return sections.getOrDefault(section, List.of());
     }

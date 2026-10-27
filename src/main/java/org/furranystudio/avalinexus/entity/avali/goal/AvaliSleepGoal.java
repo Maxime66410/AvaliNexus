@@ -2,7 +2,7 @@
  * File: AvaliSleepGoal.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-10-20
+ * Last Modified: 2026-10-27
  */
 package org.furranystudio.avalinexus.entity.avali.goal;
 
@@ -12,6 +12,7 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.Vec3;
+import org.furranystudio.avalinexus.AvaliNexus;
 import org.furranystudio.avalinexus.entity.avali.AvaliBehavior;
 import org.furranystudio.avalinexus.entity.avali.AvaliEntity;
 
@@ -30,6 +31,7 @@ public class AvaliSleepGoal extends Goal {
     private static final int NAP_CHANCE = 12000;
     private static final int MIN_NAP_TICKS = 600;
     private static final int MAX_NAP_TICKS = 1200;
+    private static final long NIGHT_LOG_DAY = 24000L;
 
     private final AvaliEntity avali;
     private final double speed;
@@ -37,6 +39,7 @@ public class AvaliSleepGoal extends Goal {
     private int searchCooldown;
     private int walkTicks;
     private int napTicks;
+    private long noBedDay = -1;
 
     public AvaliSleepGoal(AvaliEntity avali, double speed) {
         this.avali = avali;
@@ -64,6 +67,13 @@ public class AvaliSleepGoal extends Goal {
         }
         if (bed == null) {
             bed = findFreeBed(partnerBed != null ? partnerBed : avali.blockPosition());
+        }
+        if (bed == null && night) {
+            long day = avali.level().getOverworldClockTime() / NIGHT_LOG_DAY;
+            if (day != noBedDay) {
+                noBedDay = day;
+                AvaliNexus.debug("{}: finds no free bed tonight", avali.debugName());
+            }
         }
         if (bed == null || avali.isCompanion() && !bed.closerThan(avali.getWaitPos(), WAIT_BED_RANGE)) {
             return false;
@@ -104,6 +114,7 @@ public class AvaliSleepGoal extends Goal {
             avali.setNapping(avali.getRandom().nextBoolean());
             avali.startSleeping(bed);
             avali.setBed(bed);
+            AvaliNexus.debug("{}: goes to sleep in the bed at {}", avali.debugName(), bed.toShortString());
         } else if (avali.getNavigation().isDone()) {
             moveToBed();
         }
@@ -113,6 +124,7 @@ public class AvaliSleepGoal extends Goal {
     public void stop() {
         if (avali.isSleeping()) {
             avali.stopSleeping();
+            AvaliNexus.debug("{}: wakes up", avali.debugName());
         }
         avali.getNavigation().stop();
         bed = null;

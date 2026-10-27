@@ -2,7 +2,7 @@
  * File: ArchiveData.java
  * Author: Maxime66410
  * Created: 2026-09-28
- * Last Modified: 2026-09-28
+ * Last Modified: 2026-10-27
  */
 package org.furranystudio.avalinexus.archive;
 
@@ -39,6 +39,7 @@ public final class ArchiveData {
         if (manager != loadedFrom) {
             loadedFrom = manager;
             archives = load(manager);
+            AvaliNexus.debug("Loaded {} archive entries in {} categories", archives.entries().size(), archives.categories().size());
         }
         return archives;
     }

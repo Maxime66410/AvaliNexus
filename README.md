@@ -66,6 +66,7 @@ Almost everything about the Avalis is in JSON files under `data/avalinexus/avali
 | `/avalinexus music stop` | Stops the music around you |
 | `/avalinexus reputation get` | Shows your reputation with every pack |
 | `/avalinexus reputation set <pack> <value>` | Sets your reputation with a pack |
+| `/avalinexus debug avali` | Shows the state of the Avali you're looking at in the chat and the log |
 | `/avalinexus ping` | Checks the connection between the server and your game |
 
 ## Settings
@@ -74,7 +75,7 @@ Saved in `config/avalinexus.json`.
 
 | Parameter | Default | What it does |
 |---|---|---|
-| `debugLogging` | false | Turns on extra debug logs |
+| `debugLogging` | false | Writes extra details in the log (what Avalis do, reputation, machines, cold, camps and villages...), handy to report a bug |
 | `avaliFontUi` | true | Uses the Avali font for titles, buttons and labels |
 | `avaliFontReading` | false | Uses the Avali font for texts you read (dialogues, archives, shop) |
 | `coldSpeed` | 100 | How fast the cold freezes you in percent (50 is twice slower, 200 twice faster, 0 turns it off), from 0 to 500 |

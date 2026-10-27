@@ -2,7 +2,7 @@
  * File: AvaliVillageStructure.java
  * Author: Maxime66410
  * Created: 2026-10-22
- * Last Modified: 2026-10-23
+ * Last Modified: 2026-10-27
  */
 package org.furranystudio.avalinexus.worldgen.structure;
 
@@ -334,6 +334,9 @@ public class AvaliVillageStructure extends Structure {
         MinecraftServer server = level.getServer();
         String pack = AvaliNames.pack(server, RandomSource.create(level.getSeed() ^ anchor.asLong()));
         UUID packId = new UUID(level.getSeed() ^ VILLAGE_SALT, anchor.asLong());
+        if (chunkBox.isInside(anchor)) {
+            AvaliNexus.debug("Generated an Avali village of the {} pack at {}", pack, anchor.toShortString());
+        }
         DyeColor dye = AvaliSettlements.closestDye(AvaliAppearance.packColor(server, pack));
         AvaliSettlements.recolorTapestries(level.getChunk(chunkPos.x(), chunkPos.z()), list, dye);
         markFrames(level.getChunk(chunkPos.x(), chunkPos.z()), list);
