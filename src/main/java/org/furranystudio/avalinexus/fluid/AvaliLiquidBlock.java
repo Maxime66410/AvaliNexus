@@ -2,7 +2,7 @@
  * File: AvaliLiquidBlock.java
  * Author: Maxime66410
  * Created: 2026-09-28
- * Last Modified: 2026-09-28
+ * Last Modified: 2026-10-27
  */
 package org.furranystudio.avalinexus.fluid;
 
@@ -21,6 +21,7 @@ import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.redstone.Orientation;
+import org.furranystudio.avalinexus.Config;
 import org.furranystudio.avalinexus.block.ModBlocks;
 import org.furranystudio.avalinexus.entity.avali.AvaliEntity;
 
@@ -47,9 +48,11 @@ public class AvaliLiquidBlock extends LiquidBlock {
             avali.heal(1.0F);
         }
         // Warm armor or an Avali body keeps the cold out
-        if (kind.freezing() > 0 && entity.canFreeze() && !(entity instanceof AvaliEntity)) {
+        int rate = kind.freezing() * Config.LIQUID_COLD_SPEED.get();
+        if (rate > 0 && entity.canFreeze() && !(entity instanceof AvaliEntity)) {
+            long time = level.getGameTime();
             int cap = entity.getTicksRequiredToFreeze() + CAP_MARGIN;
-            entity.setTicksFrozen(Math.min(cap, entity.getTicksFrozen() + 2 + kind.freezing()));
+            entity.setTicksFrozen(Math.min(cap, entity.getTicksFrozen() + 2 + (int) ((time + 1) * rate / 100 - time * rate / 100)));
         }
     }
 

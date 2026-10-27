@@ -2,7 +2,7 @@
  * File: Config.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-09-27
+ * Last Modified: 2026-10-27
  */
 package org.furranystudio.avalinexus;
 
@@ -11,27 +11,33 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.furranystudio.avalinexus.settings.BoolSetting;
+import org.furranystudio.avalinexus.settings.IntSetting;
 import org.furranystudio.avalinexus.settings.SettingsRegistry;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 
 public final class Config {
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
-    public static final ConfigValue<Boolean> DEBUG_LOGGING = new ConfigValue<>("debugLogging", false);
-    // Avali font on titles, buttons and labels of the mod screens
-    public static final ConfigValue<Boolean> AVALI_FONT_UI = new ConfigValue<>("avaliFontUi", true);
-    // Avali font on longer texts meant to be read, like archives and dialogue lines
-    public static final ConfigValue<Boolean> AVALI_FONT_READING = new ConfigValue<>("avaliFontReading", false);
+    public static final ConfigValue<Boolean> DEBUG_LOGGING = new ConfigValue<>("debugLogging", false); // Debugging the mod
+    public static final ConfigValue<Boolean> AVALI_FONT_UI = new ConfigValue<>("avaliFontUi", true); // Custom title font
+    public static final ConfigValue<Boolean> AVALI_FONT_READING = new ConfigValue<>("avaliFontReading", false); // Custom text font
+    public static final ConfigValue<Integer> COLD_SPEED = new ConfigValue<>("coldSpeed", 100); // Speed biome cold
+    public static final ConfigValue<Integer> LIQUID_COLD_SPEED = new ConfigValue<>("liquidColdSpeed", 100);// Speed liquid cold
+
+    public static final List<String> SERVER_SETTINGS = List.of("coldSpeed", "liquidColdSpeed");
 
     private static final ConfigValue<?>[] VALUES = {
         DEBUG_LOGGING,
         AVALI_FONT_UI,
-        AVALI_FONT_READING
+        AVALI_FONT_READING,
+        COLD_SPEED,
+        LIQUID_COLD_SPEED
     };
 
     private Config() {
@@ -41,6 +47,8 @@ public final class Config {
         SettingsRegistry.register("debugLogging", new BoolSetting(DEBUG_LOGGING));
         SettingsRegistry.register("avaliFontUi", new BoolSetting(AVALI_FONT_UI));
         SettingsRegistry.register("avaliFontReading", new BoolSetting(AVALI_FONT_READING));
+        SettingsRegistry.register("coldSpeed", new IntSetting(COLD_SPEED, 0, 500));
+        SettingsRegistry.register("liquidColdSpeed", new IntSetting(LIQUID_COLD_SPEED, 0, 500));
     }
 
     public static void load() {

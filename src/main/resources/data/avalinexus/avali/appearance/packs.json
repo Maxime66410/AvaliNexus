@@ -1,22 +1,25 @@
 {
-  "hue_variation": 8,
-  "brightness_variation": 0.1,
+  "variation": {
+    "base": { "hue": 6, "brightness": 0.08 },
+    "pattern": { "hue": 18, "brightness": 0.15 },
+    "feathers": { "hue": 10, "brightness": 0.05 }
+  },
   "colors": {
-    "frost": "#8FD3FF",
-    "echo": "#9B6BFF",
-    "wind": "#4FD1C5",
-    "aurora": "#4CD964",
-    "glacier": "#2F7FD8",
-    "storm": "#6E7B8B",
-    "star": "#2B3A8C",
-    "crystal": "#FF8FC8",
-    "moon": "#C9CED6",
-    "tundra": "#8B6B4A",
-    "song": "#E040A0",
-    "feather": "#F2EDE4",
-    "ember": "#FF8C1A",
-    "dawn": "#FF9E80",
-    "shard": "#FFD23F",
-    "drift": "#A7C4D9"
+    "frost": { "base": "#8FD3FF", "pattern": "#838ED9", "feathers": "#8CCFFA" },
+    "echo": { "base": "#9B6BFF", "pattern": "#C368D9", "feathers": "#9869FA" },
+    "wind": { "base": "#4FD1C5", "pattern": "#4E8BB2", "feathers": "#5EFAEC" },
+    "aurora": { "base": "#4CD964", "pattern": "#4DB893", "feathers": "#58FA73" },
+    "glacier": { "base": "#2F7FD8", "pattern": "#3736B8", "feathers": "#3E97FA" },
+    "storm": { "base": "#6E7B8B", "pattern": "#4E4D76", "feathers": "#A2CAFA" },
+    "star": { "base": "#2B3A8C", "pattern": "#452D77", "feathers": "#4D68FA" },
+    "crystal": { "base": "#FF8FC8", "pattern": "#D98386", "feathers": "#FA8CC4" },
+    "moon": { "base": "#C9CED6", "pattern": "#7C7C80", "feathers": "#E3ECFA" },
+    "tundra": { "base": "#8B6B4A", "pattern": "#764944", "feathers": "#FAC085" },
+    "song": { "base": "#E040A0", "pattern": "#BE4453", "feathers": "#FA47B2" },
+    "feather": { "base": "#E3DACB", "pattern": "#91918C", "feathers": "#FAEBD2" },
+    "ember": { "base": "#FF8C1A", "pattern": "#D94336", "feathers": "#FA9C3E" },
+    "dawn": { "base": "#FF9E80", "pattern": "#D97889", "feathers": "#FA9B7D" },
+    "shard": { "base": "#FFD23F", "pattern": "#D97946", "feathers": "#FACE3E" },
+    "drift": { "base": "#A7C4D9", "pattern": "#787EB8", "feathers": "#A2D5FA" }
   }
 }
