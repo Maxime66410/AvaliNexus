@@ -78,6 +78,7 @@ Saved in `config/avalinexus.json`.
 | `avaliFontUi` | true | Uses the Avali font for titles, buttons and labels |
 | `avaliFontReading` | false | Uses the Avali font for texts you read (dialogues, archives, shop) |
 | `coldSpeed` | 100 | How fast the cold freezes you in percent (50 is twice slower, 200 twice faster, 0 turns it off), from 0 to 500 |
+| `liquidColdSpeed` | 100 | Same thing for the ammonia and the coolant you swim in, from 0 to 500 |
 
 ## Versions
 

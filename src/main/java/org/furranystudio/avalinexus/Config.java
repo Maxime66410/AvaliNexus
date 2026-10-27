@@ -23,16 +23,18 @@ public final class Config {
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
-    public static final ConfigValue<Boolean> DEBUG_LOGGING = new ConfigValue<>("debugLogging", false);
+    public static final ConfigValue<Boolean> DEBUG_LOGGING = new ConfigValue<>("debugLogging", false); // Debugging the mod
     public static final ConfigValue<Boolean> AVALI_FONT_UI = new ConfigValue<>("avaliFontUi", true); // Custom title font
     public static final ConfigValue<Boolean> AVALI_FONT_READING = new ConfigValue<>("avaliFontReading", false); // Custom text font
-    public static final ConfigValue<Integer> COLD_SPEED = new ConfigValue<>("coldSpeed", 100);
+    public static final ConfigValue<Integer> COLD_SPEED = new ConfigValue<>("coldSpeed", 100); // Speed biome cold
+    public static final ConfigValue<Integer> LIQUID_COLD_SPEED = new ConfigValue<>("liquidColdSpeed", 100);// Speed liquid cold
 
     private static final ConfigValue<?>[] VALUES = {
         DEBUG_LOGGING,
         AVALI_FONT_UI,
         AVALI_FONT_READING,
-        COLD_SPEED
+        COLD_SPEED,
+        LIQUID_COLD_SPEED
     };
 
     private Config() {
@@ -43,6 +45,7 @@ public final class Config {
         SettingsRegistry.register("avaliFontUi", new BoolSetting(AVALI_FONT_UI));
         SettingsRegistry.register("avaliFontReading", new BoolSetting(AVALI_FONT_READING));
         SettingsRegistry.register("coldSpeed", new IntSetting(COLD_SPEED, 0, 500));
+        SettingsRegistry.register("liquidColdSpeed", new IntSetting(LIQUID_COLD_SPEED, 0, 500));
     }
 
     public static void load() {
