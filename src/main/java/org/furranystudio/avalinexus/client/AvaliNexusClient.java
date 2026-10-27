@@ -2,13 +2,14 @@
  * File: AvaliNexusClient.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-10-20
+ * Last Modified: 2026-10-27
  */
 package org.furranystudio.avalinexus.client;
 
 import net.minecraft.client.Minecraft;
 import org.furranystudio.avalinexus.client.archive.ArchiveScreen;
 import org.furranystudio.avalinexus.client.reputation.ReputationScreen;
+import org.furranystudio.avalinexus.client.settings.AvaliSettingsScreen;
 import org.furranystudio.avalinexus.client.dialogue.ClientDialogue;
 import org.furranystudio.avalinexus.client.shop.AvaliShopScreen;
 import org.furranystudio.avalinexus.network.ModNetworking;
@@ -20,6 +21,7 @@ import org.furranystudio.avalinexus.network.packet.OpenShopPayload;
 import org.furranystudio.avalinexus.network.packet.PingPayload;
 import org.furranystudio.avalinexus.network.packet.ReputationPayload;
 import org.furranystudio.avalinexus.network.packet.PongPayload;
+import org.furranystudio.avalinexus.network.packet.SettingsPayload;
 import org.furranystudio.avalinexus.network.packet.ShopUpdatePayload;
 
 public final class AvaliNexusClient {
@@ -43,6 +45,11 @@ public final class AvaliNexusClient {
             Minecraft.getInstance().gui.setScreen(new ReputationScreen(reputation)));
         ModNetworking.setClientHandler(OpenArchivesPayload.TYPE, open ->
             Minecraft.getInstance().gui.setScreen(new ArchiveScreen(open.categories(), open.entries())));
+        ModNetworking.setClientHandler(SettingsPayload.TYPE, settings -> {
+            if (Minecraft.getInstance().gui.screen() instanceof AvaliSettingsScreen screen) {
+                screen.receive(settings);
+            }
+        });
         ModNetworking.setClientHandler(ShopUpdatePayload.TYPE, update -> {
             if (Minecraft.getInstance().gui.screen() instanceof AvaliShopScreen shop && shop.entityId() == update.entityId()) {
                 shop.update(update.offer(), update.uses());

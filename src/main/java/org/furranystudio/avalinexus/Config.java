@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 
 public final class Config {
 
@@ -28,6 +29,8 @@ public final class Config {
     public static final ConfigValue<Boolean> AVALI_FONT_READING = new ConfigValue<>("avaliFontReading", false); // Custom text font
     public static final ConfigValue<Integer> COLD_SPEED = new ConfigValue<>("coldSpeed", 100); // Speed biome cold
     public static final ConfigValue<Integer> LIQUID_COLD_SPEED = new ConfigValue<>("liquidColdSpeed", 100);// Speed liquid cold
+
+    public static final List<String> SERVER_SETTINGS = List.of("coldSpeed", "liquidColdSpeed");
 
     private static final ConfigValue<?>[] VALUES = {
         DEBUG_LOGGING,
