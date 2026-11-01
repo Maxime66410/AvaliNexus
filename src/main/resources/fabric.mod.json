@@ -33,6 +33,9 @@
     ],
     "modmenu": [
       "org.furranystudio.avalinexus.fabric.AvaliNexusModMenu"
+    ],
+    "jei_mod_plugin": [
+      "org.furranystudio.avalinexus.compat.jei.AvaliJeiPlugin"
     ]
   },
   "mixins": [
@@ -48,6 +51,7 @@
     "terrablender": ">=${terrablender_version}"
   },
   "suggests": {
-    "modmenu": "*"
+    "modmenu": "*",
+    "jei": "*"
   }
 }

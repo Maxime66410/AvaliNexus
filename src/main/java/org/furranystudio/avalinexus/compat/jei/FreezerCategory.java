@@ -1,0 +1,69 @@
+/**
+ * File: FreezerCategory.java
+ * Author: Maxime66410
+ * Created: 2026-11-01
+ * Last Modified: 2026-11-01
+ */
+package org.furranystudio.avalinexus.compat.jei;
+
+import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
+import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder;
+import mezz.jei.api.helpers.IGuiHelper;
+import mezz.jei.api.recipe.IFocusGroup;
+import mezz.jei.api.recipe.category.AbstractRecipeCategory;
+import mezz.jei.api.recipe.types.IRecipeType;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
+import org.furranystudio.avalinexus.AvaliNexus;
+import org.furranystudio.avalinexus.block.ModBlocks;
+import org.furranystudio.avalinexus.block.freezer.CryoFreezerBlockEntity;
+import org.furranystudio.avalinexus.fluid.AvaliFluidKind;
+import org.furranystudio.avalinexus.fluid.AvaliLiquids;
+import org.furranystudio.avalinexus.fluid.ModFluids;
+import org.furranystudio.avalinexus.item.ModItems;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class FreezerCategory extends AbstractRecipeCategory<FreezerCategory.Recipe> {
+
+    public static final IRecipeType<Recipe> TYPE = IRecipeType.create(AvaliNexus.id("cryo_freezer"), Recipe.class);
+
+    public record Recipe(ItemStack input, Fluid liquid, ItemStack output) {
+    }
+
+    public FreezerCategory(IGuiHelper gui) {
+        super(TYPE, ModBlocks.CRYO_FREEZER.get().getName(), gui.createDrawableItemLike(ModItems.CRYO_FREEZER.get()), 120, 62);
+    }
+
+    public static List<Recipe> recipes() {
+        List<Recipe> recipes = new ArrayList<>();
+        recipes.add(new Recipe(ItemStack.EMPTY, Fluids.WATER, new ItemStack(Items.ICE)));
+        recipes.add(new Recipe(ItemStack.EMPTY, ModFluids.source(AvaliFluidKind.AMMONIA), new ItemStack(ModItems.AMMONIA_ICE.get())));
+        recipes.add(new Recipe(new ItemStack(Items.BUCKET), Fluids.WATER, new ItemStack(Items.POWDER_SNOW_BUCKET)));
+        for (ItemStack ice : List.of(new ItemStack(Items.ICE), new ItemStack(Items.PACKED_ICE), new ItemStack(ModItems.AMMONIA_ICE.get()))) {
+            recipes.add(new Recipe(ice, null, new ItemStack(CryoFreezerBlockEntity.packed(ice))));
+        }
+        return recipes;
+    }
+
+    @Override
+    public void setRecipe(IRecipeLayoutBuilder builder, Recipe recipe, IFocusGroup focuses) {
+        if (!recipe.input().isEmpty()) {
+            builder.addInputSlot(1, 1).setStandardSlotBackground().add(recipe.input());
+        }
+        if (recipe.liquid() != null) {
+            AvaliJeiPlugin.fluid(builder.addInputSlot(1, 23).setStandardSlotBackground(), recipe.liquid(), AvaliLiquids.BUCKET);
+        }
+        AvaliJeiPlugin.fluid(builder.addInputSlot(1, 45).setStandardSlotBackground(), ModFluids.source(AvaliFluidKind.COOLANT), CryoFreezerBlockEntity.COOLANT_COST);
+        builder.addOutputSlot(95, 23).setOutputSlotBackground().add(recipe.output());
+    }
+
+    @Override
+    public void createRecipeExtras(IRecipeExtrasBuilder builder, Recipe recipe, IFocusGroup focuses) {
+        builder.addAnimatedRecipeArrowWidget(CryoFreezerBlockEntity.DURATION).setPosition(55, 22);
+        builder.addText(AvaliJeiPlugin.seconds(CryoFreezerBlockEntity.DURATION), 40, 10).setPosition(55, 42);
+    }
+}

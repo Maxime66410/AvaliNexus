@@ -351,6 +351,7 @@
   "gui.avalinexus.weapon_workbench.cost": "%s × %s",
   "gui.avalinexus.machine.gauge": "%s: %s / %s mB",
   "gui.avalinexus.machine.empty": "Vacío: 0 / %s mB",
+  "gui.avalinexus.jei.time": "%s s",
   "message.avalinexus.pump.dry": "No hay fuente de líquido bajo la bomba",
   "message.avalinexus.pump.pumping": "Bombeando: %s",
   "message.avalinexus.tap.empty": "No hay suficiente líquido para un cubo",

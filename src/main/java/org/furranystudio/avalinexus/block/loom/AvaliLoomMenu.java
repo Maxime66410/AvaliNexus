@@ -2,7 +2,7 @@
  * File: AvaliLoomMenu.java
  * Author: Maxime66410
  * Created: 2026-10-11
- * Last Modified: 2026-10-12
+ * Last Modified: 2026-11-01
  */
 package org.furranystudio.avalinexus.block.loom;
 
@@ -40,7 +40,7 @@ public class AvaliLoomMenu extends AbstractContainerMenu {
     public static final int INVENTORY_Y = 84;
     private static final int INVENTORY_START = 4;
     private static final int INVENTORY_END = 40;
-    private static final int CANVAS_YIELD = 2;
+    public static final int CANVAS_YIELD = 2;
 
     private final ContainerLevelAccess access;
     private final DataSlot selected = DataSlot.standalone();
