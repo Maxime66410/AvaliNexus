@@ -43,6 +43,14 @@ repositories {
         url = 'https://maven.minecraftforge.net/'
         content { includeGroup 'com.github.glitchfiend' }
     }
+    maven {
+        name = 'BlameJared'
+        url = 'https://maven.blamejared.com/'
+        content {
+            includeGroup 'mezz.jei'
+            includeGroup 'net.mezzdev.config'
+        }
+    }
 }
 
 dependencies {
@@ -56,6 +64,9 @@ dependencies {
     implementation "com.github.glitchfiend:TerraBlender-fabric:${minecraft_version}-${terrablender_version}"
     // Optional, only adds the config button to the mod list when installed
     compileOnly "com.terraformersmc:modmenu:${modmenu_version}"
+    compileOnly "mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"
+    compileOnly "mezz.jei:jei-${minecraft_version}-fabric-api:${jei_version}"
+    runtimeOnly "mezz.jei:jei-${minecraft_version}-fabric:${jei_version}"
 }
 
 tasks.withType(JavaCompile).configureEach {

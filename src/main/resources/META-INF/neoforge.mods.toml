@@ -44,6 +44,13 @@ description='''${mod_description}'''
     ordering="NONE"
     side="BOTH"
 
+[[dependencies.${mod_id}]]
+    modId="jei"
+    type="optional"
+    versionRange="*"
+    ordering="NONE"
+    side="CLIENT"
+
 # Aim sensitivity, shared with Forge and Fabric
 [[mixins]]
     config="avalinexus.mixins.json"

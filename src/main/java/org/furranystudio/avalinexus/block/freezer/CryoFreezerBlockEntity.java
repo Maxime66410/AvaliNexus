@@ -2,7 +2,7 @@
  * File: CryoFreezerBlockEntity.java
  * Author: Maxime66410
  * Created: 2026-10-15
- * Last Modified: 2026-10-27
+ * Last Modified: 2026-11-01
  */
 package org.furranystudio.avalinexus.block.freezer;
 
@@ -43,8 +43,8 @@ public class CryoFreezerBlockEntity extends MachineBlockEntity {
     public static final int INPUT = 2;
     public static final int OUTPUT = 3;
 
-    private static final int DURATION = 100;
-    private static final int COOLANT_COST = 250;
+    public static final int DURATION = 100;
+    public static final int COOLANT_COST = 250;
     private static final int TANK_CAPACITY = 4 * AvaliLiquids.BUCKET;
     private static final int[] TOP_SLOTS = {INPUT};
     private static final int[] BOTTOM_SLOTS = {OUTPUT};
@@ -80,7 +80,7 @@ public class CryoFreezerBlockEntity extends MachineBlockEntity {
         return fluid.isSame(Fluids.WATER) || is(fluid, AvaliFluidKind.AMMONIA);
     }
 
-    private static Item packed(ItemStack stack) {
+    public static Item packed(ItemStack stack) {
         if (stack.is(Items.ICE)) {
             return Items.PACKED_ICE;
         }

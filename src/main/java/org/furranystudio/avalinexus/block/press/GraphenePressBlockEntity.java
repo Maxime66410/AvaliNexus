@@ -2,7 +2,7 @@
  * File: GraphenePressBlockEntity.java
  * Author: Maxime66410
  * Created: 2026-10-16
- * Last Modified: 2026-10-27
+ * Last Modified: 2026-11-01
  */
 package org.furranystudio.avalinexus.block.press;
 
@@ -41,10 +41,10 @@ public class GraphenePressBlockEntity extends MachineBlockEntity {
     public static final int SHARD = 2;
     public static final int OUTPUT = 3;
 
-    private static final int DURATION = 200;
-    private static final int FUEL_COST = 500;
-    private static final int COAL_COST = 4;
-    private static final int GRAPHENE_COUNT = 6;
+    public static final int DURATION = 200;
+    public static final int FUEL_COST = 500;
+    public static final int COAL_COST = 4;
+    public static final int GRAPHENE_COUNT = 6;
     private static final int TANK_CAPACITY = 4 * AvaliLiquids.BUCKET;
     private static final int[] TOP_SLOTS = {COAL, SHARD};
     private static final int[] BOTTOM_SLOTS = {OUTPUT};

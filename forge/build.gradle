@@ -27,6 +27,7 @@ sourceSets {
             srcDirs = ['../src/main/java']
             exclude 'org/furranystudio/avalinexus/fabric/**'
             exclude 'org/furranystudio/avalinexus/neoforge/**'
+            exclude 'org/furranystudio/avalinexus/compat/jei/**'
         }
         resources {
             srcDirs = ['../src/main/resources', '../src/generated/resources']

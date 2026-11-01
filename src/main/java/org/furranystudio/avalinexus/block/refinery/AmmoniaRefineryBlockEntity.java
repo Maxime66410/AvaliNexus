@@ -2,7 +2,7 @@
  * File: AmmoniaRefineryBlockEntity.java
  * Author: Maxime66410
  * Created: 2026-10-15
- * Last Modified: 2026-10-27
+ * Last Modified: 2026-11-01
  */
 package org.furranystudio.avalinexus.block.refinery;
 
@@ -43,8 +43,9 @@ public class AmmoniaRefineryBlockEntity extends MachineBlockEntity {
     public static final int INGREDIENT = 3;
     public static final int COAL = 4;
 
-    private static final int DURATION = 200;
-    private static final int FUEL_COST = 250;
+    public static final int DURATION = 200;
+    public static final int FUEL_COST = 250;
+    public static final int COAL_FUEL = 2 * AvaliLiquids.BUCKET;
     private static final int COAL_CHARGES = 8;
     private static final int TANK_CAPACITY = 4 * AvaliLiquids.BUCKET;
     private static final int[] TOP_SLOTS = {INGREDIENT, COAL, OUTPUT_BUCKET};
@@ -110,7 +111,7 @@ public class AmmoniaRefineryBlockEntity extends MachineBlockEntity {
         ItemStack ingredient = getItem(INGREDIENT);
         Fluid product = ingredient.is(ModItems.GRAPHENE.get()) ? ModFluids.source(AvaliFluidKind.COOLANT)
             : isCoal(ingredient) ? ModFluids.source(AvaliFluidKind.FUEL) : null;
-        int produced = isCoal(ingredient) ? 2 * AvaliLiquids.BUCKET : AvaliLiquids.BUCKET;
+        int produced = isCoal(ingredient) ? COAL_FUEL : AvaliLiquids.BUCKET;
         boolean running = product != null
             && ammonia.amount() >= AvaliLiquids.BUCKET
             && output.fill(product, produced, true) == produced
