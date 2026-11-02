@@ -84,6 +84,11 @@ repositories {
             includeGroup 'dev.architectury'
         }
     }
+    maven {
+        name = 'Modrinth'
+        url = 'https://api.modrinth.com/maven'
+        content { includeGroup 'maven.modrinth' }
+    }
 }
 
 dependencies {
@@ -92,6 +97,10 @@ dependencies {
     compileOnly "mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"
     compileOnly "mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}"
     compileOnly "me.shedaniel:RoughlyEnoughItems-api-neoforge:${rei_version}"
+    compileOnly "maven.modrinth:jade:${jade_version}+neoforge"
+    if (jade == 'true') {
+        runtimeOnly "maven.modrinth:jade:${jade_version}+neoforge"
+    }
     if (recipe_viewer == 'jei') {
         runtimeOnly "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
     } else if (recipe_viewer == 'rei') {
