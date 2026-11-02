@@ -2,7 +2,7 @@
  * File: RailGunClient.java
  * Author: Maxime66410
  * Created: 2026-09-29
- * Last Modified: 2026-10-19
+ * Last Modified: 2026-11-02
  */
 package org.furranystudio.avalinexus.client.weapon;
 
@@ -26,6 +26,7 @@ public final class RailGunClient {
 
     private static final int EJECT_HOLD_TICKS = 10;
 
+    private static int shotAt;
     private static int nextShot;
     private static int reloadHeld = -1;
     private static boolean ejected;
@@ -57,9 +58,10 @@ public final class RailGunClient {
             }
             return;
         }
-        if (player.tickCount < nextShot) {
+        if (shotAt <= player.tickCount && player.tickCount < nextShot) {
             return;
         }
+        shotAt = player.tickCount;
         nextShot = player.tickCount + stats.interval();
         ModNetworking.sendToServer(RailFirePayload.INSTANCE);
         if (RailGunItem.ammo(player.getMainHandItem()) > 0 || player.hasInfiniteMaterials()) {

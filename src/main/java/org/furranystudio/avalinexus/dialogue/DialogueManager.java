@@ -2,7 +2,7 @@
  * File: DialogueManager.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-10-22
+ * Last Modified: 2026-11-02
  */
 package org.furranystudio.avalinexus.dialogue;
 
@@ -47,7 +47,8 @@ public final class DialogueManager {
     public static void open(ServerPlayer player, AvaliEntity avali) {
         // Stops the click used to pick "Leave" from opening the dialogue again right away
         Long closedAt = CLOSED_AT.get(player.getUUID());
-        if (closedAt != null && player.level().getGameTime() - closedAt < REOPEN_COOLDOWN_TICKS) {
+        long now = player.level().getGameTime();
+        if (closedAt != null && closedAt <= now && now - closedAt < REOPEN_COOLDOWN_TICKS) {
             return;
         }
         ServerPlayer current = avali.getTalkingTo();
