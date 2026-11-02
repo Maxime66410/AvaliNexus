@@ -2,7 +2,7 @@
  * File: PressCategory.java
  * Author: Maxime66410
  * Created: 2026-11-01
- * Last Modified: 2026-11-01
+ * Last Modified: 2026-11-02
  */
 package org.furranystudio.avalinexus.compat.jei;
 
@@ -16,6 +16,7 @@ import net.minecraft.world.item.ItemStack;
 import org.furranystudio.avalinexus.AvaliNexus;
 import org.furranystudio.avalinexus.block.ModBlocks;
 import org.furranystudio.avalinexus.block.press.GraphenePressBlockEntity;
+import org.furranystudio.avalinexus.compat.AvaliRecipes;
 import org.furranystudio.avalinexus.fluid.AvaliFluidKind;
 import org.furranystudio.avalinexus.fluid.ModFluids;
 import org.furranystudio.avalinexus.item.ModItems;
@@ -34,7 +35,7 @@ public class PressCategory extends AbstractRecipeCategory<PressCategory.Recipe> 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, Recipe recipe, IFocusGroup focuses) {
         builder.addInputSlot(1, 1).setStandardSlotBackground().add(new ItemStack(ModItems.NEXITE_SHARD.get()));
-        builder.addInputSlot(1, 23).setStandardSlotBackground().addItemStacks(AvaliJeiPlugin.coals(GraphenePressBlockEntity.COAL_COST));
+        builder.addInputSlot(1, 23).setStandardSlotBackground().addItemStacks(AvaliRecipes.coals(GraphenePressBlockEntity.COAL_COST));
         AvaliJeiPlugin.fluid(builder.addInputSlot(1, 45).setStandardSlotBackground(), ModFluids.source(AvaliFluidKind.FUEL), GraphenePressBlockEntity.FUEL_COST);
         builder.addOutputSlot(95, 23).setOutputSlotBackground().add(new ItemStack(ModItems.GRAPHENE.get(), GraphenePressBlockEntity.GRAPHENE_COUNT));
     }
@@ -42,6 +43,6 @@ public class PressCategory extends AbstractRecipeCategory<PressCategory.Recipe> 
     @Override
     public void createRecipeExtras(IRecipeExtrasBuilder builder, Recipe recipe, IFocusGroup focuses) {
         builder.addAnimatedRecipeArrowWidget(GraphenePressBlockEntity.DURATION).setPosition(55, 22);
-        builder.addText(AvaliJeiPlugin.seconds(GraphenePressBlockEntity.DURATION), 40, 10).setPosition(55, 42);
+        builder.addText(AvaliRecipes.seconds(GraphenePressBlockEntity.DURATION), 40, 10).setPosition(55, 42);
     }
 }
