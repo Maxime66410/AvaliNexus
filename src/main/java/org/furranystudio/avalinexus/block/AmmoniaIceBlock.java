@@ -2,7 +2,7 @@
  * File: AmmoniaIceBlock.java
  * Author: Maxime66410
  * Created: 2026-10-13
- * Last Modified: 2026-10-13
+ * Last Modified: 2026-11-02
  */
 package org.furranystudio.avalinexus.block;
 
@@ -34,7 +34,7 @@ public class AmmoniaIceBlock extends HalfTransparentBlock {
         return ModFluids.block(AvaliFluidKind.AMMONIA).defaultBlockState();
     }
 
-    @Override
+    @Override @SuppressWarnings("deprecation")
     public void playerDestroy(ServerLevel level, ServerPlayer player, BlockPos pos, BlockState state, BlockEntity blockEntity, ItemStack tool) {
         super.playerDestroy(level, player, pos, state, blockEntity, tool);
         if (EnchantmentHelper.hasTag(tool, EnchantmentTags.PREVENTS_ICE_MELTING)) {

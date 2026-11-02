@@ -2,7 +2,7 @@
  * File: HeaterBlock.java
  * Author: Maxime66410
  * Created: 2026-09-28
- * Last Modified: 2026-09-28
+ * Last Modified: 2026-11-02
  */
 package org.furranystudio.avalinexus.block.heater;
 
@@ -140,7 +140,7 @@ public class HeaterBlock extends Block implements EntityBlock, FluidPortBlock {
 
     @Override
     protected BlockState mirror(BlockState state, Mirror mirror) {
-        return state.rotate(mirror.getRotation(state.getValue(FACING)));
+        return rotate(state, mirror.getRotation(state.getValue(FACING)));
     }
 
     @Override

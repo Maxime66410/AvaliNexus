@@ -2,7 +2,7 @@
  * File: TerminalBlock.java
  * Author: Maxime66410
  * Created: 2026-09-28
- * Last Modified: 2026-09-28
+ * Last Modified: 2026-11-02
  */
 package org.furranystudio.avalinexus.block;
 
@@ -66,7 +66,7 @@ public class TerminalBlock extends Block {
 
     @Override
     protected BlockState mirror(BlockState state, Mirror mirror) {
-        return state.rotate(mirror.getRotation(state.getValue(FACING)));
+        return rotate(state, mirror.getRotation(state.getValue(FACING)));
     }
 
     @Override

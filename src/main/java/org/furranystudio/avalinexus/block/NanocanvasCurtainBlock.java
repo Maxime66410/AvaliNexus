@@ -2,7 +2,7 @@
  * File: NanocanvasCurtainBlock.java
  * Author: Maxime66410
  * Created: 2026-10-13
- * Last Modified: 2026-10-13
+ * Last Modified: 2026-11-02
  */
 package org.furranystudio.avalinexus.block;
 
@@ -131,6 +131,6 @@ public class NanocanvasCurtainBlock extends Block {
         if (mirror == Mirror.NONE) {
             return state;
         }
-        return state.rotate(mirror.getRotation(state.getValue(FACING))).cycle(HINGE);
+        return rotate(state, mirror.getRotation(state.getValue(FACING))).cycle(HINGE);
     }
 }
