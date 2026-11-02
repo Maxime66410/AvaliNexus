@@ -91,6 +91,7 @@ Saved in `config/avalinexus.json`.
 - TerraBlender 26.3.0.0.9 (adds the polar biome to the overworld), needs to be installed with the mod too
 - _Mod Menu 21.0.0 on Fabric is optional, it just adds the config button to the mod list_
 - _JEI 31.17.0.108 or REI 26.3.824 on NeoForge and Fabric are optional_
+- _Jade 26.3.5 on NeoForge and Fabric is optional_
 - _FTB Quests + FTB Library support is planned for way later_
 
 ## Project structure
@@ -126,6 +127,7 @@ gradle -p neoforge build
 You need Gradle 9.7+ running on JDK 25.
 
 In `neoforge/gradle.properties` and `fabric/gradle.properties`, `recipe_viewer` picks what `runClient` launches: `jei`, `rei` or `none`.
+`jade` (`true` or `false`) adds Jade to `runClient`.
 
 ## Contributing
 
