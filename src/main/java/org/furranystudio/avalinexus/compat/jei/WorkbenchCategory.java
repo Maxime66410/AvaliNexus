@@ -2,7 +2,7 @@
  * File: WorkbenchCategory.java
  * Author: Maxime66410
  * Created: 2026-11-01
- * Last Modified: 2026-11-01
+ * Last Modified: 2026-11-02
  */
 package org.furranystudio.avalinexus.compat.jei;
 
@@ -16,6 +16,7 @@ import net.minecraft.world.item.ItemStack;
 import org.furranystudio.avalinexus.AvaliNexus;
 import org.furranystudio.avalinexus.block.ModBlocks;
 import org.furranystudio.avalinexus.block.workbench.WeaponRecipe;
+import org.furranystudio.avalinexus.compat.AvaliRecipes;
 import org.furranystudio.avalinexus.fluid.AvaliFluidKind;
 import org.furranystudio.avalinexus.fluid.ModFluids;
 import org.furranystudio.avalinexus.item.ModItems;
@@ -44,6 +45,6 @@ public class WorkbenchCategory extends AbstractRecipeCategory<WeaponRecipe> {
     @Override
     public void createRecipeExtras(IRecipeExtrasBuilder builder, WeaponRecipe recipe, IFocusGroup focuses) {
         builder.addAnimatedRecipeArrowWidget(recipe.duration()).setPosition(62, 22);
-        builder.addText(AvaliJeiPlugin.seconds(recipe.duration()), 30, 10).setPosition(62, 42);
+        builder.addText(AvaliRecipes.seconds(recipe.duration()), 30, 10).setPosition(62, 42);
     }
 }

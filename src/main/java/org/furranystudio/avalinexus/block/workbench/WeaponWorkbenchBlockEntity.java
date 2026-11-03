@@ -2,7 +2,7 @@
  * File: WeaponWorkbenchBlockEntity.java
  * Author: Maxime66410
  * Created: 2026-10-16
- * Last Modified: 2026-10-27
+ * Last Modified: 2026-11-02
  */
 package org.furranystudio.avalinexus.block.workbench;
 
@@ -51,7 +51,7 @@ public class WeaponWorkbenchBlockEntity extends MachineBlockEntity {
     private int progress;
     private int selected = -1;
 
-    private final ContainerData machineData = MachineMenu.data(tanks, new MachineMenu.Progress() {
+    private final MachineMenu.Progress work = new MachineMenu.Progress() {
         @Override
         public int progress() {
             return progress;
@@ -62,7 +62,8 @@ public class WeaponWorkbenchBlockEntity extends MachineBlockEntity {
             WeaponRecipe recipe = WeaponRecipe.get(selected);
             return recipe == null ? 0 : recipe.duration();
         }
-    });
+    };
+    private final ContainerData machineData = MachineMenu.data(tanks, work);
 
     private final ContainerData data = new ContainerData() {
         @Override
@@ -100,7 +101,12 @@ public class WeaponWorkbenchBlockEntity extends MachineBlockEntity {
     }
 
     @Override
-    protected List<MachineTank> tanks() {
+    public MachineMenu.Progress work() {
+        return work;
+    }
+
+    @Override
+    public List<MachineTank> tanks() {
         return tanks;
     }
 

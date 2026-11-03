@@ -2,7 +2,7 @@
  * File: HeaterBlockEntity.java
  * Author: Maxime66410
  * Created: 2026-09-28
- * Last Modified: 2026-10-27
+ * Last Modified: 2026-11-02
  */
 package org.furranystudio.avalinexus.block.heater;
 
@@ -100,6 +100,14 @@ public class HeaterBlockEntity extends BaseContainerBlockEntity {
             level.playSound(null, pos, lit ? ModSounds.HEATER_IGNITE.get() : ModSounds.HEATER_EXTINGUISH.get(), SoundSource.BLOCKS, lit ? 1.0F : 0.5F, 1.0F);
             setChanged();
         }
+    }
+
+    public int litTime() {
+        return litTime;
+    }
+
+    public int litDuration() {
+        return litDuration;
     }
 
     public FluidPort fuelPort() {

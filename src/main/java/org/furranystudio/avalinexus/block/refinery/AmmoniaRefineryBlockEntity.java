@@ -2,7 +2,7 @@
  * File: AmmoniaRefineryBlockEntity.java
  * Author: Maxime66410
  * Created: 2026-10-15
- * Last Modified: 2026-11-01
+ * Last Modified: 2026-11-02
  */
 package org.furranystudio.avalinexus.block.refinery;
 
@@ -60,7 +60,7 @@ public class AmmoniaRefineryBlockEntity extends MachineBlockEntity {
     private int progress;
     private int coalCharges;
 
-    private final ContainerData data = MachineMenu.data(tanks, new MachineMenu.Progress() {
+    private final MachineMenu.Progress work = new MachineMenu.Progress() {
         @Override
         public int progress() {
             return progress;
@@ -70,7 +70,8 @@ public class AmmoniaRefineryBlockEntity extends MachineBlockEntity {
         public int duration() {
             return DURATION;
         }
-    });
+    };
+    private final ContainerData data = MachineMenu.data(tanks, work);
 
     public AmmoniaRefineryBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.AMMONIA_REFINERY.get(), pos, state, 5);
@@ -89,7 +90,12 @@ public class AmmoniaRefineryBlockEntity extends MachineBlockEntity {
     }
 
     @Override
-    protected List<MachineTank> tanks() {
+    public MachineMenu.Progress work() {
+        return work;
+    }
+
+    @Override
+    public List<MachineTank> tanks() {
         return tanks;
     }
 

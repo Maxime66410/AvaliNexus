@@ -2,7 +2,7 @@
  * File: AvaliLoomBlock.java
  * Author: Maxime66410
  * Created: 2026-10-11
- * Last Modified: 2026-10-12
+ * Last Modified: 2026-11-02
  */
 package org.furranystudio.avalinexus.block.loom;
 
@@ -76,7 +76,7 @@ public class AvaliLoomBlock extends Block {
 
     @Override
     protected BlockState mirror(BlockState state, Mirror mirror) {
-        return state.rotate(mirror.getRotation(state.getValue(FACING)));
+        return rotate(state, mirror.getRotation(state.getValue(FACING)));
     }
 
     @Override

@@ -36,6 +36,15 @@
     ],
     "jei_mod_plugin": [
       "org.furranystudio.avalinexus.compat.jei.AvaliJeiPlugin"
+    ],
+    "rei_client": [
+      "org.furranystudio.avalinexus.compat.rei.AvaliReiClientPlugin"
+    ],
+    "rei_common": [
+      "org.furranystudio.avalinexus.compat.rei.AvaliReiCommonPlugin"
+    ],
+    "jade": [
+      "org.furranystudio.avalinexus.compat.jade.AvaliJadePlugin"
     ]
   },
   "mixins": [
@@ -52,6 +61,8 @@
   },
   "suggests": {
     "modmenu": "*",
-    "jei": "*"
+    "jei": "*",
+    "roughlyenoughitems": "*",
+    "jade": "*"
   }
 }

@@ -2,7 +2,7 @@
  * File: MachineBlock.java
  * Author: Maxime66410
  * Created: 2026-10-15
- * Last Modified: 2026-10-15
+ * Last Modified: 2026-11-02
  */
 package org.furranystudio.avalinexus.block.machine;
 
@@ -126,6 +126,6 @@ public abstract class MachineBlock extends Block implements EntityBlock, FluidPo
 
     @Override
     protected BlockState mirror(BlockState state, Mirror mirror) {
-        return state.rotate(mirror.getRotation(state.getValue(FACING)));
+        return rotate(state, mirror.getRotation(state.getValue(FACING)));
     }
 }

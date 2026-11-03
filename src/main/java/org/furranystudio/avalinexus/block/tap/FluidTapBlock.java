@@ -2,7 +2,7 @@
  * File: FluidTapBlock.java
  * Author: Maxime66410
  * Created: 2026-10-14
- * Last Modified: 2026-10-22
+ * Last Modified: 2026-11-02
  */
 package org.furranystudio.avalinexus.block.tap;
 
@@ -70,7 +70,7 @@ public class FluidTapBlock extends Block implements FluidPortBlock {
 
     @Override
     protected BlockState mirror(BlockState state, Mirror mirror) {
-        return state.rotate(mirror.getRotation(state.getValue(FACING)));
+        return rotate(state, mirror.getRotation(state.getValue(FACING)));
     }
 
     @Override

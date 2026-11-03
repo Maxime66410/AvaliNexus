@@ -2,7 +2,7 @@
  * File: MachineBlockEntity.java
  * Author: Maxime66410
  * Created: 2026-10-15
- * Last Modified: 2026-10-27
+ * Last Modified: 2026-11-02
  */
 package org.furranystudio.avalinexus.block.machine;
 
@@ -40,7 +40,9 @@ public abstract class MachineBlockEntity extends BlockEntity implements WorldlyC
         items = NonNullList.withSize(slots, ItemStack.EMPTY);
     }
 
-    protected abstract List<MachineTank> tanks();
+    public abstract List<MachineTank> tanks();
+
+    public abstract MachineMenu.Progress work();
 
     public abstract FluidPort port(MachineSide side);
 

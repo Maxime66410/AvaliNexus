@@ -89,8 +89,10 @@ Saved in `config/avalinexus.json`.
 - Fabric Loader 0.20.1 / Fabric API 0.165.0+26.3
 - GeckoLib 5.5.7 (models and animations), needs to be installed with the mod
 - TerraBlender 26.3.0.0.9 (adds the polar biome to the overworld), needs to be installed with the mod too
-- Mod Menu 21.0.0 on Fabric is optional, it just adds the config button to the mod list
-- FTB Quests + FTB Library support is planned for way later
+- _Mod Menu 21.0.0 on Fabric is optional, it just adds the config button to the mod list_
+- _JEI 31.17.0.108 or REI 26.3.824 on NeoForge and Fabric are optional_
+- _Jade 26.3.5 on NeoForge and Fabric is optional_
+- _FTB Quests + FTB Library support is planned for way later_
 
 ## Project structure
 
@@ -123,6 +125,9 @@ gradle -p neoforge build
 ```
 
 You need Gradle 9.7+ running on JDK 25.
+
+In `neoforge/gradle.properties` and `fabric/gradle.properties`, `recipe_viewer` picks what `runClient` launches: `jei`, `rei` or `none`.
+`jade` (`true` or `false`) adds Jade to `runClient`.
 
 ## Contributing
 

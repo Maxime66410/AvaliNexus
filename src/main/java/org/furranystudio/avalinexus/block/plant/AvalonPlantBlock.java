@@ -2,7 +2,7 @@
  * File: AvalonPlantBlock.java
  * Author: Maxime66410
  * Created: 2026-10-22
- * Last Modified: 2026-10-23
+ * Last Modified: 2026-11-02
  */
 package org.furranystudio.avalinexus.block.plant;
 
@@ -67,7 +67,7 @@ public class AvalonPlantBlock extends VegetationBlock implements BonemealableBlo
         return state.is(SOIL);
     }
 
-    @Override
+    @Override @SuppressWarnings("deprecation")
     protected ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state, boolean includeData) {
         return new ItemStack(seed.get());
     }

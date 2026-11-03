@@ -2,7 +2,7 @@
  * File: AvaliEntity.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-10-27
+ * Last Modified: 2026-11-02
  */
 package org.furranystudio.avalinexus.entity.avali;
 
@@ -1068,6 +1068,10 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     public UUID getOwnerId() {
         String owner = entityData.get(DATA_OWNER);
         return owner.isEmpty() ? null : UUID.fromString(owner);
+    }
+
+    public String getOwnerName() {
+        return entityData.get(DATA_OWNER_NAME);
     }
 
     public boolean isOwnedBy(Player player) {

@@ -2,7 +2,7 @@
  * File: RailGunItem.java
  * Author: Maxime66410
  * Created: 2026-09-29
- * Last Modified: 2026-09-29
+ * Last Modified: 2026-11-02
  */
 package org.furranystudio.avalinexus.item.weapon;
 
@@ -71,7 +71,9 @@ public class RailGunItem extends Item implements GeoItem {
     public enum ReloadStep {
         NONE, FULL, START, SHELL, END
     }
-    private static final Map<UUID, Long> NEXT_SHOT = new HashMap<>();
+    private record Shot(long at, long next) {
+    }
+    private static final Map<UUID, Shot> NEXT_SHOT = new HashMap<>();
 
     private final RailStats stats;
     private final RegistryEntry<SoundEvent> fireSound;
@@ -226,11 +228,12 @@ public class RailGunItem extends Item implements GeoItem {
             }
             return;
         }
-        if (now < NEXT_SHOT.getOrDefault(player.getUUID(), 0L)) {
+        Shot last = NEXT_SHOT.get(player.getUUID());
+        if (last != null && last.at() <= now && now < last.next()) {
             return;
         }
         // One tick of slack so packet timing never eats a shot
-        NEXT_SHOT.put(player.getUUID(), now + Math.max(1, stats.interval() - 1));
+        NEXT_SHOT.put(player.getUUID(), new Shot(now, now + Math.max(1, stats.interval() - 1)));
         int ammo = ammo(gun);
         boolean creative = player.hasInfiniteMaterials();
         if (ammo <= 0 && !creative) {
