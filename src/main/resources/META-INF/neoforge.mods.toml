@@ -11,7 +11,7 @@ displayURL="https://furranystudio.fr" #optional
 iconFile="assets/avalinexus/img/an-icon.png" #optional
 logoFile="assets/avalinexus/img/an-title.png" #optional
 #bannerFile="assets/avalinexus/img/AN-Banner.png" #optional
-credits="Maxime66410, AikaDee (Avali Latin font), RyuujinZERO (creator of the Avali), The Official Avali Wiki (lore), Cynadyde (CPM Avali Model)"
+credits="Maxime66410, AikaDee (Avali Latin font), RyuujinZERO (creator of the Avali), The Official Avali Wiki (lore), Cynadyde (CPM Avali Model), SharpIce (Simplified Chinese translation)"
 authors="${mod_authors}" #optional
 description='''${mod_description}'''
 

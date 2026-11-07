@@ -30,7 +30,7 @@ displayURL="https://furranystudio.fr" #optional
 # A file name (in the root of the mod JAR) containing a logo for display
 logoFile="assets/avalinexus/img/an-title.png" #optional
 # A text field displayed in the mod UI
-credits="Maxime66410, AikaDee (Avali Latin font), RyuujinZERO (creator of the Avali), The Official Avali Wiki (lore), Cynadyde (CPM Avali Model)" #optional
+credits="Maxime66410, AikaDee (Avali Latin font), RyuujinZERO (creator of the Avali), The Official Avali Wiki (lore), Cynadyde (CPM Avali Model), SharpIce (Simplified Chinese translation)" #optional
 # A text field displayed in the mod UI
 authors="${mod_authors}" #optional
 # Display Test controls the display for your mod in the server connection screen
