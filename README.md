@@ -139,6 +139,8 @@ In `neoforge/gradle.properties` and `fabric/gradle.properties`, `recipe_viewer` 
 
 Want to help? Check [CONTRIBUTING.md](CONTRIBUTING.md) first. Translations are done on [Crowdin](https://crowdin.com/project/avalinexus). [![Crowdin](https://badges.crowdin.net/avalinexus/localized.svg)](https://crowdin.com/project/avalinexus) If you find a security issue, please follow [SECURITY.md](SECURITY.md) instead of opening a public issue. Everyone is expected to follow the [Code of Conduct](CODE_OF_CONDUCT.md).
 
+Everyone who contributed is listed in [CONTRIBUTORS.md](CONTRIBUTORS.md).
+
 ## Credits
 
 - The **Avali Latin** font used in the dialogue UI is made by **AikaDee** on [FontStruct](https://fontstruct.com/fontstructions/show/2855105/avali-scratch-28), under the [Creative Commons Attribution Share Alike 3.0](http://creativecommons.org/licenses/by-sa/3.0/) license.
