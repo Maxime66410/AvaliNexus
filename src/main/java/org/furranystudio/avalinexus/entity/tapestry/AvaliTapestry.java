@@ -2,7 +2,7 @@
  * File: AvaliTapestry.java
  * Author: Maxime66410
  * Created: 2026-09-28
- * Last Modified: 2026-09-28
+ * Last Modified: 2026-11-07
  */
 package org.furranystudio.avalinexus.entity.tapestry;
 
@@ -50,6 +50,7 @@ public class AvaliTapestry extends HangingEntity {
     // Cloth thickness, the same one pixel as the item model it renders
     private static final double THICKNESS = 1.0 / 16.0;
     private static final double WALL_OFFSET = 0.5 - THICKNESS / 2.0;
+    private static final double RENDER_DISTANCE = 32.0;
 
     public AvaliTapestry(EntityType<? extends AvaliTapestry> type, Level level) {
         super(type, level);
@@ -138,6 +139,12 @@ public class AvaliTapestry extends HangingEntity {
     public boolean survives() {
         BlockPos support = pos.relative(getDirection().getOpposite());
         return level().getBlockState(support).isSolid();
+    }
+
+    @Override
+    public boolean shouldRenderAtSqrDistance(double distance) {
+        double range = RENDER_DISTANCE * getViewScale();
+        return distance < range * range;
     }
 
     // As tough as the nanocanvas it is made of
