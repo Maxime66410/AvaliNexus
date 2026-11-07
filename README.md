@@ -46,8 +46,8 @@ The terminal opens the Avali archives, with entries about their history, biology
 
 ### Later
 
-- **Quests**: FTB Quests support, but that's for way later.
-- **EMI**: EMI support, once it's out for 26.3.
+- **Quests**: FTB Quests support, 26.3 Not Available.
+- **EMI**: EMI support, 26.3 Not Available.
 
 ## Customization
 
@@ -116,15 +116,21 @@ The models are made as `.cpmproject`, converted with the CPM plugin in Blockbenc
 
 ## Building
 
-There's no root build, each loader folder is a seperate gradle project so you build them with `-p`:
+You need JDK 25.
+
+Build all 3 loaders from the root:
 
 ```
-gradle -p forge build
-gradle -p fabric build
-gradle -p neoforge build
+./gradlew build
 ```
 
-You need Gradle 9.7+ running on JDK 25.
+Or a single loader with `-p`:
+
+```
+./gradlew -p forge build
+./gradlew -p fabric build
+./gradlew -p neoforge build
+```
 
 In `neoforge/gradle.properties` and `fabric/gradle.properties`, `recipe_viewer` picks what `runClient` launches: `jei`, `rei` or `none`.
 `jade` (`true` or `false`) adds Jade to `runClient`.
