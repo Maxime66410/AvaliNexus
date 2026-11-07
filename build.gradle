@@ -1,0 +1,13 @@
+plugins {
+    id 'base'
+}
+
+def loaders = ['forge', 'neoforge', 'fabric']
+
+tasks.named('build') {
+    loaders.each { dependsOn gradle.includedBuild(it).task(':build') }
+}
+
+tasks.named('clean') {
+    loaders.each { dependsOn gradle.includedBuild(it).task(':clean') }
+}

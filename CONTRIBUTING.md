@@ -16,14 +16,19 @@ For anything bigger than a small fix, open an issue first so we can talk about i
 ## Setting up
 
 - JDK 25
-- Gradle 9.7 or newer
 
-There is no root build, each loader folder is a separate Gradle project:
+Build all 3 loaders from the root:
 
 ```
-gradle -p forge build
-gradle -p fabric build
-gradle -p neoforge build
+./gradlew build
+```
+
+Or a single loader with `-p`:
+
+```
+./gradlew -p forge build
+./gradlew -p fabric build
+./gradlew -p neoforge build
 ```
 
 ## Code style
