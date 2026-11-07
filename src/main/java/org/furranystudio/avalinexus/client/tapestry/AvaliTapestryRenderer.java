@@ -2,7 +2,7 @@
  * File: AvaliTapestryRenderer.java
  * Author: Maxime66410
  * Created: 2026-09-28
- * Last Modified: 2026-09-28
+ * Last Modified: 2026-11-07
  */
 package org.furranystudio.avalinexus.client.tapestry;
 
@@ -18,15 +18,24 @@ import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.DyedItemColor;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.phys.Vec3;
+import org.furranystudio.avalinexus.AvaliNexus;
 import org.furranystudio.avalinexus.entity.tapestry.AvaliTapestry;
+import org.furranystudio.avalinexus.entity.tapestry.TapestryPattern;
 import org.furranystudio.avalinexus.item.TapestryItems;
 
-// Draws the tapestry item flat against its support, its model already holds the tinted cloth and the orange bands
+// Draws the tapestry flat against its support with a plain slab model, the item one has a face on every pixel edge
 public class AvaliTapestryRenderer extends EntityRenderer<AvaliTapestry, AvaliTapestryRenderer.State> {
+
+    // That better with models >:3
+    private static final Identifier BRAID_WALL = AvaliNexus.id("avali_tapestry_wall");
+    private static final Identifier CHEVRON_WALL = AvaliNexus.id("avali_chevron_tapestry_wall");
 
     private final ItemModelResolver itemModelResolver;
 
@@ -46,7 +55,10 @@ public class AvaliTapestryRenderer extends EntityRenderer<AvaliTapestry, AvaliTa
         state.direction = tapestry.getDirection();
         state.turn = tapestry.getTurn();
         state.center = tapestry.getBoundingBox().getCenter().subtract(tapestry.position());
-        itemModelResolver.updateForNonLiving(state.item, new ItemStack(TapestryItems.get(tapestry.getPattern(), tapestry.getColor())), ItemDisplayContext.FIXED, tapestry);
+        ItemStack stack = new ItemStack(TapestryItems.get(tapestry.getPattern(), tapestry.getColor()));
+        stack.set(DataComponents.ITEM_MODEL, tapestry.getPattern() == TapestryPattern.CHEVRON ? CHEVRON_WALL : BRAID_WALL);
+        stack.set(DataComponents.DYED_COLOR, new DyedItemColor(tapestry.getColor().getTextureDiffuseColor()));
+        itemModelResolver.updateForNonLiving(state.item, stack, ItemDisplayContext.FIXED, tapestry);
     }
 
     @Override
