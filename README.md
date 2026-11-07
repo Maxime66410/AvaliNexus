@@ -46,8 +46,8 @@ The terminal opens the Avali archives, with entries about their history, biology
 
 ### Later
 
-- **Quests**: FTB Quests support, but that's for way later.
-- **EMI**: EMI support, once it's out for 26.3.
+- **Quests**: FTB Quests support, 26.3 Not Available.
+- **EMI**: EMI support, 26.3 Not Available.
 
 ## Customization
 
