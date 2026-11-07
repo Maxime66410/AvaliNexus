@@ -2,7 +2,7 @@
  * File: AvaliOverlayLayer.java
  * Author: Maxime66410
  * Created: 2026-10-17
- * Last Modified: 2026-10-25
+ * Last Modified: 2026-11-07
  */
 package org.furranystudio.avalinexus.client.avali;
 
@@ -55,7 +55,7 @@ public class AvaliOverlayLayer<R extends LivingEntityRenderState & GeoRenderStat
             PoseStack poseStack = info.poseStack();
             poseStack.pushPose();
             poseStack.last().set(pose);
-            info.renderPosed(() -> info.model().render(info, buffer, light, overlay, color));
+            info.renderPosed(() -> AvaliVisibleFaces.render(info, look.texture(), buffer, light, overlay, color));
             poseStack.popPose();
         });
     }

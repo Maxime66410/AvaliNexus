@@ -2,7 +2,7 @@
  * File: AvaliRenderer.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-10-25
+ * Last Modified: 2026-11-07
  */
 package org.furranystudio.avalinexus.client.avali;
 
@@ -14,8 +14,11 @@ import com.geckolib.renderer.base.GeoRenderState;
 import com.geckolib.renderer.base.RenderPassInfo;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+import net.minecraft.client.renderer.OrderedSubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Ease;
 import net.minecraft.util.Mth;
@@ -96,6 +99,25 @@ public class AvaliRenderer<R extends LivingEntityRenderState & GeoRenderState> e
         state.addGeckolibData(BLOCK_LEFT, InteractionHand.OFF_HAND.asArm(mainArm) == HumanoidArm.LEFT);
         state.addGeckolibData(RAIL_HOLD, swing == null && avali.getMainHandItem().getItem() instanceof RailGunItem);
         state.addGeckolibData(RIGHT_HANDED, rightHanded);
+    }
+
+    @Override
+    public void submitRenderTasks(RenderPassInfo<R> renderPassInfo, OrderedSubmitNodeCollector renderTasks, RenderType renderType) {
+        if (renderType == null || renderPassInfo.model().isMissingno()) {
+            super.submitRenderTasks(renderPassInfo, renderTasks, renderType);
+            return;
+        }
+        Identifier texture = getTextureLocation(renderPassInfo.renderState());
+        int light = renderPassInfo.packedLight();
+        int overlay = renderPassInfo.packedOverlay();
+        int color = renderPassInfo.renderColor();
+        renderTasks.submitCustomGeometry(renderPassInfo.poseStack(), renderType, (pose, buffer) -> {
+            PoseStack poseStack = renderPassInfo.poseStack();
+            poseStack.pushPose();
+            poseStack.last().set(pose);
+            renderPassInfo.renderPosed(() -> AvaliVisibleFaces.render(renderPassInfo, texture, buffer, light, overlay, color));
+            poseStack.popPose();
+        });
     }
 
     @Override
