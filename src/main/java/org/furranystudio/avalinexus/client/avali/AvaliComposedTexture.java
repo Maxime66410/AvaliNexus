@@ -14,12 +14,12 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.Resource;
-import net.minecraft.util.ARGB;
 import net.minecraft.util.Util;
 import net.minecraft.util.profiling.Profiler;
 import net.minecraft.util.profiling.Zone;
 import org.furranystudio.avalinexus.AvaliNexus;
 import org.furranystudio.avalinexus.entity.avali.AvaliEntity;
+import org.lwjgl.system.MemoryUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,14 +34,11 @@ public final class AvaliComposedTexture {
 
     public static final DataTicket<Composed> TICKET = DataTicket.create("avalinexus_composed", Composed.class);
 
-    private static final int PER_WINDOW = 3;
-    private static final long WINDOW = 16L;
     private static final long KEEP = 10000L;
     private static final Map<List<AvaliLooks.Look>, Entry> ENTRIES = new HashMap<>();
     private static final Map<Identifier, Optional<Source>> SOURCES = new HashMap<>();
     private static BakedModelCache models;
-    private static long windowStart;
-    private static int made;
+    private static long composedFrame = -1L;
     private static int next;
 
     public record Composed(Identifier texture, List<Identifier> sources) {
@@ -76,14 +73,11 @@ public final class AvaliComposedTexture {
         long now = Util.getMillis();
         Entry entry = ENTRIES.get(layers);
         if (entry == null) {
-            if (now - windowStart >= WINDOW) {
-                windowStart = now;
-                made = 0;
-            }
-            if (made >= PER_WINDOW) {
+            long frame = Minecraft.getInstance().getFrameTimeNs();
+            if (frame == composedFrame) {
                 return null;
             }
-            made++;
+            composedFrame = frame;
             try (Zone zone = Profiler.get().zone("avali_compose")) {
                 entry = new Entry(compose(layers));
             }
@@ -131,7 +125,9 @@ public final class AvaliComposedTexture {
     private static Composed compose(List<AvaliLooks.Look> layers) {
         int count = layers.size();
         int[][] pixels = new int[count][];
-        int[] tints = new int[count];
+        int[] reds = new int[count];
+        int[] greens = new int[count];
+        int[] blues = new int[count];
         List<Identifier> sources = new ArrayList<>(count);
         int width = 0;
         int height = 0;
@@ -144,24 +140,25 @@ public final class AvaliComposedTexture {
             width = source.width();
             height = source.height();
             pixels[i] = source.pixels();
-            tints[i] = look.color();
+            reds[i] = (look.color() >> 16) & 0xFF;
+            greens[i] = (look.color() >> 8) & 0xFF;
+            blues[i] = look.color() & 0xFF;
             sources.add(look.texture());
         }
-        NativeImage image = new NativeImage(width, height, true);
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                int index = x + y * width;
-                for (int i = count - 1; i >= 0; i--) {
-                    int pixel = pixels[i][index];
-                    int alpha = ARGB.alpha(pixel);
-                    if (alpha * 10 >= 255) {
-                        image.setPixel(x, y, ARGB.color(alpha, tint(ARGB.red(pixel), ARGB.red(tints[i])),
-                            tint(ARGB.green(pixel), ARGB.green(tints[i])), tint(ARGB.blue(pixel), ARGB.blue(tints[i]))));
-                        break;
-                    }
+        int[] composed = new int[width * height];
+        for (int index = 0; index < composed.length; index++) {
+            for (int i = count - 1; i >= 0; i--) {
+                int pixel = pixels[i][index];
+                int alpha = pixel >>> 24;
+                if (alpha * 10 >= 255) {
+                    composed[index] = alpha << 24 | tint((pixel >> 16) & 0xFF, blues[i]) << 16
+                        | tint((pixel >> 8) & 0xFF, greens[i]) << 8 | tint(pixel & 0xFF, reds[i]);
+                    break;
                 }
             }
         }
+        NativeImage image = new NativeImage(width, height, false);
+        MemoryUtil.memIntBuffer(image.getPointer(), composed.length).put(composed);
         Identifier id = AvaliNexus.id("dynamic/avali/" + next++);
         try (Zone zone = Profiler.get().zone("avali_compose_upload")) {
             Minecraft.getInstance().getTextureManager().register(id, new DynamicTexture(id::toString, image));
@@ -179,7 +176,7 @@ public final class AvaliComposedTexture {
             return Optional.empty();
         }
         try (InputStream stream = resource.get().open(); NativeImage image = NativeImage.read(stream)) {
-            return Optional.of(new Source(image.getWidth(), image.getHeight(), image.getPixels()));
+            return Optional.of(new Source(image.getWidth(), image.getHeight(), image.getPixelsABGR()));
         } catch (IOException e) {
             return Optional.empty();
         }
