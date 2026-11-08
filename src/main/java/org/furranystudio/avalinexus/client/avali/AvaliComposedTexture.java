@@ -16,6 +16,8 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Util;
+import net.minecraft.util.profiling.Profiler;
+import net.minecraft.util.profiling.Zone;
 import org.furranystudio.avalinexus.AvaliNexus;
 import org.furranystudio.avalinexus.entity.avali.AvaliEntity;
 
@@ -82,7 +84,9 @@ public final class AvaliComposedTexture {
                 return null;
             }
             made++;
-            entry = new Entry(compose(layers));
+            try (Zone zone = Profiler.get().zone("avali_compose")) {
+                entry = new Entry(compose(layers));
+            }
             ENTRIES.put(layers, entry);
         }
         entry.lastUsed = now;
@@ -159,7 +163,9 @@ public final class AvaliComposedTexture {
             }
         }
         Identifier id = AvaliNexus.id("dynamic/avali/" + next++);
-        Minecraft.getInstance().getTextureManager().register(id, new DynamicTexture(id::toString, image));
+        try (Zone zone = Profiler.get().zone("avali_compose_upload")) {
+            Minecraft.getInstance().getTextureManager().register(id, new DynamicTexture(id::toString, image));
+        }
         return new Composed(id, List.copyOf(sources));
     }
 
