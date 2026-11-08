@@ -15,6 +15,11 @@
       "name": "ruben",
       "texture": "avalinexus:textures/entity/avali/rare/ruben.png",
       "chance": 0.05
+    },
+    {
+      "name": "reaper",
+      "texture": "avalinexus:textures/entity/avali/rare/reaper.png",
+      "chance": 0.05
     }
   ]
 }
