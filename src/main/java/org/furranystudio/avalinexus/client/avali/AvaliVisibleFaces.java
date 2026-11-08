@@ -9,6 +9,7 @@ package org.furranystudio.avalinexus.client.avali;
 import com.geckolib.animation.state.BoneSnapshot;
 import com.geckolib.cache.model.BakedGeoModel;
 import com.geckolib.cache.model.GeoBone;
+import com.geckolib.cache.model.GeoLocator;
 import com.geckolib.cache.model.GeoQuad;
 import com.geckolib.cache.model.GeoVertex;
 import com.geckolib.cache.model.cuboid.CuboidGeoBone;
@@ -54,6 +55,9 @@ public final class AvaliVisibleFaces {
 
     private static void renderBone(RenderPassInfo<?> info, PoseStack poseStack, GeoBone bone, Map<GeoCube, boolean[]> faces,
                                    VertexConsumer buffer, int light, int overlay, int color) {
+        if (isSkipped(bone)) {
+            return;
+        }
         poseStack.pushPose();
         RenderUtil.prepMatrixForBoneAndUpdateListeners(poseStack, bone, info);
         BoneSnapshot snapshot = bone.frameSnapshot;
@@ -73,6 +77,27 @@ public final class AvaliVisibleFaces {
             }
         }
         poseStack.popPose();
+    }
+
+    private static boolean isSkipped(GeoBone bone) {
+        BoneSnapshot snapshot = bone.frameSnapshot;
+        if (!(bone instanceof CuboidGeoBone) || snapshot == null || !snapshot.isHidden() || bone.positionListeners != null) {
+            return false;
+        }
+        for (GeoLocator locator : bone.locators()) {
+            if (locator.positionListeners != null) {
+                return false;
+            }
+        }
+        if (snapshot.areChildrenHidden()) {
+            return true;
+        }
+        for (GeoBone child : bone.children()) {
+            if (!isSkipped(child)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private static void renderCube(PoseStack poseStack, GeoCube cube, boolean[] visible, VertexConsumer buffer, int light, int overlay, int color) {
