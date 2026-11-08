@@ -2,7 +2,7 @@
  * File: AvaliNexusFabricClient.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-10-24
+ * Last Modified: 2026-11-08
  */
 package org.furranystudio.avalinexus.fabric;
 
@@ -20,6 +20,7 @@ import org.furranystudio.avalinexus.block.ModBlockEntities;
 import org.furranystudio.avalinexus.client.AvaliNexusClient;
 import org.furranystudio.avalinexus.client.fluid.FluidParticleProvider;
 import org.furranystudio.avalinexus.fluid.FluidParticles;
+import org.furranystudio.avalinexus.client.avali.AvaliComposedTexture;
 import org.furranystudio.avalinexus.client.avali.AvaliRenderer;
 import org.furranystudio.avalinexus.client.reputation.ReputationClient;
 import org.furranystudio.avalinexus.client.heater.HeaterScreen;
@@ -81,6 +82,7 @@ public final class AvaliNexusFabricClient implements ClientModInitializer {
         HudElementRegistry.addLast(AvaliNexus.id("rail_gun"), RailGunHud::render);
         KeyMappingHelper.registerKeyMapping(RailGunClient.RELOAD);
         ClientTickEvents.START_CLIENT_TICK.register(client -> RailGunClient.tick());
+        ClientTickEvents.START_CLIENT_TICK.register(client -> AvaliComposedTexture.tick());
     }
 
     public interface ScreenFactory {

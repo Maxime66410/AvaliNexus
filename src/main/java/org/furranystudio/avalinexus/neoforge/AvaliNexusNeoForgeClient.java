@@ -2,7 +2,7 @@
  * File: AvaliNexusNeoForgeClient.java
  * Author: Maxime66410
  * Created: 2026-10-23
- * Last Modified: 2026-10-24
+ * Last Modified: 2026-11-08
  */
 package org.furranystudio.avalinexus.neoforge;
 
@@ -25,6 +25,7 @@ import org.furranystudio.avalinexus.AvaliNexus;
 import org.furranystudio.avalinexus.block.ModBlockEntities;
 import org.furranystudio.avalinexus.client.AvaliNexusClient;
 import org.furranystudio.avalinexus.client.ModKeyCategory;
+import org.furranystudio.avalinexus.client.avali.AvaliComposedTexture;
 import org.furranystudio.avalinexus.client.avali.AvaliRenderer;
 import org.furranystudio.avalinexus.client.block.ModBlockTints;
 import org.furranystudio.avalinexus.client.cushion.AvaliCushionRenderer;
@@ -82,6 +83,7 @@ public final class AvaliNexusNeoForgeClient {
         });
         modEventBus.addListener((RegisterGuiLayersEvent event) -> event.registerAboveAll(AvaliNexus.id("rail_gun"), RailGunHud::render));
         NeoForge.EVENT_BUS.addListener((ClientTickEvent.Pre event) -> RailGunClient.tick());
+        NeoForge.EVENT_BUS.addListener((ClientTickEvent.Pre event) -> AvaliComposedTexture.tick());
         NeoForge.EVENT_BUS.addListener((ClientTickEvent.Pre event) -> ReputationClient.tick());
         NeoForge.EVENT_BUS.addListener((InputEvent.InteractionKeyMappingTriggered event) -> {
             if (event.isAttack() && RailGunClient.blocksAttack()) {

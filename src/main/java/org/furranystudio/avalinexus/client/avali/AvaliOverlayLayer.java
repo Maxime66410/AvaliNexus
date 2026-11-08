@@ -2,7 +2,7 @@
  * File: AvaliOverlayLayer.java
  * Author: Maxime66410
  * Created: 2026-10-17
- * Last Modified: 2026-11-07
+ * Last Modified: 2026-11-08
  */
 package org.furranystudio.avalinexus.client.avali;
 
@@ -18,6 +18,7 @@ import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.util.ARGB;
 import org.furranystudio.avalinexus.entity.avali.AvaliEntity;
 
+import java.util.List;
 import java.util.function.Function;
 
 public class AvaliOverlayLayer<R extends LivingEntityRenderState & GeoRenderState> extends GeoRenderLayer<AvaliEntity, Void, R> {
@@ -44,7 +45,7 @@ public class AvaliOverlayLayer<R extends LivingEntityRenderState & GeoRenderStat
     @Override
     public void submitRenderTask(RenderPassInfo<R> info, SubmitNodeCollector collector) {
         AvaliLooks.Look look = info.getOrDefaultGeckolibData(ticket, null);
-        if (!info.willRender() || look == null) {
+        if (!info.willRender() || look == null || info.getOrDefaultGeckolibData(AvaliComposedTexture.TICKET, null) != null) {
             return;
         }
         RenderType type = renderer.getRenderType(info.renderState(), look.texture());
@@ -55,7 +56,7 @@ public class AvaliOverlayLayer<R extends LivingEntityRenderState & GeoRenderStat
             PoseStack poseStack = info.poseStack();
             poseStack.pushPose();
             poseStack.last().set(pose);
-            info.renderPosed(() -> AvaliVisibleFaces.render(info, look.texture(), buffer, light, overlay, color));
+            info.renderPosed(() -> AvaliVisibleFaces.render(info, List.of(look.texture()), buffer, light, overlay, color));
             poseStack.popPose();
         });
     }

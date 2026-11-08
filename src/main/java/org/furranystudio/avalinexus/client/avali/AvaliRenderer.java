@@ -2,7 +2,7 @@
  * File: AvaliRenderer.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-11-07
+ * Last Modified: 2026-11-08
  */
 package org.furranystudio.avalinexus.client.avali;
 
@@ -87,7 +87,11 @@ public class AvaliRenderer<R extends LivingEntityRenderState & GeoRenderState> e
         state.addGeckolibData(SWIM_PITCH, avali.getSwimPitch(partialTick));
         state.addGeckolibData(FACE, avali.getFace());
         state.addGeckolibData(RIDING, avali.isPassenger());
-        state.addGeckolibData(AvaliLooks.TEXTURE, AvaliLooks.texture(avali));
+        AvaliComposedTexture.Composed composed = AvaliComposedTexture.get(avali);
+        if (composed != null) {
+            state.addGeckolibData(AvaliComposedTexture.TICKET, composed);
+        }
+        state.addGeckolibData(AvaliLooks.TEXTURE, composed != null ? composed.texture() : AvaliLooks.texture(avali));
         HumanoidArm mainArm = avali.getMainArm();
         boolean rightHanded = mainArm == HumanoidArm.RIGHT;
         state.addGeckolibData(RIGHT_HOLDING, !(rightHanded ? avali.getMainHandItem() : avali.getOffhandItem()).isEmpty());
@@ -107,15 +111,16 @@ public class AvaliRenderer<R extends LivingEntityRenderState & GeoRenderState> e
             super.submitRenderTasks(renderPassInfo, renderTasks, renderType);
             return;
         }
-        Identifier texture = getTextureLocation(renderPassInfo.renderState());
+        AvaliComposedTexture.Composed composed = renderPassInfo.getOrDefaultGeckolibData(AvaliComposedTexture.TICKET, null);
+        List<Identifier> textures = composed != null ? composed.sources() : List.of(getTextureLocation(renderPassInfo.renderState()));
         int light = renderPassInfo.packedLight();
         int overlay = renderPassInfo.packedOverlay();
-        int color = renderPassInfo.renderColor();
+        int color = composed != null ? ARGB.color(ARGB.alpha(renderPassInfo.renderColor()), 0xFFFFFF) : renderPassInfo.renderColor();
         renderTasks.submitCustomGeometry(renderPassInfo.poseStack(), renderType, (pose, buffer) -> {
             PoseStack poseStack = renderPassInfo.poseStack();
             poseStack.pushPose();
             poseStack.last().set(pose);
-            renderPassInfo.renderPosed(() -> AvaliVisibleFaces.render(renderPassInfo, texture, buffer, light, overlay, color));
+            renderPassInfo.renderPosed(() -> AvaliVisibleFaces.render(renderPassInfo, textures, buffer, light, overlay, color));
             poseStack.popPose();
         });
     }

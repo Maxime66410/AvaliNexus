@@ -2,7 +2,7 @@
  * File: AvaliVisibleFaces.java
  * Author: Maxime66410
  * Created: 2026-11-07
- * Last Modified: 2026-11-07
+ * Last Modified: 2026-11-08
  */
 package org.furranystudio.avalinexus.client.avali;
 
@@ -29,22 +29,24 @@ import org.joml.Vector3f;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.IdentityHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 public final class AvaliVisibleFaces {
 
-    private static final Map<BakedGeoModel, Map<Identifier, Map<GeoCube, boolean[]>>> CACHE = new MapMaker().weakKeys().makeMap();
+    private static final Map<BakedGeoModel, Map<List<Identifier>, Map<GeoCube, boolean[]>>> CACHE = new MapMaker().weakKeys().makeMap();
 
     private AvaliVisibleFaces() {
     }
 
-    public static void render(RenderPassInfo<?> info, Identifier texture, VertexConsumer buffer, int light, int overlay, int color) {
+    public static void render(RenderPassInfo<?> info, List<Identifier> textures, VertexConsumer buffer, int light, int overlay, int color) {
         BakedGeoModel model = info.model();
         Map<GeoCube, boolean[]> faces = CACHE.computeIfAbsent(model, key -> new ConcurrentHashMap<>())
-            .computeIfAbsent(texture, key -> scan(model, key));
+            .computeIfAbsent(textures, key -> scan(model, key));
         for (GeoBone bone : model.topLevelBones()) {
             renderBone(info, info.poseStack(), bone, faces, buffer, light, overlay, color);
         }
@@ -92,24 +94,36 @@ public final class AvaliVisibleFaces {
         poseStack.popPose();
     }
 
-    private static Map<GeoCube, boolean[]> scan(BakedGeoModel model, Identifier texture) {
+    private static Map<GeoCube, boolean[]> scan(BakedGeoModel model, List<Identifier> textures) {
         Map<GeoCube, boolean[]> faces = new IdentityHashMap<>();
-        try (NativeImage image = load(texture)) {
-            for (GeoBone bone : model.topLevelBones()) {
-                scanBone(bone, image, faces);
+        List<NativeImage> images = new ArrayList<>(textures.size());
+        boolean missing = false;
+        for (Identifier texture : textures) {
+            NativeImage image = load(texture);
+            if (image == null) {
+                missing = true;
+            } else {
+                images.add(image);
             }
+        }
+        try {
+            for (GeoBone bone : model.topLevelBones()) {
+                scanBone(bone, missing ? List.of() : images, missing, faces);
+            }
+        } finally {
+            images.forEach(NativeImage::close);
         }
         return faces;
     }
 
-    private static void scanBone(GeoBone bone, NativeImage image, Map<GeoCube, boolean[]> faces) {
+    private static void scanBone(GeoBone bone, List<NativeImage> images, boolean missing, Map<GeoCube, boolean[]> faces) {
         if (bone instanceof CuboidGeoBone cuboid) {
             for (GeoCube cube : cuboid.cubes) {
                 GeoQuad[] quads = cube.quads();
                 boolean[] visible = new boolean[quads.length];
                 boolean any = false;
                 for (int i = 0; i < quads.length; i++) {
-                    visible[i] = quads[i] != null && (image == null || hasPixels(image, quads[i]));
+                    visible[i] = quads[i] != null && (missing || hasPixels(images, quads[i]));
                     any |= visible[i];
                 }
                 if (any) {
@@ -118,8 +132,17 @@ public final class AvaliVisibleFaces {
             }
         }
         for (GeoBone child : bone.children()) {
-            scanBone(child, image, faces);
+            scanBone(child, images, missing, faces);
         }
+    }
+
+    private static boolean hasPixels(List<NativeImage> images, GeoQuad quad) {
+        for (NativeImage image : images) {
+            if (hasPixels(image, quad)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private static boolean hasPixels(NativeImage image, GeoQuad quad) {
