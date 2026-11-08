@@ -24,6 +24,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.util.Mth;
+import net.minecraft.util.profiling.Profiler;
+import net.minecraft.util.profiling.Zone;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
@@ -45,11 +47,13 @@ public final class AvaliVisibleFaces {
     }
 
     public static void render(RenderPassInfo<?> info, List<Identifier> textures, VertexConsumer buffer, int light, int overlay, int color) {
-        BakedGeoModel model = info.model();
-        Map<GeoCube, boolean[]> faces = CACHE.computeIfAbsent(model, key -> new ConcurrentHashMap<>())
-            .computeIfAbsent(textures, key -> scan(model, key));
-        for (GeoBone bone : model.topLevelBones()) {
-            renderBone(info, info.poseStack(), bone, faces, buffer, light, overlay, color);
+        try (Zone zone = Profiler.get().zone("avali_faces")) {
+            BakedGeoModel model = info.model();
+            Map<GeoCube, boolean[]> faces = CACHE.computeIfAbsent(model, key -> new ConcurrentHashMap<>())
+                .computeIfAbsent(textures, key -> scan(model, key));
+            for (GeoBone bone : model.topLevelBones()) {
+                renderBone(info, info.poseStack(), bone, faces, buffer, light, overlay, color);
+            }
         }
     }
 

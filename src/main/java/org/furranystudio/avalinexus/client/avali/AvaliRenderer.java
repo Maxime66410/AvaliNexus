@@ -22,6 +22,8 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Ease;
 import net.minecraft.util.Mth;
+import net.minecraft.util.profiling.Profiler;
+import net.minecraft.util.profiling.Zone;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
@@ -80,7 +82,27 @@ public class AvaliRenderer<R extends LivingEntityRenderState & GeoRenderState> e
     }
 
     @Override
+    public R fillRenderState(AvaliEntity avali, Void relatedObject, R state, float partialTick) {
+        try (Zone zone = Profiler.get().zone("avali_extract")) {
+            return super.fillRenderState(avali, relatedObject, state, partialTick);
+        }
+    }
+
+    @Override
     public void addRenderData(AvaliEntity avali, Void relatedObject, R state, float partialTick) {
+        try (Zone zone = Profiler.get().zone("avali_render_data")) {
+            fillAvaliData(avali, relatedObject, state, partialTick);
+        }
+    }
+
+    @Override
+    public void applyAnimationControllers(RenderPassInfo<R> renderPassInfo, BoneSnapshots snapshots) {
+        try (Zone zone = Profiler.get().zone("avali_animations")) {
+            super.applyAnimationControllers(renderPassInfo, snapshots);
+        }
+    }
+
+    private void fillAvaliData(AvaliEntity avali, Void relatedObject, R state, float partialTick) {
         super.addRenderData(avali, relatedObject, state, partialTick);
         state.addGeckolibData(BLINKING, isBlinking(avali));
         state.addGeckolibData(SWIM_AMOUNT, avali.getSwimAmount(partialTick));
@@ -146,6 +168,12 @@ public class AvaliRenderer<R extends LivingEntityRenderState & GeoRenderState> e
 
     @Override
     public void adjustModelBonesForRender(RenderPassInfo<R> renderPassInfo, BoneSnapshots snapshots) {
+        try (Zone zone = Profiler.get().zone("avali_pose")) {
+            adjustBones(renderPassInfo, snapshots);
+        }
+    }
+
+    private void adjustBones(RenderPassInfo<R> renderPassInfo, BoneSnapshots snapshots) {
         super.adjustModelBonesForRender(renderPassInfo, snapshots);
 
         R state = renderPassInfo.renderState();
