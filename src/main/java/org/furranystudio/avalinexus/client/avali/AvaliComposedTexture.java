@@ -24,6 +24,7 @@ import org.lwjgl.system.MemoryUtil;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -37,6 +38,7 @@ public final class AvaliComposedTexture {
     private static final long KEEP = 10000L;
     private static final Map<List<AvaliLooks.Look>, Entry> ENTRIES = new HashMap<>();
     private static final Map<Identifier, Optional<Source>> SOURCES = new HashMap<>();
+    private static final Map<List<Identifier>, int[]> USEFUL = new HashMap<>();
     private static BakedModelCache models;
     private static long composedFrame = -1L;
     private static int next;
@@ -113,6 +115,7 @@ public final class AvaliComposedTexture {
             ENTRIES.values().forEach(AvaliComposedTexture::release);
             ENTRIES.clear();
             SOURCES.clear();
+            USEFUL.clear();
         }
     }
 
@@ -145,8 +148,10 @@ public final class AvaliComposedTexture {
             blues[i] = look.color() & 0xFF;
             sources.add(look.texture());
         }
+        List<Identifier> ids = List.copyOf(sources);
+        int[] useful = USEFUL.computeIfAbsent(ids, key -> useful(pixels));
         int[] composed = new int[width * height];
-        for (int index = 0; index < composed.length; index++) {
+        for (int index : useful) {
             for (int i = count - 1; i >= 0; i--) {
                 int pixel = pixels[i][index];
                 int alpha = pixel >>> 24;
@@ -163,7 +168,22 @@ public final class AvaliComposedTexture {
         try (Zone zone = Profiler.get().zone("avali_compose_upload")) {
             Minecraft.getInstance().getTextureManager().register(id, new DynamicTexture(id::toString, image));
         }
-        return new Composed(id, List.copyOf(sources));
+        return new Composed(id, ids);
+    }
+
+    private static int[] useful(int[][] pixels) {
+        int length = pixels[0].length;
+        int[] indices = new int[length];
+        int count = 0;
+        for (int index = 0; index < length; index++) {
+            for (int[] layer : pixels) {
+                if ((layer[index] >>> 24) * 10 >= 255) {
+                    indices[count++] = index;
+                    break;
+                }
+            }
+        }
+        return Arrays.copyOf(indices, count);
     }
 
     private static int tint(int value, int tint) {
