@@ -182,6 +182,10 @@ public final class ClientDialogue {
         return text.substring(0, (int) revealed);
     }
 
+    public static String fullText() {
+        return text;
+    }
+
     public static int selected() {
         return selected;
     }
