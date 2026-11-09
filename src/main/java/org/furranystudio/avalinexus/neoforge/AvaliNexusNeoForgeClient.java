@@ -2,10 +2,11 @@
  * File: AvaliNexusNeoForgeClient.java
  * Author: Maxime66410
  * Created: 2026-10-23
- * Last Modified: 2026-10-24
+ * Last Modified: 2026-11-09
  */
 package org.furranystudio.avalinexus.neoforge;
 
+import net.minecraft.client.KeyMapping;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
@@ -25,6 +26,7 @@ import org.furranystudio.avalinexus.AvaliNexus;
 import org.furranystudio.avalinexus.block.ModBlockEntities;
 import org.furranystudio.avalinexus.client.AvaliNexusClient;
 import org.furranystudio.avalinexus.client.ModKeyCategory;
+import org.furranystudio.avalinexus.client.avali.AvaliComposedTexture;
 import org.furranystudio.avalinexus.client.avali.AvaliRenderer;
 import org.furranystudio.avalinexus.client.block.ModBlockTints;
 import org.furranystudio.avalinexus.client.cushion.AvaliCushionRenderer;
@@ -77,11 +79,16 @@ public final class AvaliNexusNeoForgeClient {
         modEventBus.addListener((RegisterKeyMappingsEvent event) -> {
             event.registerCategory(ModKeyCategory.AVALI_NEXUS);
             event.register(DialogueKeys.CURSOR);
+            event.register(DialogueKeys.PICK);
+            for (KeyMapping choice : DialogueKeys.CHOICES) {
+                event.register(choice);
+            }
             event.register(RailGunClient.RELOAD);
             event.register(ReputationClient.OPEN);
         });
         modEventBus.addListener((RegisterGuiLayersEvent event) -> event.registerAboveAll(AvaliNexus.id("rail_gun"), RailGunHud::render));
         NeoForge.EVENT_BUS.addListener((ClientTickEvent.Pre event) -> RailGunClient.tick());
+        NeoForge.EVENT_BUS.addListener((ClientTickEvent.Pre event) -> AvaliComposedTexture.tick());
         NeoForge.EVENT_BUS.addListener((ClientTickEvent.Pre event) -> ReputationClient.tick());
         NeoForge.EVENT_BUS.addListener((InputEvent.InteractionKeyMappingTriggered event) -> {
             if (event.isAttack() && RailGunClient.blocksAttack()) {

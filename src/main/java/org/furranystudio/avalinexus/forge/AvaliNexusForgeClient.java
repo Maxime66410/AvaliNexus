@@ -2,7 +2,7 @@
  * File: AvaliNexusForgeClient.java
  * Author: Maxime66410
  * Created: 2026-10-23
- * Last Modified: 2026-10-24
+ * Last Modified: 2026-11-09
  */
 package org.furranystudio.avalinexus.forge;
 
@@ -25,6 +25,7 @@ import org.furranystudio.avalinexus.AvaliNexus;
 import org.furranystudio.avalinexus.block.ModBlockEntities;
 import org.furranystudio.avalinexus.client.AvaliNexusClient;
 import org.furranystudio.avalinexus.client.ModKeyCategory;
+import org.furranystudio.avalinexus.client.avali.AvaliComposedTexture;
 import org.furranystudio.avalinexus.client.avali.AvaliRenderer;
 import org.furranystudio.avalinexus.client.block.ModBlockTints;
 import org.furranystudio.avalinexus.client.cushion.AvaliCushionRenderer;
@@ -83,11 +84,16 @@ public final class AvaliNexusForgeClient {
         RegisterKeyMappingsEvent.BUS.addListener(event -> {
             KeyMapping.Category.register(ModKeyCategory.AVALI_NEXUS.id());
             event.register(DialogueKeys.CURSOR);
+            event.register(DialogueKeys.PICK);
+            for (KeyMapping choice : DialogueKeys.CHOICES) {
+                event.register(choice);
+            }
             event.register(RailGunClient.RELOAD);
             event.register(ReputationClient.OPEN);
         });
         AddGuiOverlayLayersEvent.BUS.addListener(event -> event.getLayeredDraw().add(AvaliNexus.id("rail_gun"), RailGunHud::render));
         TickEvent.ClientTickEvent.Pre.BUS.addListener(event -> RailGunClient.tick());
+        TickEvent.ClientTickEvent.Pre.BUS.addListener(event -> AvaliComposedTexture.tick());
         TickEvent.ClientTickEvent.Pre.BUS.addListener(event -> ReputationClient.tick());
         InputEvent.InteractionKeyMappingTriggered.Attack.BUS.addListener((Predicate<InputEvent.InteractionKeyMappingTriggered.Attack>) event -> {
             if (RailGunClient.blocksAttack()) {

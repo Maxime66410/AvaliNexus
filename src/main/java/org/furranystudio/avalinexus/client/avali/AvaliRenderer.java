@@ -2,11 +2,12 @@
  * File: AvaliRenderer.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-10-25
+ * Last Modified: 2026-11-08
  */
 package org.furranystudio.avalinexus.client.avali;
 
 import com.geckolib.cache.model.BakedGeoModel;
+import com.geckolib.cache.model.GeoBone;
 import com.geckolib.constant.dataticket.DataTicket;
 import com.geckolib.renderer.GeoEntityRenderer;
 import com.geckolib.renderer.base.BoneSnapshots;
@@ -14,11 +15,16 @@ import com.geckolib.renderer.base.GeoRenderState;
 import com.geckolib.renderer.base.RenderPassInfo;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+import net.minecraft.client.renderer.OrderedSubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Ease;
 import net.minecraft.util.Mth;
+import net.minecraft.util.profiling.Profiler;
+import net.minecraft.util.profiling.Zone;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
@@ -27,9 +33,12 @@ import org.furranystudio.avalinexus.entity.avali.AvaliEntity;
 import org.furranystudio.avalinexus.entity.avali.expression.AvaliFace;
 import org.furranystudio.avalinexus.item.weapon.RailGunItem;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class AvaliRenderer<R extends LivingEntityRenderState & GeoRenderState> extends GeoEntityRenderer<AvaliEntity, R> {
 
@@ -49,7 +58,6 @@ public class AvaliRenderer<R extends LivingEntityRenderState & GeoRenderState> e
     private static final DataTicket<Boolean> BLOCK_LEFT = DataTicket.create("avalinexus_block_left", Boolean.class);
     private static final DataTicket<Boolean> RAIL_HOLD = DataTicket.create("avalinexus_rail_hold", Boolean.class);
     private static final DataTicket<Boolean> RIGHT_HANDED = DataTicket.create("avalinexus_right_handed", Boolean.class);
-    private static final String[] SIDES = {"Left", "Right"};
     private static final String[] MOUTHS = {"Mouth Left 0", "Mouth Right 0", "Mouth Left 1", "Mouth Right 1", "Mouth Front"};
     private static final int BLINK_CYCLE = 300;
     private static final Map<String, String> ARMOR_ROOTS = Map.of(
@@ -63,7 +71,7 @@ public class AvaliRenderer<R extends LivingEntityRenderState & GeoRenderState> e
         "armor_left_foot", "left_leg",
         "armor_right_foot", "right_leg");
 
-    private final Map<BakedGeoModel, List<String>> hiddenBones = new IdentityHashMap<>();
+    private final Map<BakedGeoModel, FaceBones> faceBones = new IdentityHashMap<>();
 
     public AvaliRenderer(EntityRendererProvider.Context context) {
         super(context, new AvaliModel());
@@ -77,14 +85,38 @@ public class AvaliRenderer<R extends LivingEntityRenderState & GeoRenderState> e
     }
 
     @Override
+    public R fillRenderState(AvaliEntity avali, Void relatedObject, R state, float partialTick) {
+        try (Zone zone = Profiler.get().zone("avali_extract")) {
+            return super.fillRenderState(avali, relatedObject, state, partialTick);
+        }
+    }
+
+    @Override
     public void addRenderData(AvaliEntity avali, Void relatedObject, R state, float partialTick) {
+        try (Zone zone = Profiler.get().zone("avali_render_data")) {
+            fillAvaliData(avali, relatedObject, state, partialTick);
+        }
+    }
+
+    @Override
+    public void applyAnimationControllers(RenderPassInfo<R> renderPassInfo, BoneSnapshots snapshots) {
+        try (Zone zone = Profiler.get().zone("avali_animations")) {
+            super.applyAnimationControllers(renderPassInfo, snapshots);
+        }
+    }
+
+    private void fillAvaliData(AvaliEntity avali, Void relatedObject, R state, float partialTick) {
         super.addRenderData(avali, relatedObject, state, partialTick);
         state.addGeckolibData(BLINKING, isBlinking(avali));
         state.addGeckolibData(SWIM_AMOUNT, avali.getSwimAmount(partialTick));
         state.addGeckolibData(SWIM_PITCH, avali.getSwimPitch(partialTick));
         state.addGeckolibData(FACE, avali.getFace());
         state.addGeckolibData(RIDING, avali.isPassenger());
-        state.addGeckolibData(AvaliLooks.TEXTURE, AvaliLooks.texture(avali));
+        AvaliComposedTexture.Composed composed = AvaliComposedTexture.get(avali);
+        if (composed != null) {
+            state.addGeckolibData(AvaliComposedTexture.TICKET, composed);
+        }
+        state.addGeckolibData(AvaliLooks.TEXTURE, composed != null ? composed.texture() : AvaliLooks.texture(avali));
         HumanoidArm mainArm = avali.getMainArm();
         boolean rightHanded = mainArm == HumanoidArm.RIGHT;
         state.addGeckolibData(RIGHT_HOLDING, !(rightHanded ? avali.getMainHandItem() : avali.getOffhandItem()).isEmpty());
@@ -96,6 +128,26 @@ public class AvaliRenderer<R extends LivingEntityRenderState & GeoRenderState> e
         state.addGeckolibData(BLOCK_LEFT, InteractionHand.OFF_HAND.asArm(mainArm) == HumanoidArm.LEFT);
         state.addGeckolibData(RAIL_HOLD, swing == null && avali.getMainHandItem().getItem() instanceof RailGunItem);
         state.addGeckolibData(RIGHT_HANDED, rightHanded);
+    }
+
+    @Override
+    public void submitRenderTasks(RenderPassInfo<R> renderPassInfo, OrderedSubmitNodeCollector renderTasks, RenderType renderType) {
+        if (renderType == null || renderPassInfo.model().isMissingno()) {
+            super.submitRenderTasks(renderPassInfo, renderTasks, renderType);
+            return;
+        }
+        AvaliComposedTexture.Composed composed = renderPassInfo.getOrDefaultGeckolibData(AvaliComposedTexture.TICKET, null);
+        List<Identifier> textures = composed != null ? composed.sources() : List.of(getTextureLocation(renderPassInfo.renderState()));
+        int light = renderPassInfo.packedLight();
+        int overlay = renderPassInfo.packedOverlay();
+        int color = composed != null ? ARGB.color(ARGB.alpha(renderPassInfo.renderColor()), 0xFFFFFF) : renderPassInfo.renderColor();
+        renderTasks.submitCustomGeometry(renderPassInfo.poseStack(), renderType, (pose, buffer) -> {
+            PoseStack poseStack = renderPassInfo.poseStack();
+            poseStack.pushPose();
+            poseStack.last().set(pose);
+            renderPassInfo.renderPosed(() -> AvaliVisibleFaces.render(renderPassInfo, textures, buffer, light, overlay, color));
+            poseStack.popPose();
+        });
     }
 
     @Override
@@ -119,6 +171,12 @@ public class AvaliRenderer<R extends LivingEntityRenderState & GeoRenderState> e
 
     @Override
     public void adjustModelBonesForRender(RenderPassInfo<R> renderPassInfo, BoneSnapshots snapshots) {
+        try (Zone zone = Profiler.get().zone("avali_pose")) {
+            adjustBones(renderPassInfo, snapshots);
+        }
+    }
+
+    private void adjustBones(RenderPassInfo<R> renderPassInfo, BoneSnapshots snapshots) {
         super.adjustModelBonesForRender(renderPassInfo, snapshots);
 
         R state = renderPassInfo.renderState();
@@ -199,38 +257,27 @@ public class AvaliRenderer<R extends LivingEntityRenderState & GeoRenderState> e
             .setRotation(source.getRotX(), source.getRotY(), source.getRotZ())
             .setTranslation(source.getTranslateX(), source.getTranslateY(), source.getTranslateZ()))));
 
-        List<String> bones = hiddenBones.computeIfAbsent(renderPassInfo.model(), model ->
-            model.boneLookup().get().keySet().stream().filter(AvaliRenderer::isHiddenByDefault).toList());
-        for (String bone : bones) {
-            snapshots.ifPresent(bone, snapshot -> snapshot.skipRender(true));
-        }
+        FaceBones bones = faceBones.computeIfAbsent(renderPassInfo.model(), FaceBones::new);
+        setVisible(snapshots, bones.hidden, false);
 
-        applyFace(snapshots, state.getOrDefaultGeckolibData(FACE, AvaliFace.NEUTRAL), state.getOrDefaultGeckolibData(BLINKING, false));
+        applyFace(snapshots, bones, state.getOrDefaultGeckolibData(FACE, AvaliFace.NEUTRAL), state.getOrDefaultGeckolibData(BLINKING, false));
     }
 
-    private static void applyFace(BoneSnapshots snapshots, AvaliFace face, boolean blinking) {
+    private static void applyFace(BoneSnapshots snapshots, FaceBones bones, AvaliFace face, boolean blinking) {
         String eyes = blinking ? "Closed" : face.eyes();
         if (!eyes.equals("Normal")) {
-            for (String side : SIDES) {
-                setVisible(snapshots, "Eye " + side + " Normal", false);
-                setVisible(snapshots, "Eye Glow " + side + " Normal", false);
-                setVisible(snapshots, "Eye " + side + " " + eyes, true);
-                setVisible(snapshots, "Eye Glow " + side + " " + eyes, true);
-            }
+            setVisible(snapshots, bones.eyes("Normal"), false);
+            setVisible(snapshots, bones.eyes(eyes), true);
         }
         if (!face.mouth().equals("Normal")) {
-            for (String mouth : MOUTHS) {
-                setVisible(snapshots, mouth + " Normal", false);
-                setVisible(snapshots, mouth + " " + face.mouth(), true);
-            }
+            setVisible(snapshots, bones.mouths("Normal"), false);
+            setVisible(snapshots, bones.mouths(face.mouth()), true);
         }
         if (face.blush()) {
-            for (String side : SIDES) {
-                setVisible(snapshots, "Cheek " + side + " Blush", true);
-            }
+            setVisible(snapshots, bones.blush, true);
         }
         if (face.tongue()) {
-            setVisible(snapshots, "Tongue", true);
+            setVisible(snapshots, bones.tongue, true);
         }
     }
 
@@ -276,8 +323,10 @@ public class AvaliRenderer<R extends LivingEntityRenderState & GeoRenderState> e
         return (tick >= 10 && tick < 15) || (tick >= 128 && tick < 133);
     }
 
-    private static void setVisible(BoneSnapshots snapshots, String bone, boolean visible) {
-        snapshots.ifPresent(bone, snapshot -> snapshot.skipRender(!visible));
+    private static void setVisible(BoneSnapshots snapshots, GeoBone[] bones, boolean visible) {
+        for (GeoBone bone : bones) {
+            snapshots.get(bone).skipRender(!visible);
+        }
     }
 
     // Hidden in Blockbench but the geo export doesn't keep that, so alt expressions and armor would all show
@@ -289,6 +338,35 @@ public class AvaliRenderer<R extends LivingEntityRenderState & GeoRenderState> e
             || bone.startsWith("Outfit Thigh") || bone.startsWith("Outfit Calf") || bone.startsWith("Outfit Foot")
             || bone.startsWith("Outfit Toes") || bone.startsWith("Helmet") || bone.startsWith("Earplate")
             || bone.startsWith("Chestplate") || bone.startsWith("Leggings") || bone.startsWith("Boots");
+    }
+
+    private static final class FaceBones {
+
+        private final Map<String, GeoBone> lookup;
+        private final GeoBone[] hidden;
+        private final GeoBone[] blush;
+        private final GeoBone[] tongue;
+        private final Map<String, GeoBone[]> eyes = new HashMap<>();
+        private final Map<String, GeoBone[]> mouths = new HashMap<>();
+
+        private FaceBones(BakedGeoModel model) {
+            lookup = model.boneLookup().get();
+            hidden = lookup.entrySet().stream().filter(entry -> isHiddenByDefault(entry.getKey())).map(Map.Entry::getValue).toArray(GeoBone[]::new);
+            blush = find("Cheek Left Blush", "Cheek Right Blush");
+            tongue = find("Tongue");
+        }
+
+        private GeoBone[] eyes(String variant) {
+            return eyes.computeIfAbsent(variant, key -> find("Eye Left " + key, "Eye Glow Left " + key, "Eye Right " + key, "Eye Glow Right " + key));
+        }
+
+        private GeoBone[] mouths(String variant) {
+            return mouths.computeIfAbsent(variant, key -> find(Arrays.stream(MOUTHS).map(mouth -> mouth + " " + key).toArray(String[]::new)));
+        }
+
+        private GeoBone[] find(String... names) {
+            return Arrays.stream(names).map(lookup::get).filter(Objects::nonNull).toArray(GeoBone[]::new);
+        }
     }
 
     private record Rotation(float x, float y, float z) {
