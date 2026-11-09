@@ -2,10 +2,11 @@
  * File: AvaliNexusNeoForgeClient.java
  * Author: Maxime66410
  * Created: 2026-10-23
- * Last Modified: 2026-11-08
+ * Last Modified: 2026-11-09
  */
 package org.furranystudio.avalinexus.neoforge;
 
+import net.minecraft.client.KeyMapping;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
@@ -78,6 +79,10 @@ public final class AvaliNexusNeoForgeClient {
         modEventBus.addListener((RegisterKeyMappingsEvent event) -> {
             event.registerCategory(ModKeyCategory.AVALI_NEXUS);
             event.register(DialogueKeys.CURSOR);
+            event.register(DialogueKeys.PICK);
+            for (KeyMapping choice : DialogueKeys.CHOICES) {
+                event.register(choice);
+            }
             event.register(RailGunClient.RELOAD);
             event.register(ReputationClient.OPEN);
         });

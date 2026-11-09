@@ -2,10 +2,11 @@
  * File: ClientDialogue.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-10-20
+ * Last Modified: 2026-11-09
  */
 package org.furranystudio.avalinexus.client.dialogue;
 
+import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
@@ -78,6 +79,7 @@ public final class ClientDialogue {
         Minecraft minecraft = Minecraft.getInstance();
         blockUseKey(minecraft.options);
         if (!isActive()) {
+            DialogueKeys.drain();
             return;
         }
         Entity avali = minecraft.level == null ? null : minecraft.level.getEntity(entityId);
@@ -96,14 +98,19 @@ public final class ClientDialogue {
 
         // Runs before vanilla handles its keys, so E, right click and 1-3 don't open the inventory or switch slots
         Options options = minecraft.options;
-        while (options.keyInventory.consumeClick()) {
+        while (DialogueKeys.PICK.consumeClick()) {
             confirm();
         }
-        for (int i = 0; i < choices.length; i++) {
-            while (options.keyHotbarSlots[i].consumeClick()) {
-                select(i);
-                confirm();
+        for (int i = 0; i < DialogueKeys.CHOICES.length; i++) {
+            while (DialogueKeys.CHOICES[i].consumeClick()) {
+                if (i < choices.length) {
+                    select(i);
+                    confirm();
+                }
             }
+        }
+        for (KeyMapping key : options.keyMappings) {
+            DialogueKeys.blockShared(key);
         }
         if (minecraft.gui.screen() == null && DialogueKeys.CURSOR.isDown()) {
             minecraft.gui.setScreen(new DialogueCursorScreen());

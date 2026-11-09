@@ -2,7 +2,7 @@
  * File: AvaliNexusFabricClient.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-11-08
+ * Last Modified: 2026-11-09
  */
 package org.furranystudio.avalinexus.fabric;
 
@@ -61,6 +61,10 @@ public final class AvaliNexusFabricClient implements ClientModInitializer {
         HudElementRegistry.addLast(AvaliNexus.id("dialogue"), DialogueHud::render);
         KeyMapping.Category.register(ModKeyCategory.AVALI_NEXUS.id());
         KeyMappingHelper.registerKeyMapping(DialogueKeys.CURSOR);
+        KeyMappingHelper.registerKeyMapping(DialogueKeys.PICK);
+        for (KeyMapping choice : DialogueKeys.CHOICES) {
+            KeyMappingHelper.registerKeyMapping(choice);
+        }
         KeyMappingHelper.registerKeyMapping(ReputationClient.OPEN);
         ClientTickEvents.START_CLIENT_TICK.register(client -> ReputationClient.tick());
         ClientTickEvents.START_CLIENT_TICK.register(client -> ClientDialogue.tick());

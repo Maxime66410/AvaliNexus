@@ -2,7 +2,7 @@
  * File: AvaliNexusForgeClient.java
  * Author: Maxime66410
  * Created: 2026-10-23
- * Last Modified: 2026-11-08
+ * Last Modified: 2026-11-09
  */
 package org.furranystudio.avalinexus.forge;
 
@@ -84,6 +84,10 @@ public final class AvaliNexusForgeClient {
         RegisterKeyMappingsEvent.BUS.addListener(event -> {
             KeyMapping.Category.register(ModKeyCategory.AVALI_NEXUS.id());
             event.register(DialogueKeys.CURSOR);
+            event.register(DialogueKeys.PICK);
+            for (KeyMapping choice : DialogueKeys.CHOICES) {
+                event.register(choice);
+            }
             event.register(RailGunClient.RELOAD);
             event.register(ReputationClient.OPEN);
         });

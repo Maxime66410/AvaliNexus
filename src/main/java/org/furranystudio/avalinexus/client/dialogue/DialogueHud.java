@@ -2,17 +2,20 @@
  * File: DialogueHud.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-10-19
+ * Last Modified: 2026-11-09
  */
 package org.furranystudio.avalinexus.client.dialogue;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.DeltaTracker;
+import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.util.FormattedCharSequence;
 import org.furranystudio.avalinexus.client.ui.AvaliUi;
 import org.furranystudio.avalinexus.dialogue.DialogueChoice;
@@ -94,8 +97,45 @@ public final class DialogueHud {
             AvaliUi.shadowedText(graphics, font, AvaliUi.styled(label), left + ICON_SIZE + 8, y + 4,
                 selected || current ? AvaliUi.ORANGE_GLOW : AvaliUi.TEXT_PRIMARY);
         }
-        Component hint = Component.translatable("avalinexus.dialogue.hint", choices.length);
+        Component hint = Component.translatable("avalinexus.dialogue.hint", choiceKeys(choices.length),
+            keyName(DialogueKeys.PICK), keyName(DialogueKeys.CURSOR));
         AvaliUi.shadowedText(graphics, font, hint, left, top + choices.length * CHOICE_HEIGHT + 4, AvaliUi.TEXT_DISABLED);
+    }
+
+    private static Component choiceKeys(int count) {
+        boolean digits = true;
+        for (int i = 0; i < count; i++) {
+            digits &= digit(DialogueKeys.CHOICES[i]) == i + 1;
+        }
+        if (digits) {
+            return Component.literal("1-" + count);
+        }
+        MutableComponent keys = Component.empty();
+        for (int i = 0; i < count; i++) {
+            if (i > 0) {
+                keys.append("/");
+            }
+            keys.append(keyName(DialogueKeys.CHOICES[i]));
+        }
+        return keys;
+    }
+
+    private static Component keyName(KeyMapping key) {
+        int digit = digit(key);
+        return digit >= 0 ? Component.literal(String.valueOf(digit)) : key.getTranslatedKeyMessage();
+    }
+
+    private static int digit(KeyMapping key) {
+        InputConstants.Key bound = InputConstants.getKey(key.saveString());
+        int value = bound.getValue();
+        if (bound.getType() != InputConstants.Type.KEYBOARD
+            || !key.getTranslatedKeyMessage().getString().equals(bound.getDisplayName().getString())) {
+            return -1;
+        }
+        if (value == InputConstants.KEY_0) {
+            return 0;
+        }
+        return value >= InputConstants.KEY_1 && value <= InputConstants.KEY_9 ? value - InputConstants.KEY_1 + 1 : -1;
     }
 
     private static int choicesLeft(int width) {
