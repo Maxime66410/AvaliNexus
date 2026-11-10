@@ -2,7 +2,7 @@
  * File: AvaliSleepGoal.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-10-27
+ * Last Modified: 2026-11-10
  */
 package org.furranystudio.avalinexus.entity.avali.goal;
 
@@ -32,6 +32,8 @@ public class AvaliSleepGoal extends Goal {
     private static final int MIN_NAP_TICKS = 600;
     private static final int MAX_NAP_TICKS = 1200;
     private static final long NIGHT_LOG_DAY = 24000L;
+    private static final double IN_BED_HEIGHT = 0.4;
+    private static final double IN_BED_DISTANCE = 1.14;
 
     private final AvaliEntity avali;
     private final double speed;
@@ -89,7 +91,7 @@ public class AvaliSleepGoal extends Goal {
         }
         boolean wantsSleep = napTicks > 0 || avali.level().isDarkOutside();
         if (avali.isSleeping()) {
-            return wantsSleep;
+            return wantsSleep && isInBed();
         }
         return wantsSleep && walkTicks < MAX_WALK_TICKS && isFree(bed);
     }
@@ -129,6 +131,10 @@ public class AvaliSleepGoal extends Goal {
         avali.getNavigation().stop();
         bed = null;
         napTicks = 0;
+    }
+
+    private boolean isInBed() {
+        return avali.getY() > bed.getY() + IN_BED_HEIGHT && bed.closerToCenterThan(avali.position(), IN_BED_DISTANCE);
     }
 
     private void moveToBed() {
