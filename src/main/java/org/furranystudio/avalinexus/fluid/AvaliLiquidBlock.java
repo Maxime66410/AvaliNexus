@@ -2,7 +2,7 @@
  * File: AvaliLiquidBlock.java
  * Author: Maxime66410
  * Created: 2026-09-28
- * Last Modified: 2026-10-27
+ * Last Modified: 2026-11-11
  */
 package org.furranystudio.avalinexus.fluid;
 
@@ -25,6 +25,7 @@ import net.minecraft.world.level.redstone.Orientation;
 import org.furranystudio.avalinexus.AvaliNexus;
 import org.furranystudio.avalinexus.Config;
 import org.furranystudio.avalinexus.block.ModBlocks;
+import org.furranystudio.avalinexus.entity.ColdExposure;
 import org.furranystudio.avalinexus.entity.avali.AvaliEntity;
 
 // The placed fluid: freezes players, heals Avalis and reacts with the lava it touches
@@ -54,7 +55,7 @@ public class AvaliLiquidBlock extends LiquidBlock {
             avali.heal(1.0F);
         }
         // Warm armor or an Avali body keeps the cold out
-        int rate = kind.freezing() * Config.LIQUID_COLD_SPEED.get();
+        int rate = ColdExposure.handledByToughAsNails() ? 0 : kind.freezing() * Config.LIQUID_COLD_SPEED.get();
         if (rate > 0 && entity.canFreeze() && !(entity instanceof AvaliEntity)) {
             long time = level.getGameTime();
             int cap = entity.getTicksRequiredToFreeze() + CAP_MARGIN;

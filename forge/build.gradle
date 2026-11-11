@@ -27,7 +27,10 @@ sourceSets {
             srcDirs = ['../src/main/java']
             exclude 'org/furranystudio/avalinexus/fabric/**'
             exclude 'org/furranystudio/avalinexus/neoforge/**'
-            exclude 'org/furranystudio/avalinexus/compat/**'
+            exclude 'org/furranystudio/avalinexus/compat/*.java'
+            exclude 'org/furranystudio/avalinexus/compat/jade/**'
+            exclude 'org/furranystudio/avalinexus/compat/jei/**'
+            exclude 'org/furranystudio/avalinexus/compat/rei/**'
         }
         resources {
             srcDirs = ['../src/main/resources', '../src/generated/resources']
@@ -93,6 +96,11 @@ repositories {
         url = 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
         content { includeGroupAndSubgroups 'com.geckolib' }
     }
+    maven {
+        name = 'Modrinth'
+        url = 'https://api.modrinth.com/maven'
+        content { includeGroup 'maven.modrinth' }
+    }
 
     // If you have mod jar dependencies in ./libs, you can declare them as a repository like so.
     // See https://docs.gradle.org/current/userguide/declaring_repositories.html#sub:flat_dir_resolver
@@ -108,6 +116,7 @@ dependencies {
 
     implementation "com.geckolib:geckolib-forge-${minecraft_version}:${geckolib_version}"
     implementation "com.github.glitchfiend:TerraBlender-forge:${minecraft_version}-${terrablender_version}"
+    compileOnly("maven.modrinth:tough-as-nails:${toughasnails_version}") { transitive = false }
 
     // Example mod dependency with JEI - using fg.deobf() ensures the dependency is remapped to your development mappings
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime

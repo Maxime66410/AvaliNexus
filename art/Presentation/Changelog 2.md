@@ -10,6 +10,7 @@ This update is big, i worked a lot on the performance, the villages and many sma
 - Avalis now have 3 colors instead of one (body, pattern and feathers), so every pack look more different. And babies mix the 3 colors from the parents !
 - New settings for the cold : **Cold speed** for the polar taiga and **Liquid cold speed** for the ammonia and coolant, from 0% to 500%. You can also change them with `/avalinexus settings coldSpeed <value>` or `liquidColdSpeed`
 - New command `/avalinexus debug avali`, look at an Avali and you see all his informations in the chat
+- Support for **Tough As Nails** ! When it's installed, my cold is off and TAN manage everything : the polar taiga is icy, the heater warm you (only when it's on), the ammonia ice and the liquids cool you, the spiced stew warm you and the kiri fruit and kiri dessert give you a little bit of thirst. Inside a building in the polar taiga you are a bit less cold, and in the ammonia and the coolant you freeze 2 times faster haha. It's optional, the mod work without it
 - Support for **JEI**, **REI** and **Jade** ! You can see all the recipes of the machines, the loom and the weapon workbench, and with Jade you see the machine progress, the fluids in tanks and pipes, and the job, role and reputation of the Avalis
 - Dialogue keys are now in the controls (Avali Nexus category), so you can change them like you want ([#9](https://github.com/Maxime66410/AvaliNexus/issues/9))
 - Buildings in villages and camps now have **ice bricks foundations**, no more houses floating over the holes or the water
@@ -20,6 +21,7 @@ This update is big, i worked a lot on the performance, the villages and many sma
 
 - The settings menu have now 2 tabs : Client and Server, with sliders. On a server only the operators can change the server settings
 - JEI, REI and Jade work only on NeoForge and Fabric, they don't exist for Forge 26.3 for now. The mod work perfectly without them don't worry
+- With Tough As Nails the Cold speed and Liquid cold speed settings are grey in the menu, because TAN manage the cold now
 - Villages and camps are more common now ! Someone found his first village at 14000 blocks from spawn haha, so villages are now every 40 chunks (before 64) and camps every 24 chunks (before 32)
 - Villages have always enough Avalis now : minimum 4 in the small ones and 8 in the big ones
 - The dialogue hint show your real keys, on any keyboard (AZERTY friends this is for you)

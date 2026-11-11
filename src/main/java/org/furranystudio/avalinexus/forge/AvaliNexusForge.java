@@ -2,7 +2,7 @@
  * File: AvaliNexusForge.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-10-27
+ * Last Modified: 2026-11-11
  */
 package org.furranystudio.avalinexus.forge;
 
@@ -19,6 +19,7 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.SpawnPlacementRegisterEvent;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -41,7 +42,7 @@ import org.furranystudio.avalinexus.worldgen.ModBiomes;
 public class AvaliNexusForge {
 
     public AvaliNexusForge(FMLJavaModLoadingContext context) {
-        Platform.init(FMLPaths.GAMEDIR.get(), CreativeModeTab::builder);
+        Platform.init(FMLPaths.GAMEDIR.get(), CreativeModeTab::builder, ModList::isLoaded);
         Config.registerSettings();
         Config.load();
 

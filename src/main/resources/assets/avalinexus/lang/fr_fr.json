@@ -546,6 +546,7 @@
   "avalinexus.settings.coldSpeed.desc": "Gel dans la taïga polaire",
   "avalinexus.settings.liquidColdSpeed": "Froid des liquides",
   "avalinexus.settings.liquidColdSpeed.desc": "Gel dans les liquides",
+  "avalinexus.settings.toughasnails": "Géré par Tough As Nails",
   "avalinexus.settings.server.local": "Utilisés dans tes mondes solo",
   "avalinexus.settings.server.loading": "En attente du serveur...",
   "avalinexus.settings.server.remote": "Appliqués à ce serveur",

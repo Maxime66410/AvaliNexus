@@ -2,16 +2,19 @@
  * File: ColdExposure.java
  * Author: Maxime66410
  * Created: 2026-09-28
- * Last Modified: 2026-10-27
+ * Last Modified: 2026-11-11
  */
 package org.furranystudio.avalinexus.entity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
 import org.furranystudio.avalinexus.AvaliNexus;
 import org.furranystudio.avalinexus.Config;
+import org.furranystudio.avalinexus.Platform;
 import org.furranystudio.avalinexus.block.heater.HeaterZones;
+import org.furranystudio.avalinexus.compat.toughasnails.ToughAsNailsCompat;
 import org.furranystudio.avalinexus.effect.ModEffects;
 import org.furranystudio.avalinexus.fluid.AvaliLiquidBlock;
 import org.furranystudio.avalinexus.worldgen.ModBiomes;
@@ -28,12 +31,23 @@ public final class ColdExposure {
     // A little over the cap so the vanilla thaw still leaves the player fully frozen and taking damage
     private static final int CAP_MARGIN = 2;
 
+    private static final String TOUGH_AS_NAILS = "toughasnails";
+
     private static final Map<UUID, String> STATES = new HashMap<>();
 
     private ColdExposure() {
     }
 
+    public static boolean handledByToughAsNails() {
+        return Platform.isModLoaded(TOUGH_AS_NAILS);
+    }
+
     public static void tick(MinecraftServer server) {
+        if (handledByToughAsNails()) {
+            ToughAsNailsCompat.register();
+            ToughAsNailsCompat.tick(server);
+            return;
+        }
         int speed = Config.COLD_SPEED.get();
         long time = server.getTickCount();
         int step = VANILLA_THAW + (int) ((time + 1) * speed / 200 - time * speed / 200);
@@ -57,9 +71,10 @@ public final class ColdExposure {
     }
 
     private static boolean inFreezingLiquid(ServerPlayer player) {
-        if (Config.LIQUID_COLD_SPEED.get() <= 0 || !player.canFreeze()) {
-            return false;
-        }
+        return Config.LIQUID_COLD_SPEED.get() > 0 && player.canFreeze() && isInFreezingLiquid(player);
+    }
+
+    public static boolean isInFreezingLiquid(Player player) {
         for (BlockPos pos : new BlockPos[] {player.blockPosition(), BlockPos.containing(player.getEyePosition())}) {
             if (player.level().getBlockState(pos).getBlock() instanceof AvaliLiquidBlock liquid && liquid.kind().freezing() > 0) {
                 return true;

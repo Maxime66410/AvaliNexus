@@ -98,6 +98,7 @@ Saved in `config/avalinexus.json`.
 - Mod Menu 21.0.0 (Fabric)
 - JEI 31.17.0.108 or REI 26.3.824 (NeoForge and Fabric)
 - Jade 26.3.5 (NeoForge and Fabric)
+- Tough As Nails 21.11.0.11
 
 ## Project structure
 

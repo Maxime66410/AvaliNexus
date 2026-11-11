@@ -2,7 +2,7 @@
  * File: AvaliNexusNeoForge.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-10-27
+ * Last Modified: 2026-11-11
  */
 package org.furranystudio.avalinexus.neoforge;
 
@@ -15,6 +15,7 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
@@ -44,7 +45,7 @@ import org.furranystudio.avalinexus.worldgen.ModBiomes;
 public class AvaliNexusNeoForge {
 
     public AvaliNexusNeoForge(IEventBus modEventBus, ModContainer modContainer) {
-        Platform.init(FMLPaths.GAMEDIR.get(), CreativeModeTab::builder);
+        Platform.init(FMLPaths.GAMEDIR.get(), CreativeModeTab::builder, id -> ModList.get().isLoaded(id));
         Config.registerSettings();
         Config.load();
 

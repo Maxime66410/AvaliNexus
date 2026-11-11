@@ -2,7 +2,7 @@
  * File: AvaliSettingsScreen.java
  * Author: Maxime66410
  * Created: 2026-09-28
- * Last Modified: 2026-10-27
+ * Last Modified: 2026-11-11
  */
 package org.furranystudio.avalinexus.client.settings;
 
@@ -17,6 +17,7 @@ import net.minecraft.util.Mth;
 import org.furranystudio.avalinexus.Config;
 import org.furranystudio.avalinexus.ConfigValue;
 import org.furranystudio.avalinexus.client.ui.AvaliUi;
+import org.furranystudio.avalinexus.entity.ColdExposure;
 import org.furranystudio.avalinexus.network.ModNetworking;
 import org.furranystudio.avalinexus.network.packet.ChangeSettingPayload;
 import org.furranystudio.avalinexus.network.packet.RequestSettingsPayload;
@@ -40,7 +41,7 @@ public class AvaliSettingsScreen extends Screen {
     private record ServerToggle(String key) implements Entry {
     }
 
-    private record Slider(String key, int min, int max, int step) implements Entry {
+    private record Slider(String key, int min, int max, int step, boolean cold) implements Entry {
     }
 
     private static final List<Entry> CLIENT = List.of(
@@ -49,8 +50,8 @@ public class AvaliSettingsScreen extends Screen {
 
     private static final List<Entry> SERVER = List.of(
         new ServerToggle("debugLogging"),
-        new Slider("coldSpeed", 0, 500, 5),
-        new Slider("liquidColdSpeed", 0, 500, 5));
+        new Slider("coldSpeed", 0, 500, 5, true),
+        new Slider("liquidColdSpeed", 0, 500, 5, true));
 
     private static final int WIDTH = 280;
     private static final int PADDING = 10;
@@ -170,11 +171,15 @@ public class AvaliSettingsScreen extends Screen {
     }
 
     private void renderRow(GuiGraphicsExtractor graphics, String key, int y, int controlWidth, boolean enabled) {
+        renderRow(graphics, key, "avalinexus.settings." + key + ".desc", y, controlWidth, enabled);
+    }
+
+    private void renderRow(GuiGraphicsExtractor graphics, String key, String descKey, int y, int controlWidth, boolean enabled) {
         int x = left + PADDING;
         AvaliUi.panel(graphics, x, y, rowWidth(), ROW_HEIGHT - 4, AvaliUi.BACKDROP);
         AvaliUi.shadowedText(graphics, font, AvaliUi.styled(Component.translatable("avalinexus.settings." + key)), x + 6, y + 5,
             enabled ? AvaliUi.TEXT_PRIMARY : AvaliUi.TEXT_DISABLED);
-        List<FormattedCharSequence> lines = font.split(AvaliUi.reading(Component.translatable("avalinexus.settings." + key + ".desc")),
+        List<FormattedCharSequence> lines = font.split(AvaliUi.reading(Component.translatable(descKey)),
             rowWidth() - controlWidth - 20);
         if (!lines.isEmpty()) {
             graphics.text(font, lines.get(0), x + 6, y + 17, AvaliUi.TEXT_DISABLED, false);
@@ -200,8 +205,10 @@ public class AvaliSettingsScreen extends Screen {
 
     private void renderSlider(GuiGraphicsExtractor graphics, Slider slider, int y, boolean overList, int mouseX, int mouseY) {
         Integer value = sliding == slider ? Integer.valueOf(slideValue) : sliderValue(slider);
-        boolean enabled = serverEditable && value != null;
-        renderRow(graphics, slider.key(), y, SLIDER_WIDTH, enabled);
+        boolean managed = managed(slider);
+        boolean enabled = serverEditable && value != null && !managed;
+        renderRow(graphics, slider.key(), managed ? "avalinexus.settings.toughasnails" : "avalinexus.settings." + slider.key() + ".desc", y,
+            SLIDER_WIDTH, enabled);
         int x = controlX(SLIDER_WIDTH);
         int controlY = controlY(y);
         boolean hovered = enabled && (sliding == slider || overList && inside(mouseX, mouseY, x, controlY, SLIDER_WIDTH, CONTROL_HEIGHT));
@@ -227,6 +234,10 @@ public class AvaliSettingsScreen extends Screen {
         int thumbY = y + Math.round((float) scroll / maxScroll() * (listHeight() - thumbHeight));
         boolean hot = draggingBar || inside(mouseX, mouseY, x, y, BAR_WIDTH, listHeight());
         graphics.fill(x, thumbY, x + BAR_WIDTH, thumbY + thumbHeight, hot ? AvaliUi.ORANGE_GLOW : AvaliUi.PRIMARY_ORANGE);
+    }
+
+    private static boolean managed(Slider slider) {
+        return slider.cold() && ColdExposure.handledByToughAsNails();
     }
 
     private String serverValue(String key) {
@@ -277,7 +288,7 @@ public class AvaliSettingsScreen extends Screen {
                     playClick();
                     return true;
                 }
-                if (entry instanceof Slider slider && serverEditable && sliderValue(slider) != null
+                if (entry instanceof Slider slider && serverEditable && !managed(slider) && sliderValue(slider) != null
                     && inside(mouseX, mouseY, controlX(SLIDER_WIDTH), controlY(y), SLIDER_WIDTH, CONTROL_HEIGHT)) {
                     sliding = slider;
                     slideTo(mouseX);

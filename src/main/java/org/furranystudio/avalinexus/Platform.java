@@ -2,7 +2,7 @@
  * File: Platform.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-09-27
+ * Last Modified: 2026-11-11
  */
 package org.furranystudio.avalinexus;
 
@@ -11,12 +11,14 @@ import org.furranystudio.avalinexus.fluid.AvaliFluid;
 import org.furranystudio.avalinexus.fluid.AvaliFluidKind;
 
 import java.nio.file.Path;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 public final class Platform {
 
     private static Path gameDir;
     private static Supplier<CreativeModeTab.Builder> tabBuilder;
+    private static Predicate<String> modLoaded = id -> false;
 
     // Forge and NeoForge swap this for fluids that also carry their fluid type
     public interface FluidFactory {
@@ -28,9 +30,14 @@ public final class Platform {
     private Platform() {
     }
 
-    public static void init(Path gameDir, Supplier<CreativeModeTab.Builder> tabBuilder) {
+    public static void init(Path gameDir, Supplier<CreativeModeTab.Builder> tabBuilder, Predicate<String> modLoaded) {
         Platform.gameDir = gameDir;
         Platform.tabBuilder = tabBuilder;
+        Platform.modLoaded = modLoaded;
+    }
+
+    public static boolean isModLoaded(String id) {
+        return modLoaded.test(id);
     }
 
     public static Path getGameDir() {

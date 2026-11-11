@@ -2,7 +2,7 @@
  * File: AvaliNexusFabric.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-10-27
+ * Last Modified: 2026-11-11
  */
 package org.furranystudio.avalinexus.fabric;
 
@@ -48,7 +48,7 @@ public final class AvaliNexusFabric implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        Platform.init(FabricLoader.getInstance().getGameDir(), FabricCreativeModeTab::builder);
+        Platform.init(FabricLoader.getInstance().getGameDir(), FabricCreativeModeTab::builder, FabricLoader.getInstance()::isModLoaded);
         Config.registerSettings();
         Config.load();
 
