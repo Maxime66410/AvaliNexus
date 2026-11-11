@@ -2,7 +2,7 @@
  * File: AvaliVillageStructure.java
  * Author: Maxime66410
  * Created: 2026-10-22
- * Last Modified: 2026-10-27
+ * Last Modified: 2026-11-11
  */
 package org.furranystudio.avalinexus.worldgen.structure;
 
@@ -75,7 +75,8 @@ import java.util.UUID;
 
 public class AvaliVillageStructure extends Structure {
 
-    public record Layout(int weight, int size, int maxDistance, int minBuildings, int maxBuildings, int minWorkshops, int maxWorkshops) {
+    public record Layout(int weight, int size, int maxDistance, int minBuildings, int maxBuildings, int minWorkshops, int maxWorkshops,
+                         int minBeds) {
         public static final Codec<Layout> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Codec.intRange(1, 1000).fieldOf("weight").forGetter(Layout::weight),
             Codec.intRange(1, 20).fieldOf("size").forGetter(Layout::size),
@@ -83,7 +84,8 @@ public class AvaliVillageStructure extends Structure {
             Codec.intRange(0, 64).fieldOf("min_buildings").forGetter(Layout::minBuildings),
             Codec.intRange(0, 64).fieldOf("max_buildings").forGetter(Layout::maxBuildings),
             Codec.intRange(0, 16).fieldOf("min_workshops").forGetter(Layout::minWorkshops),
-            Codec.intRange(0, 16).fieldOf("max_workshops").forGetter(Layout::maxWorkshops)
+            Codec.intRange(0, 16).fieldOf("max_workshops").forGetter(Layout::maxWorkshops),
+            Codec.intRange(0, 64).optionalFieldOf("min_beds", 0).forGetter(Layout::minBeds)
         ).apply(instance, Layout::new));
     }
 
@@ -101,6 +103,9 @@ public class AvaliVillageStructure extends Structure {
             Codec.intRange(0, 16).fieldOf("max").forGetter(Fields::max),
             Codec.STRING.fieldOf("job").forGetter(Fields::job)
         ).apply(instance, Fields::new));
+    }
+
+    private record Selection(BlockPos position, List<StructurePiece> pieces, int beds) {
     }
 
     public record Loot(Identifier template, ResourceKey<LootTable> table) {
@@ -183,6 +188,7 @@ public class AvaliVillageStructure extends Structure {
             return Optional.empty();
         }
         Layout layout = pickLayout(context.random());
+        Selection best = null;
         for (int attempt = 0; attempt < attempts; attempt++) {
             Optional<GenerationStub> stub = JigsawPlacement.addPieces(context, startPool, Optional.empty(), layout.size(), new BlockPos(x, 0, z),
                 false, Optional.of(Heightmap.Types.WORLD_SURFACE_WG), new JigsawStructure.MaxDistance(layout.maxDistance()), PoolAliasLookup.EMPTY,
@@ -190,16 +196,34 @@ public class AvaliVillageStructure extends Structure {
             if (stub.isEmpty()) {
                 return stub;
             }
-            List<StructurePiece> kept = select(stub.get().getPiecesBuilder().build().pieces(), layout);
-            if (kept != null) {
-                StructurePiecesBuilder builder = new StructurePiecesBuilder();
-                for (StructurePiece piece : kept) {
-                    builder.addPiece(piece == kept.getFirst() ? piece : settle(context, piece));
-                }
-                return Optional.of(new GenerationStub(stub.get().position(), Either.right(builder)));
+            Selection selection = select(context.structureTemplateManager(), stub.get().position(),
+                stub.get().getPiecesBuilder().build().pieces(), layout);
+            if (selection != null && selection.beds() >= layout.minBeds()) {
+                return Optional.of(build(context, selection));
+            }
+            if (selection != null && (best == null || selection.beds() > best.beds())) {
+                best = selection;
             }
         }
-        return Optional.empty();
+        return best == null ? Optional.empty() : Optional.of(build(context, best));
+    }
+
+    private GenerationStub build(GenerationContext context, Selection selection) {
+        List<StructurePiece> kept = selection.pieces();
+        StructurePiecesBuilder builder = new StructurePiecesBuilder();
+        for (StructurePiece piece : kept) {
+            builder.addPiece(piece == kept.getFirst() ? piece : settle(context, piece));
+        }
+        return new GenerationStub(selection.position(), Either.right(builder));
+    }
+
+    private static int beds(StructureTemplateManager templates, StructurePiece piece) {
+        Identifier template = AvaliSettlements.template(piece);
+        if (template == null) {
+            return 0;
+        }
+        return (int) templates.getOrCreate(template).filterBlocks(BlockPos.ZERO, new StructurePlaceSettings(), ModBlocks.AVALI_BED.get())
+            .stream().filter(info -> info.state().hasProperty(BedBlock.PART) && info.state().getValue(BedBlock.PART) == BedPart.HEAD).count();
     }
 
     private boolean isFlatAndDry(GenerationContext context, int x, int z) {
@@ -236,7 +260,7 @@ public class AvaliVillageStructure extends Structure {
         return layouts.getLast();
     }
 
-    private List<StructurePiece> select(List<StructurePiece> pieces, Layout layout) {
+    private Selection select(StructureTemplateManager templates, BlockPos position, List<StructurePiece> pieces, Layout layout) {
         Set<StructurePiece> dropped = new HashSet<>();
         Set<Workshop> built = new HashSet<>();
         List<StructurePiece> houses = new ArrayList<>();
@@ -268,6 +292,9 @@ public class AvaliVillageStructure extends Structure {
                 dropped.add(piece);
             }
         }
+        Map<StructurePiece, Integer> houseBeds = new HashMap<>();
+        houses.forEach(house -> houseBeds.put(house, beds(templates, house)));
+        houses.sort(Comparator.comparingInt(houseBeds::get).reversed());
         int others = built.size() + Math.min(archived, maxArchives) + Math.min(warehouses, 1) + Math.min(planted, fields.max());
         int allowedHouses = Math.max(minHouses, layout.maxBuildings() - others);
         for (int index = allowedHouses; index < houses.size(); index++) {
@@ -279,7 +306,9 @@ public class AvaliVillageStructure extends Structure {
                 || total < layout.minBuildings() || total > layout.maxBuildings()) {
             return null;
         }
-        return pieces.stream().filter(piece -> !dropped.contains(piece)).toList();
+        List<StructurePiece> kept = pieces.stream().filter(piece -> !dropped.contains(piece)).toList();
+        int beds = kept.stream().mapToInt(piece -> houseBeds.getOrDefault(piece, 0)).sum();
+        return new Selection(position, kept, beds);
     }
 
     private static boolean matches(Identifier template, Identifier prefix) {

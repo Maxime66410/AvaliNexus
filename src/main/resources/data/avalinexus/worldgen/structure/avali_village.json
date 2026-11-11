@@ -16,7 +16,8 @@
       "min_buildings": 5,
       "max_buildings": 8,
       "min_workshops": 1,
-      "max_workshops": 2
+      "max_workshops": 2,
+      "min_beds": 4
     },
     {
       "weight": 3,
@@ -25,7 +26,8 @@
       "min_buildings": 10,
       "max_buildings": 20,
       "min_workshops": 1,
-      "max_workshops": 4
+      "max_workshops": 4,
+      "min_beds": 8
     }
   ],
   "house_prefix": "avalinexus:village/house_",
