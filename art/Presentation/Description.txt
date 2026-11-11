@@ -25,7 +25,7 @@ The **Avalon plants** grow there as well _(Piru, Nakati and Kiri)_. They don't n
 
 ## Gear, blocks and machines
 
-- **Nexite** tools and armor, between diamond and netherite _(there's even horse armor)_
+- **Nexite** tools and armor, between diamond and netherite
 - **Aerotech blades** and **rail guns** _(pistol, carbine, assault rifle, shotgun, sniper)_ that shoot **Nexite quills** from magazines
 - Lots of **building blocks**: graphene, aerogel glass in every color, nanocanvas, ice bricks, lamps, curtains, tapestries...
 - **Ammonia, coolant and fuel** that you move with **graphene pipes and pumps**, plus the machines that use them _(refinery, cryo freezer, graphene press, weapon workbench)_ and a heater
@@ -38,13 +38,21 @@ There's also a terminal with the Avali archives if you want to read about their 
 |---|---|
 | Forge | GeckoLib, TerraBlender |
 | NeoForge | GeckoLib, TerraBlender |
-| Fabric | Fabric API, GeckoLib, TerraBlender, _Mod Menu is optional_ |
+| Fabric | Fabric API, GeckoLib, TerraBlender |
+
+## Optionals
+
+| Loader | Support |
+|---|---|
+| Forge | nothing |
+| NeoForge | nothing |
+| Fabric | Mod Menu |
 
 Most of the **Avali behavior** is in **JSON files** so you can change it with a **datapack**, then use `/avalinexus reload`.
 
 ## Links
 
-Translations are on [Crowdin](https://crowdin.com/project/avalinexus), bugs and ideas go on [GitHub](https://github.com/Maxime66410/AvaliNexus/issues).
+Translations are on [Crowdin](https://crowdin.com/project/avalinexus) [![Crowdin](https://badges.crowdin.net/avalinexus/localized.svg)](https://crowdin.com/project/avalinexus), bugs and ideas go on [GitHub](https://github.com/Maxime66410/AvaliNexus/issues).
 
 ## Credits
 
