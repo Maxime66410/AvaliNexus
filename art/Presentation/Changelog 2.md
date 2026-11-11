@@ -13,6 +13,7 @@ This update is big, i worked a lot on the performance, the villages and many sma
 - Support for **JEI**, **REI** and **Jade** ! You can see all the recipes of the machines, the loom and the weapon workbench, and with Jade you see the machine progress, the fluids in tanks and pipes, and the job, role and reputation of the Avalis
 - Dialogue keys are now in the controls (Avali Nexus category), so you can change them like you want ([#9](https://github.com/Maxime66410/AvaliNexus/issues/9))
 - Buildings in villages and camps now have **ice bricks foundations**, no more houses floating over the holes or the water
+- New **Avali Village Map** and **Avali Camp Map** ! The merchants sell them for 20 Nexite when you are Friendly with their pack, and sometimes you find one in the warehouses of the villages or in the storage of the camps. The map always show you another village or camp, never the one where you got it
 - New logo and a contributors page !
 
 ## Changes
