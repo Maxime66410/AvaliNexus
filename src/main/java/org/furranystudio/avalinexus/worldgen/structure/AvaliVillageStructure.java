@@ -105,7 +105,7 @@ public class AvaliVillageStructure extends Structure {
         ).apply(instance, Fields::new));
     }
 
-    private record Selection(BlockPos position, List<StructurePiece> pieces, int beds) {
+    private record Selection(BlockPos position, List<StructurePiece> pieces, int beds, List<StructurePiece> dropped) {
     }
 
     public record Loot(Identifier template, ResourceKey<LootTable> table) {
@@ -211,10 +211,31 @@ public class AvaliVillageStructure extends Structure {
     private GenerationStub build(GenerationContext context, Selection selection) {
         List<StructurePiece> kept = selection.pieces();
         StructurePiecesBuilder builder = new StructurePiecesBuilder();
+        List<StructurePiece> placed = new ArrayList<>();
         for (StructurePiece piece : kept) {
-            builder.addPiece(piece == kept.getFirst() ? piece : settle(context, piece));
+            StructurePiece settled = piece == kept.getFirst() ? piece : settle(context, piece);
+            placed.add(settled);
+            builder.addPiece(settled);
         }
+        AvaliNexus.LOGGER.info("[AN-Ground] village at {} with {} pieces, {} dropped", selection.position().toShortString(), placed.size(),
+            selection.dropped().size());
+        placed.forEach(piece -> logGround(context, "kept", piece));
+        selection.dropped().forEach(piece -> logGround(context, "dropped", piece));
         return new GenerationStub(selection.position(), Either.right(builder));
+    }
+
+    private static void logGround(GenerationContext context, String state, StructurePiece piece) {
+        BoundingBox box = piece.getBoundingBox();
+        String projection = piece instanceof PoolElementStructurePiece pool ? pool.getElement().getProjection().name() : "none";
+        int delta = piece instanceof PoolElementStructurePiece pool ? pool.getGroundLevelDelta() : 0;
+        BlockPos center = box.getCenter();
+        AvaliNexus.LOGGER.info("[AN-Ground] {} {} {} box {},{},{} to {},{},{} delta {} ground corners {} {} {} {} center {}", state,
+            AvaliSettlements.template(piece), projection, box.minX(), box.minY(), box.minZ(), box.maxX(), box.maxY(), box.maxZ(), delta,
+            height(context, box.minX(), box.minZ(), Heightmap.Types.WORLD_SURFACE_WG),
+            height(context, box.maxX(), box.minZ(), Heightmap.Types.WORLD_SURFACE_WG),
+            height(context, box.minX(), box.maxZ(), Heightmap.Types.WORLD_SURFACE_WG),
+            height(context, box.maxX(), box.maxZ(), Heightmap.Types.WORLD_SURFACE_WG),
+            height(context, center.getX(), center.getZ(), Heightmap.Types.WORLD_SURFACE_WG));
     }
 
     private static int beds(StructureTemplateManager templates, StructurePiece piece) {
@@ -308,7 +329,7 @@ public class AvaliVillageStructure extends Structure {
         }
         List<StructurePiece> kept = pieces.stream().filter(piece -> !dropped.contains(piece)).toList();
         int beds = kept.stream().mapToInt(piece -> houseBeds.getOrDefault(piece, 0)).sum();
-        return new Selection(position, kept, beds);
+        return new Selection(position, kept, beds, List.copyOf(dropped));
     }
 
     private static boolean matches(Identifier template, Identifier prefix) {

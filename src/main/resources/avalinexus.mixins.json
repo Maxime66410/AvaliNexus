@@ -10,7 +10,8 @@
     "ItemFrameMixin",
     "LivingEntityDrownMixin",
     "ServerPlayerGameModeMixin",
-    "ServerPlayerMenuMixin"
+    "ServerPlayerMenuMixin",
+    "StructureStartMixin"
   ],
   "client": [
     "AvatarArmPoseMixin",
