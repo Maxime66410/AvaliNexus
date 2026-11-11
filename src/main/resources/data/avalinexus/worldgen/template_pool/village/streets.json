@@ -6,7 +6,7 @@
       "element": {
         "element_type": "minecraft:single_pool_element",
         "location": "avalinexus:village/street_straight_1",
-        "processors": "minecraft:empty",
+        "processors": "avalinexus:avali_street",
         "projection": "terrain_matching"
       }
     },
@@ -15,7 +15,7 @@
       "element": {
         "element_type": "minecraft:single_pool_element",
         "location": "avalinexus:village/street_straight_2",
-        "processors": "minecraft:empty",
+        "processors": "avalinexus:avali_street",
         "projection": "terrain_matching"
       }
     },
@@ -24,7 +24,7 @@
       "element": {
         "element_type": "minecraft:single_pool_element",
         "location": "avalinexus:village/street_straight_3",
-        "processors": "minecraft:empty",
+        "processors": "avalinexus:avali_street",
         "projection": "terrain_matching"
       }
     },
@@ -33,7 +33,7 @@
       "element": {
         "element_type": "minecraft:single_pool_element",
         "location": "avalinexus:village/street_corner_1",
-        "processors": "minecraft:empty",
+        "processors": "avalinexus:avali_street",
         "projection": "terrain_matching"
       }
     },
@@ -42,7 +42,7 @@
       "element": {
         "element_type": "minecraft:single_pool_element",
         "location": "avalinexus:village/street_corner_2",
-        "processors": "minecraft:empty",
+        "processors": "avalinexus:avali_street",
         "projection": "terrain_matching"
       }
     },
@@ -51,7 +51,7 @@
       "element": {
         "element_type": "minecraft:single_pool_element",
         "location": "avalinexus:village/street_cross_1",
-        "processors": "minecraft:empty",
+        "processors": "avalinexus:avali_street",
         "projection": "terrain_matching"
       }
     },
@@ -60,7 +60,7 @@
       "element": {
         "element_type": "minecraft:single_pool_element",
         "location": "avalinexus:village/street_cross_2",
-        "processors": "minecraft:empty",
+        "processors": "avalinexus:avali_street",
         "projection": "terrain_matching"
       }
     },
@@ -69,7 +69,7 @@
       "element": {
         "element_type": "minecraft:single_pool_element",
         "location": "avalinexus:village/street_t",
-        "processors": "minecraft:empty",
+        "processors": "avalinexus:avali_street",
         "projection": "terrain_matching"
       }
     },
@@ -78,7 +78,7 @@
       "element": {
         "element_type": "minecraft:single_pool_element",
         "location": "avalinexus:village/street_end",
-        "processors": "minecraft:empty",
+        "processors": "avalinexus:avali_street",
         "projection": "terrain_matching"
       }
     }

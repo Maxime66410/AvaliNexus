@@ -6,7 +6,7 @@
       "element": {
         "element_type": "minecraft:single_pool_element",
         "location": "avalinexus:village/street_end",
-        "processors": "minecraft:empty",
+        "processors": "avalinexus:avali_street",
         "projection": "terrain_matching"
       }
     }
