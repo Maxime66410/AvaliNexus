@@ -9,6 +9,7 @@ package org.furranystudio.avalinexus.compat.toughasnails;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import org.furranystudio.avalinexus.entity.ColdExposure;
 import org.furranystudio.avalinexus.worldgen.ModBiomes;
@@ -32,9 +33,7 @@ public final class ToughAsNailsCompat {
             return;
         }
         registered = true;
-        TemperatureHelper.registerPositionalTemperatureModifier(ToughAsNailsCompat::shelter);
-        TemperatureHelper.registerPlayerTemperatureModifier((player, current) ->
-            ColdExposure.isInFreezingLiquid(player) ? current.decrement(LIQUID_COLD) : current);
+        TemperatureHelper.registerPlayerTemperatureModifier(ToughAsNailsCompat::modify);
     }
 
     public static void tick(MinecraftServer server) {
@@ -48,10 +47,17 @@ public final class ToughAsNailsCompat {
         }
     }
 
-    private static TemperatureLevel shelter(Level level, BlockPos pos, TemperatureLevel current) {
-        if (level.getBiome(pos).is(ModBiomes.POLAR_TAIGA) && !level.canSeeSky(pos.above())) {
+    private static TemperatureLevel modify(Player player, TemperatureLevel current) {
+        if (ColdExposure.isInFreezingLiquid(player)) {
+            return current.decrement(LIQUID_COLD);
+        }
+        if (sheltered(player.level(), player.blockPosition())) {
             return current.increment(SHELTER_WARMTH);
         }
         return current;
+    }
+
+    private static boolean sheltered(Level level, BlockPos pos) {
+        return level.getBiome(pos).is(ModBiomes.POLAR_TAIGA) && !level.canSeeSky(pos.above());
     }
 }
