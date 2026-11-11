@@ -2,13 +2,14 @@
  * File: TradeData.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-10-27
+ * Last Modified: 2026-11-11
  */
 package org.furranystudio.avalinexus.trade;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -16,6 +17,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.tags.EnchantmentTags;
@@ -30,6 +32,7 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import org.furranystudio.avalinexus.AvaliNexus;
+import org.furranystudio.avalinexus.item.ModMaps;
 
 import java.io.Reader;
 import java.util.ArrayList;
@@ -47,6 +50,9 @@ public final class TradeData {
     private static final Identifier SETTINGS = AvaliNexus.id("avali/trades/professions.json");
     private static final String RANDOM = "random";
     private static final int ROTATION_TRIES = 8;
+
+    public record MapOrigin(ServerLevel level, BlockPos pos) {
+    }
 
     public record Settings(List<String> professions, int rotationDays, float inheritChance) {
         private static final Settings EMPTY = new Settings(List.of(), 3, 0.5F);
@@ -77,20 +83,28 @@ public final class TradeData {
         return professions.isEmpty() ? "" : professions.get(random.nextInt(professions.size()));
     }
 
-    public static AvaliShop rollShop(MinecraftServer server, RandomSource random, String profession, long day) {
+    public static AvaliShop rollShop(MinecraftServer server, RandomSource random, String profession, long day, MapOrigin origin) {
         Pool pool = pool(server, profession);
         List<ShopOffer> offers = new ArrayList<>();
         List<ShopSlot> slots = new ArrayList<>();
         for (ShopSlot slot : ShopSlot.values()) {
-            for (Template template : pick(pool.templates().getOrDefault(slot, List.of()), rolls(pool, slot), random)) {
-                offers.add(roll(server, template, pool.maxUses(), random));
-                slots.add(slot);
+            int wanted = rolls(pool, slot);
+            for (Template template : shuffle(pool.templates().getOrDefault(slot, List.of()), random)) {
+                if (wanted <= 0) {
+                    break;
+                }
+                Optional<ShopOffer> offer = roll(server, template, pool.maxUses(), random, origin);
+                if (offer.isPresent()) {
+                    offers.add(offer.get());
+                    slots.add(slot);
+                    wanted--;
+                }
             }
         }
         return new AvaliShop(profession, offers, slots, day, day);
     }
 
-    public static void rotate(MinecraftServer server, RandomSource random, AvaliShop shop) {
+    public static void rotate(MinecraftServer server, RandomSource random, AvaliShop shop, MapOrigin origin) {
         if (shop.offers().isEmpty()) {
             return;
         }
@@ -102,7 +116,11 @@ public final class TradeData {
             return;
         }
         for (int attempt = 0; attempt < ROTATION_TRIES; attempt++) {
-            ShopOffer offer = roll(server, templates.get(random.nextInt(templates.size())), pool.maxUses(), random);
+            Optional<ShopOffer> rolled = roll(server, templates.get(random.nextInt(templates.size())), pool.maxUses(), random, origin);
+            if (rolled.isEmpty()) {
+                continue;
+            }
+            ShopOffer offer = rolled.get();
             boolean taken = false;
             for (int other = 0; other < shop.offers().size(); other++) {
                 taken |= other != index && shop.slots().get(other) == slot
@@ -123,15 +141,23 @@ public final class TradeData {
         };
     }
 
-    private static List<Template> pick(List<Template> templates, int rolls, RandomSource random) {
+    private static List<Template> shuffle(List<Template> templates, RandomSource random) {
         List<Template> shuffled = new ArrayList<>(templates);
         Collections.shuffle(shuffled, new Random(random.nextLong()));
-        return shuffled.subList(0, Math.min(rolls, shuffled.size()));
+        return shuffled;
     }
 
-    private static ShopOffer roll(MinecraftServer server, Template template, int maxUses, RandomSource random) {
+    private static Optional<ShopOffer> roll(MinecraftServer server, Template template, int maxUses, RandomSource random, MapOrigin origin) {
         Item item = template.items().get(random.nextInt(template.items().size()));
         ItemStack stack = new ItemStack(item, template.count());
+        if (ModMaps.isMap(item)) {
+            Optional<ItemStack> map = ModMaps.create(origin.level(), origin.pos(), item);
+            if (map.isEmpty()) {
+                return Optional.empty();
+            }
+            stack = map.get();
+            stack.setCount(template.count());
+        }
         if (template.potion().isPresent()) {
             Optional<Holder.Reference<Potion>> potion = BuiltInRegistries.POTION.get(template.potion().get());
             if (potion.isPresent()) {
@@ -142,7 +168,7 @@ public final class TradeData {
         if (!template.enchantments().isEmpty()) {
             stack = enchant(server, stack, template.enchantments(), random);
         }
-        return new ShopOffer(template.tab(), stack, template.price(), maxUses, 0, template.accepts());
+        return Optional.of(new ShopOffer(template.tab(), stack, template.price(), maxUses, 0, template.accepts()));
     }
 
     private static ItemStack enchant(MinecraftServer server, ItemStack stack, List<Identifier> ids, RandomSource random) {

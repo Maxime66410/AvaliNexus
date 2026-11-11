@@ -2,7 +2,7 @@
  * File: AvaliNexus.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-10-27
+ * Last Modified: 2026-11-11
  */
 package org.furranystudio.avalinexus;
 
@@ -20,6 +20,7 @@ import org.furranystudio.avalinexus.fluid.ModFluids;
 import org.furranystudio.avalinexus.entity.ModEntities;
 import org.furranystudio.avalinexus.item.ModCreativeTabs;
 import org.furranystudio.avalinexus.item.ModItems;
+import org.furranystudio.avalinexus.item.ModMaps;
 import org.furranystudio.avalinexus.item.NexiteGear;
 import org.furranystudio.avalinexus.inventory.ModMenus;
 import org.furranystudio.avalinexus.item.TapestryItems;
@@ -48,6 +49,7 @@ public final class AvaliNexus {
         FluidParticles.init();
         ModEntities.init();
         ModItems.init();
+        ModMaps.init();
         NexiteGear.init();
         org.furranystudio.avalinexus.item.weapon.AerotechWeapons.init();
         org.furranystudio.avalinexus.item.weapon.RailWeapons.init();

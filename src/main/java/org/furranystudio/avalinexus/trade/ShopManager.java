@@ -2,7 +2,7 @@
  * File: ShopManager.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-10-27
+ * Last Modified: 2026-11-11
  */
 package org.furranystudio.avalinexus.trade;
 
@@ -98,7 +98,7 @@ public final class ShopManager {
         long day = level.getOverworldClockTime() / TICKS_PER_DAY;
         AvaliShop shop = avali.getShop();
         if (shop == null || !shop.profession().equals(avali.getProfession())) {
-            shop = TradeData.rollShop(level.getServer(), avali.getRandom(), avali.getProfession(), day);
+            shop = TradeData.rollShop(level.getServer(), avali.getRandom(), avali.getProfession(), day, mapOrigin(level, avali));
             avali.setShop(shop);
         }
         if (avali.isCompanion()) {
@@ -109,11 +109,15 @@ public final class ShopManager {
             AvaliNexus.debug("{}: restocks its {} shop", avali.debugName(), shop.profession());
         }
         if (shop.shouldRotate(day, TradeData.settings(level.getServer()).rotationDays())) {
-            TradeData.rotate(level.getServer(), avali.getRandom(), shop);
+            TradeData.rotate(level.getServer(), avali.getRandom(), shop, mapOrigin(level, avali));
             shop.rotated(day);
             AvaliNexus.debug("{}: rotates the offers of its {} shop", avali.debugName(), shop.profession());
         }
         return shop;
+    }
+
+    private static TradeData.MapOrigin mapOrigin(ServerLevel level, AvaliEntity avali) {
+        return new TradeData.MapOrigin(level, avali.getCamp() != null ? avali.getCamp() : avali.blockPosition());
     }
 
     public static int count(Inventory inventory, ItemStack wanted) {

@@ -81,6 +81,16 @@
       "item": "minecraft:saddle",
       "count": 1,
       "price": 12
+    },
+    {
+      "item": "avalinexus:avali_village_map",
+      "count": 1,
+      "price": 20
+    },
+    {
+      "item": "avalinexus:avali_camp_map",
+      "count": 1,
+      "price": 20
     }
   ],
   "ally": [

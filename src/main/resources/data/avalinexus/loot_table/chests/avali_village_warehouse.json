@@ -451,6 +451,58 @@
           "type": "minecraft:item",
           "name": "minecraft:diamond",
           "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "avalinexus:avali_village_map",
+          "weight": 1,
+          "modifier": [
+            {
+              "type": "minecraft:exploration_map",
+              "destination": "#avalinexus:on_avali_village_maps",
+              "decoration": "avalinexus:avali_village",
+              "search_radius": 100,
+              "skip_existing_chunks": true,
+              "zoom": 2
+            },
+            {
+              "type": "minecraft:filtered",
+              "item_filter": {
+                "predicates": {
+                  "minecraft:map_id": {}
+                }
+              },
+              "on_fail": {
+                "type": "minecraft:discard"
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "avalinexus:avali_camp_map",
+          "weight": 1,
+          "modifier": [
+            {
+              "type": "minecraft:exploration_map",
+              "destination": "#avalinexus:on_avali_camp_maps",
+              "decoration": "avalinexus:avali_camp",
+              "search_radius": 100,
+              "skip_existing_chunks": true,
+              "zoom": 2
+            },
+            {
+              "type": "minecraft:filtered",
+              "item_filter": {
+                "predicates": {
+                  "minecraft:map_id": {}
+                }
+              },
+              "on_fail": {
+                "type": "minecraft:discard"
+              }
+            }
+          ]
         }
       ]
     }
