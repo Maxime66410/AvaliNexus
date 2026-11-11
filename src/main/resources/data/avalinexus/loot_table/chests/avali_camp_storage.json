@@ -12,9 +12,9 @@
           "type": "minecraft:item",
           "name": "minecraft:cod",
           "weight": 10,
-          "functions": [
+          "modifier": [
             {
-              "function": "minecraft:set_count",
+              "type": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
                 "min": 2,
@@ -27,9 +27,9 @@
           "type": "minecraft:item",
           "name": "minecraft:salmon",
           "weight": 10,
-          "functions": [
+          "modifier": [
             {
-              "function": "minecraft:set_count",
+              "type": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
                 "min": 2,
@@ -42,9 +42,9 @@
           "type": "minecraft:item",
           "name": "minecraft:sweet_berries",
           "weight": 10,
-          "functions": [
+          "modifier": [
             {
-              "function": "minecraft:set_count",
+              "type": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
                 "min": 3,
@@ -57,9 +57,9 @@
           "type": "minecraft:item",
           "name": "minecraft:coal",
           "weight": 10,
-          "functions": [
+          "modifier": [
             {
-              "function": "minecraft:set_count",
+              "type": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
                 "min": 2,
@@ -72,9 +72,9 @@
           "type": "minecraft:item",
           "name": "minecraft:beetroot",
           "weight": 10,
-          "functions": [
+          "modifier": [
             {
-              "function": "minecraft:set_count",
+              "type": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
                 "min": 2,
@@ -87,9 +87,9 @@
           "type": "minecraft:item",
           "name": "avalinexus:graphene",
           "weight": 10,
-          "functions": [
+          "modifier": [
             {
-              "function": "minecraft:set_count",
+              "type": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
                 "min": 2,
@@ -102,9 +102,9 @@
           "type": "minecraft:item",
           "name": "avalinexus:nanofibre",
           "weight": 10,
-          "functions": [
+          "modifier": [
             {
-              "function": "minecraft:set_count",
+              "type": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
                 "min": 1,
@@ -117,9 +117,9 @@
           "type": "minecraft:item",
           "name": "avalinexus:white_nanocanvas",
           "weight": 10,
-          "functions": [
+          "modifier": [
             {
-              "function": "minecraft:set_count",
+              "type": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
                 "min": 1,
@@ -132,9 +132,9 @@
           "type": "minecraft:item",
           "name": "avalinexus:nexite_nugget",
           "weight": 10,
-          "functions": [
+          "modifier": [
             {
-              "function": "minecraft:set_count",
+              "type": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
                 "min": 1,
@@ -162,9 +162,9 @@
           "type": "minecraft:item",
           "name": "avalinexus:nexite_shard",
           "weight": 4,
-          "functions": [
+          "modifier": [
             {
-              "function": "minecraft:set_count",
+              "type": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
                 "min": 1,
@@ -177,9 +177,9 @@
           "type": "minecraft:item",
           "name": "avalinexus:nexite_ingot",
           "weight": 4,
-          "functions": [
+          "modifier": [
             {
-              "function": "minecraft:set_count",
+              "type": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
                 "min": 1,
@@ -192,9 +192,9 @@
           "type": "minecraft:item",
           "name": "avalinexus:aerogel",
           "weight": 4,
-          "functions": [
+          "modifier": [
             {
-              "function": "minecraft:set_count",
+              "type": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
                 "min": 1,
@@ -207,9 +207,9 @@
           "type": "minecraft:item",
           "name": "avalinexus:nexite_quill",
           "weight": 1,
-          "functions": [
+          "modifier": [
             {
-              "function": "minecraft:set_count",
+              "type": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
                 "min": 4,
@@ -233,9 +233,9 @@
           "type": "minecraft:item",
           "name": "minecraft:splash_potion",
           "weight": 1,
-          "functions": [
+          "modifier": [
             {
-              "function": "minecraft:set_potion",
+              "type": "minecraft:set_potion",
               "id": "avalinexus:nexite_tonic"
             }
           ]
