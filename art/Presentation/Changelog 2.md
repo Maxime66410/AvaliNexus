@@ -41,6 +41,8 @@ The wall tapestries are also much lighter now, and they only render at 32 blocks
 - After changing world, you could not talk to the Avalis or shoot with the rail guns anymore until you restart the game
 - Streets on slopes was digging tunnels under the road, the players and Avalis falled inside
 - On slopes, some streets could also be placed one on another and make big holes in the ground
+- All the chests in villages and camps was giving only 1 item of each thing, the enchanted books was not enchanted and the Nexite Tonic was not even a Nexite Tonic haha. Now the quantities are random like they should be
+- A **Graphene Tank** lost all its fluid when you break it, now it keep it inside
 - On small screens or with a big GUI scale, the dialogue choices and the hint could go out of the screen ([#10](https://github.com/Maxime66410/AvaliNexus/issues/10))
 
 ## Small fixes
