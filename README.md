@@ -2,7 +2,7 @@
 
 Avali Nexus is a Minecraft mod for Forge, Fabric/Quilt and NeoForge that adds the Avali to the game, the nomadic space chicken with all there tech. You'll be able to explore their biome, find their villages and get your hands on some futuristic gear to survive the cold.
 
-> ⚠️ **Heads up:** the mod is still in active dev and not released yet. Most of the stuff below is already in the game, but things can still change or break.
+> ⚠️ **Heads up:** the mod is still in active dev, things can still change or break.
 
 ## What's in the mod
 
