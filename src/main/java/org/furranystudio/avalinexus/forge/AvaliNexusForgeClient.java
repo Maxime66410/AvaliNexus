@@ -2,7 +2,7 @@
  * File: AvaliNexusForgeClient.java
  * Author: Maxime66410
  * Created: 2026-10-23
- * Last Modified: 2026-11-09
+ * Last Modified: 2026-11-14
  */
 package org.furranystudio.avalinexus.forge;
 
@@ -42,6 +42,7 @@ import org.furranystudio.avalinexus.client.machine.GraphenePressScreen;
 import org.furranystudio.avalinexus.client.machine.WeaponWorkbenchScreen;
 import org.furranystudio.avalinexus.client.reputation.ReputationClient;
 import org.furranystudio.avalinexus.client.settings.AvaliSettingsScreen;
+import org.furranystudio.avalinexus.client.pipe.GraphenePipeRenderer;
 import org.furranystudio.avalinexus.client.tank.GrapheneTankRenderer;
 import org.furranystudio.avalinexus.client.tapestry.AvaliTapestryRenderer;
 import org.furranystudio.avalinexus.client.weapon.NexiteQuillRenderer;
@@ -119,6 +120,7 @@ public final class AvaliNexusForgeClient {
             event.registerEntityRenderer(ModEntities.NEXITE_QUILL.get(), NexiteQuillRenderer::new);
             event.registerEntityRenderer(ModEntities.AVALI_EGG.get(), ThrownItemRenderer::new);
             event.registerBlockEntityRenderer(ModBlockEntities.GRAPHENE_TANK.get(), GrapheneTankRenderer::new);
+            event.registerBlockEntityRenderer(ModBlockEntities.GRAPHENE_PIPE.get(), GraphenePipeRenderer::new);
         });
     }
 }

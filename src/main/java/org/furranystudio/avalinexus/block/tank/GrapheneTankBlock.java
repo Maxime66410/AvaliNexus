@@ -2,7 +2,7 @@
  * File: GrapheneTankBlock.java
  * Author: Maxime66410
  * Created: 2026-10-14
- * Last Modified: 2026-10-22
+ * Last Modified: 2026-11-14
  */
 package org.furranystudio.avalinexus.block.tank;
 
@@ -136,7 +136,7 @@ public class GrapheneTankBlock extends Block implements EntityBlock, FluidPortBl
         }
         TankStructure structure = TankStructure.at(level, pos);
         Fluid fluid = structure.fluid();
-        if (structure.extract(AvaliLiquids.BUCKET, true) < AvaliLiquids.BUCKET) {
+        if (!AvaliLiquids.hasBucket(fluid) || structure.extract(AvaliLiquids.BUCKET, true) < AvaliLiquids.BUCKET) {
             player.sendOverlayMessage(Component.translatable("message.avalinexus.tank.not_enough"));
             return InteractionResult.FAIL;
         }

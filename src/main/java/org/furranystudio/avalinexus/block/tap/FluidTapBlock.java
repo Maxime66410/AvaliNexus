@@ -118,8 +118,7 @@ public class FluidTapBlock extends Block implements FluidPortBlock {
             level.playSound(null, pos, ModSounds.TAP_EMPTY.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
             return InteractionResult.FAIL;
         }
-        ItemStack filled = AvaliLiquids.isCarried(fluid) ? AvaliLiquids.filledBucket(fluid) : new ItemStack(fluid.getBucket());
-        player.setItemInHand(hand, ItemUtils.createFilledResult(stack, player, filled));
+        player.setItemInHand(hand, ItemUtils.createFilledResult(stack, player, AvaliLiquids.filledBucket(fluid)));
         level.playSound(null, pos, ModSounds.TAP_FILL.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
         return InteractionResult.SUCCESS;
     }
@@ -132,7 +131,7 @@ public class FluidTapBlock extends Block implements FluidPortBlock {
             }
             PipeNetwork network = PipeNetwork.of(level, source);
             Fluid fluid = network.peek();
-            if (fluid == Fluids.EMPTY || network.take(fluid, AvaliLiquids.BUCKET, true) < AvaliLiquids.BUCKET) {
+            if (!AvaliLiquids.hasBucket(fluid) || network.take(fluid, AvaliLiquids.BUCKET, true) < AvaliLiquids.BUCKET) {
                 return Fluids.EMPTY;
             }
             network.take(fluid, AvaliLiquids.BUCKET, false);
@@ -144,7 +143,7 @@ public class FluidTapBlock extends Block implements FluidPortBlock {
                 return Fluids.EMPTY;
             }
             Fluid fluid = port.fluid();
-            if (fluid == Fluids.EMPTY || port.drain(fluid, AvaliLiquids.BUCKET, true) < AvaliLiquids.BUCKET) {
+            if (!AvaliLiquids.hasBucket(fluid) || port.drain(fluid, AvaliLiquids.BUCKET, true) < AvaliLiquids.BUCKET) {
                 return Fluids.EMPTY;
             }
             port.drain(fluid, AvaliLiquids.BUCKET, false);
@@ -155,7 +154,7 @@ public class FluidTapBlock extends Block implements FluidPortBlock {
             return Fluids.EMPTY;
         }
         Fluid fluid = foreign.fluid();
-        if (fluid == Fluids.EMPTY || fluid.getBucket() == Items.AIR || foreign.drain(fluid, AvaliLiquids.BUCKET, true) < AvaliLiquids.BUCKET) {
+        if (!AvaliLiquids.hasBucket(fluid) || foreign.drain(fluid, AvaliLiquids.BUCKET, true) < AvaliLiquids.BUCKET) {
             return Fluids.EMPTY;
         }
         foreign.drain(fluid, AvaliLiquids.BUCKET, false);

@@ -2,7 +2,7 @@
  * File: PipeFluid.java
  * Author: Maxime66410
  * Created: 2026-10-14
- * Last Modified: 2026-10-14
+ * Last Modified: 2026-11-14
  */
 package org.furranystudio.avalinexus.block.pipe;
 
@@ -18,7 +18,8 @@ public enum PipeFluid implements StringRepresentable {
     WATER("water", null),
     AMMONIA("ammonia", AvaliFluidKind.AMMONIA),
     COOLANT("coolant", AvaliFluidKind.COOLANT),
-    FUEL("fuel", AvaliFluidKind.FUEL);
+    FUEL("fuel", AvaliFluidKind.FUEL),
+    OTHER("other", null);
 
     private final String name;
     private final AvaliFluidKind kind;
@@ -29,12 +30,15 @@ public enum PipeFluid implements StringRepresentable {
     }
 
     public static PipeFluid of(Fluid fluid) {
+        if (fluid == Fluids.EMPTY) {
+            return EMPTY;
+        }
         if (fluid.isSame(Fluids.WATER)) {
             return WATER;
         }
         AvaliFluidKind kind = AvaliLiquids.kindOf(fluid);
         if (kind == null) {
-            return EMPTY;
+            return OTHER;
         }
         for (PipeFluid value : values()) {
             if (value.kind == kind) {
@@ -53,10 +57,6 @@ public enum PipeFluid implements StringRepresentable {
 
     public int tint() {
         return kind == null ? AvaliLiquids.WATER_TINT : kind.tint();
-    }
-
-    public boolean compatible(PipeFluid other) {
-        return this == EMPTY || other == EMPTY || this == other;
     }
 
     @Override

@@ -2,7 +2,7 @@
  * File: GrapheneTankRenderer.java
  * Author: Maxime66410
  * Created: 2026-10-14
- * Last Modified: 2026-10-14
+ * Last Modified: 2026-11-14
  */
 package org.furranystudio.avalinexus.client.tank;
 
@@ -12,6 +12,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.renderer.block.BlockAndTintGetter;
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
@@ -19,28 +20,18 @@ import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.resources.model.sprite.SpriteGetter;
-import net.minecraft.client.resources.model.sprite.SpriteId;
-import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.PipeBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
-import org.furranystudio.avalinexus.AvaliNexus;
 import org.furranystudio.avalinexus.block.tank.GrapheneTankBlockEntity;
-import org.furranystudio.avalinexus.fluid.AvaliLiquids;
+import org.furranystudio.avalinexus.client.fluid.FluidLook;
 import org.furranystudio.avalinexus.fluid.FluidContent;
 
 public class GrapheneTankRenderer implements BlockEntityRenderer<GrapheneTankBlockEntity, GrapheneTankRenderer.State> {
 
-    private static final SpriteId AVALI_STILL = new SpriteId(TextureAtlas.LOCATION_BLOCKS, AvaliNexus.id("block/fluid/avali_fluid_still"));
-    private static final SpriteId WATER_STILL = new SpriteId(TextureAtlas.LOCATION_BLOCKS, Identifier.withDefaultNamespace("block/water_still"));
     private static final float INSET = 1.1F / 16.0F;
 
-    private final SpriteGetter sprites;
-
     public GrapheneTankRenderer(BlockEntityRendererProvider.Context context) {
-        sprites = context.sprites();
     }
 
     @Override
@@ -53,8 +44,8 @@ public class GrapheneTankRenderer implements BlockEntityRenderer<GrapheneTankBlo
         BlockEntityRenderState.extractBase(tank, state, crumbling);
         FluidContent content = tank.content();
         state.fill = content.amount() / (float) GrapheneTankBlockEntity.CAPACITY;
-        state.water = content.fluid().isSame(Fluids.WATER);
-        state.color = content.isEmpty() ? 0 : AvaliLiquids.tint(content.fluid());
+        state.sprite = content.isEmpty() ? null : FluidLook.sprite(content.fluid());
+        state.color = content.isEmpty() ? 0 : FluidLook.color(content.fluid(), tank.getLevel() instanceof BlockAndTintGetter getter ? getter : null, tank.getBlockPos());
         BlockState block = tank.getBlockState();
         for (Direction direction : Direction.values()) {
             state.connected[direction.ordinal()] = block.hasProperty(PipeBlock.PROPERTY_BY_DIRECTION.get(direction))
@@ -67,10 +58,10 @@ public class GrapheneTankRenderer implements BlockEntityRenderer<GrapheneTankBlo
 
     @Override
     public void submit(State state, PoseStack poseStack, SubmitNodeCollector collector, CameraRenderState camera) {
-        if (state.fill <= 0.0F) {
+        if (state.fill <= 0.0F || state.sprite == null) {
             return;
         }
-        TextureAtlasSprite sprite = sprites.get(state.water ? WATER_STILL : AVALI_STILL);
+        TextureAtlasSprite sprite = state.sprite;
         float x0 = state.joined(Direction.WEST) ? 0.0F : INSET;
         float x1 = state.joined(Direction.EAST) ? 1.0F : 1.0F - INSET;
         float z0 = state.joined(Direction.NORTH) ? 0.0F : INSET;
@@ -140,7 +131,7 @@ public class GrapheneTankRenderer implements BlockEntityRenderer<GrapheneTankBlo
 
     public static class State extends BlockEntityRenderState {
         public float fill;
-        public boolean water;
+        public TextureAtlasSprite sprite;
         public int color;
         public final boolean[] connected = new boolean[6];
         public boolean surface;

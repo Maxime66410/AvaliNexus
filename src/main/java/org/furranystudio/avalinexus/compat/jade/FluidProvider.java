@@ -2,7 +2,7 @@
  * File: FluidProvider.java
  * Author: Maxime66410
  * Created: 2026-11-02
- * Last Modified: 2026-11-02
+ * Last Modified: 2026-11-14
  */
 package org.furranystudio.avalinexus.compat.jade;
 
@@ -54,7 +54,7 @@ public enum FluidProvider implements IServerExtensionProvider<FluidView.Data>, I
             TankStructure tank = TankStructure.at(block.getLevel(), block.getPosition());
             views.add(data(tank.fluid(), tank.amount(), tank.capacity()));
         } else if (block.getBlockEntity() instanceof GraphenePipeBlockEntity pipe) {
-            Fluid fluid = block.getBlockState().getValue(GraphenePipeBlock.FLUID).fluid();
+            Fluid fluid = GraphenePipeBlock.fluidAt(block.getLevel(), block.getPosition(), block.getBlockState());
             views.add(data(fluid, pipe.amount(), PipeNetwork.PIPE_CAPACITY));
         }
         return views.isEmpty() ? null : List.of(new ViewGroup<>(views));

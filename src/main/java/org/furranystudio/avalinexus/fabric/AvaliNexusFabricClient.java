@@ -2,7 +2,7 @@
  * File: AvaliNexusFabricClient.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-11-09
+ * Last Modified: 2026-11-14
  */
 package org.furranystudio.avalinexus.fabric;
 
@@ -29,6 +29,7 @@ import org.furranystudio.avalinexus.client.machine.CryoFreezerScreen;
 import org.furranystudio.avalinexus.client.machine.GraphenePressScreen;
 import org.furranystudio.avalinexus.client.machine.WeaponWorkbenchScreen;
 import org.furranystudio.avalinexus.client.loom.AvaliLoomScreen;
+import org.furranystudio.avalinexus.client.pipe.GraphenePipeRenderer;
 import org.furranystudio.avalinexus.client.tank.GrapheneTankRenderer;
 import org.furranystudio.avalinexus.inventory.ModMenus;
 import net.minecraft.client.KeyMapping;
@@ -70,6 +71,7 @@ public final class AvaliNexusFabricClient implements ClientModInitializer {
         ClientTickEvents.START_CLIENT_TICK.register(client -> ClientDialogue.tick());
         EntityRendererRegistry.register(ModEntities.AVALI.get(), AvaliRenderer::new);
         BlockEntityRendererRegistry.register(ModBlockEntities.GRAPHENE_TANK.get(), GrapheneTankRenderer::new);
+        BlockEntityRendererRegistry.register(ModBlockEntities.GRAPHENE_PIPE.get(), GraphenePipeRenderer::new);
         registerScreen(ModMenus.HEATER.get(), (menu, inventory, title) -> new HeaterScreen((org.furranystudio.avalinexus.block.heater.HeaterMenu) menu, inventory, title));
         registerScreen(ModMenus.AVALI_LOOM.get(), (menu, inventory, title) -> new AvaliLoomScreen((org.furranystudio.avalinexus.block.loom.AvaliLoomMenu) menu, inventory, title));
         registerScreen(ModMenus.AMMONIA_REFINERY.get(), (menu, inventory, title) -> new AmmoniaRefineryScreen((org.furranystudio.avalinexus.block.refinery.AmmoniaRefineryMenu) menu, inventory, title));

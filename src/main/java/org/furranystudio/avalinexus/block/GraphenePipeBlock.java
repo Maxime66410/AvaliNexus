@@ -2,7 +2,7 @@
  * File: GraphenePipeBlock.java
  * Author: Maxime66410
  * Created: 2026-10-13
- * Last Modified: 2026-11-12
+ * Last Modified: 2026-11-14
  */
 package org.furranystudio.avalinexus.block;
 
@@ -12,7 +12,9 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -32,6 +34,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.pathfinder.PathComputationType;
@@ -63,8 +66,34 @@ public class GraphenePipeBlock extends PipeBlock implements SimpleWaterloggedBlo
         return level.getBlockState(pos.relative(direction)).is(this);
     }
 
-    private boolean canLink(BlockState state, BlockState neighbor) {
-        return neighbor.is(this) && state.getValue(FLUID).compatible(neighbor.getValue(FLUID));
+    public static Fluid fluidAt(BlockGetter level, BlockPos pos, BlockState state) {
+        if (!state.hasProperty(FLUID)) {
+            return Fluids.EMPTY;
+        }
+        if (state.getValue(FLUID) != PipeFluid.OTHER) {
+            return state.getValue(FLUID).fluid();
+        }
+        return level.getBlockEntity(pos) instanceof GraphenePipeBlockEntity pipe ? pipe.fluid() : Fluids.EMPTY;
+    }
+
+    private static boolean compatible(Fluid first, Fluid second) {
+        return first == Fluids.EMPTY || second == Fluids.EMPTY || first.isSame(second);
+    }
+
+    private boolean canLink(BlockGetter level, Fluid fluid, BlockPos neighborPos, BlockState neighbor) {
+        return neighbor.is(this) && compatible(fluid, fluidAt(level, neighborPos, neighbor));
+    }
+
+    private Fluid placementFluid(BlockGetter level, BlockPos pos) {
+        for (Direction direction : Direction.values()) {
+            BlockPos next = pos.relative(direction);
+            BlockState neighbor = level.getBlockState(next);
+            Fluid fluid = neighbor.is(this) ? fluidAt(level, next, neighbor) : Fluids.EMPTY;
+            if (fluid != Fluids.EMPTY) {
+                return fluid;
+            }
+        }
+        return Fluids.EMPTY;
     }
 
     private boolean isSolid(BlockGetter level, BlockPos pos, Direction direction) {
@@ -78,10 +107,12 @@ public class GraphenePipeBlock extends PipeBlock implements SimpleWaterloggedBlo
     }
 
     public BlockState relink(BlockGetter level, BlockPos pos, BlockState state) {
+        Fluid fluid = fluidAt(level, pos, state);
         for (Direction direction : Direction.values()) {
-            BlockState neighbor = level.getBlockState(pos.relative(direction));
+            BlockPos next = pos.relative(direction);
+            BlockState neighbor = level.getBlockState(next);
             if (neighbor.is(this)) {
-                state = state.setValue(PROPERTY_BY_DIRECTION.get(direction), canLink(state, neighbor));
+                state = state.setValue(PROPERTY_BY_DIRECTION.get(direction), canLink(level, fluid, next, neighbor));
             }
         }
         return state;
@@ -138,20 +169,24 @@ public class GraphenePipeBlock extends PipeBlock implements SimpleWaterloggedBlo
         Level level = context.getLevel();
         BlockPos pos = context.getClickedPos();
         Direction anchor = context.getClickedFace().getOpposite();
-        BlockState state = defaultBlockState().setValue(WATERLOGGED, level.getFluidState(pos).getType() == Fluids.WATER);
+        Fluid fluid = placementFluid(level, pos);
+        BlockState state = defaultBlockState().setValue(WATERLOGGED, level.getFluidState(pos).getType() == Fluids.WATER)
+            .setValue(FLUID, PipeFluid.of(fluid));
         for (Direction direction : Direction.values()) {
-            BlockState neighbor = level.getBlockState(pos.relative(direction));
-            if (neighbor.is(this) && state.getValue(FLUID) == PipeFluid.EMPTY) {
-                state = state.setValue(FLUID, neighbor.getValue(FLUID));
-            }
-        }
-        for (Direction direction : Direction.values()) {
-            boolean linked = canLink(state, level.getBlockState(pos.relative(direction)))
+            boolean linked = canLink(level, fluid, pos.relative(direction), level.getBlockState(pos.relative(direction)))
                 || isPort(level, pos, direction)
                 || direction == anchor && isSolid(level, pos, direction);
             state = state.setValue(PROPERTY_BY_DIRECTION.get(direction), linked);
         }
         return extendEnd(level, pos, state);
+    }
+
+    @Override
+    public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+        super.setPlacedBy(level, pos, state, placer, stack);
+        if (state.getValue(FLUID) == PipeFluid.OTHER && level.getBlockEntity(pos) instanceof GraphenePipeBlockEntity pipe) {
+            pipe.setFluid(placementFluid(level, pos));
+        }
     }
 
     @Override
@@ -161,7 +196,7 @@ public class GraphenePipeBlock extends PipeBlock implements SimpleWaterloggedBlo
             ticks.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
         }
         BooleanProperty side = PROPERTY_BY_DIRECTION.get(direction);
-        boolean linked = canLink(state, neighborState) || state.getValue(side) && isSolid(level, pos, direction);
+        boolean linked = canLink(level, fluidAt(level, pos, state), neighborPos, neighborState) || state.getValue(side) && isSolid(level, pos, direction);
         return extendEnd(level, pos, state.setValue(side, linked));
     }
 

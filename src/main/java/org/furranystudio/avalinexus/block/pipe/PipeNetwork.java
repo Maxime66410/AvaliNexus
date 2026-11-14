@@ -2,7 +2,7 @@
  * File: PipeNetwork.java
  * Author: Maxime66410
  * Created: 2026-10-14
- * Last Modified: 2026-11-12
+ * Last Modified: 2026-11-14
  */
 package org.furranystudio.avalinexus.block.pipe;
 
@@ -61,8 +61,9 @@ public final class PipeNetwork {
             }
             network.pipes.add(pipe);
             network.stored += pipe.amount();
-            if (state.getValue(GraphenePipeBlock.FLUID) != PipeFluid.EMPTY) {
-                network.fluid = state.getValue(GraphenePipeBlock.FLUID).fluid();
+            Fluid held = GraphenePipeBlock.fluidAt(level, pos, state);
+            if (held != Fluids.EMPTY) {
+                network.fluid = held;
             }
             for (Direction direction : Direction.values()) {
                 if (!state.getValue(PipeBlock.PROPERTY_BY_DIRECTION.get(direction))) {
@@ -295,8 +296,10 @@ public final class PipeNetwork {
         for (int i = 0; i < size; i++) {
             GraphenePipeBlockEntity pipe = pipes.get(i);
             pipe.setAmount(stored / size + (i < stored % size ? 1 : 0));
+            boolean changed = !pipe.fluid().isSame(shown == PipeFluid.OTHER ? fluid : Fluids.EMPTY);
+            pipe.setFluid(shown == PipeFluid.OTHER ? fluid : Fluids.EMPTY);
             BlockState state = pipe.getBlockState();
-            if (state.getBlock() instanceof GraphenePipeBlock block && state.getValue(GraphenePipeBlock.FLUID) != shown) {
+            if (state.getBlock() instanceof GraphenePipeBlock block && (state.getValue(GraphenePipeBlock.FLUID) != shown || changed)) {
                 BlockPos pos = pipe.getBlockPos();
                 level.setBlock(pos, block.relink(level, pos, state.setValue(GraphenePipeBlock.FLUID, shown)), Block.UPDATE_CLIENTS);
             }

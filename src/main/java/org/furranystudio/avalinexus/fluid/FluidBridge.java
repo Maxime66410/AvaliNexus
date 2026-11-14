@@ -15,7 +15,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import org.furranystudio.avalinexus.block.GraphenePipeBlock;
-import org.furranystudio.avalinexus.block.pipe.PipeFluid;
 
 public final class FluidBridge {
 
@@ -35,7 +34,7 @@ public final class FluidBridge {
     }
 
     public static boolean supported(Fluid fluid) {
-        return fluid != Fluids.EMPTY && PipeFluid.of(fluid) != PipeFluid.EMPTY;
+        return fluid != Fluids.EMPTY;
     }
 
     public static boolean allowed(Fluid fluid, boolean anyFluid) {

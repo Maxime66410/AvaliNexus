@@ -2,7 +2,7 @@
  * File: FluidPumpBlock.java
  * Author: Maxime66410
  * Created: 2026-10-14
- * Last Modified: 2026-11-02
+ * Last Modified: 2026-11-14
  */
 package org.furranystudio.avalinexus.block.pump;
 
@@ -66,7 +66,7 @@ public class FluidPumpBlock extends Block implements FluidPortBlock {
 
     public static Fluid pumped(BlockGetter level, BlockPos pos) {
         FluidState below = level.getFluidState(pos.below());
-        return below.isSource() && AvaliLiquids.isCarried(below.getType()) ? AvaliLiquids.source(below.getType()) : Fluids.EMPTY;
+        return below.isSource() && !below.isEmpty() ? AvaliLiquids.source(below.getType()) : Fluids.EMPTY;
     }
 
     @Override

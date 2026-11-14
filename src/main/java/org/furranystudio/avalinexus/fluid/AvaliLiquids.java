@@ -2,16 +2,20 @@
  * File: AvaliLiquids.java
  * Author: Maxime66410
  * Created: 2026-10-14
- * Last Modified: 2026-10-14
+ * Last Modified: 2026-11-14
  */
 package org.furranystudio.avalinexus.fluid;
 
 import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import org.furranystudio.avalinexus.registry.ModRegistry;
@@ -31,10 +35,6 @@ public final class AvaliLiquids {
     public static void init() {
     }
 
-    public static boolean isCarried(Fluid fluid) {
-        return fluid.isSame(Fluids.WATER) || kindOf(fluid) != null;
-    }
-
     public static AvaliFluidKind kindOf(Fluid fluid) {
         for (AvaliFluidKind kind : AvaliFluidKind.values()) {
             if (fluid.isSame(ModFluids.source(kind))) {
@@ -49,7 +49,7 @@ public final class AvaliLiquids {
         if (kind != null) {
             return ModFluids.source(kind);
         }
-        return fluid.isSame(Fluids.WATER) ? Fluids.WATER : Fluids.EMPTY;
+        return fluid instanceof FlowingFluid flowing ? flowing.getSource() : fluid;
     }
 
     public static int tint(Fluid fluid) {
@@ -58,17 +58,29 @@ public final class AvaliLiquids {
     }
 
     public static Component name(Fluid fluid) {
-        return source(fluid).defaultFluidState().createLegacyBlock().getBlock().getName();
+        Fluid source = source(fluid);
+        Block block = source.defaultFluidState().createLegacyBlock().getBlock();
+        if (block != Blocks.AIR) {
+            return block.getName();
+        }
+        if (hasBucket(source)) {
+            return new ItemStack(source.getBucket()).getHoverName();
+        }
+        return Component.literal(BuiltInRegistries.FLUID.getKey(source).toString());
+    }
+
+    public static boolean hasBucket(Fluid fluid) {
+        return fluid != Fluids.EMPTY && source(fluid).getBucket() != Items.AIR;
     }
 
     public static Fluid fromBucket(ItemStack stack) {
-        if (stack.getItem() instanceof BucketItem bucket && isCarried(bucket.getContent())) {
+        if (stack.getItem() instanceof BucketItem bucket && bucket.getContent() != Fluids.EMPTY) {
             return source(bucket.getContent());
         }
         return Fluids.EMPTY;
     }
 
     public static ItemStack filledBucket(Fluid fluid) {
-        return isCarried(fluid) ? new ItemStack(source(fluid).getBucket()) : new ItemStack(Items.BUCKET);
+        return hasBucket(fluid) ? new ItemStack(source(fluid).getBucket()) : new ItemStack(Items.BUCKET);
     }
 }
