@@ -22,10 +22,10 @@ public final class FluidBridge {
     public static final int DROPLETS_PER_MILLIBUCKET = 81;
 
     public interface ForeignLookup {
-        FluidPort find(Level level, BlockPos pos, Direction side);
+        FluidPort find(Level level, BlockPos pos, Direction side, boolean anyFluid);
     }
 
-    private static ForeignLookup foreignLookup = (level, pos, side) -> null;
+    private static ForeignLookup foreignLookup = (level, pos, side, anyFluid) -> null;
 
     private FluidBridge() {
     }
@@ -36,6 +36,10 @@ public final class FluidBridge {
 
     public static boolean supported(Fluid fluid) {
         return fluid != Fluids.EMPTY && PipeFluid.of(fluid) != PipeFluid.EMPTY;
+    }
+
+    public static boolean allowed(Fluid fluid, boolean anyFluid) {
+        return anyFluid ? fluid != Fluids.EMPTY : supported(fluid);
     }
 
     public static boolean exposes(Block block) {
@@ -59,11 +63,19 @@ public final class FluidBridge {
     }
 
     public static FluidPort foreign(Level level, BlockPos pos, Direction side) {
+        return foreign(level, pos, side, false);
+    }
+
+    public static FluidPort foreignAnyFluid(Level level, BlockPos pos, Direction side) {
+        return foreign(level, pos, side, true);
+    }
+
+    private static FluidPort foreign(Level level, BlockPos pos, Direction side, boolean anyFluid) {
         BlockState state = level.getBlockState(pos);
         if (state.isAir() || state.getBlock() instanceof FluidPortBlock || state.getBlock() instanceof GraphenePipeBlock) {
             return null;
         }
-        return foreignLookup.find(level, pos.immutable(), side);
+        return foreignLookup.find(level, pos.immutable(), side, anyFluid);
     }
 
     private record ReadOnlyPort(FluidPort port) implements FluidPort {

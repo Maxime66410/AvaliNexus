@@ -38,13 +38,17 @@ public final class FabricFluidTransfer {
             FluidBridge.exposed(level, pos, state, side) == null ? null : new Exposed(level, pos.immutable(), side), blocks);
     }
 
-    public static FluidPort foreign(Level level, BlockPos pos, Direction side) {
+    public static FluidPort foreign(Level level, BlockPos pos, Direction side, boolean anyFluid) {
         Storage<FluidVariant> storage = FluidStorage.SIDED.find(level, pos, side);
-        return storage == null ? null : new Foreign(storage, pos);
+        return storage == null ? null : new Foreign(storage, pos, anyFluid);
     }
 
     private static boolean usable(FluidVariant variant) {
-        return !variant.isBlank() && !variant.hasComponents() && FluidBridge.supported(variant.getFluid());
+        return usable(variant, false);
+    }
+
+    private static boolean usable(FluidVariant variant, boolean anyFluid) {
+        return !variant.isBlank() && !variant.hasComponents() && FluidBridge.allowed(variant.getFluid(), anyFluid);
     }
 
     private static boolean holds(StorageView<FluidVariant> view, Fluid fluid) {
@@ -140,7 +144,7 @@ public final class FabricFluidTransfer {
         }
     }
 
-    private record Foreign(Storage<FluidVariant> storage, BlockPos pos) implements FluidPort {
+    private record Foreign(Storage<FluidVariant> storage, BlockPos pos, boolean anyFluid) implements FluidPort {
 
         @Override
         public Role role() {
@@ -155,7 +159,7 @@ public final class FabricFluidTransfer {
         @Override
         public Fluid fluid() {
             for (StorageView<FluidVariant> view : storage) {
-                if (usable(view.getResource()) && view.getAmount() >= DROPLETS) {
+                if (usable(view.getResource(), anyFluid) && view.getAmount() >= DROPLETS) {
                     return view.getResource().getFluid();
                 }
             }
@@ -191,7 +195,7 @@ public final class FabricFluidTransfer {
 
         @Override
         public int fill(Fluid fluid, int amount, boolean simulate) {
-            if (amount <= 0 || !FluidBridge.supported(fluid)) {
+            if (amount <= 0 || !FluidBridge.allowed(fluid, anyFluid)) {
                 return 0;
             }
             int possible;
@@ -214,7 +218,7 @@ public final class FabricFluidTransfer {
         @Override
         public int drain(Fluid fluid, int amount, boolean simulate) {
             Fluid target = fluid == Fluids.EMPTY ? fluid() : fluid;
-            if (amount <= 0 || !FluidBridge.supported(target)) {
+            if (amount <= 0 || !FluidBridge.allowed(target, anyFluid)) {
                 return 0;
             }
             int possible;

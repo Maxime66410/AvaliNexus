@@ -35,13 +35,17 @@ public final class NeoForgeFluidTransfer {
             FluidBridge.exposed(level, pos, state, side) == null ? null : new Exposed(level, pos.immutable(), side), blocks);
     }
 
-    public static FluidPort foreign(Level level, BlockPos pos, Direction side) {
+    public static FluidPort foreign(Level level, BlockPos pos, Direction side, boolean anyFluid) {
         ResourceHandler<FluidResource> handler = level.getCapability(Capabilities.Fluid.BLOCK, pos, side);
-        return handler == null ? null : new Foreign(handler, pos);
+        return handler == null ? null : new Foreign(handler, pos, anyFluid);
     }
 
     private static boolean usable(FluidResource resource) {
-        return !resource.isEmpty() && resource.isComponentsPatchEmpty() && FluidBridge.supported(resource.getFluid());
+        return usable(resource, false);
+    }
+
+    private static boolean usable(FluidResource resource, boolean anyFluid) {
+        return !resource.isEmpty() && resource.isComponentsPatchEmpty() && FluidBridge.allowed(resource.getFluid(), anyFluid);
     }
 
     private static boolean holds(FluidResource resource, Fluid fluid) {
@@ -136,7 +140,7 @@ public final class NeoForgeFluidTransfer {
         }
     }
 
-    private record Foreign(ResourceHandler<FluidResource> handler, BlockPos pos) implements FluidPort {
+    private record Foreign(ResourceHandler<FluidResource> handler, BlockPos pos, boolean anyFluid) implements FluidPort {
 
         @Override
         public Role role() {
@@ -152,7 +156,7 @@ public final class NeoForgeFluidTransfer {
         public Fluid fluid() {
             for (int i = 0; i < handler.size(); i++) {
                 FluidResource resource = handler.getResource(i);
-                if (usable(resource) && handler.getAmountAsLong(i) > 0) {
+                if (usable(resource, anyFluid) && handler.getAmountAsLong(i) > 0) {
                     return resource.getFluid();
                 }
             }
@@ -189,7 +193,7 @@ public final class NeoForgeFluidTransfer {
 
         @Override
         public int fill(Fluid fluid, int amount, boolean simulate) {
-            if (amount <= 0 || !FluidBridge.supported(fluid)) {
+            if (amount <= 0 || !FluidBridge.allowed(fluid, anyFluid)) {
                 return 0;
             }
             try (Transaction transaction = Transaction.openRoot()) {
@@ -204,7 +208,7 @@ public final class NeoForgeFluidTransfer {
         @Override
         public int drain(Fluid fluid, int amount, boolean simulate) {
             Fluid target = fluid == Fluids.EMPTY ? fluid() : fluid;
-            if (amount <= 0 || !FluidBridge.supported(target)) {
+            if (amount <= 0 || !FluidBridge.allowed(target, anyFluid)) {
                 return 0;
             }
             try (Transaction transaction = Transaction.openRoot()) {

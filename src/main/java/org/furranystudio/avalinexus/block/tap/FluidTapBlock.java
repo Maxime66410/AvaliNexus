@@ -2,7 +2,7 @@
  * File: FluidTapBlock.java
  * Author: Maxime66410
  * Created: 2026-10-14
- * Last Modified: 2026-11-02
+ * Last Modified: 2026-11-14
  */
 package org.furranystudio.avalinexus.block.tap;
 
@@ -36,6 +36,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.furranystudio.avalinexus.block.GraphenePipeBlock;
 import org.furranystudio.avalinexus.block.pipe.PipeNetwork;
 import org.furranystudio.avalinexus.fluid.AvaliLiquids;
+import org.furranystudio.avalinexus.fluid.FluidBridge;
 import org.furranystudio.avalinexus.fluid.FluidPort;
 import org.furranystudio.avalinexus.fluid.FluidPortBlock;
 import org.furranystudio.avalinexus.sound.ModSounds;
@@ -117,7 +118,8 @@ public class FluidTapBlock extends Block implements FluidPortBlock {
             level.playSound(null, pos, ModSounds.TAP_EMPTY.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
             return InteractionResult.FAIL;
         }
-        player.setItemInHand(hand, ItemUtils.createFilledResult(stack, player, AvaliLiquids.filledBucket(fluid)));
+        ItemStack filled = AvaliLiquids.isCarried(fluid) ? AvaliLiquids.filledBucket(fluid) : new ItemStack(fluid.getBucket());
+        player.setItemInHand(hand, ItemUtils.createFilledResult(stack, player, filled));
         level.playSound(null, pos, ModSounds.TAP_FILL.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
         return InteractionResult.SUCCESS;
     }
@@ -148,6 +150,15 @@ public class FluidTapBlock extends Block implements FluidPortBlock {
             port.drain(fluid, AvaliLiquids.BUCKET, false);
             return fluid;
         }
-        return Fluids.EMPTY;
+        FluidPort foreign = FluidBridge.foreignAnyFluid(level, source, toTap);
+        if (foreign == null) {
+            return Fluids.EMPTY;
+        }
+        Fluid fluid = foreign.fluid();
+        if (fluid == Fluids.EMPTY || fluid.getBucket() == Items.AIR || foreign.drain(fluid, AvaliLiquids.BUCKET, true) < AvaliLiquids.BUCKET) {
+            return Fluids.EMPTY;
+        }
+        foreign.drain(fluid, AvaliLiquids.BUCKET, false);
+        return fluid;
     }
 }

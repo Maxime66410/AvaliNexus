@@ -35,16 +35,20 @@ public final class ForgeFluidTransfer {
         }
     }
 
-    public static FluidPort foreign(Level level, BlockPos pos, Direction side) {
+    public static FluidPort foreign(Level level, BlockPos pos, Direction side, boolean anyFluid) {
         BlockEntity blockEntity = level.getBlockEntity(pos);
         if (blockEntity == null) {
             return null;
         }
-        return blockEntity.getCapability(ForgeCapabilities.FLUID_HANDLER, side).map(handler -> (FluidPort) new Foreign(handler, pos)).orElse(null);
+        return blockEntity.getCapability(ForgeCapabilities.FLUID_HANDLER, side).map(handler -> (FluidPort) new Foreign(handler, pos, anyFluid)).orElse(null);
     }
 
     private static boolean usable(FluidStack stack) {
-        return !stack.isEmpty() && !stack.hasTag() && FluidBridge.supported(stack.getFluid());
+        return usable(stack, false);
+    }
+
+    private static boolean usable(FluidStack stack, boolean anyFluid) {
+        return !stack.isEmpty() && !stack.hasTag() && FluidBridge.allowed(stack.getFluid(), anyFluid);
     }
 
     private static boolean holds(FluidStack stack, Fluid fluid) {
@@ -124,7 +128,7 @@ public final class ForgeFluidTransfer {
         }
     }
 
-    private record Foreign(IFluidHandler handler, BlockPos pos) implements FluidPort {
+    private record Foreign(IFluidHandler handler, BlockPos pos, boolean anyFluid) implements FluidPort {
 
         @Override
         public Role role() {
@@ -140,7 +144,7 @@ public final class ForgeFluidTransfer {
         public Fluid fluid() {
             for (int i = 0; i < handler.getTanks(); i++) {
                 FluidStack stack = handler.getFluidInTank(i);
-                if (usable(stack)) {
+                if (usable(stack, anyFluid)) {
                     return stack.getFluid();
                 }
             }
@@ -177,7 +181,7 @@ public final class ForgeFluidTransfer {
 
         @Override
         public int fill(Fluid fluid, int amount, boolean simulate) {
-            if (amount <= 0 || !FluidBridge.supported(fluid)) {
+            if (amount <= 0 || !FluidBridge.allowed(fluid, anyFluid)) {
                 return 0;
             }
             return handler.fill(new FluidStack(fluid, amount), simulate ? IFluidHandler.FluidAction.SIMULATE : IFluidHandler.FluidAction.EXECUTE);
@@ -186,7 +190,7 @@ public final class ForgeFluidTransfer {
         @Override
         public int drain(Fluid fluid, int amount, boolean simulate) {
             Fluid target = fluid == Fluids.EMPTY ? fluid() : fluid;
-            if (amount <= 0 || !FluidBridge.supported(target)) {
+            if (amount <= 0 || !FluidBridge.allowed(target, anyFluid)) {
                 return 0;
             }
             return handler.drain(new FluidStack(target, amount), simulate ? IFluidHandler.FluidAction.SIMULATE : IFluidHandler.FluidAction.EXECUTE).getAmount();
