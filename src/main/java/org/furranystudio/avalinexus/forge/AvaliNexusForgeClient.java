@@ -41,6 +41,7 @@ import org.furranystudio.avalinexus.client.machine.CryoFreezerScreen;
 import org.furranystudio.avalinexus.client.machine.GraphenePressScreen;
 import org.furranystudio.avalinexus.client.machine.WeaponWorkbenchScreen;
 import org.furranystudio.avalinexus.client.reputation.ReputationClient;
+import org.furranystudio.avalinexus.client.vision.AvaliVision;
 import org.furranystudio.avalinexus.client.settings.AvaliSettingsScreen;
 import org.furranystudio.avalinexus.client.pipe.GraphenePipeRenderer;
 import org.furranystudio.avalinexus.client.tank.GrapheneTankRenderer;
@@ -91,11 +92,13 @@ public final class AvaliNexusForgeClient {
             }
             event.register(RailGunClient.RELOAD);
             event.register(ReputationClient.OPEN);
+            event.register(AvaliVision.TOGGLE);
         });
         AddGuiOverlayLayersEvent.BUS.addListener(event -> event.getLayeredDraw().add(AvaliNexus.id("rail_gun"), RailGunHud::render));
         TickEvent.ClientTickEvent.Pre.BUS.addListener(event -> RailGunClient.tick());
         TickEvent.ClientTickEvent.Pre.BUS.addListener(event -> AvaliComposedTexture.tick());
         TickEvent.ClientTickEvent.Pre.BUS.addListener(event -> ReputationClient.tick());
+        TickEvent.ClientTickEvent.Pre.BUS.addListener(event -> AvaliVision.tick());
         InputEvent.InteractionKeyMappingTriggered.Attack.BUS.addListener((Predicate<InputEvent.InteractionKeyMappingTriggered.Attack>) event -> {
             if (RailGunClient.blocksAttack()) {
                 event.setSwingHand(false);

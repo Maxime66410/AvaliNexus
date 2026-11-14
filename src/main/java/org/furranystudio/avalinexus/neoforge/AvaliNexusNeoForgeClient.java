@@ -42,6 +42,7 @@ import org.furranystudio.avalinexus.client.machine.CryoFreezerScreen;
 import org.furranystudio.avalinexus.client.machine.GraphenePressScreen;
 import org.furranystudio.avalinexus.client.machine.WeaponWorkbenchScreen;
 import org.furranystudio.avalinexus.client.reputation.ReputationClient;
+import org.furranystudio.avalinexus.client.vision.AvaliVision;
 import org.furranystudio.avalinexus.client.settings.AvaliSettingsScreen;
 import org.furranystudio.avalinexus.client.pipe.GraphenePipeRenderer;
 import org.furranystudio.avalinexus.client.tank.GrapheneTankRenderer;
@@ -86,11 +87,13 @@ public final class AvaliNexusNeoForgeClient {
             }
             event.register(RailGunClient.RELOAD);
             event.register(ReputationClient.OPEN);
+            event.register(AvaliVision.TOGGLE);
         });
         modEventBus.addListener((RegisterGuiLayersEvent event) -> event.registerAboveAll(AvaliNexus.id("rail_gun"), RailGunHud::render));
         NeoForge.EVENT_BUS.addListener((ClientTickEvent.Pre event) -> RailGunClient.tick());
         NeoForge.EVENT_BUS.addListener((ClientTickEvent.Pre event) -> AvaliComposedTexture.tick());
         NeoForge.EVENT_BUS.addListener((ClientTickEvent.Pre event) -> ReputationClient.tick());
+        NeoForge.EVENT_BUS.addListener((ClientTickEvent.Pre event) -> AvaliVision.tick());
         NeoForge.EVENT_BUS.addListener((InputEvent.InteractionKeyMappingTriggered event) -> {
             if (event.isAttack() && RailGunClient.blocksAttack()) {
                 event.setSwingHand(false);

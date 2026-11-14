@@ -15,6 +15,7 @@
   ],
   "client": [
     "AvatarArmPoseMixin",
+    "GameRendererVisionMixin",
     "MouseHandlerAimMixin"
   ],
   "injectors": {

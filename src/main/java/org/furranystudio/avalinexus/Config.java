@@ -2,7 +2,7 @@
  * File: Config.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-10-27
+ * Last Modified: 2026-11-14
  */
 package org.furranystudio.avalinexus;
 
@@ -29,6 +29,9 @@ public final class Config {
     public static final ConfigValue<Boolean> AVALI_FONT_READING = new ConfigValue<>("avaliFontReading", false); // Custom text font
     public static final ConfigValue<Integer> COLD_SPEED = new ConfigValue<>("coldSpeed", 100); // Speed biome cold
     public static final ConfigValue<Integer> LIQUID_COLD_SPEED = new ConfigValue<>("liquidColdSpeed", 100);// Speed liquid cold
+    public static final ConfigValue<Boolean> AVALI_VISION = new ConfigValue<>("avaliVision", false);
+    public static final ConfigValue<Integer> AVALI_VISION_DISTANCE = new ConfigValue<>("avaliVisionDistance", 16);
+    public static final ConfigValue<Integer> AVALI_VISION_STRENGTH = new ConfigValue<>("avaliVisionStrength", 100);
 
     public static final List<String> SERVER_SETTINGS = List.of("debugLogging", "coldSpeed", "liquidColdSpeed");
 
@@ -37,7 +40,10 @@ public final class Config {
         AVALI_FONT_UI,
         AVALI_FONT_READING,
         COLD_SPEED,
-        LIQUID_COLD_SPEED
+        LIQUID_COLD_SPEED,
+        AVALI_VISION,
+        AVALI_VISION_DISTANCE,
+        AVALI_VISION_STRENGTH
     };
 
     private Config() {
@@ -49,6 +55,9 @@ public final class Config {
         SettingsRegistry.register("avaliFontReading", new BoolSetting(AVALI_FONT_READING));
         SettingsRegistry.register("coldSpeed", new IntSetting(COLD_SPEED, 0, 500));
         SettingsRegistry.register("liquidColdSpeed", new IntSetting(LIQUID_COLD_SPEED, 0, 500));
+        SettingsRegistry.register("avaliVision", new BoolSetting(AVALI_VISION));
+        SettingsRegistry.register("avaliVisionDistance", new IntSetting(AVALI_VISION_DISTANCE, 4, 64));
+        SettingsRegistry.register("avaliVisionStrength", new IntSetting(AVALI_VISION_STRENGTH, 0, 200));
     }
 
     public static void load() {
