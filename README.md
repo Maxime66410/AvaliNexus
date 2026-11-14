@@ -100,6 +100,14 @@ Saved in `config/avalinexus.json`.
 - Jade 26.3.5 (NeoForge and Fabric)
 - Tough As Nails 21.11.0.11
 
+### Tested with
+
+- Sodium, Iris (Fabric and NeoForge)
+- Terralith, Tectonic (Fabric and NeoForge)
+- Biomes O' Plenty
+- Tough As Nails
+- Pipez, XNet, Tech Reborn, Large Fluid Tank
+
 ## Project structure
 
 All 3 loaders use the same code in `src/`, each one just has its own small package to boot the mod (`org.furranystudio.avalinexus.forge`, `.neoforge` and `.fabric`).
