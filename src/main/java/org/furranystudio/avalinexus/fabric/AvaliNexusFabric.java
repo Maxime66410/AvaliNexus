@@ -2,7 +2,7 @@
  * File: AvaliNexusFabric.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-11-11
+ * Last Modified: 2026-11-12
  */
 package org.furranystudio.avalinexus.fabric;
 
@@ -36,6 +36,7 @@ import org.furranystudio.avalinexus.entity.ColdExposure;
 import org.furranystudio.avalinexus.entity.avali.AvaliMusicPlayer;
 import org.furranystudio.avalinexus.entity.ModEntities;
 import org.furranystudio.avalinexus.entity.MonsterTargeting;
+import org.furranystudio.avalinexus.fluid.FluidBridge;
 import org.furranystudio.avalinexus.item.ModCreativeTabs;
 import org.furranystudio.avalinexus.registry.ModRegistry;
 import org.furranystudio.avalinexus.worldgen.ModBiomes;
@@ -60,6 +61,8 @@ public final class AvaliNexusFabric implements ModInitializer {
                 ResourceKey.create(Registries.PLACED_FEATURE, AvaliNexus.id(ore)));
         }
         ModRegistry.registerAll(AvaliNexusFabric::registerVanilla);
+        FabricFluidTransfer.register();
+        FluidBridge.setForeignLookup(FabricFluidTransfer::foreign);
         ModEntities.registerAttributes(FabricDefaultAttributeRegistry::register);
         ModEntities.registerSpawnPlacements(AvaliNexusFabric::registerSpawnPlacement);
         CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.SPAWN_EGGS).register(output ->

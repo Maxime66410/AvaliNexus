@@ -2,7 +2,7 @@
  * File: AvaliNexusNeoForge.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-11-11
+ * Last Modified: 2026-11-12
  */
 package org.furranystudio.avalinexus.neoforge;
 
@@ -20,6 +20,7 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.fml.loading.FMLPaths;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
@@ -37,6 +38,7 @@ import org.furranystudio.avalinexus.entity.ColdExposure;
 import org.furranystudio.avalinexus.entity.avali.AvaliMusicPlayer;
 import org.furranystudio.avalinexus.entity.ModEntities;
 import org.furranystudio.avalinexus.entity.MonsterTargeting;
+import org.furranystudio.avalinexus.fluid.FluidBridge;
 import org.furranystudio.avalinexus.item.ModCreativeTabs;
 import org.furranystudio.avalinexus.registry.ModRegistry;
 import org.furranystudio.avalinexus.worldgen.ModBiomes;
@@ -57,6 +59,8 @@ public class AvaliNexusNeoForge {
             NeoForgeFluids.register(event);
             ModRegistry.registerAll(event::register);
         });
+        modEventBus.addListener((RegisterCapabilitiesEvent event) -> NeoForgeFluidTransfer.register(event));
+        FluidBridge.setForeignLookup(NeoForgeFluidTransfer::foreign);
         modEventBus.addListener((EntityAttributeCreationEvent event) -> ModEntities.registerAttributes(event::put));
         modEventBus.addListener((RegisterSpawnPlacementsEvent event) -> ModEntities.registerSpawnPlacements(new ModEntities.SpawnSink() {
             @Override

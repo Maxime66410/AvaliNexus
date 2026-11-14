@@ -2,7 +2,7 @@
  * File: AvaliNexusForge.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-11-11
+ * Last Modified: 2026-11-12
  */
 package org.furranystudio.avalinexus.forge;
 
@@ -13,6 +13,7 @@ import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
@@ -34,6 +35,7 @@ import org.furranystudio.avalinexus.entity.ColdExposure;
 import org.furranystudio.avalinexus.entity.avali.AvaliMusicPlayer;
 import org.furranystudio.avalinexus.entity.ModEntities;
 import org.furranystudio.avalinexus.entity.MonsterTargeting;
+import org.furranystudio.avalinexus.fluid.FluidBridge;
 import org.furranystudio.avalinexus.item.ModCreativeTabs;
 import org.furranystudio.avalinexus.registry.ModRegistry;
 import org.furranystudio.avalinexus.worldgen.ModBiomes;
@@ -53,6 +55,8 @@ public class AvaliNexusForge {
             ForgeFluids.register(event);
             ModRegistry.registerAll(event::register);
         });
+        AttachCapabilitiesEvent.BlockEntities.BUS.addListener(ForgeFluidTransfer::attach);
+        FluidBridge.setForeignLookup(ForgeFluidTransfer::foreign);
         EntityAttributeCreationEvent.BUS.addListener(event -> ModEntities.registerAttributes(event::put));
         SpawnPlacementRegisterEvent.BUS.addListener(event -> ModEntities.registerSpawnPlacements(new ModEntities.SpawnSink() {
             @Override

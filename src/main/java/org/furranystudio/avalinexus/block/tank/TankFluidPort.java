@@ -2,7 +2,7 @@
  * File: TankFluidPort.java
  * Author: Maxime66410
  * Created: 2026-10-14
- * Last Modified: 2026-10-14
+ * Last Modified: 2026-11-12
  */
 package org.furranystudio.avalinexus.block.tank;
 
@@ -52,5 +52,10 @@ public record TankFluidPort(TankStructure structure) implements FluidPort {
             return 0;
         }
         return structure.extract(amount, simulate);
+    }
+
+    @Override
+    public void restore(Fluid fluid, int amount) {
+        structure.fill(fluid, amount);
     }
 }

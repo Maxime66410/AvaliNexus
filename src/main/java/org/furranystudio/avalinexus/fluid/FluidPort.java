@@ -2,7 +2,7 @@
  * File: FluidPort.java
  * Author: Maxime66410
  * Created: 2026-10-14
- * Last Modified: 2026-10-14
+ * Last Modified: 2026-11-12
  */
 package org.furranystudio.avalinexus.fluid;
 
@@ -29,4 +29,7 @@ public interface FluidPort {
     int fill(Fluid fluid, int amount, boolean simulate);
 
     int drain(Fluid fluid, int amount, boolean simulate);
+
+    default void restore(Fluid fluid, int amount) {
+    }
 }

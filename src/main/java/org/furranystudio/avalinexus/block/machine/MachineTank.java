@@ -2,7 +2,7 @@
  * File: MachineTank.java
  * Author: Maxime66410
  * Created: 2026-10-15
- * Last Modified: 2026-10-15
+ * Last Modified: 2026-11-12
  */
 package org.furranystudio.avalinexus.block.machine;
 
@@ -73,6 +73,11 @@ public final class MachineTank {
         return drained;
     }
 
+    public void restore(Fluid fluid, int amount) {
+        content = FluidContent.of(fluid, amount);
+        changed.run();
+    }
+
     public ItemStack useBucket(ItemStack stack, boolean output) {
         if (stack.getCount() != 1) {
             return stack;
@@ -135,6 +140,11 @@ public final class MachineTank {
         @Override
         public int drain(Fluid fluid, int amount, boolean simulate) {
             return role == Role.SOURCE ? tank.drain(fluid, amount, simulate) : 0;
+        }
+
+        @Override
+        public void restore(Fluid fluid, int amount) {
+            tank.restore(fluid, amount);
         }
     }
 }

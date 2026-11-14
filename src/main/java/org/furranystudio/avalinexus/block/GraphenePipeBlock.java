@@ -2,7 +2,7 @@
  * File: GraphenePipeBlock.java
  * Author: Maxime66410
  * Created: 2026-10-13
- * Last Modified: 2026-10-22
+ * Last Modified: 2026-11-12
  */
 package org.furranystudio.avalinexus.block;
 
@@ -39,6 +39,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.furranystudio.avalinexus.block.pipe.GraphenePipeBlockEntity;
 import org.furranystudio.avalinexus.block.pipe.PipeFluid;
+import org.furranystudio.avalinexus.fluid.FluidBridge;
 import org.furranystudio.avalinexus.fluid.FluidPortBlock;
 import org.furranystudio.avalinexus.sound.ModSounds;
 
@@ -72,7 +73,8 @@ public class GraphenePipeBlock extends PipeBlock implements SimpleWaterloggedBlo
     }
 
     private boolean isPort(BlockGetter level, BlockPos pos, Direction direction) {
-        return FluidPortBlock.linkable(level, pos.relative(direction), direction.getOpposite());
+        return FluidPortBlock.linkable(level, pos.relative(direction), direction.getOpposite())
+            || level instanceof Level world && FluidBridge.foreign(world, pos.relative(direction), direction.getOpposite()) != null;
     }
 
     public BlockState relink(BlockGetter level, BlockPos pos, BlockState state) {

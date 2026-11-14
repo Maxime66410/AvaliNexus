@@ -2,7 +2,7 @@
  * File: PipeNetwork.java
  * Author: Maxime66410
  * Created: 2026-10-14
- * Last Modified: 2026-10-14
+ * Last Modified: 2026-11-12
  */
 package org.furranystudio.avalinexus.block.pipe;
 
@@ -15,6 +15,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import org.furranystudio.avalinexus.block.GraphenePipeBlock;
+import org.furranystudio.avalinexus.fluid.FluidBridge;
 import org.furranystudio.avalinexus.fluid.FluidPort;
 import org.furranystudio.avalinexus.fluid.FluidPortBlock;
 
@@ -84,6 +85,11 @@ public final class PipeNetwork {
                             case SINK -> network.sinks.add(port);
                             case BUFFER -> network.buffers.add(port);
                         }
+                    }
+                } else {
+                    FluidPort port = FluidBridge.foreign(level, next, direction.getOpposite());
+                    if (port != null && ports.add(port.identity())) {
+                        network.buffers.add(port);
                     }
                 }
             }
