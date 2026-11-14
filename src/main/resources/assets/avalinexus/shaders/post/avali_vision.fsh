@@ -54,20 +54,25 @@ void main() {
     } else {
         vec2 texel = BlurDir / InSize;
         float sigma = max(radius * 0.5, 0.5);
-        vec4 sum = vec4(0.0);
-        float total = 0.0;
-        for (int i = -MAX_STEPS; i <= MAX_STEPS; i++) {
-            float offset = float(i);
-            if (abs(offset) > radius) {
-                continue;
+        float falloff = 1.0 / (2.0 * sigma * sigma);
+        vec4 sum = texture(InSampler, texCoord);
+        float total = 1.0;
+        for (int i = 1; i <= MAX_STEPS; i += 2) {
+            float first = float(i);
+            if (first > radius) {
+                break;
             }
-            float weight = exp(-(offset * offset) / (2.0 * sigma * sigma));
-            vec2 uv = texCoord + texel * offset;
-            if (i != 0) {
-                weight *= blurAmount(uv, distance, far);
-            }
-            sum += texture(InSampler, uv) * weight;
-            total += weight;
+            float second = first + 1.0;
+            float firstWeight = exp(-first * first * falloff);
+            float secondWeight = second <= radius ? exp(-second * second * falloff) : 0.0;
+            float pairWeight = firstWeight + secondWeight;
+            float offset = (first * firstWeight + second * secondWeight) / pairWeight;
+            vec2 uvPlus = texCoord + texel * offset;
+            vec2 uvMinus = texCoord - texel * offset;
+            float weightPlus = pairWeight * blurAmount(uvPlus, distance, far);
+            float weightMinus = pairWeight * blurAmount(uvMinus, distance, far);
+            sum += texture(InSampler, uvPlus) * weightPlus + texture(InSampler, uvMinus) * weightMinus;
+            total += weightPlus + weightMinus;
         }
         color = sum / max(total, 0.0001);
     }
