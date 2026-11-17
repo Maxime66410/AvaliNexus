@@ -37,6 +37,16 @@
       "tag": "#minecraft:dyes",
       "count": 4,
       "price": 3
+    },
+    {
+      "item": "avalinexus:avali_trench_coat",
+      "count": 1,
+      "price": 10
+    },
+    {
+      "item": "avalinexus:avali_snow_boots",
+      "count": 1,
+      "price": 6
     }
   ],
   "sell": [

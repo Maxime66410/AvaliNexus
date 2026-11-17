@@ -1,0 +1,15 @@
+{
+  "type": "avalinexus:nanocanvas_dyed",
+  "category": "equipment",
+  "key": {
+    "X": "#avalinexus:nanocanvas"
+  },
+  "pattern": [
+    "X X",
+    "XXX",
+    "XXX"
+  ],
+  "result": {
+    "id": "avalinexus:avali_trench_coat"
+  }
+}

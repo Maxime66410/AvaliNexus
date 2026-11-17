@@ -2,7 +2,7 @@
  * File: ToughAsNailsCompat.java
  * Author: Maxime66410
  * Created: 2026-11-11
- * Last Modified: 2026-11-11
+ * Last Modified: 2026-11-17
  */
 package org.furranystudio.avalinexus.compat.toughasnails;
 
@@ -12,6 +12,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import org.furranystudio.avalinexus.entity.ColdExposure;
+import org.furranystudio.avalinexus.item.AvaliClothes;
 import org.furranystudio.avalinexus.worldgen.ModBiomes;
 import toughasnails.api.temperature.ITemperature;
 import toughasnails.api.temperature.TemperatureHelper;
@@ -48,6 +49,14 @@ public final class ToughAsNailsCompat {
     }
 
     private static TemperatureLevel modify(Player player, TemperatureLevel current) {
+        TemperatureLevel level = surroundings(player, current);
+        if (AvaliClothes.wearsTrenchCoat(player) && level.compareTo(TemperatureLevel.NEUTRAL) < 0) {
+            return TemperatureLevel.NEUTRAL;
+        }
+        return level;
+    }
+
+    private static TemperatureLevel surroundings(Player player, TemperatureLevel current) {
         if (ColdExposure.isInFreezingLiquid(player)) {
             return current.decrement(LIQUID_COLD);
         }

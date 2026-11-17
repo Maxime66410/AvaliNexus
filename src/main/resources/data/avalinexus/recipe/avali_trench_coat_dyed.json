@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:crafting_dye",
+  "dye": "#minecraft:dyes",
+  "group": "dyed_armor",
+  "result": {
+    "id": "avalinexus:avali_trench_coat"
+  },
+  "target": "avalinexus:avali_trench_coat"
+}

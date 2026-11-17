@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:crafting_dye",
+  "dye": "#minecraft:dyes",
+  "group": "dyed_armor",
+  "result": {
+    "id": "avalinexus:avali_snow_boots"
+  },
+  "target": "avalinexus:avali_snow_boots"
+}

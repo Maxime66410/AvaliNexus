@@ -9,6 +9,7 @@
     "EntitySplashMixin",
     "ItemFrameMixin",
     "LivingEntityDrownMixin",
+    "PowderSnowBlockMixin",
     "ServerPlayerGameModeMixin",
     "ServerPlayerMenuMixin",
     "StructureStartMixin"

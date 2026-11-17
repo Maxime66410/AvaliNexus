@@ -2,7 +2,7 @@
  * File: AvaliGear.java
  * Author: Maxime66410
  * Created: 2026-10-17
- * Last Modified: 2026-10-20
+ * Last Modified: 2026-11-14
  */
 package org.furranystudio.avalinexus.entity.avali;
 
@@ -17,8 +17,10 @@ import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.DyedItemColor;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import org.furranystudio.avalinexus.item.AvaliClothes;
 import org.furranystudio.avalinexus.item.weapon.AerotechHiltItem;
 import org.furranystudio.avalinexus.item.weapon.AerotechWeapons;
 import org.furranystudio.avalinexus.reputation.AvaliReputation;
@@ -301,7 +303,11 @@ public class AvaliGear {
         for (Map.Entry<EquipmentSlot, List<Item>> entry : spawn.armor().entrySet()) {
             Item item = AvaliEquipment.pick(entry.getValue(), random);
             if (random.nextFloat() < spawn.armorChance() && item != Items.AIR) {
-                avali.setItemSlot(entry.getKey(), new ItemStack(item));
+                ItemStack stack = new ItemStack(item);
+                if (AvaliClothes.isClothing(stack)) {
+                    stack.set(DataComponents.DYED_COLOR, new DyedItemColor(avali.getColors().base()));
+                }
+                avali.setItemSlot(entry.getKey(), stack);
             }
         }
         Item shield = AvaliEquipment.pick(spawn.shields(), random);

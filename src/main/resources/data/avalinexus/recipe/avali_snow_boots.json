@@ -1,0 +1,14 @@
+{
+  "type": "avalinexus:nanocanvas_dyed",
+  "category": "equipment",
+  "key": {
+    "X": "#avalinexus:nanocanvas"
+  },
+  "pattern": [
+    "X X",
+    "X X"
+  ],
+  "result": {
+    "id": "avalinexus:avali_snow_boots"
+  }
+}

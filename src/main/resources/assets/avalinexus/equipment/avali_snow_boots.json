@@ -1,0 +1,20 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "dyeable": {
+          "color_when_undyed": -1
+        },
+        "texture": "avalinexus:avali_snow_boots"
+      }
+    ],
+    "humanoid_baby": [
+      {
+        "dyeable": {
+          "color_when_undyed": -1
+        },
+        "texture": "avalinexus:avali_snow_boots"
+      }
+    ]
+  }
+}

@@ -22,9 +22,9 @@
     "armor": {
       "chance": 0.1,
       "head": ["minecraft:leather_helmet", "minecraft:chainmail_helmet", "minecraft:iron_helmet"],
-      "chest": ["minecraft:leather_chestplate", "minecraft:chainmail_chestplate", "minecraft:iron_chestplate"],
+      "chest": ["minecraft:leather_chestplate", "minecraft:chainmail_chestplate", "minecraft:iron_chestplate", "avalinexus:avali_trench_coat"],
       "legs": ["minecraft:leather_leggings", "minecraft:chainmail_leggings", "minecraft:iron_leggings"],
-      "feet": ["minecraft:leather_boots", "minecraft:chainmail_boots", "minecraft:iron_boots"]
+      "feet": ["minecraft:leather_boots", "minecraft:chainmail_boots", "minecraft:iron_boots", "avalinexus:avali_snow_boots"]
     },
     "shield": {
       "chance": 0.1,

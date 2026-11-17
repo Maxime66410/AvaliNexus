@@ -2,7 +2,7 @@
  * File: ModCreativeTabs.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-10-23
+ * Last Modified: 2026-11-14
  */
 package org.furranystudio.avalinexus.item;
 
@@ -58,6 +58,7 @@ public final class ModCreativeTabs {
                     output.accept(org.furranystudio.avalinexus.fluid.ModFluids.bucket(kind));
                 }
                 NexiteGear.ALL.forEach(item -> output.accept(item.get()));
+                AvaliClothes.ALL.forEach(item -> output.accept(item.get()));
                 org.furranystudio.avalinexus.item.weapon.AerotechWeapons.ALL.forEach(item -> output.accept(item.get()));
                 org.furranystudio.avalinexus.item.weapon.RailWeapons.ALL.forEach(item -> output.accept(item.get()));
                 output.accept(ModItems.GRAPHENE_BLOCK.get());
