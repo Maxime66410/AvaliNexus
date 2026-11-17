@@ -6,6 +6,7 @@
   "mixins": [
     "BlockExplosionMixin",
     "CompoundContainerAccessor",
+    "EnchantmentHelperMixin",
     "EntitySplashMixin",
     "ItemFrameMixin",
     "LivingEntityDrownMixin",
