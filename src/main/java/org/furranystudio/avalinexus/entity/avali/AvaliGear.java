@@ -2,7 +2,7 @@
  * File: AvaliGear.java
  * Author: Maxime66410
  * Created: 2026-10-17
- * Last Modified: 2026-11-14
+ * Last Modified: 2026-11-17
  */
 package org.furranystudio.avalinexus.entity.avali;
 
@@ -301,13 +301,14 @@ public class AvaliGear {
             add(spawn.ranged(), random, 1);
         }
         for (Map.Entry<EquipmentSlot, List<Item>> entry : spawn.armor().entrySet()) {
+            Item clothing = AvaliEquipment.pick(spawn.clothes().getOrDefault(entry.getKey(), List.of()), random);
+            if (clothing != Items.AIR && random.nextFloat() < spawn.clothesChance()) {
+                avali.setItemSlot(entry.getKey(), dressed(clothing, random));
+                continue;
+            }
             Item item = AvaliEquipment.pick(entry.getValue(), random);
             if (random.nextFloat() < spawn.armorChance() && item != Items.AIR) {
-                ItemStack stack = new ItemStack(item);
-                if (AvaliClothes.isClothing(stack)) {
-                    stack.set(DataComponents.DYED_COLOR, new DyedItemColor(avali.getColors().base()));
-                }
-                avali.setItemSlot(entry.getKey(), stack);
+                avali.setItemSlot(entry.getKey(), dressed(item, random));
             }
         }
         Item shield = AvaliEquipment.pick(spawn.shields(), random);
@@ -317,6 +318,16 @@ public class AvaliGear {
         if (random.nextFloat() < spawn.foodChance()) {
             add(spawn.food(), random, Mth.nextInt(random, spawn.foodMin(), spawn.foodMax()));
         }
+    }
+
+    private ItemStack dressed(Item item, RandomSource random) {
+        ItemStack stack = new ItemStack(item);
+        if (AvaliClothes.isClothing(stack)) {
+            AvaliAppearance.Colors colors = avali.getColors();
+            int[] choices = {colors.base(), colors.pattern(), colors.feathers()};
+            stack.set(DataComponents.DYED_COLOR, new DyedItemColor(choices[random.nextInt(choices.length)]));
+        }
+        return stack;
     }
 
     private void add(List<Item> items, RandomSource random, int count) {

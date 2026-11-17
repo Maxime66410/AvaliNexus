@@ -2,7 +2,7 @@
  * File: AvaliEquipment.java
  * Author: Maxime66410
  * Created: 2026-10-17
- * Last Modified: 2026-10-27
+ * Last Modified: 2026-11-17
  */
 package org.furranystudio.avalinexus.entity.avali;
 
@@ -46,6 +46,7 @@ public final class AvaliEquipment {
     private static final double TICKS_PER_SECOND = 20.0;
 
     public record Spawn(float weaponChance, List<Item> weapons, float rangedChance, List<Item> ranged, float armorChance, Map<EquipmentSlot, List<Item>> armor,
+                        float clothesChance, Map<EquipmentSlot, List<Item>> clothes,
                         float shieldChance, List<Item> shields, float foodChance, int foodMin, int foodMax, List<Item> food) {
     }
 
@@ -115,7 +116,7 @@ public final class AvaliEquipment {
 
     private static final Predicate<ItemStack> NONE = stack -> false;
     private static final Data FALLBACK = new Data(
-        new Spawn(0, List.of(), 0, List.of(), 0, Map.of(), 0, List.of(), 0, 0, 0, List.of()),
+        new Spawn(0, List.of(), 0, List.of(), 0, Map.of(), 0, Map.of(), 0, List.of(), 0, 0, 0, List.of()),
         NONE, stack -> stack.is(Items.SHIELD), NONE, NONE, NONE, 1.25F, 2, 1, NONE);
 
     private static ResourceManager loadedFrom;
@@ -162,12 +163,19 @@ public final class AvaliEquipment {
             armorItems.put(EquipmentSlot.CHEST, items(armor.getAsJsonArray("chest")));
             armorItems.put(EquipmentSlot.LEGS, items(armor.getAsJsonArray("legs")));
             armorItems.put(EquipmentSlot.FEET, items(armor.getAsJsonArray("feet")));
+            JsonObject clothes = spawn.has("clothes") ? spawn.getAsJsonObject("clothes") : new JsonObject();
+            Map<EquipmentSlot, List<Item>> clothesItems = new EnumMap<>(EquipmentSlot.class);
+            clothesItems.put(EquipmentSlot.HEAD, optionalItems(clothes, "head"));
+            clothesItems.put(EquipmentSlot.CHEST, optionalItems(clothes, "chest"));
+            clothesItems.put(EquipmentSlot.LEGS, optionalItems(clothes, "legs"));
+            clothesItems.put(EquipmentSlot.FEET, optionalItems(clothes, "feet"));
             JsonObject useful = root.getAsJsonObject("useful");
             JsonObject weapons = root.getAsJsonObject("weapons");
             return new Data(
                 new Spawn(weapon.get("chance").getAsFloat(), items(weapon.getAsJsonArray("items")),
                     ranged.get("chance").getAsFloat(), items(ranged.getAsJsonArray("items")),
                     armor.get("chance").getAsFloat(), armorItems,
+                    clothes.has("chance") ? clothes.get("chance").getAsFloat() : 0.0F, clothesItems,
                     shield.get("chance").getAsFloat(), items(shield.getAsJsonArray("items")),
                     food.get("chance").getAsFloat(), food.get("min").getAsInt(), food.get("max").getAsInt(),
                     items(food.getAsJsonArray("items"))),
@@ -179,6 +187,10 @@ public final class AvaliEquipment {
             AvaliNexus.LOGGER.error("[AvaliNexus] Couldn't read equipment file {}", FILE, e);
             return FALLBACK;
         }
+    }
+
+    private static List<Item> optionalItems(JsonObject object, String key) {
+        return object.has(key) ? items(object.getAsJsonArray(key)) : List.of();
     }
 
     private static List<Item> items(JsonArray array) {
