@@ -7,13 +7,13 @@ Avali Nexus is a Minecraft mod for Forge, Fabric/Quilt and NeoForge that adds th
 ## What's in the mod
 
 **Avalis**
-Avalis live in packs, each one with its own name, look and mood. When you interact with an Avali you get a small dialogue overlay on the side of the screen, instead of a big menu that covers everything. They fight, flee, sleep, play music together, form couples and have babies, and you can recruit them as companions with there own role. Every pack remembers how you treat them, so your reputation changes what they say, sell and do.
+Avalis live in packs, each one with its own name, 3 colors, look and mood. When you interact with an Avali you get a small dialogue overlay on the side of the screen, instead of a big menu that covers everything. They fight, flee, sleep, play music together, form couples and have babies, and you can recruit them as companions with there own role. Every pack remembers how you treat them, so your reputation changes what they say, sell and do.
 
 **Camps and villages**
 Nomad camps with tents out in the snow, and bigger Avali villages with houses, workshops and archives. Stealing from a village or breaking their machines won't go unnoticed.
 
 **Trading**
-Each Avali has a shop based on its job (fisher, hunter, mechanic...) or its workshop. The offers change over time, and the better your reputation the more you unlock.
+Each Avali has a shop based on its job (fisher, hunter, mechanic...) or its workshop. The offers change over time, and the better your reputation the more you unlock. Merchants also sell maps to Avali villages and camps.
 
 **The biome**
 A really cold polar biome, kind of like a snowy taiga but way more extreme, with alot of snow piling up and blizzards. If you stay out there without warm gear you slowly freeze. The caves under it are frozen too, and you can find lakes of ammonia rimmed with ice.
@@ -22,16 +22,19 @@ A really cold polar biome, kind of like a snowy taiga but way more extreme, with
 Piru, Nakati and Kiri, the plants from the Avali lore. You find them in the wild on snow and ice (the Nakati even glows in frozen caves), grow them without any light, and cook Avali food with them, like the spiced stew that keeps you warm for a while. Villages have their own fields, looked after by their gatherers, so don't go picking from them while they're watching.
 
 **Gear and weapons**
-A Nexite tier between diamond and netherite (tools, armor, even horse armor). Light aerotech blades, and rail guns (pistol, carbine, assault rifle, shotgun and sniper) that shoot Nexite quills from magazines you reload.
+A Nexite tier between diamond and netherite (tools, armor, even horse armor). Light aerotech blades, and rail guns (pistol, carbine, assault rifle, shotgun and sniper) that shoot Nexite quills from magazines you reload. Avali clothes made of nanocanvas: the trench coat and the snow boots.
 
 **Building blocks**
 A whole set of Avali blocks: graphene plating, bricks and pillars, aerogel glass in every color, nanocanvas, nanofibre poles, ice bricks and packed snow, plus beds, cushions, carpets, lamps, light strips, curtains and tapestries you design yourself on the Avali loom.
 
 **Fluids and machines**
-Three fluids (ammonia, coolant and fuel) that you move around with graphene pipes, tanks, pumps and taps. Machines turn them into stuff: the refinery, the cryo freezer, the graphene press, the weapon workbench, and a heater to stay warm.
+Three fluids (ammonia, coolant and fuel) that you move around with graphene pipes, tanks, pumps and taps. Machines turn them into stuff: the refinery, the cryo freezer, the graphene press, the weapon workbench, and a heater to stay warm. Pipes, tanks and machines also work with fluids and pipes from other mods.
 
 **Lore**
 The terminal opens the Avali archives, with entries about their history, biology and the stuff in the mod.
+
+**Avali vision**
+Things get blurry far away, like the Avali eyes.
 
 ## What's planned
 
