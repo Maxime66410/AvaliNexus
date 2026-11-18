@@ -28,6 +28,7 @@ This update is big, i worked a lot on the performance, the villages and many sma
 - The settings menu have now 2 tabs : Client and Server, with sliders. On a server only the operators can change the server settings
 - JEI, REI and Jade work only on NeoForge and Fabric, they don't exist for Forge 26.3 for now. The mod work perfectly without them don't worry
 - With Tough As Nails the Cold speed and Liquid cold speed settings are grey in the menu, because TAN manage the cold now
+- Avalis spawn much more often with weapons, armor, a shield and food, so they can defend themselves now ! And they have a lot more different stuff : wood, copper and gold weapons, spears, all the aerotech weapons, the rail shotgun, copper and gold armor and 20 foods (with piru bread and kiri fruit ;3). The Avali clothes are more common too, with one of the colors of the Avali
 - Villages and camps are more common now ! Someone found his first village at 14000 blocks from spawn haha, so villages are now every 40 chunks (before 64) and camps every 24 chunks (before 32)
 - Villages have always enough Avalis now : minimum 4 in the small ones and 8 in the big ones
 - The dialogue hint show your real keys, on any keyboard (AZERTY friends this is for you)
