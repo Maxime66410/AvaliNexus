@@ -15,9 +15,12 @@ import com.geckolib.renderer.base.GeoRenderState;
 import com.geckolib.renderer.base.RenderPassInfo;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+import net.minecraft.client.model.effects.SpearAnimations;
+import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.OrderedSubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
+import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.resources.Identifier;
@@ -29,7 +32,9 @@ import net.minecraft.util.profiling.Zone;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.entity.Pose;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwingAnimationType;
 import org.furranystudio.avalinexus.entity.avali.AvaliEntity;
 import org.furranystudio.avalinexus.entity.avali.expression.AvaliFace;
@@ -63,7 +68,12 @@ public class AvaliRenderer<R extends LivingEntityRenderState & GeoRenderState> e
     private static final DataTicket<Boolean> RIGHT_SPEAR = DataTicket.create("avalinexus_right_spear", Boolean.class);
     private static final DataTicket<Boolean> LEFT_SPEAR = DataTicket.create("avalinexus_left_spear", Boolean.class);
     private static final DataTicket<Boolean> SWING_STAB = DataTicket.create("avalinexus_swing_stab", Boolean.class);
-    private static final float SPEAR_SWIM_DROP = 0.9599311F;
+    private static final DataTicket<Float> SPEAR_USE_TICKS = DataTicket.create("avalinexus_spear_use_ticks", Float.class);
+    private static final DataTicket<Boolean> SPEAR_USE_RIGHT = DataTicket.create("avalinexus_spear_use_right", Boolean.class);
+    private static final DataTicket<ItemStack> SPEAR_USE_STACK = DataTicket.create("avalinexus_spear_use_stack", ItemStack.class);
+    private static final ModelPart SPEAR_ARM = new ModelPart(List.of(), Map.of());
+    private static final ModelPart SPEAR_HEAD = new ModelPart(List.of(), Map.of());
+    private static final HumanoidRenderState SPEAR_STATE = new HumanoidRenderState();
     private static final String[] MOUTHS = {"Mouth Left 0", "Mouth Right 0", "Mouth Left 1", "Mouth Right 1", "Mouth Front"};
     private static final int BLINK_CYCLE = 300;
     private static final Map<String, String> ARMOR_ROOTS = Map.of(
@@ -137,6 +147,10 @@ public class AvaliRenderer<R extends LivingEntityRenderState & GeoRenderState> e
         state.addGeckolibData(RIGHT_SPEAR, HumanoidMobRenderer.usesSpearPose(avali.getItemHeldByArm(HumanoidArm.RIGHT), HumanoidArm.RIGHT, avali));
         state.addGeckolibData(LEFT_SPEAR, HumanoidMobRenderer.usesSpearPose(avali.getItemHeldByArm(HumanoidArm.LEFT), HumanoidArm.LEFT, avali));
         state.addGeckolibData(SWING_STAB, swing != null && swing.animation().type() == SwingAnimationType.STAB);
+        boolean spearUse = avali.isUsingItem() && avali.getUseItem().has(DataComponents.KINETIC_WEAPON);
+        state.addGeckolibData(SPEAR_USE_TICKS, spearUse ? avali.getTicksUsingItem(partialTick) : 0.0F);
+        state.addGeckolibData(SPEAR_USE_RIGHT, spearUse && avali.getUsedItemHand().asArm(mainArm) == HumanoidArm.RIGHT);
+        state.addGeckolibData(SPEAR_USE_STACK, spearUse ? avali.getUseItem() : ItemStack.EMPTY);
     }
 
     @Override
@@ -226,11 +240,14 @@ public class AvaliRenderer<R extends LivingEntityRenderState & GeoRenderState> e
 
         boolean rightSpear = state.getOrDefaultGeckolibData(RIGHT_SPEAR, false);
         boolean leftSpear = state.getOrDefaultGeckolibData(LEFT_SPEAR, false);
+        float spearUseTicks = state.getOrDefaultGeckolibData(SPEAR_USE_TICKS, 0.0F);
+        boolean spearUseRight = state.getOrDefaultGeckolibData(SPEAR_USE_RIGHT, false);
+        ItemStack spearUseStack = state.getOrDefaultGeckolibData(SPEAR_USE_STACK, ItemStack.EMPTY);
         if (rightSpear) {
-            rightArm = spearHold(head, 1.0F, swim > 0.0F);
+            rightArm = spearHold(head, HumanoidArm.RIGHT, swim > 0.0F, spearUseRight ? spearUseTicks : 0.0F, spearUseRight ? spearUseStack : ItemStack.EMPTY);
         }
         if (leftSpear) {
-            leftArm = spearHold(head, -1.0F, swim > 0.0F);
+            leftArm = spearHold(head, HumanoidArm.LEFT, swim > 0.0F, spearUseRight ? 0.0F : spearUseTicks, spearUseRight ? ItemStack.EMPTY : spearUseStack);
         }
 
         if (state.getOrDefaultGeckolibData(RAIL_HOLD, false)) {
@@ -333,11 +350,17 @@ public class AvaliRenderer<R extends LivingEntityRenderState & GeoRenderState> e
         return new Rotation[] {new Rotation(x, Mth.PI, Mth.PI), new Rotation(x, Mth.PI, Mth.PI)};
     }
 
-    private static Rotation spearHold(Rotation head, float invert, boolean swimming) {
-        float y = -0.1F * invert + head.y;
-        float x = -Mth.HALF_PI + head.x + 0.8F - (swimming ? SPEAR_SWIM_DROP : 0.0F);
-        return new Rotation(Mth.DEG_TO_RAD * Math.clamp(x * Mth.RAD_TO_DEG, -120.0F, 30.0F),
-            Mth.DEG_TO_RAD * Math.clamp(y * Mth.RAD_TO_DEG, -60.0F, 60.0F), 0.0F);
+    private static Rotation spearHold(Rotation head, HumanoidArm arm, boolean swimming, float useTicks, ItemStack useStack) {
+        SPEAR_ARM.setRotation(0.0F, 0.0F, 0.0F);
+        SPEAR_HEAD.setRotation(head.x, head.y, head.z);
+        SPEAR_STATE.swimAmount = swimming ? 1.0F : 0.0F;
+        SPEAR_STATE.isFallFlying = false;
+        SPEAR_STATE.ticksUsingItem = useTicks;
+        SPEAR_STATE.isUsingItem = useTicks > 0.0F;
+        SPEAR_STATE.mainArm = arm;
+        SPEAR_STATE.useItemHand = InteractionHand.MAIN_HAND;
+        SpearAnimations.thirdPersonHandUse(SPEAR_ARM, SPEAR_HEAD, arm, useStack, SPEAR_STATE);
+        return new Rotation(SPEAR_ARM.xRot, SPEAR_ARM.yRot, SPEAR_ARM.zRot);
     }
 
     private static Rotation holding(Rotation arm) {

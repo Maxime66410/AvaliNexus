@@ -2,7 +2,7 @@
  * File: AvaliEquipment.java
  * Author: Maxime66410
  * Created: 2026-10-17
- * Last Modified: 2026-11-17
+ * Last Modified: 2026-11-18
  */
 package org.furranystudio.avalinexus.entity.avali;
 
@@ -51,7 +51,7 @@ public final class AvaliEquipment {
     }
 
     public record Data(Spawn spawn, Predicate<ItemStack> weapons, Predicate<ItemStack> shields, Predicate<ItemStack> armorExcluded,
-                       Predicate<ItemStack> foodExcluded, Predicate<ItemStack> reforge, float modBonus, int weaponsKept, int rangedKept,
+                       Predicate<ItemStack> foodExcluded, Predicate<ItemStack> reforge, float modBonus, float spearBonus, int weaponsKept, int rangedKept,
                        Predicate<ItemStack> weaponsExcluded) {
 
         public boolean isWeapon(ItemStack stack) {
@@ -85,7 +85,8 @@ public final class AvaliEquipment {
 
         public double weaponScore(ItemStack stack) {
             boolean fromMod = BuiltInRegistries.ITEM.getKey(stack.getItem()).getNamespace().equals(AvaliNexus.MODID);
-            return weaponDamage(stack) * attacksPerSecond(stack) * (fromMod ? modBonus : 1.0);
+            return weaponDamage(stack) * attacksPerSecond(stack) * (fromMod ? modBonus : 1.0)
+                * (stack.has(DataComponents.KINETIC_WEAPON) ? spearBonus : 1.0);
         }
     }
 
@@ -117,7 +118,7 @@ public final class AvaliEquipment {
     private static final Predicate<ItemStack> NONE = stack -> false;
     private static final Data FALLBACK = new Data(
         new Spawn(0, List.of(), 0, List.of(), 0, Map.of(), 0, Map.of(), 0, List.of(), 0, 0, 0, List.of()),
-        NONE, stack -> stack.is(Items.SHIELD), NONE, NONE, NONE, 1.25F, 2, 1, NONE);
+        NONE, stack -> stack.is(Items.SHIELD), NONE, NONE, NONE, 1.25F, 1.0F, 2, 1, NONE);
 
     private static ResourceManager loadedFrom;
     private static Data data = FALLBACK;
@@ -181,7 +182,8 @@ public final class AvaliEquipment {
                     items(food.getAsJsonArray("items"))),
                 matcher(useful.getAsJsonArray("weapons")), matcher(useful.getAsJsonArray("shields")),
                 matcher(useful.getAsJsonArray("armor_excluded")), matcher(useful.getAsJsonArray("food_excluded")),
-                matcher(useful.getAsJsonArray("reforge")), weapons.get("mod_bonus").getAsFloat(), weapons.get("kept").getAsInt(),
+                matcher(useful.getAsJsonArray("reforge")), weapons.get("mod_bonus").getAsFloat(),
+                weapons.has("spear_bonus") ? weapons.get("spear_bonus").getAsFloat() : 1.0F, weapons.get("kept").getAsInt(),
                 weapons.get("ranged_kept").getAsInt(), matcher(weapons.getAsJsonArray("excluded")));
         } catch (Exception e) {
             AvaliNexus.LOGGER.error("[AvaliNexus] Couldn't read equipment file {}", FILE, e);

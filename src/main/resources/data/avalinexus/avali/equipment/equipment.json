@@ -181,6 +181,7 @@
   },
   "weapons": {
     "mod_bonus": 1.25,
+    "spear_bonus": 2.0,
     "kept": 2,
     "ranged_kept": 1,
     "excluded": []

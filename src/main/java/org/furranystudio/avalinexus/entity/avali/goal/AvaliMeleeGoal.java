@@ -23,26 +23,30 @@ public class AvaliMeleeGoal extends MeleeAttackGoal {
     private static final float BACK_OFF = -1.0F;
 
     private final AvaliEntity avali;
+    private final AvaliSpearChargeGoal spearCharge;
     private int cooldown;
     private int jumpCooldown;
     private boolean critJump;
     private boolean airborne;
 
-    public AvaliMeleeGoal(AvaliEntity avali) {
+    public AvaliMeleeGoal(AvaliEntity avali, AvaliSpearChargeGoal spearCharge) {
         super(avali, 1.0, true);
         this.avali = avali;
+        this.spearCharge = spearCharge;
     }
 
     @Override
     public boolean canUse() {
         LivingEntity target = avali.getTarget();
-        return !avali.isBaby() && !(target != null && AvaliRangedGoal.inRange(avali, target, 0.0)) && super.canUse();
+        return !avali.isBaby() && !(target != null && AvaliRangedGoal.inRange(avali, target, 0.0))
+            && !spearCharge.wantsCharge(target) && super.canUse();
     }
 
     @Override
     public boolean canContinueToUse() {
         LivingEntity target = avali.getTarget();
-        return !(target != null && AvaliRangedGoal.inRange(avali, target, RANGED_SWITCH_MARGIN)) && super.canContinueToUse();
+        return !(target != null && AvaliRangedGoal.inRange(avali, target, RANGED_SWITCH_MARGIN))
+            && !spearCharge.wantsCharge(target) && super.canContinueToUse();
     }
 
     @Override

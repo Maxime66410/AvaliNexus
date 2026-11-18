@@ -16,12 +16,15 @@ import com.mojang.math.Axis;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.model.effects.SpearAnimations;
+import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemDisplayContext;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwingAnimationType;
 import net.minecraft.world.item.component.KineticWeapon;
 import org.furranystudio.avalinexus.entity.avali.AvaliEntity;
@@ -32,6 +35,11 @@ public class AvaliItemLayer<R extends LivingEntityRenderState & GeoRenderState> 
     private static final DataTicket<Float> STAB = DataTicket.create("avalinexus_stab", Float.class);
     private static final DataTicket<Boolean> STAB_RIGHT = DataTicket.create("avalinexus_stab_right", Boolean.class);
     private static final DataTicket<Float> STAB_REACH = DataTicket.create("avalinexus_stab_reach", Float.class);
+    private static final DataTicket<Float> USE_TICKS = DataTicket.create("avalinexus_spear_item_use_ticks", Float.class);
+    private static final DataTicket<Boolean> USE_RIGHT = DataTicket.create("avalinexus_spear_item_use_right", Boolean.class);
+    private static final DataTicket<ItemStack> USE_STACK = DataTicket.create("avalinexus_spear_item_use_stack", ItemStack.class);
+    private static final DataTicket<Float> HIT_FEEDBACK = DataTicket.create("avalinexus_spear_hit_feedback", Float.class);
+    private static final HumanoidRenderState SPEAR_STATE = new HumanoidRenderState();
 
     public AvaliItemLayer(EntityRendererProvider.Context context, GeoRenderer<AvaliEntity, Void, R> renderer) {
         super(context, renderer, "right_arm", "left_arm");
@@ -48,6 +56,11 @@ public class AvaliItemLayer<R extends LivingEntityRenderState & GeoRenderState> 
         state.addGeckolibData(STAB, stab ? avali.getSwingAnimation(partialTick) : 0.0F);
         state.addGeckolibData(STAB_RIGHT, stab && swing.hand().asArm(avali.getMainArm()) == HumanoidArm.RIGHT);
         state.addGeckolibData(STAB_REACH, kinetic != null ? kinetic.forwardMovement() : 0.0F);
+        boolean spearUse = avali.isUsingItem() && avali.getUseItem().has(DataComponents.KINETIC_WEAPON);
+        state.addGeckolibData(USE_TICKS, spearUse ? avali.getTicksUsingItem(partialTick) : 0.0F);
+        state.addGeckolibData(USE_RIGHT, spearUse && avali.getUsedItemHand().asArm(avali.getMainArm()) == HumanoidArm.RIGHT);
+        state.addGeckolibData(USE_STACK, spearUse ? avali.getUseItem() : ItemStack.EMPTY);
+        state.addGeckolibData(HIT_FEEDBACK, avali.getTicksSinceLastKineticHitFeedback(partialTick));
     }
 
     @Override
@@ -56,16 +69,27 @@ public class AvaliItemLayer<R extends LivingEntityRenderState & GeoRenderState> 
         poseStack.translate(0.0F, -ADULT_HAND_DROP * (state.isBaby ? 0.5F : 1.0F), 0.0F);
         float stab = state.getOrDefaultGeckolibData(STAB, 0.0F);
         boolean rightHand = context == ItemDisplayContext.THIRD_PERSON_RIGHT_HAND;
-        if (stab <= 0.0F || rightHand != state.getOrDefaultGeckolibData(STAB_RIGHT, false)) {
+        boolean stabbing = stab > 0.0F && rightHand == state.getOrDefaultGeckolibData(STAB_RIGHT, false);
+        float useTicks = state.getOrDefaultGeckolibData(USE_TICKS, 0.0F);
+        boolean using = useTicks > 0.0F && rightHand == state.getOrDefaultGeckolibData(USE_RIGHT, false);
+        if (!stabbing && !using) {
             super.submitItemStackRender(poseStack, bone, itemState, context, state, collector, light);
             return;
         }
-        float thrust = SpearMotion.attack(stab) - SpearMotion.retract(stab);
         poseStack.pushPose();
         poseStack.rotateDegrees(Axis.XN, 90.0F);
         poseStack.translate(0.0F, 0.125F, -0.0625F);
-        poseStack.rotateAround(Axis.XN.rotationDegrees(70.0F * thrust), 0.0F, -0.125F, 0.125F);
-        poseStack.translate(0.0F, state.getOrDefaultGeckolibData(STAB_REACH, 0.0F) * thrust, 0.0F);
+        if (stabbing) {
+            float thrust = SpearMotion.attack(stab) - SpearMotion.retract(stab);
+            poseStack.rotateAround(Axis.XN.rotationDegrees(70.0F * thrust), 0.0F, -0.125F, 0.125F);
+            poseStack.translate(0.0F, state.getOrDefaultGeckolibData(STAB_REACH, 0.0F) * thrust, 0.0F);
+        }
+        if (using) {
+            SPEAR_STATE.swingAnimation = stab;
+            SPEAR_STATE.ticksSinceKineticHitFeedback = state.getOrDefaultGeckolibData(HIT_FEEDBACK, 0.0F);
+            SpearAnimations.thirdPersonUseItem(SPEAR_STATE, poseStack, useTicks, rightHand ? HumanoidArm.RIGHT : HumanoidArm.LEFT,
+                state.getOrDefaultGeckolibData(USE_STACK, ItemStack.EMPTY));
+        }
         itemState.submit(poseStack, collector, light, OverlayTexture.NO_OVERLAY, state.outlineColor);
         poseStack.popPose();
     }

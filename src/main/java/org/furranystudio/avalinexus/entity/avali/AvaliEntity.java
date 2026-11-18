@@ -100,6 +100,7 @@ import org.furranystudio.avalinexus.entity.avali.goal.AvaliGiveGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliHeatGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliHotBiomeGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliMeleeGoal;
+import org.furranystudio.avalinexus.entity.avali.goal.AvaliSpearChargeGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliMusicGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliPackGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliPickupGoal;
@@ -274,6 +275,8 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
 
     @Override
     protected void registerGoals() {
+        AvaliSpearChargeGoal spearCharge = new AvaliSpearChargeGoal(this);
+
         goalSelector.addGoal(0, new FloatGoal(this));
         goalSelector.addGoal(1, new AvaliSwimGoal(this, 1.0));
         goalSelector.addGoal(1, new OpenDoorGoal(this, true));
@@ -282,7 +285,8 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         goalSelector.addGoal(2, new AvaliFleeGoal(this));
         goalSelector.addGoal(2, new AvaliHeatGoal(this));
         goalSelector.addGoal(2, new AvaliEatGoal(this));
-        goalSelector.addGoal(3, new AvaliMeleeGoal(this));
+        goalSelector.addGoal(3, spearCharge);
+        goalSelector.addGoal(3, new AvaliMeleeGoal(this, spearCharge));
         goalSelector.addGoal(3, new AvaliRangedGoal(this));
         goalSelector.addGoal(3, new AvaliHotBiomeGoal(this));
         goalSelector.addGoal(3, new CompanionHealerGoal(this));
@@ -410,6 +414,11 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
             threat = null;
         }
         return threat;
+    }
+
+    @Override
+    public boolean stabAttack(EquipmentSlot weaponSlot, Entity target, float baseDamage, boolean dealsDamage, boolean dealsKnockback, boolean dismounts) {
+        return !isAlly(target) && super.stabAttack(weaponSlot, target, baseDamage, dealsDamage, dealsKnockback, dismounts);
     }
 
     @Override
