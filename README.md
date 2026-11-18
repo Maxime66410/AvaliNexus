@@ -109,7 +109,6 @@ Saved in `config/avalinexus.json`.
 - Biomes O' Plenty
 - Tough As Nails
 - Pipez, XNet, Tech Reborn, Large Fluid Tank
-- Tough As Nails 21.11.0.11
 
 ## Project structure
 
