@@ -49,6 +49,13 @@
     "ranged": {
       "chance": 0.15,
       "items": [
+        "minecraft:bow",
+        "minecraft:bow",
+        "minecraft:bow",
+        "minecraft:bow",
+        "minecraft:crossbow",
+        "minecraft:crossbow",
+        "minecraft:crossbow",
         "avalinexus:rail_pistol",
         "avalinexus:rail_pistol",
         "avalinexus:rail_pistol",
@@ -164,7 +171,9 @@
       "avalinexus:rail_assault_rifle",
       "avalinexus:rail_carbine",
       "avalinexus:rail_shotgun",
-      "avalinexus:rail_sniper"
+      "avalinexus:rail_sniper",
+      "minecraft:bow",
+      "minecraft:crossbow"
     ],
     "reforge": ["avalinexus:aerogel"],
     "shields": ["minecraft:shield"],

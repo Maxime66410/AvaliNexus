@@ -21,6 +21,8 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.BowItem;
+import net.minecraft.world.item.CrossbowItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -44,6 +46,10 @@ public final class AvaliEquipment {
     private static final double BASE_DAMAGE = 1.0;
     private static final double BASE_ATTACK_SPEED = 4.0;
     private static final double TICKS_PER_SECOND = 20.0;
+    private static final double BOW_DAMAGE = 6.0;
+    private static final double BOW_SHOTS_PER_SECOND = 0.5;
+    private static final double CROSSBOW_DAMAGE = 9.0;
+    private static final double CROSSBOW_SHOTS_PER_SECOND = 0.35;
 
     public record Spawn(float weaponChance, List<Item> weapons, float rangedChance, List<Item> ranged, float armorChance, Map<EquipmentSlot, List<Item>> armor,
                         float clothesChance, Map<EquipmentSlot, List<Item>> clothes,
@@ -59,7 +65,8 @@ public final class AvaliEquipment {
         }
 
         public boolean isRanged(ItemStack stack) {
-            return stack.getItem() instanceof RailGunItem && isWeapon(stack);
+            return (stack.getItem() instanceof RailGunItem || stack.getItem() instanceof BowItem || stack.getItem() instanceof CrossbowItem)
+                && isWeapon(stack);
         }
 
         public boolean isReforge(ItemStack stack) {
@@ -95,6 +102,12 @@ public final class AvaliEquipment {
             RailStats stats = gun.stats();
             return stats.damage() * stats.pellets();
         }
+        if (stack.getItem() instanceof BowItem) {
+            return BOW_DAMAGE;
+        }
+        if (stack.getItem() instanceof CrossbowItem) {
+            return CROSSBOW_DAMAGE;
+        }
         return stack.getOrDefault(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.EMPTY)
             .compute(Attributes.ATTACK_DAMAGE, BASE_DAMAGE, EquipmentSlot.MAINHAND);
     }
@@ -102,6 +115,12 @@ public final class AvaliEquipment {
     public static double attacksPerSecond(ItemStack stack) {
         if (stack.getItem() instanceof RailGunItem gun) {
             return TICKS_PER_SECOND / gun.stats().interval();
+        }
+        if (stack.getItem() instanceof BowItem) {
+            return BOW_SHOTS_PER_SECOND;
+        }
+        if (stack.getItem() instanceof CrossbowItem) {
+            return CROSSBOW_SHOTS_PER_SECOND;
         }
         return stack.getOrDefault(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.EMPTY)
             .compute(Attributes.ATTACK_SPEED, BASE_ATTACK_SPEED, EquipmentSlot.MAINHAND);

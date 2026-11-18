@@ -15,6 +15,7 @@ import com.geckolib.renderer.base.GeoRenderState;
 import com.geckolib.renderer.base.RenderPassInfo;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+import net.minecraft.client.model.AnimationUtils;
 import net.minecraft.client.model.effects.SpearAnimations;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.OrderedSubmitNodeCollector;
@@ -34,6 +35,8 @@ import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.entity.Pose;
+import net.minecraft.world.item.BowItem;
+import net.minecraft.world.item.CrossbowItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwingAnimationType;
 import org.furranystudio.avalinexus.entity.avali.AvaliEntity;
@@ -74,6 +77,15 @@ public class AvaliRenderer<R extends LivingEntityRenderState & GeoRenderState> e
     private static final ModelPart SPEAR_ARM = new ModelPart(List.of(), Map.of());
     private static final ModelPart SPEAR_HEAD = new ModelPart(List.of(), Map.of());
     private static final HumanoidRenderState SPEAR_STATE = new HumanoidRenderState();
+    private static final DataTicket<Integer> RANGED_POSE = DataTicket.create("avalinexus_ranged_pose", Integer.class);
+    private static final DataTicket<Float> CROSSBOW_CHARGE_MAX = DataTicket.create("avalinexus_crossbow_charge_max", Float.class);
+    private static final DataTicket<Float> CROSSBOW_CHARGE_TICKS = DataTicket.create("avalinexus_crossbow_charge_ticks", Float.class);
+    private static final int NO_RANGED_POSE = 0;
+    private static final int BOW_POSE = 1;
+    private static final int CROSSBOW_CHARGE_POSE = 2;
+    private static final int CROSSBOW_HOLD_POSE = 3;
+    private static final ModelPart POSE_RIGHT_ARM = new ModelPart(List.of(), Map.of());
+    private static final ModelPart POSE_LEFT_ARM = new ModelPart(List.of(), Map.of());
     private static final String[] MOUTHS = {"Mouth Left 0", "Mouth Right 0", "Mouth Left 1", "Mouth Right 1", "Mouth Front"};
     private static final int BLINK_CYCLE = 300;
     private static final Map<String, String> ARMOR_ROOTS = Map.of(
@@ -151,6 +163,11 @@ public class AvaliRenderer<R extends LivingEntityRenderState & GeoRenderState> e
         state.addGeckolibData(SPEAR_USE_TICKS, spearUse ? avali.getTicksUsingItem(partialTick) : 0.0F);
         state.addGeckolibData(SPEAR_USE_RIGHT, spearUse && avali.getUsedItemHand().asArm(mainArm) == HumanoidArm.RIGHT);
         state.addGeckolibData(SPEAR_USE_STACK, spearUse ? avali.getUseItem() : ItemStack.EMPTY);
+        int rangedPose = rangedPose(avali);
+        state.addGeckolibData(RANGED_POSE, rangedPose);
+        state.addGeckolibData(CROSSBOW_CHARGE_MAX, rangedPose == CROSSBOW_CHARGE_POSE
+            ? (float) CrossbowItem.getChargeDuration(avali.getUseItem(), avali) : 1.0F);
+        state.addGeckolibData(CROSSBOW_CHARGE_TICKS, rangedPose == CROSSBOW_CHARGE_POSE ? avali.getTicksUsingItem(partialTick) : 0.0F);
     }
 
     @Override
@@ -258,6 +275,27 @@ public class AvaliRenderer<R extends LivingEntityRenderState & GeoRenderState> e
             leftArm = right ? shootingArm : holdingArm;
         }
 
+        int rangedPose = state.getOrDefaultGeckolibData(RANGED_POSE, NO_RANGED_POSE);
+        if (rangedPose != NO_RANGED_POSE) {
+            boolean right = state.getOrDefaultGeckolibData(RIGHT_HANDED, true);
+            POSE_RIGHT_ARM.setRotation(rightArm.x, rightArm.y, rightArm.z);
+            POSE_LEFT_ARM.setRotation(leftArm.x, leftArm.y, leftArm.z);
+            SPEAR_HEAD.setRotation(head.x, head.y, head.z);
+            if (rangedPose == BOW_POSE) {
+                POSE_RIGHT_ARM.yRot = -0.1F + head.y - (right ? 0.0F : 0.4F);
+                POSE_LEFT_ARM.yRot = 0.1F + head.y + (right ? 0.4F : 0.0F);
+                POSE_RIGHT_ARM.xRot = -Mth.HALF_PI + head.x;
+                POSE_LEFT_ARM.xRot = -Mth.HALF_PI + head.x;
+            } else if (rangedPose == CROSSBOW_CHARGE_POSE) {
+                AnimationUtils.animateCrossbowCharge(POSE_RIGHT_ARM, POSE_LEFT_ARM, state.getOrDefaultGeckolibData(CROSSBOW_CHARGE_MAX, 1.0F),
+                    state.getOrDefaultGeckolibData(CROSSBOW_CHARGE_TICKS, 0.0F), right);
+            } else {
+                AnimationUtils.animateCrossbowHold(POSE_RIGHT_ARM, POSE_LEFT_ARM, SPEAR_HEAD, right);
+            }
+            rightArm = new Rotation(POSE_RIGHT_ARM.xRot, POSE_RIGHT_ARM.yRot, POSE_RIGHT_ARM.zRot);
+            leftArm = new Rotation(POSE_LEFT_ARM.xRot, POSE_LEFT_ARM.yRot, POSE_LEFT_ARM.zRot);
+        }
+
         float swing = state.getOrDefaultGeckolibData(SWING, 0.0F);
         if (swing > 0.0F) {
             boolean swingLeft = state.getOrDefaultGeckolibData(SWING_LEFT, false);
@@ -348,6 +386,21 @@ public class AvaliRenderer<R extends LivingEntityRenderState & GeoRenderState> e
         float progress = (cycle - 22.0F) / 4.0F;
         float x = Mth.HALF_PI - Mth.HALF_PI * progress;
         return new Rotation[] {new Rotation(x, Mth.PI, Mth.PI), new Rotation(x, Mth.PI, Mth.PI)};
+    }
+
+    private static int rangedPose(AvaliEntity avali) {
+        ItemStack weapon = avali.getMainHandItem();
+        boolean using = avali.isUsingItem() && avali.getUsedItemHand() == InteractionHand.MAIN_HAND;
+        if (weapon.getItem() instanceof BowItem) {
+            return using || avali.isAggressive() ? BOW_POSE : NO_RANGED_POSE;
+        }
+        if (weapon.getItem() instanceof CrossbowItem) {
+            if (using) {
+                return CROSSBOW_CHARGE_POSE;
+            }
+            return CrossbowItem.isCharged(weapon) || avali.isAggressive() ? CROSSBOW_HOLD_POSE : NO_RANGED_POSE;
+        }
+        return NO_RANGED_POSE;
     }
 
     private static Rotation spearHold(Rotation head, HumanoidArm arm, boolean swimming, float useTicks, ItemStack useStack) {

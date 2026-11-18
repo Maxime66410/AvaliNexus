@@ -60,6 +60,8 @@ import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ProjectileWeaponItem;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.AttackRange;
 import net.minecraft.world.item.component.BlocksAttacks;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
@@ -414,6 +416,11 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
             threat = null;
         }
         return threat;
+    }
+
+    @Override
+    public ItemStack getProjectile(ItemStack heldWeapon) {
+        return heldWeapon.getItem() instanceof ProjectileWeaponItem ? new ItemStack(Items.ARROW) : ItemStack.EMPTY;
     }
 
     @Override
