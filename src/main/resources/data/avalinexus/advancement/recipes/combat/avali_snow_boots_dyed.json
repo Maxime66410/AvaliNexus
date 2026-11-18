@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_avali_snow_boots": {
+      "conditions": {
+        "items": [
+          {
+            "items": "avalinexus:avali_snow_boots"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipes": "avalinexus:avali_snow_boots_dyed"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_avali_snow_boots"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "avalinexus:avali_snow_boots_dyed"
+    ]
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_graphene": {
+      "conditions": {
+        "items": [
+          {
+            "items": "avalinexus:graphene"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipes": "avalinexus:rail_pistol"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_graphene"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "avalinexus:rail_pistol"
+    ]
+  }
+}
