@@ -1,6 +1,6 @@
 {
-  "buy_rolls": 4,
-  "sell_rolls": 3,
+  "buy_rolls": 6,
+  "sell_rolls": 4,
   "max_uses": 8,
   "buy": [
     {
@@ -37,6 +37,46 @@
       "item": "minecraft:packed_ice",
       "count": 4,
       "price": 5
+    },
+    {
+      "item": "minecraft:dried_kelp",
+      "count": 8,
+      "price": 2
+    },
+    {
+      "item": "minecraft:kelp",
+      "count": 8,
+      "price": 2
+    },
+    {
+      "item": "minecraft:ink_sac",
+      "count": 4,
+      "price": 3
+    },
+    {
+      "item": "minecraft:glow_ink_sac",
+      "count": 2,
+      "price": 5
+    },
+    {
+      "item": "minecraft:sea_pickle",
+      "count": 4,
+      "price": 4
+    },
+    {
+      "item": "minecraft:cod_bucket",
+      "count": 1,
+      "price": 6
+    },
+    {
+      "item": "minecraft:salmon_bucket",
+      "count": 1,
+      "price": 7
+    },
+    {
+      "item": "minecraft:lily_pad",
+      "count": 4,
+      "price": 2
     }
   ],
   "sell": [
@@ -69,6 +109,26 @@
       "item": "minecraft:snowball",
       "count": 16,
       "price": 1
+    },
+    {
+      "item": "minecraft:ink_sac",
+      "count": 4,
+      "price": 2
+    },
+    {
+      "item": "minecraft:kelp",
+      "count": 16,
+      "price": 1
+    },
+    {
+      "item": "minecraft:prismarine_shard",
+      "count": 4,
+      "price": 3
+    },
+    {
+      "item": "minecraft:nautilus_shell",
+      "count": 1,
+      "price": 8
     }
   ],
   "friendly": [

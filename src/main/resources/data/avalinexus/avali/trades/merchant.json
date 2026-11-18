@@ -1,6 +1,6 @@
 {
-  "buy_rolls": 4,
-  "sell_rolls": 3,
+  "buy_rolls": 6,
+  "sell_rolls": 4,
   "max_uses": 8,
   "buy": [
     {
@@ -37,6 +37,46 @@
       "item": "minecraft:leather_boots",
       "count": 1,
       "price": 8
+    },
+    {
+      "item": "minecraft:book",
+      "count": 1,
+      "price": 3
+    },
+    {
+      "item": "minecraft:paper",
+      "count": 8,
+      "price": 2
+    },
+    {
+      "item": "minecraft:writable_book",
+      "count": 1,
+      "price": 6
+    },
+    {
+      "tag": "#minecraft:candles",
+      "count": 2,
+      "price": 3
+    },
+    {
+      "item": "minecraft:item_frame",
+      "count": 2,
+      "price": 4
+    },
+    {
+      "item": "minecraft:painting",
+      "count": 1,
+      "price": 4
+    },
+    {
+      "item": "minecraft:firework_rocket",
+      "count": 4,
+      "price": 4
+    },
+    {
+      "item": "minecraft:bell",
+      "count": 1,
+      "price": 12
     }
   ],
   "sell": [
@@ -67,6 +107,26 @@
     },
     {
       "item": "minecraft:packed_ice",
+      "count": 8,
+      "price": 2
+    },
+    {
+      "item": "minecraft:emerald",
+      "count": 1,
+      "price": 4
+    },
+    {
+      "item": "minecraft:honeycomb",
+      "count": 4,
+      "price": 3
+    },
+    {
+      "item": "minecraft:glow_ink_sac",
+      "count": 2,
+      "price": 4
+    },
+    {
+      "item": "minecraft:copper_ingot",
       "count": 8,
       "price": 2
     }

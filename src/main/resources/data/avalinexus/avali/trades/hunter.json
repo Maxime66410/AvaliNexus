@@ -1,6 +1,6 @@
 {
-  "buy_rolls": 4,
-  "sell_rolls": 3,
+  "buy_rolls": 6,
+  "sell_rolls": 4,
   "max_uses": 8,
   "buy": [
     {
@@ -37,6 +37,46 @@
       "item": "minecraft:cooked_rabbit",
       "count": 4,
       "price": 4
+    },
+    {
+      "item": "minecraft:crossbow",
+      "count": 1,
+      "price": 8
+    },
+    {
+      "item": "avalinexus:aerotech_spear",
+      "count": 1,
+      "price": 14
+    },
+    {
+      "item": "minecraft:iron_spear",
+      "count": 1,
+      "price": 6
+    },
+    {
+      "item": "minecraft:shield",
+      "count": 1,
+      "price": 6
+    },
+    {
+      "item": "minecraft:cooked_mutton",
+      "count": 4,
+      "price": 4
+    },
+    {
+      "item": "minecraft:cooked_chicken",
+      "count": 4,
+      "price": 4
+    },
+    {
+      "item": "minecraft:lead",
+      "count": 1,
+      "price": 4
+    },
+    {
+      "item": "minecraft:spyglass",
+      "count": 1,
+      "price": 12
     }
   ],
   "sell": [
@@ -69,6 +109,26 @@
       "item": "minecraft:gunpowder",
       "count": 4,
       "price": 3
+    },
+    {
+      "item": "minecraft:string",
+      "count": 8,
+      "price": 2
+    },
+    {
+      "item": "minecraft:spider_eye",
+      "count": 4,
+      "price": 2
+    },
+    {
+      "item": "minecraft:rotten_flesh",
+      "count": 16,
+      "price": 1
+    },
+    {
+      "item": "minecraft:phantom_membrane",
+      "count": 2,
+      "price": 4
     }
   ],
   "friendly": [

@@ -1,6 +1,6 @@
 {
-  "buy_rolls": 4,
-  "sell_rolls": 3,
+  "buy_rolls": 6,
+  "sell_rolls": 4,
   "max_uses": 8,
   "buy": [
     {
@@ -37,6 +37,46 @@
       "item": "avalinexus:fluid_tap",
       "count": 1,
       "price": 8
+    },
+    {
+      "item": "avalinexus:coolant_bucket",
+      "count": 1,
+      "price": 8
+    },
+    {
+      "item": "avalinexus:fuel_bucket",
+      "count": 1,
+      "price": 8
+    },
+    {
+      "item": "minecraft:lava_bucket",
+      "count": 1,
+      "price": 6
+    },
+    {
+      "item": "minecraft:milk_bucket",
+      "count": 1,
+      "price": 3
+    },
+    {
+      "item": "avalinexus:graphene",
+      "count": 8,
+      "price": 6
+    },
+    {
+      "item": "avalinexus:graphene_vent",
+      "count": 2,
+      "price": 5
+    },
+    {
+      "item": "minecraft:cauldron",
+      "count": 1,
+      "price": 6
+    },
+    {
+      "item": "minecraft:copper_ingot",
+      "count": 4,
+      "price": 3
     }
   ],
   "sell": [
@@ -69,6 +109,26 @@
       "item": "minecraft:bucket",
       "count": 2,
       "price": 3
+    },
+    {
+      "item": "minecraft:lava_bucket",
+      "count": 1,
+      "price": 4
+    },
+    {
+      "item": "minecraft:water_bucket",
+      "count": 1,
+      "price": 1
+    },
+    {
+      "item": "minecraft:redstone",
+      "count": 6,
+      "price": 2
+    },
+    {
+      "item": "minecraft:gold_ingot",
+      "count": 4,
+      "price": 4
     }
   ],
   "friendly": [

@@ -1,6 +1,6 @@
 {
-  "buy_rolls": 4,
-  "sell_rolls": 3,
+  "buy_rolls": 6,
+  "sell_rolls": 4,
   "max_uses": 8,
   "buy": [
     {
@@ -47,6 +47,36 @@
       "item": "avalinexus:avali_snow_boots",
       "count": 1,
       "price": 6
+    },
+    {
+      "tag": "#avalinexus:nanocanvas_slabs",
+      "count": 4,
+      "price": 4
+    },
+    {
+      "tag": "#avalinexus:nanocanvas_stairs",
+      "count": 4,
+      "price": 4
+    },
+    {
+      "tag": "#minecraft:wool_carpets",
+      "count": 8,
+      "price": 2
+    },
+    {
+      "tag": "#minecraft:banners",
+      "count": 1,
+      "price": 4
+    },
+    {
+      "tag": "#minecraft:bundles",
+      "count": 1,
+      "price": 6
+    },
+    {
+      "tag": "#minecraft:harnesses",
+      "count": 1,
+      "price": 8
     }
   ],
   "sell": [
@@ -78,6 +108,26 @@
     {
       "tag": "#minecraft:dyes",
       "count": 4,
+      "price": 2
+    },
+    {
+      "item": "minecraft:feather",
+      "count": 16,
+      "price": 2
+    },
+    {
+      "tag": "#minecraft:wool_carpets",
+      "count": 16,
+      "price": 2
+    },
+    {
+      "item": "minecraft:ink_sac",
+      "count": 4,
+      "price": 2
+    },
+    {
+      "item": "minecraft:cactus",
+      "count": 8,
       "price": 2
     }
   ],

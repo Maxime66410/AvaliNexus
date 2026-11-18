@@ -1,6 +1,6 @@
 {
-  "buy_rolls": 4,
-  "sell_rolls": 3,
+  "buy_rolls": 6,
+  "sell_rolls": 4,
   "max_uses": 8,
   "buy": [
     {
@@ -37,6 +37,46 @@
       "item": "avalinexus:graphene_pipe",
       "count": 4,
       "price": 6
+    },
+    {
+      "item": "minecraft:lava_bucket",
+      "count": 1,
+      "price": 6
+    },
+    {
+      "item": "minecraft:coal_block",
+      "count": 2,
+      "price": 6
+    },
+    {
+      "item": "minecraft:bucket",
+      "count": 1,
+      "price": 3
+    },
+    {
+      "item": "avalinexus:ammonia_ice",
+      "count": 8,
+      "price": 4
+    },
+    {
+      "item": "avalinexus:packed_ammonia_ice",
+      "count": 4,
+      "price": 6
+    },
+    {
+      "item": "avalinexus:graphene_vent",
+      "count": 2,
+      "price": 5
+    },
+    {
+      "item": "minecraft:fire_charge",
+      "count": 4,
+      "price": 4
+    },
+    {
+      "item": "minecraft:magma_block",
+      "count": 4,
+      "price": 4
     }
   ],
   "sell": [
@@ -68,6 +108,26 @@
     {
       "item": "minecraft:bucket",
       "count": 2,
+      "price": 3
+    },
+    {
+      "item": "minecraft:blaze_powder",
+      "count": 4,
+      "price": 2
+    },
+    {
+      "item": "minecraft:coal_block",
+      "count": 2,
+      "price": 3
+    },
+    {
+      "item": "minecraft:raw_iron",
+      "count": 4,
+      "price": 3
+    },
+    {
+      "item": "avalinexus:ammonia_bucket",
+      "count": 1,
       "price": 3
     }
   ],

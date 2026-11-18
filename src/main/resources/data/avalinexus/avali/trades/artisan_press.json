@@ -1,6 +1,6 @@
 {
-  "buy_rolls": 4,
-  "sell_rolls": 3,
+  "buy_rolls": 6,
+  "sell_rolls": 4,
   "max_uses": 8,
   "buy": [
     {
@@ -37,6 +37,46 @@
       "item": "minecraft:coal",
       "count": 8,
       "price": 3
+    },
+    {
+      "item": "avalinexus:graphene_bricks",
+      "count": 8,
+      "price": 8
+    },
+    {
+      "item": "avalinexus:graphene_pillar",
+      "count": 4,
+      "price": 5
+    },
+    {
+      "item": "avalinexus:graphene_slab",
+      "count": 8,
+      "price": 5
+    },
+    {
+      "item": "avalinexus:graphene_stairs",
+      "count": 8,
+      "price": 6
+    },
+    {
+      "item": "avalinexus:graphene_wall",
+      "count": 8,
+      "price": 6
+    },
+    {
+      "item": "avalinexus:graphene_vent",
+      "count": 2,
+      "price": 5
+    },
+    {
+      "item": "avalinexus:graphene_door",
+      "count": 2,
+      "price": 6
+    },
+    {
+      "item": "minecraft:charcoal",
+      "count": 8,
+      "price": 3
     }
   ],
   "sell": [
@@ -69,6 +109,26 @@
       "item": "minecraft:piston",
       "count": 2,
       "price": 3
+    },
+    {
+      "item": "minecraft:coal_block",
+      "count": 2,
+      "price": 3
+    },
+    {
+      "item": "minecraft:redstone",
+      "count": 6,
+      "price": 2
+    },
+    {
+      "item": "minecraft:gold_ingot",
+      "count": 4,
+      "price": 4
+    },
+    {
+      "item": "minecraft:raw_copper",
+      "count": 6,
+      "price": 2
     }
   ],
   "friendly": [

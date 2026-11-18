@@ -1,6 +1,6 @@
 {
-  "buy_rolls": 4,
-  "sell_rolls": 3,
+  "buy_rolls": 6,
+  "sell_rolls": 4,
   "max_uses": 8,
   "buy": [
     {
@@ -37,6 +37,46 @@
       "item": "minecraft:spyglass",
       "count": 1,
       "price": 12
+    },
+    {
+      "item": "minecraft:copper_ingot",
+      "count": 8,
+      "price": 3
+    },
+    {
+      "item": "minecraft:gold_ingot",
+      "count": 2,
+      "price": 5
+    },
+    {
+      "item": "minecraft:lantern",
+      "count": 1,
+      "price": 6
+    },
+    {
+      "item": "minecraft:iron_shovel",
+      "count": 1,
+      "price": 6
+    },
+    {
+      "item": "minecraft:compass",
+      "count": 1,
+      "price": 10
+    },
+    {
+      "item": "minecraft:coal",
+      "count": 8,
+      "price": 3
+    },
+    {
+      "item": "minecraft:ladder",
+      "count": 8,
+      "price": 2
+    },
+    {
+      "item": "minecraft:map",
+      "count": 1,
+      "price": 5
     }
   ],
   "sell": [
@@ -74,6 +114,21 @@
       "item": "minecraft:diamond",
       "count": 1,
       "price": 8
+    },
+    {
+      "item": "minecraft:coal",
+      "count": 16,
+      "price": 2
+    },
+    {
+      "item": "minecraft:obsidian",
+      "count": 4,
+      "price": 4
+    },
+    {
+      "item": "minecraft:flint",
+      "count": 8,
+      "price": 2
     }
   ],
   "friendly": [

@@ -1,6 +1,6 @@
 {
-  "buy_rolls": 4,
-  "sell_rolls": 3,
+  "buy_rolls": 6,
+  "sell_rolls": 4,
   "max_uses": 8,
   "buy": [
     {
@@ -63,6 +63,45 @@
       "item": "avalinexus:ice_bricks",
       "count": 16,
       "price": 5
+    },
+    {
+      "item": "avalinexus:graphene_slab",
+      "count": 8,
+      "price": 5
+    },
+    {
+      "item": "avalinexus:graphene_stairs",
+      "count": 8,
+      "price": 6
+    },
+    {
+      "item": "avalinexus:graphene_wall",
+      "count": 8,
+      "price": 6
+    },
+    {
+      "item": "avalinexus:chiseled_graphene_block",
+      "count": 4,
+      "price": 5
+    },
+    {
+      "item": "avalinexus:aerogel_pane",
+      "count": 16,
+      "price": 5
+    },
+    {
+      "item": "avalinexus:crystal_pot",
+      "count": 2,
+      "price": 4
+    },
+    {
+      "items": [
+        "avalinexus:ice_brick_slab",
+        "avalinexus:ice_brick_stairs",
+        "avalinexus:ice_brick_wall"
+      ],
+      "count": 8,
+      "price": 4
     }
   ],
   "sell": [
@@ -94,6 +133,26 @@
     {
       "item": "minecraft:clay_ball",
       "count": 8,
+      "price": 1
+    },
+    {
+      "item": "minecraft:stone",
+      "count": 16,
+      "price": 1
+    },
+    {
+      "item": "minecraft:spruce_planks",
+      "count": 16,
+      "price": 1
+    },
+    {
+      "item": "minecraft:snow_block",
+      "count": 16,
+      "price": 1
+    },
+    {
+      "item": "minecraft:gravel",
+      "count": 16,
       "price": 1
     }
   ],
