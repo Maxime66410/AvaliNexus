@@ -41,6 +41,8 @@
   "avalinexus.companion.died": "[AvaliNexus] %s, your companion, has fallen.",
   "avalinexus.dialogue.hint": "Scroll or %1$s, %2$s to pick, hold %3$s for the mouse",
   "avalinexus.dialogue.busy": "The Avali is busy.",
+  "avalinexus.dialogue.talking": "The Avali is talking to someone else.",
+  "avalinexus.dialogue.hostile": "The Avali refuses to talk to you.",
   "key.avalinexus.dialogue_cursor": "Dialogue: free the mouse (hold)",
   "key.avalinexus.dialogue_pick": "Dialogue: pick",
   "key.avalinexus.dialogue_choice_1": "Dialogue: choice 1",

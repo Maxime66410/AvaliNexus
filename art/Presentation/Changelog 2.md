@@ -33,6 +33,7 @@ This update is big, i worked a lot on the performance, the villages and many sma
 - Avalis can now hold a **spear**, stab and charge with it, and they stay at the right distance to hit
 - Avalis can now use **bows** and **crossbows** to shoot at their enemies !
 - The shields of the Avalis now have the color of the Avali and some random patterns ;3
+- Avalis don't smile anymore at you when their pack don't like you, they look annoyed or angry, and they make a face when they refuse to talk to you haha
 - Villages and camps are more common now ! Someone found his first village at 14000 blocks from spawn haha, so villages are now every 40 chunks (before 64) and camps every 24 chunks (before 32)
 - Villages have always enough Avalis now : minimum 4 in the small ones and 8 in the big ones
 - The dialogue hint show your real keys, on any keyboard (AZERTY friends this is for you)
@@ -62,6 +63,7 @@ The wall tapestries are also much lighter now, and they only render at 32 blocks
 
 - Avalis wake up now when you push them out of their bed, like the villagers ([#11](https://github.com/Maxime66410/AvaliNexus/issues/11))
 - The dialogue hint was always showing the same keys, even if you changed them ([#9](https://github.com/Maxime66410/AvaliNexus/issues/9))
+- When an Avali is talking to someone else or hate you, it say it now instead of "The Avali is busy." ([#12](https://github.com/Maxime66410/AvaliNexus/issues/12))
 - The aerotech weapons, the rail guns, the magazines and the Nexite quills was missing in the recipe book, now they show when you have graphene
 - The "Debug logs" setting was doing nothing, oops ! Now it really write the details of the Avalis, machines, cold, trades and world generation in the server log
 

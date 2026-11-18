@@ -2,7 +2,7 @@
  * File: DialogueManager.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-11-02
+ * Last Modified: 2026-11-18
  */
 package org.furranystudio.avalinexus.dialogue;
 
@@ -53,7 +53,7 @@ public final class DialogueManager {
         }
         ServerPlayer current = avali.getTalkingTo();
         if (current != null && current != player) {
-            player.sendSystemMessage(Component.translatable("avalinexus.dialogue.busy"), true);
+            player.sendSystemMessage(Component.translatable("avalinexus.dialogue.talking"), true);
             return;
         }
         Session previous = SESSIONS.get(player.getUUID());
@@ -62,7 +62,8 @@ public final class DialogueManager {
         }
         ReputationTier tier = AvaliReputation.tier(player, avali.getPack());
         if (tier == ReputationTier.HOSTILE && !avali.isOwnedBy(player)) {
-            player.sendSystemMessage(Component.translatable("avalinexus.dialogue.busy"), true);
+            player.sendSystemMessage(Component.translatable("avalinexus.dialogue.hostile"), true);
+            avali.refuseTalk();
             return;
         }
         if (previous != null) {

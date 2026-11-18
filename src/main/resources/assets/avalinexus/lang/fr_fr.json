@@ -41,6 +41,8 @@
   "avalinexus.companion.died": "[AvaliNexus] %s, ton compagnon, est tombé.",
   "avalinexus.dialogue.hint": "Molette ou %1$s, %2$s pour choisir, %3$s pour la souris",
   "avalinexus.dialogue.busy": "L'Avali est occupé.",
+  "avalinexus.dialogue.talking": "L'Avali parle déjà à quelqu'un d'autre.",
+  "avalinexus.dialogue.hostile": "L'Avali refuse de te parler.",
   "key.avalinexus.dialogue_cursor": "Dialogue : libérer la souris (maintenir)",
   "key.avalinexus.dialogue_pick": "Dialogue : choisir",
   "key.avalinexus.dialogue_choice_1": "Dialogue : choix 1",

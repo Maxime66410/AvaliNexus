@@ -88,6 +88,7 @@ import org.furranystudio.avalinexus.entity.avali.expression.AvaliGesture;
 import org.furranystudio.avalinexus.entity.avali.expression.AvaliMood;
 import org.furranystudio.avalinexus.entity.avali.goal.AvaliCreeperGoal;
 import org.furranystudio.avalinexus.reputation.AvaliReputation;
+import org.furranystudio.avalinexus.reputation.ReputationTier;
 import org.furranystudio.avalinexus.reputation.VillageFields;
 import org.furranystudio.avalinexus.entity.avali.goal.CompanionFollowGoal;
 import org.furranystudio.avalinexus.entity.avali.goal.CompanionGatherGoal;
@@ -158,6 +159,7 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     private static final RawAnimation RIDING = RawAnimation.begin().thenLoop("riding");
     private static final double HAPPY_RANGE = 6.0;
     private static final int HAPPY_TICKS = 30;
+    private static final int REFUSE_GESTURE_TICKS = 40;
     private static final int ANGRY_PARTICLES = 5;
     private static final int ANGRY_BURST_INTERVAL = 20;
     private static final int ANGRY_BURSTS = 3;
@@ -205,6 +207,7 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     private AvaliMood hurtMood = AvaliMood.ANGRY;
     private int happyTicks;
     private boolean playerNearby;
+    private AvaliMood approachMood = AvaliMood.HAPPY;
     private int gestureTicks;
     private boolean justLoaded;
     private boolean named;
@@ -1463,9 +1466,11 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         if (happyTicks > 0) {
             happyTicks--;
         }
-        boolean nearby = level().getNearestPlayer(this, HAPPY_RANGE) != null;
+        Player nearest = level().getNearestPlayer(this, HAPPY_RANGE);
+        boolean nearby = nearest != null;
         if (nearby && !playerNearby) {
             happyTicks = HAPPY_TICKS;
+            approachMood = approachMood(nearest);
         }
         playerNearby = nearby;
 
@@ -1477,7 +1482,7 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         } else if (hurtTicks > 0) {
             mood = hurtMood;
         } else if (happyTicks > 0) {
-            mood = AvaliMood.HAPPY;
+            mood = approachMood;
         } else {
             mood = AvaliMood.NEUTRAL;
         }
@@ -1506,6 +1511,22 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
             AvaliGesture gesture = IDLE_GESTURES[random.nextInt(IDLE_GESTURES.length)];
             playGesture(gesture, Mth.nextInt(random, GESTURE_MIN_TICKS, GESTURE_MAX_TICKS));
         }
+    }
+
+    private AvaliMood approachMood(Player player) {
+        if (!(player instanceof ServerPlayer serverPlayer) || isOwnedBy(serverPlayer)) {
+            return AvaliMood.HAPPY;
+        }
+        ReputationTier tier = AvaliReputation.tier(serverPlayer, getPack());
+        if (tier == ReputationTier.HOSTILE) {
+            return AvaliMood.ANGRY;
+        }
+        return tier == ReputationTier.WARY ? AvaliMood.ANNOYED : AvaliMood.HAPPY;
+    }
+
+    public void refuseTalk() {
+        happyTicks = 0;
+        playGesture(AvaliGesture.ANGRY, REFUSE_GESTURE_TICKS);
     }
 
     public void playGesture(AvaliGesture gesture, int ticks) {

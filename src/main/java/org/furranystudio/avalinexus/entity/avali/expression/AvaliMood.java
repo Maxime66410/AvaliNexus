@@ -2,7 +2,7 @@
  * File: AvaliMood.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-09-27
+ * Last Modified: 2026-11-18
  */
 package org.furranystudio.avalinexus.entity.avali.expression;
 
@@ -10,7 +10,8 @@ public enum AvaliMood {
     NEUTRAL(AvaliFace.NEUTRAL, false),
     HAPPY(AvaliFace.HAPPY, false),
     SCARED(AvaliFace.SCARED, true),
-    ANGRY(AvaliFace.ANGRY, true);
+    ANGRY(AvaliFace.ANGRY, true),
+    ANNOYED(AvaliFace.ANNOYED, false);
 
     private final AvaliFace face;
     private final boolean earsDown;
