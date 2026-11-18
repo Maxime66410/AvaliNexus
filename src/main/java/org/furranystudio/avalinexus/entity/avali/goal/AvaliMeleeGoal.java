@@ -2,10 +2,11 @@
  * File: AvaliMeleeGoal.java
  * Author: Maxime66410
  * Created: 2026-10-18
- * Last Modified: 2026-10-18
+ * Last Modified: 2026-11-18
  */
 package org.furranystudio.avalinexus.entity.avali.goal;
 
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -75,6 +76,9 @@ public class AvaliMeleeGoal extends MeleeAttackGoal {
         if (target != null && avali.isTooCloseFor(target)) {
             avali.getNavigation().stop();
             avali.getMoveControl().strafe(BACK_OFF, 0.0F);
+        } else if (target != null && avali.getMainHandItem().has(DataComponents.ATTACK_RANGE)
+                && avali.isWithinMeleeAttackRange(target) && avali.getSensing().hasLineOfSight(target)) {
+            avali.getNavigation().stop();
         }
     }
 

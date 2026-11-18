@@ -2,7 +2,7 @@
  * File: AvaliEntity.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-11-02
+ * Last Modified: 2026-11-18
  */
 package org.furranystudio.avalinexus.entity.avali;
 
@@ -442,9 +442,14 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     @Override
     public boolean isWithinMeleeAttackRange(LivingEntity target) {
         ItemStack weapon = getMainHandItem();
+        AttackRange range = weapon.get(DataComponents.ATTACK_RANGE);
+        if (range != null) {
+            double distance = reachDistance(target);
+            return distance >= range.minReach() - range.hitboxMargin() && distance <= range.maxReach() + range.hitboxMargin();
+        }
         double bonus = weapon.getOrDefault(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.EMPTY)
             .compute(Attributes.ENTITY_INTERACTION_RANGE, 0.0, EquipmentSlot.MAINHAND);
-        if (weapon.has(DataComponents.ATTACK_RANGE) || bonus <= 0.0) {
+        if (bonus <= 0.0) {
             return super.isWithinMeleeAttackRange(target);
         }
         return getAttackBoundingBox(MELEE_REACH + bonus).intersects(target.getBoundingBox());
@@ -452,8 +457,11 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
 
     public boolean isTooCloseFor(LivingEntity target) {
         AttackRange range = getMainHandItem().get(DataComponents.ATTACK_RANGE);
-        return range != null && range.effectiveMinRange(this) > 0.0F
-            && getAttackBoundingBox(range.effectiveMinRange(this)).intersects(target.getBoundingBox());
+        return range != null && range.minReach() > 0.0F && reachDistance(target) < range.minReach() - range.hitboxMargin();
+    }
+
+    private double reachDistance(LivingEntity target) {
+        return Math.sqrt(target.getBoundingBox().distanceToSqr(getEyePosition()));
     }
 
     public boolean canCriticalAttack(Entity target) {

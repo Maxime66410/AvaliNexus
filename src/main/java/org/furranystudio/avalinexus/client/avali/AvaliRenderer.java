@@ -2,7 +2,7 @@
  * File: AvaliRenderer.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-11-08
+ * Last Modified: 2026-11-18
  */
 package org.furranystudio.avalinexus.client.avali;
 
@@ -17,6 +17,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.renderer.OrderedSubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.resources.Identifier;
@@ -29,6 +30,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
+import net.minecraft.world.item.SwingAnimationType;
 import org.furranystudio.avalinexus.entity.avali.AvaliEntity;
 import org.furranystudio.avalinexus.entity.avali.expression.AvaliFace;
 import org.furranystudio.avalinexus.item.weapon.RailGunItem;
@@ -58,6 +60,10 @@ public class AvaliRenderer<R extends LivingEntityRenderState & GeoRenderState> e
     private static final DataTicket<Boolean> BLOCK_LEFT = DataTicket.create("avalinexus_block_left", Boolean.class);
     private static final DataTicket<Boolean> RAIL_HOLD = DataTicket.create("avalinexus_rail_hold", Boolean.class);
     private static final DataTicket<Boolean> RIGHT_HANDED = DataTicket.create("avalinexus_right_handed", Boolean.class);
+    private static final DataTicket<Boolean> RIGHT_SPEAR = DataTicket.create("avalinexus_right_spear", Boolean.class);
+    private static final DataTicket<Boolean> LEFT_SPEAR = DataTicket.create("avalinexus_left_spear", Boolean.class);
+    private static final DataTicket<Boolean> SWING_STAB = DataTicket.create("avalinexus_swing_stab", Boolean.class);
+    private static final float SPEAR_SWIM_DROP = 0.9599311F;
     private static final String[] MOUTHS = {"Mouth Left 0", "Mouth Right 0", "Mouth Left 1", "Mouth Right 1", "Mouth Front"};
     private static final int BLINK_CYCLE = 300;
     private static final Map<String, String> ARMOR_ROOTS = Map.of(
@@ -128,6 +134,9 @@ public class AvaliRenderer<R extends LivingEntityRenderState & GeoRenderState> e
         state.addGeckolibData(BLOCK_LEFT, InteractionHand.OFF_HAND.asArm(mainArm) == HumanoidArm.LEFT);
         state.addGeckolibData(RAIL_HOLD, swing == null && avali.getMainHandItem().getItem() instanceof RailGunItem);
         state.addGeckolibData(RIGHT_HANDED, rightHanded);
+        state.addGeckolibData(RIGHT_SPEAR, HumanoidMobRenderer.usesSpearPose(avali.getItemHeldByArm(HumanoidArm.RIGHT), HumanoidArm.RIGHT, avali));
+        state.addGeckolibData(LEFT_SPEAR, HumanoidMobRenderer.usesSpearPose(avali.getItemHeldByArm(HumanoidArm.LEFT), HumanoidArm.LEFT, avali));
+        state.addGeckolibData(SWING_STAB, swing != null && swing.animation().type() == SwingAnimationType.STAB);
     }
 
     @Override
@@ -215,6 +224,15 @@ public class AvaliRenderer<R extends LivingEntityRenderState & GeoRenderState> e
             }
         }
 
+        boolean rightSpear = state.getOrDefaultGeckolibData(RIGHT_SPEAR, false);
+        boolean leftSpear = state.getOrDefaultGeckolibData(LEFT_SPEAR, false);
+        if (rightSpear) {
+            rightArm = spearHold(head, 1.0F, swim > 0.0F);
+        }
+        if (leftSpear) {
+            leftArm = spearHold(head, -1.0F, swim > 0.0F);
+        }
+
         if (state.getOrDefaultGeckolibData(RAIL_HOLD, false)) {
             boolean right = state.getOrDefaultGeckolibData(RIGHT_HANDED, true);
             Rotation holdingArm = new Rotation(-Mth.HALF_PI + head.x + 0.1F, (right ? -0.3F : 0.3F) + head.y, 0.0F);
@@ -227,14 +245,24 @@ public class AvaliRenderer<R extends LivingEntityRenderState & GeoRenderState> e
         if (swing > 0.0F) {
             boolean swingLeft = state.getOrDefaultGeckolibData(SWING_LEFT, false);
             float twist = Mth.sin(Mth.sqrt(swing) * Mth.PI * 2.0F) * 0.2F * (swingLeft ? -1.0F : 1.0F);
-            rightArm = new Rotation(rightArm.x, rightArm.y + twist, rightArm.z);
-            leftArm = new Rotation(leftArm.x + twist, leftArm.y + twist, leftArm.z);
-            float lift = Mth.sin(Ease.outQuart(swing) * Mth.PI) * 1.2F + Mth.sin(swing * Mth.PI) * -(head.x - 0.7F) * 0.75F;
-            float roll = Mth.sin(swing * Mth.PI) * -0.4F;
-            if (swingLeft) {
-                leftArm = new Rotation(leftArm.x - lift, leftArm.y + twist * 2.0F, leftArm.z + roll);
+            if (state.getOrDefaultGeckolibData(SWING_STAB, false)) {
+                float stab = (90.0F * SpearMotion.prepare(swing) - 120.0F * SpearMotion.attack(swing)
+                    + 30.0F * SpearMotion.retract(swing)) * Mth.DEG_TO_RAD;
+                if (swingLeft) {
+                    leftArm = new Rotation(leftArm.x + stab, leftArm.y, leftArm.z);
+                } else {
+                    rightArm = new Rotation(rightArm.x + stab, rightArm.y, rightArm.z);
+                }
             } else {
-                rightArm = new Rotation(rightArm.x - lift, rightArm.y + twist * 2.0F, rightArm.z + roll);
+                rightArm = new Rotation(rightArm.x, rightArm.y + twist, rightArm.z);
+                leftArm = new Rotation(leftArm.x + twist, leftArm.y + twist, leftArm.z);
+                float lift = Mth.sin(Ease.outQuart(swing) * Mth.PI) * 1.2F + Mth.sin(swing * Mth.PI) * -(head.x - 0.7F) * 0.75F;
+                float roll = Mth.sin(swing * Mth.PI) * -0.4F;
+                if (swingLeft) {
+                    leftArm = new Rotation(leftArm.x - lift, leftArm.y + twist * 2.0F, leftArm.z + roll);
+                } else {
+                    rightArm = new Rotation(rightArm.x - lift, rightArm.y + twist * 2.0F, rightArm.z + roll);
+                }
             }
             rotateBone(snapshots, "body", new Rotation(0.0F, twist, 0.0F));
         }
@@ -242,8 +270,12 @@ public class AvaliRenderer<R extends LivingEntityRenderState & GeoRenderState> e
         if (swim > 0.0F) {
             head = new Rotation(Mth.rotLerpRad(swim, head.x, -Mth.PI / 4.0F), head.y, head.z);
             Rotation[] stroke = swimStroke(pos);
-            leftArm = leftArm.lerpTo(stroke[0], swim);
-            rightArm = rightArm.lerpTo(stroke[1], swim);
+            if (!leftSpear) {
+                leftArm = leftArm.lerpTo(stroke[0], swim);
+            }
+            if (!rightSpear) {
+                rightArm = rightArm.lerpTo(stroke[1], swim);
+            }
             leftLeg = new Rotation(Mth.lerp(swim, leftLeg.x, 0.3F * Mth.cos(pos * 0.33333334F + Mth.PI)), 0.0F, 0.0F);
             rightLeg = new Rotation(Mth.lerp(swim, rightLeg.x, 0.3F * Mth.cos(pos * 0.33333334F)), 0.0F, 0.0F);
         }
@@ -299,6 +331,13 @@ public class AvaliRenderer<R extends LivingEntityRenderState & GeoRenderState> e
         float progress = (cycle - 22.0F) / 4.0F;
         float x = Mth.HALF_PI - Mth.HALF_PI * progress;
         return new Rotation[] {new Rotation(x, Mth.PI, Mth.PI), new Rotation(x, Mth.PI, Mth.PI)};
+    }
+
+    private static Rotation spearHold(Rotation head, float invert, boolean swimming) {
+        float y = -0.1F * invert + head.y;
+        float x = -Mth.HALF_PI + head.x + 0.8F - (swimming ? SPEAR_SWIM_DROP : 0.0F);
+        return new Rotation(Mth.DEG_TO_RAD * Math.clamp(x * Mth.RAD_TO_DEG, -120.0F, 30.0F),
+            Mth.DEG_TO_RAD * Math.clamp(y * Mth.RAD_TO_DEG, -60.0F, 60.0F), 0.0F);
     }
 
     private static Rotation holding(Rotation arm) {
