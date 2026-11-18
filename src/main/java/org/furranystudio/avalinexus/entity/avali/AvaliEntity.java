@@ -77,6 +77,9 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.furranystudio.avalinexus.AvaliNexus;
 import org.furranystudio.avalinexus.dialogue.DialogueManager;
@@ -158,6 +161,7 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     private static final RawAnimation SLEEP_FOOT = RawAnimation.begin().thenLoop("sleeping_Foot");
     private static final RawAnimation RIDING = RawAnimation.begin().thenLoop("riding");
     private static final double HAPPY_RANGE = 6.0;
+    private static final double STRIKE_INSET = 0.1;
     private static final int HAPPY_TICKS = 30;
     private static final int REFUSE_GESTURE_TICKS = 40;
     private static final int ANGRY_PARTICLES = 5;
@@ -477,6 +481,17 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
     public boolean isTooCloseFor(LivingEntity target) {
         AttackRange range = getMainHandItem().get(DataComponents.ATTACK_RANGE);
         return range != null && range.minReach() > 0.0F && reachDistance(target) < range.minReach() - range.hitboxMargin();
+    }
+
+    public boolean hasClearStrike(LivingEntity target) {
+        Vec3 eye = getEyePosition();
+        AABB full = target.getBoundingBox();
+        AABB box = full.deflate(Math.min(STRIKE_INSET, full.getXsize() / 4.0), Math.min(STRIKE_INSET, full.getYsize() / 4.0),
+            Math.min(STRIKE_INSET, full.getZsize() / 4.0));
+        Vec3 point = new Vec3(Mth.clamp(eye.x, box.minX, box.maxX), Mth.clamp(eye.y, box.minY, box.maxY),
+            Mth.clamp(eye.z, box.minZ, box.maxZ));
+        return level().clip(new ClipContext(eye, point, ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, this))
+            .getType() == HitResult.Type.MISS;
     }
 
     private double reachDistance(LivingEntity target) {

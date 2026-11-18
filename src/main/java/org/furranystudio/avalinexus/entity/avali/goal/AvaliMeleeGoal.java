@@ -81,7 +81,7 @@ public class AvaliMeleeGoal extends MeleeAttackGoal {
             avali.getNavigation().stop();
             avali.getMoveControl().strafe(BACK_OFF, 0.0F);
         } else if (target != null && avali.getMainHandItem().has(DataComponents.ATTACK_RANGE)
-                && avali.isWithinMeleeAttackRange(target) && avali.getSensing().hasLineOfSight(target)) {
+                && avali.isWithinMeleeAttackRange(target) && avali.getSensing().hasLineOfSight(target) && avali.hasClearStrike(target)) {
             avali.getNavigation().stop();
         }
     }
@@ -100,6 +100,11 @@ public class AvaliMeleeGoal extends MeleeAttackGoal {
         } else if (!close) {
             lowerShield();
         }
+    }
+
+    @Override
+    protected boolean canPerformAttack(LivingEntity target) {
+        return super.canPerformAttack(target) && avali.hasClearStrike(target);
     }
 
     @Override

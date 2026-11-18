@@ -64,6 +64,7 @@ The wall tapestries are also much lighter now, and they only render at 32 blocks
 - Avalis wake up now when you push them out of their bed, like the villagers ([#11](https://github.com/Maxime66410/AvaliNexus/issues/11))
 - The dialogue hint was always showing the same keys, even if you changed them ([#9](https://github.com/Maxime66410/AvaliNexus/issues/9))
 - When an Avali is talking to someone else or hate you, it say it now instead of "The Avali is busy." ([#12](https://github.com/Maxime66410/AvaliNexus/issues/12))
+- Avalis could hit you through the leaves and the blocks, not anymore !
 - The aerotech weapons, the rail guns, the magazines and the Nexite quills was missing in the recipe book, now they show when you have graphene
 - The "Debug logs" setting was doing nothing, oops ! Now it really write the details of the Avalis, machines, cold, trades and world generation in the server log
 
