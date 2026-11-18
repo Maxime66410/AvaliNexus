@@ -2,22 +2,28 @@
  * File: AvaliGear.java
  * Author: Maxime66410
  * Created: 2026-10-17
- * Last Modified: 2026-11-17
+ * Last Modified: 2026-11-18
  */
 package org.furranystudio.avalinexus.entity.avali;
 
+import net.minecraft.core.HolderSet;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.BannerPatternTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.food.FoodProperties;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.DyedItemColor;
+import net.minecraft.world.level.block.entity.BannerPattern;
+import net.minecraft.world.level.block.entity.BannerPatternLayers;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import org.furranystudio.avalinexus.item.AvaliClothes;
@@ -34,6 +40,8 @@ import java.util.Map;
 public class AvaliGear {
 
     public static final int SIZE = 9;
+    private static final float COLORED_SHIELD_CHANCE = 0.75F;
+    private static final int MAX_SHIELD_PATTERNS = 2;
 
     private final AvaliEntity avali;
     private final List<ItemStack> backpack = new ArrayList<>();
@@ -313,7 +321,7 @@ public class AvaliGear {
         }
         Item shield = AvaliEquipment.pick(spawn.shields(), random);
         if (random.nextFloat() < spawn.shieldChance() && shield != Items.AIR) {
-            avali.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack(shield));
+            avali.setItemSlot(EquipmentSlot.OFFHAND, painted(new ItemStack(shield), random));
         }
         if (random.nextFloat() < spawn.foodChance()) {
             add(spawn.food(), random, Mth.nextInt(random, spawn.foodMin(), spawn.foodMax()));
@@ -328,6 +336,50 @@ public class AvaliGear {
             stack.set(DataComponents.DYED_COLOR, new DyedItemColor(choices[random.nextInt(choices.length)]));
         }
         return stack;
+    }
+
+    private ItemStack painted(ItemStack stack, RandomSource random) {
+        if (!stack.is(Items.SHIELD) || random.nextFloat() >= COLORED_SHIELD_CHANCE) {
+            return stack;
+        }
+        AvaliAppearance.Colors colors = avali.getColors();
+        int[] choices = {colors.base(), colors.pattern(), colors.feathers()};
+        DyeColor base = nearestDye(choices[random.nextInt(choices.length)]);
+        stack.set(DataComponents.BASE_COLOR, base);
+        HolderSet<BannerPattern> patterns = avali.level().registryAccess().lookupOrThrow(Registries.BANNER_PATTERN)
+            .get(BannerPatternTags.NO_ITEM_REQUIRED).map(set -> (HolderSet<BannerPattern>) set).orElse(HolderSet.empty());
+        BannerPatternLayers.Builder layers = new BannerPatternLayers.Builder();
+        int count = random.nextInt(MAX_SHIELD_PATTERNS + 1);
+        for (int i = 0; i < count; i++) {
+            DyeColor color = DyeColor.byId(random.nextInt(DyeColor.VALUES.size() - 1));
+            if (color.getId() >= base.getId()) {
+                color = DyeColor.byId(color.getId() + 1);
+            }
+            DyeColor layerColor = color;
+            patterns.getRandomElement(random).ifPresent(pattern -> layers.add(pattern, layerColor));
+        }
+        BannerPatternLayers built = layers.build();
+        if (!built.layers().isEmpty()) {
+            stack.set(DataComponents.BANNER_PATTERNS, built);
+        }
+        return stack;
+    }
+
+    private static DyeColor nearestDye(int rgb) {
+        DyeColor best = DyeColor.WHITE;
+        int bestDistance = Integer.MAX_VALUE;
+        for (DyeColor dye : DyeColor.VALUES) {
+            int color = dye.getTextureDiffuseColor();
+            int dr = (color >> 16 & 0xFF) - (rgb >> 16 & 0xFF);
+            int dg = (color >> 8 & 0xFF) - (rgb >> 8 & 0xFF);
+            int db = (color & 0xFF) - (rgb & 0xFF);
+            int distance = dr * dr + dg * dg + db * db;
+            if (distance < bestDistance) {
+                bestDistance = distance;
+                best = dye;
+            }
+        }
+        return best;
     }
 
     private void add(List<Item> items, RandomSource random, int count) {

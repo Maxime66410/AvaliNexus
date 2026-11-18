@@ -32,6 +32,7 @@ This update is big, i worked a lot on the performance, the villages and many sma
 - The Avali shops are much bigger now ! Every shop show 6 things to buy and 4 to sell (before 4 and 3), and each one have 15 possible things to buy and 10 to sell, so you almost never see the same shop two times. You can also find stuff that was sold nowhere before, like the terminal, the graphene vent, the crystal pot and the piru and nakati seeds :D
 - Avalis can now hold a **spear**, stab and charge with it, and they stay at the right distance to hit
 - Avalis can now use **bows** and **crossbows** to shoot at their enemies !
+- The shields of the Avalis now have the color of the Avali and some random patterns ;3
 - Villages and camps are more common now ! Someone found his first village at 14000 blocks from spawn haha, so villages are now every 40 chunks (before 64) and camps every 24 chunks (before 32)
 - Villages have always enough Avalis now : minimum 4 in the small ones and 8 in the big ones
 - The dialogue hint show your real keys, on any keyboard (AZERTY friends this is for you)
