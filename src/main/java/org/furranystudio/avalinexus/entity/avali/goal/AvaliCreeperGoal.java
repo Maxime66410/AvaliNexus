@@ -2,14 +2,14 @@
  * File: AvaliCreeperGoal.java
  * Author: Maxime66410
  * Created: 2026-10-18
- * Last Modified: 2026-10-18
+ * Last Modified: 2026-11-20
  */
 package org.furranystudio.avalinexus.entity.avali.goal;
 
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
-import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.phys.Vec3;
 import org.furranystudio.avalinexus.entity.avali.AvaliCombat;
 import org.furranystudio.avalinexus.entity.avali.AvaliEntity;
@@ -23,7 +23,7 @@ public class AvaliCreeperGoal extends Goal {
     private static final int REPATH_INTERVAL = 10;
 
     private final AvaliEntity avali;
-    private Creeper creeper;
+    private Entity danger;
     private int repath;
     private int checkCooldown;
 
@@ -38,13 +38,13 @@ public class AvaliCreeperGoal extends Goal {
             return false;
         }
         checkCooldown = CHECK_INTERVAL;
-        creeper = AvaliFight.swellingCreeper(avali);
-        return creeper != null && healthy();
+        danger = AvaliFight.explosionDanger(avali);
+        return danger != null && healthy();
     }
 
     @Override
     public boolean canContinueToUse() {
-        return creeper != null && creeper.isAlive() && creeper.getSwellDir() > 0 && healthy();
+        return AvaliFight.isExplosionDanger(danger) && healthy();
     }
 
     @Override
@@ -66,12 +66,12 @@ public class AvaliCreeperGoal extends Goal {
         lowerShield();
         avali.setSprinting(false);
         avali.setDodging(false);
-        creeper = null;
+        danger = null;
     }
 
     @Override
     public void tick() {
-        avali.getLookControl().setLookAt(creeper);
+        avali.getLookControl().setLookAt(danger);
         if (avali.getGear().isShield(avali.getOffhandItem())) {
             avali.getNavigation().stop();
             if (!avali.isUsingItem()) {
@@ -86,7 +86,7 @@ public class AvaliCreeperGoal extends Goal {
         repath = REPATH_INTERVAL;
         AvaliCombat.Creeper data = AvaliFight.data(avali).creeper();
         avali.setSprinting(true);
-        Vec3 away = DefaultRandomPos.getPosAway(avali, data.fleeDistance(), 7, creeper.position());
+        Vec3 away = DefaultRandomPos.getPosAway(avali, data.fleeDistance(), 7, danger.position());
         if (away != null) {
             avali.getNavigation().moveTo(away.x, away.y, away.z, data.fleeSpeed());
         }

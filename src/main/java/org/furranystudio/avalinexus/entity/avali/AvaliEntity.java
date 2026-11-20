@@ -2,7 +2,7 @@
  * File: AvaliEntity.java
  * Author: Maxime66410
  * Created: 2026-09-27
- * Last Modified: 2026-11-18
+ * Last Modified: 2026-11-20
  */
 package org.furranystudio.avalinexus.entity.avali;
 
@@ -1590,7 +1590,7 @@ public class AvaliEntity extends AgeableMob implements GeoEntity {
         if (getTarget() != null || panicking || dodging || concert != null) {
             return true;
         }
-        return AvaliFight.swellingCreeper(this) != null || AvaliFight.shouldFlee(this, AvaliFight.enemies(this));
+        return AvaliFight.explosionDanger(this) != null || AvaliFight.shouldFlee(this, AvaliFight.enemies(this));
     }
 
     public AvaliMood getMood() {

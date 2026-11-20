@@ -2,19 +2,22 @@
  * File: AvaliFight.java
  * Author: Maxime66410
  * Created: 2026-10-18
- * Last Modified: 2026-10-22
+ * Last Modified: 2026-11-20
  */
 package org.furranystudio.avalinexus.entity.avali;
 
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.CombatRules;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.item.PrimedTnt;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.vehicle.minecart.MinecartTNT;
 import net.minecraft.world.item.ItemStack;
 import org.furranystudio.avalinexus.reputation.AvaliReputation;
 import org.furranystudio.avalinexus.reputation.ReputationTier;
@@ -76,11 +79,19 @@ public final class AvaliFight {
         return entities.stream().min(Comparator.comparingDouble(avali::distanceToSqr)).orElse(null);
     }
 
-    public static Creeper swellingCreeper(AvaliEntity avali) {
+    public static Entity explosionDanger(AvaliEntity avali) {
         double radius = data(avali).creeper().detectRadius();
-        return avali.level().getEntitiesOfClass(Creeper.class, avali.getBoundingBox().inflate(radius),
-                creeper -> creeper.isAlive() && creeper.getSwellDir() > 0 && avali.distanceTo(creeper) <= radius)
+        return avali.level().getEntities(avali, avali.getBoundingBox().inflate(radius),
+                entity -> isExplosionDanger(entity) && avali.distanceTo(entity) <= radius)
             .stream().min(Comparator.comparingDouble(avali::distanceToSqr)).orElse(null);
+    }
+
+    public static boolean isExplosionDanger(Entity entity) {
+        if (entity == null || !entity.isAlive()) {
+            return false;
+        }
+        return entity instanceof Creeper creeper && creeper.getSwellDir() > 0 || entity instanceof PrimedTnt
+            || entity instanceof MinecartTNT minecart && minecart.isPrimed();
     }
 
     public static int allies(AvaliEntity avali) {
